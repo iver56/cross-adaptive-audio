@@ -1,6 +1,7 @@
 import argparse
 import time
 import template_handler
+import csound_handler
 
 
 class Main(object):
@@ -44,7 +45,10 @@ class Main(object):
     def run(self):
         template = template_handler.TemplateHandler('templates/ring_modulator.jinja2')
         template.compile(filename='input/synth_remind_me.wav', iFreq=300)
-        template.write_result('csd/ring_modulator.csd')
+        csd_path = 'csd/ring_modulator.csd'
+        template.write_result(csd_path)
+        csound = csound_handler.CsoundHandler(csd_path)
+        csound.run('output/ring_modulator_test.wav')
 
 if __name__ == '__main__':
     Main()
