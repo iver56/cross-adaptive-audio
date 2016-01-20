@@ -61,3 +61,4 @@ target/
 
 # Misc
 .idea
+venv
