@@ -48,7 +48,7 @@ class Main(object):
         csd_path = 'csd/ring_modulator.csd'
         template.write_result(csd_path)
         csound = csound_handler.CsoundHandler(csd_path)
-        csound.run('output/ring_modulator_test.wav')
+        csound.run('ring_modulator_test.wav')
 
 if __name__ == '__main__':
     Main()
