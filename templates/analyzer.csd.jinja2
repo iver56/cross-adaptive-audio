@@ -1,0 +1,37 @@
+<CsoundSynthesizer>
+    <CsOptions>
+        -i input/{{ filename }}
+        --nosound
+    </CsOptions>
+    <CsInstruments>
+        sr = 44100
+        kr = {{ krate }} ; ksmps = 100
+        nchnls = 1
+        0dbfs = 1
+
+        pyinit
+
+        instr 1
+
+        pyruni {{ '{{' }}
+import os, sys
+#sys.path.append(os.getcwd())
+from logger import Logger
+my_logger = Logger(krate={{ krate }}, filename='{{ filename }}', features=['rms'])
+        {{ '}}' }}
+
+        ;kTime times
+
+        aIn in
+
+        kRms rms aIn
+        pyassign "my_logger.buffer", kRms
+        pyrun "my_logger.log('rms')"
+
+        endin
+    </CsInstruments>
+    <CsScore>
+        i 1 0 5
+        e
+    </CsScore>
+</CsoundSynthesizer>

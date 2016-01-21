@@ -8,11 +8,11 @@ class CsoundHandler(object):
     def __init__(self, csd_filename):
         self.csd_filename = csd_filename
 
-    def run(self, output_filename):
-        subprocess.call(
-            [
-                "csound",
-                self.csd_filename,
-                '-o' + os.path.join(self.OUTPUT_DIR, output_filename)
-            ]
-        )
+    def run(self, output_filename=None):
+        command = [
+            "csound",
+            self.csd_filename
+        ]
+        if output_filename is not None:
+            command.append('-o' + os.path.join(self.OUTPUT_DIR, output_filename))
+        subprocess.call(command)
