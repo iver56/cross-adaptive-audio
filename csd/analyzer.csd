@@ -1,6 +1,6 @@
 <CsoundSynthesizer>
     <CsOptions>
-        -i input/synth_remind_me.wav
+        -i input/drums_remind_me.wav
         --nosound
     </CsOptions>
     <CsInstruments>
@@ -17,7 +17,7 @@
 import os, sys
 #sys.path.append(os.getcwd())
 from logger import Logger
-my_logger = Logger(krate=441, filename='synth_remind_me.wav', features=['rms'])
+my_logger = Logger(krate=441, filename='drums_remind_me.wav', features=['rms'])
         }}
 
         ;kTime times

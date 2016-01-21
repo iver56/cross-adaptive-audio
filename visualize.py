@@ -3,22 +3,36 @@ import pygame
 import argparse
 import json
 import os
+import datetime
 
 
 class Gfx(object):
     size = width, height = 960, 540
     BLACK = 255, 255, 255
 
-    def __init__(self, series=None):
+    def __init__(self, series, krate=None, sound_filename=None):
         self.screen = pygame.display.set_mode(self.size)
         self.clock = pygame.time.Clock()
         self.fps = 30.0
         self.series = series
         self.num_series = len(self.series)
+        print self.num_series, 'series'
         self.height_per_series = float(self.height) / self.num_series
         self.num_frames = len(self.series[self.series.keys()[0]])
-        print self.num_frames
+        print self.num_frames, 'frames'
         self.width_per_frame = float(self.width) / self.num_frames
+
+        self.krate = krate
+        self.sound = None if sound_filename is None else pygame.mixer.Sound(sound_filename)
+        self.t_start = None
+
+    def start_sound(self):
+        if self.sound is not None:
+            self.sound.play()
+        self.t_start = datetime.datetime.now()
+
+    def get_time_since_start(self):
+        return (datetime.datetime.now() - self.t_start).total_seconds()
 
     def draw_series(self):
         i = 0
@@ -34,6 +48,19 @@ class Gfx(object):
                 )
                 pygame.draw.rect(self.screen, color, rect)
             i += 1
+
+    def draw_playhead(self):
+        current_frame_number = self.get_time_since_start() * self.krate
+        x_position = self.width_per_frame * current_frame_number
+
+        color = (220, 80, 80)
+        rect = pygame.Rect(
+            int(x_position),
+            0,
+            int(8 * self.width_per_frame),
+            self.height
+        )
+        pygame.draw.rect(self.screen, color, rect)
 
     def draw(self):
         for event in pygame.event.get():
@@ -52,6 +79,11 @@ class Gfx(object):
         self.screen.fill(self.BLACK)
 
         self.draw_series()
+
+        if self.krate is not None:
+            self.draw_playhead()
+
+        print self.get_time_since_start()
 
         pygame.display.flip()
 
@@ -88,12 +120,18 @@ class Visualize(object):
             self.feature_data = json.load(data_file)
 
     def run(self):
-        self.gfx = Gfx(self.feature_data['series'])
+        self.gfx = Gfx(
+            self.feature_data['series'],
+            self.feature_data['krate'],
+            os.path.join('input', self.args.sound_filename)
+        )
+        self.gfx.start_sound()
 
-        while True:
+        for i in xrange(2000):
             self.gfx.draw()
 
 
 if __name__ == '__main__':
-    pygame.display.init()
+    #pygame.display.init()
+    pygame.init()
     Visualize()

@@ -8,11 +8,11 @@ class Main(object):
     def __init__(self):
         arg_parser = argparse.ArgumentParser()
         arg_parser.add_argument(
-            '-i1',
-            '--input1',
-            dest='input1_filename',
+            '-i',
+            '--input',
+            dest='input_filename',
             type=str,
-            help='The name of the input1 file',
+            help='The name of the input file',
             required=True
         )
         arg_parser.add_argument(
@@ -36,7 +36,7 @@ class Main(object):
 
     def run(self):
         template = template_handler.TemplateHandler('templates/analyzer.csd.jinja2')
-        template.compile(filename=self.args.input1_filename, krate=441)
+        template.compile(filename=self.args.input_filename, krate=441)
         csd_path = 'csd/analyzer.csd'
         template.write_result(csd_path)
         csound = csound_handler.CsoundHandler(csd_path)
