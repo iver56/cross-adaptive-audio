@@ -19,10 +19,6 @@ class Logger(object):
         self.data['series'][feature].append(self.buffer)
         self.buffer = None
 
-        # TODO: remove this
-        if len(self.data['series'][feature]) % 1000 == 999:
-            self.write()
-
     def write(self):
         with open(os.path.join('feature_data', self.filename + ".json"), 'wb') as outfile:
             json.dump(self.data, outfile)

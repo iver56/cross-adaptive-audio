@@ -5,7 +5,7 @@
     </CsOptions>
     <CsInstruments>
         sr = 44100
-        kr = {{ krate }} ; ksmps = 100
+        kr = {{ krate }}
         nchnls = 1
         0dbfs = 1
 
@@ -15,7 +15,6 @@
 
         pyruni {{ '{{' }}
 import os, sys
-#sys.path.append(os.getcwd())
 from logger import Logger
 my_logger = Logger(krate={{ krate }}, filename='{{ filename }}', features=['rms'])
         {{ '}}' }}
@@ -29,9 +28,16 @@ my_logger = Logger(krate={{ krate }}, filename='{{ filename }}', features=['rms'
         pyrun "my_logger.log('rms')"
 
         endin
+
+        instr 2
+
+        pyruni "my_logger.write()"
+
+        endin
     </CsInstruments>
     <CsScore>
-        i 1 0 5
+        i1 0 5
+        i2 5 0
         e
     </CsScore>
 </CsoundSynthesizer>
