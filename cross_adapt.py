@@ -4,6 +4,7 @@ import template_handler
 import csound_handler
 import os
 import settings
+import sound_file
 
 
 class CrossAdapt(object):
@@ -46,7 +47,15 @@ class CrossAdapt(object):
 
     def run(self):
         template = template_handler.TemplateHandler('templates/cross_adapt.csd.jinja2')
-        template.compile(sound_filename=self.args.sound_filename, data_filename=self.args.data_filename, krate=441)
+        sound_file_to_analyse = sound_file.SoundFile(self.args.sound_filename)
+        duration = sound_file_to_analyse.get_duration()
+        template.compile(
+            sound_filename=self.args.sound_filename,
+            data_filename=self.args.data_filename,
+            krate=settings.DEFAULT_K_RATE,
+            duration=duration
+        )
+
         csd_path = os.path.join(settings.CSD_DIRECTORY, 'cross_adapt.csd')
         template.write_result(csd_path)
         csound = csound_handler.CsoundHandler(csd_path)

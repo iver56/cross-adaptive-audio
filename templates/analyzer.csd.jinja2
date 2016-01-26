@@ -36,8 +36,8 @@ my_logger = Logger(krate={{ krate }}, filename='{{ filename }}', features=['rms'
         endin
     </CsInstruments>
     <CsScore>
-        i1 0 5
-        i2 5 0
+        i1 0 {{ duration }}
+        i2 {{ duration }} 0
         e
     </CsScore>
 </CsoundSynthesizer>

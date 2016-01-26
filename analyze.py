@@ -4,6 +4,7 @@ import template_handler
 import csound_handler
 import settings
 import os
+import sound_file
 
 
 class Analyze(object):
@@ -39,7 +40,14 @@ class Analyze(object):
     def run(self):
         template = template_handler.TemplateHandler('templates/analyzer.csd.jinja2')
         file_path = os.path.join(settings.INPUT_DIRECTORY, self.args.input_filename)
-        template.compile(file_path=file_path, filename=self.args.input_filename, krate=441)
+        sound_file_to_analyse = sound_file.SoundFile(self.args.input_filename)
+        duration = sound_file_to_analyse.get_duration()
+        template.compile(
+            file_path=file_path,
+            filename=self.args.input_filename,
+            krate=settings.DEFAULT_K_RATE,
+            duration=duration
+        )
         csd_path = os.path.join(settings.CSD_DIRECTORY, 'analyzer.csd')
         template.write_result(csd_path)
         csound = csound_handler.CsoundHandler(csd_path)
