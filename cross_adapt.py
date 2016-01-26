@@ -6,7 +6,7 @@ import os
 import settings
 
 
-class Main(object):
+class CrossAdapt(object):
     def __init__(self):
         arg_parser = argparse.ArgumentParser()
         arg_parser.add_argument(
@@ -54,4 +54,4 @@ class Main(object):
         csound.run(output_filename)
 
 if __name__ == '__main__':
-    Main()
+    CrossAdapt()

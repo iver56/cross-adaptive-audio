@@ -6,7 +6,7 @@ import settings
 import os
 
 
-class Main(object):
+class Analyze(object):
     def __init__(self):
         arg_parser = argparse.ArgumentParser()
         arg_parser.add_argument(
@@ -46,4 +46,4 @@ class Main(object):
         csound.run()
 
 if __name__ == '__main__':
-    Main()
+    Analyze()
