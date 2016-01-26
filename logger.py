@@ -1,6 +1,7 @@
 import json
 import os
 import settings
+import gzip
 
 
 class Logger(object):
@@ -21,5 +22,6 @@ class Logger(object):
         self.buffer = None
 
     def write(self):
-        with open(os.path.join(settings.FEATURE_DATA_DIRECTORY, self.filename + ".json"), 'wb') as outfile:
+        output_file_path = os.path.join(settings.FEATURE_DATA_DIRECTORY, self.filename + ".json.gz")
+        with gzip.GzipFile(output_file_path, 'wb') as outfile:
             json.dump(self.data, outfile)

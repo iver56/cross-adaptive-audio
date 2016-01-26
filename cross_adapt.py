@@ -21,9 +21,9 @@ class CrossAdapt(object):
         arg_parser.add_argument(
             '-d',
             '--data',
-            dest='data_filename',
+            dest='data_sound_filename',
             type=str,
-            help='The name of the data (json) file to be used as basis for input to the effect',
+            help='The name of the sound file to be used as basis for input to the effect',
             required=True
         )
         arg_parser.add_argument(
@@ -51,7 +51,7 @@ class CrossAdapt(object):
         duration = sound_file_to_analyse.get_duration()
         template.compile(
             sound_filename=self.args.sound_filename,
-            data_filename=self.args.data_filename,
+            data_sound_filename=self.args.data_sound_filename,
             krate=settings.DEFAULT_K_RATE,
             duration=duration
         )

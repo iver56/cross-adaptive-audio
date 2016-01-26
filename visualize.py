@@ -5,6 +5,7 @@ import json
 import os
 import datetime
 import settings
+import gzip
 
 
 class Gfx(object):
@@ -93,14 +94,6 @@ class Visualize(object):
     def __init__(self):
         arg_parser = argparse.ArgumentParser()
         arg_parser.add_argument(
-            '-f',
-            '--feature_filename',
-            dest='feature_filename',
-            type=str,
-            help='The name of the feature file (json)',
-            required=True
-        )
-        arg_parser.add_argument(
             '-s',
             '--sound_filename',
             dest='sound_filename',
@@ -117,7 +110,8 @@ class Visualize(object):
         self.run()
 
     def read_files(self):
-        with open(os.path.join(settings.FEATURE_DATA_DIRECTORY, self.args.feature_filename)) as data_file:
+        feature_file_path = os.path.join(settings.FEATURE_DATA_DIRECTORY, self.args.sound_filename + '.json.gz')
+        with gzip.GzipFile(feature_file_path, 'rb') as data_file:
             self.feature_data = json.load(data_file)
 
     def run(self):
@@ -133,6 +127,5 @@ class Visualize(object):
 
 
 if __name__ == '__main__':
-    #pygame.display.init()
     pygame.init()
     Visualize()
