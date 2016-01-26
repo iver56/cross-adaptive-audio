@@ -4,3 +4,4 @@ The project will investigate methods of evaluating the musical applicability of 
 
 ## Setup
 `cp settings.py.example settings.py`
+`make`

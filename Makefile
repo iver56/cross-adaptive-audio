@@ -1,5 +1,5 @@
 .PHONY: all
-all: update migrate
+all: update
 
 .PHONY: update
 update:
