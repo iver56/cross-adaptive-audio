@@ -4,6 +4,7 @@ import argparse
 import json
 import os
 import datetime
+import settings
 
 
 class Gfx(object):
@@ -116,14 +117,14 @@ class Visualize(object):
         self.run()
 
     def read_files(self):
-        with open(os.path.join('feature_data', self.args.feature_filename)) as data_file:
+        with open(os.path.join(settings.FEATURE_DATA_DIRECTORY, self.args.feature_filename)) as data_file:
             self.feature_data = json.load(data_file)
 
     def run(self):
         self.gfx = Gfx(
             self.feature_data['series'],
             self.feature_data['krate'],
-            os.path.join('input', self.args.sound_filename)
+            os.path.join(settings.INPUT_DIRECTORY, self.args.sound_filename)
         )
         self.gfx.start_sound()
 

@@ -2,6 +2,8 @@ import argparse
 import time
 import template_handler
 import csound_handler
+import settings
+import os
 
 
 class Main(object):
@@ -36,8 +38,9 @@ class Main(object):
 
     def run(self):
         template = template_handler.TemplateHandler('templates/analyzer.csd.jinja2')
-        template.compile(filename=self.args.input_filename, krate=441)
-        csd_path = 'csd/analyzer.csd'
+        file_path = os.path.join(settings.INPUT_DIRECTORY, self.args.input_filename)
+        template.compile(file_path=file_path, filename=self.args.input_filename, krate=441)
+        csd_path = os.path.join(settings.CSD_DIRECTORY, 'analyzer.csd')
         template.write_result(csd_path)
         csound = csound_handler.CsoundHandler(csd_path)
         csound.run()

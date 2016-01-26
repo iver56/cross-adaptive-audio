@@ -2,6 +2,8 @@ import argparse
 import time
 import template_handler
 import csound_handler
+import os
+import settings
 
 
 class Main(object):
@@ -45,7 +47,7 @@ class Main(object):
     def run(self):
         template = template_handler.TemplateHandler('templates/cross_adapt.csd.jinja2')
         template.compile(sound_filename=self.args.sound_filename, data_filename=self.args.data_filename, krate=441)
-        csd_path = 'csd/cross_adapt.csd'
+        csd_path = os.path.join(settings.CSD_DIRECTORY, 'cross_adapt.csd')
         template.write_result(csd_path)
         csound = csound_handler.CsoundHandler(csd_path)
         output_filename = self.args.sound_filename + '.processed.wav'

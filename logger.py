@@ -1,5 +1,6 @@
 import json
 import os
+import settings
 
 
 class Logger(object):
@@ -20,5 +21,5 @@ class Logger(object):
         self.buffer = None
 
     def write(self):
-        with open(os.path.join('feature_data', self.filename + ".json"), 'wb') as outfile:
+        with open(os.path.join(settings.FEATURE_DATA_DIRECTORY, self.filename + ".json"), 'wb') as outfile:
             json.dump(self.data, outfile)

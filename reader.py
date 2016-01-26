@@ -1,10 +1,11 @@
 import json
 import os
+import settings
 
 
 class Reader(object):
     def __init__(self, data_filename):
-        with open(os.path.join('feature_data', data_filename)) as data_file:
+        with open(os.path.join(settings.FEATURE_DATA_DIRECTORY, data_filename)) as data_file:
             self.data = json.load(data_file)
         self.current_k = {}
         for feature in self.data['series']:
