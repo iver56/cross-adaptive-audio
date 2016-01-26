@@ -12,10 +12,7 @@ class Reader(object):
             self.current_k[feature] = 0
 
     def get_next_value(self, feature):
-        if self.current_k[feature] < len(self.data['series'][feature]):
-            result = self.data['series'][feature][self.current_k[feature]]
+        result = self.data['series'][feature][self.current_k[feature]]
+        if self.current_k[feature] + 1 < len(self.data['series'][feature]):
             self.current_k[feature] += 1
-            return result
-        print 'out of range', self.current_k[feature]
-        print 'feature', feature
-        return 0.0
+        return result
