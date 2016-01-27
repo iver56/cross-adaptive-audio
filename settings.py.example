@@ -4,3 +4,12 @@ INPUT_DIRECTORY = 'input'
 META_DATA_CACHE_DIRECTORY = 'meta_data_cache'
 OUTPUT_DIRECTORY = 'output'
 DEFAULT_K_RATE = 441
+USE_GZIP = False
+
+if USE_GZIP:
+    import gzip
+    FILE_HANDLER = gzip.GzipFile
+    DATA_FILE_EXTENSION = '.json.gz'
+else:
+    FILE_HANDLER = open
+    DATA_FILE_EXTENSION = '.json'

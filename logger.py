@@ -1,15 +1,13 @@
 import json
 import os
 import settings
-import gzip
 
 
 class Logger(object):
-    def __init__(self, krate, filename, features):
-        self.filename = filename
+    def __init__(self, krate, output_file_path, features):
+        self.output_file_path = output_file_path
         self.data = {
             'krate': krate,
-            'filename': filename,
             'series': {}
         }
         for feature in features:
@@ -22,6 +20,5 @@ class Logger(object):
         self.buffer = None
 
     def write(self):
-        output_file_path = os.path.join(settings.FEATURE_DATA_DIRECTORY, self.filename + ".json.gz")
-        with gzip.GzipFile(output_file_path, 'wb') as outfile:
+        with settings.FILE_HANDLER(self.output_file_path, 'wb') as outfile:
             json.dump(self.data, outfile)

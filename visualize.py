@@ -5,14 +5,13 @@ import json
 import os
 import datetime
 import settings
-import gzip
 
 
 class Gfx(object):
     size = width, height = 960, 540
     BLACK = 255, 255, 255
 
-    def __init__(self, series, krate=None, sound_filename=None):
+    def __init__(self, series, krate=None, input_sound_filename=None):
         self.screen = pygame.display.set_mode(self.size)
         self.clock = pygame.time.Clock()
         self.fps = 30.0
@@ -25,7 +24,7 @@ class Gfx(object):
         self.width_per_frame = float(self.width) / self.num_frames
 
         self.krate = krate
-        self.sound = None if sound_filename is None else pygame.mixer.Sound(sound_filename)
+        self.sound = None if input_sound_filename is None else pygame.mixer.Sound(input_sound_filename)
         self.t_start = None
 
     def start_sound(self):
@@ -94,9 +93,9 @@ class Visualize(object):
     def __init__(self):
         arg_parser = argparse.ArgumentParser()
         arg_parser.add_argument(
-            '-s',
-            '--sound_filename',
-            dest='sound_filename',
+            '-i',
+            '--input_sound_filename',
+            dest='input_sound_filename',
             type=str,
             help='The name of the sound file (wav)',
             required=False
@@ -110,15 +109,15 @@ class Visualize(object):
         self.run()
 
     def read_files(self):
-        feature_file_path = os.path.join(settings.FEATURE_DATA_DIRECTORY, self.args.sound_filename + '.json.gz')
-        with gzip.GzipFile(feature_file_path, 'rb') as data_file:
+        feature_file_path = os.path.join(settings.FEATURE_DATA_DIRECTORY, self.args.input_sound_filename + settings.DATA_FILE_EXTENSION)
+        with settings.FILE_HANDLER(feature_file_path, 'rb') as data_file:
             self.feature_data = json.load(data_file)
 
     def run(self):
         self.gfx = Gfx(
             self.feature_data['series'],
             self.feature_data['krate'],
-            os.path.join(settings.INPUT_DIRECTORY, self.args.sound_filename)
+            os.path.join(settings.INPUT_DIRECTORY, self.args.input_sound_filename)
         )
         self.gfx.start_sound()
 

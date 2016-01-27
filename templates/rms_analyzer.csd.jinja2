@@ -16,7 +16,7 @@
         pyruni {{ '{{' }}
 import os, sys
 from logger import Logger
-my_logger = Logger(krate={{ krate }}, filename='{{ filename }}', features=['rms'])
+my_logger = Logger(krate={{ krate }}, output_file_path='{{ feature_data_file_path }}', features=['rms'])
         {{ '}}' }}
 
         ;kTime times

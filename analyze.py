@@ -32,26 +32,29 @@ class Analyze(object):
         if self.args.print_execution_time:
             self.start_time = time.time()
 
-        self.run()
+        self.file_path = os.path.join(settings.INPUT_DIRECTORY, self.args.input_filename)
+        self.sound_file_to_analyse = sound_file.SoundFile(self.args.input_filename)
+        self.analyze_rms()
 
         if self.args.print_execution_time:
             print "execution time: %s seconds" % (time.time() - self.start_time)
 
-    def run(self):
-        template = template_handler.TemplateHandler('templates/analyzer.csd.jinja2')
-        file_path = os.path.join(settings.INPUT_DIRECTORY, self.args.input_filename)
-        sound_file_to_analyse = sound_file.SoundFile(self.args.input_filename)
-        duration = sound_file_to_analyse.get_duration()
+    def analyze_rms(self):
+        template = template_handler.TemplateHandler('templates/rms_analyzer.csd.jinja2')
         template.compile(
-            file_path=file_path,
-            filename=self.args.input_filename,
+            file_path=self.file_path,
             krate=settings.DEFAULT_K_RATE,
-            duration=duration
+            duration=self.sound_file_to_analyse.get_duration(),
+            feature_data_file_path=self.sound_file_to_analyse.get_feature_data_file_path()
         )
-        csd_path = os.path.join(settings.CSD_DIRECTORY, 'analyzer.csd')
+        csd_path = os.path.join(settings.CSD_DIRECTORY, 'rms_analyzer.csd')
         template.write_result(csd_path)
         csound = csound_handler.CsoundHandler(csd_path)
         csound.run()
+
+    def analyze_mfcc(self):
+        # TODO
+        pass
 
 if __name__ == '__main__':
     Analyze()

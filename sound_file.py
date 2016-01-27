@@ -42,11 +42,20 @@ class SoundFile(object):
             self.write_cache()
         return self.duration
 
-    def get_cache_file_path(self):
-        return os.path.join('meta_data_cache', self.filename + '.' + self.get_md5() + '.json')
+    def get_meta_data_cache_file_path(self):
+        return os.path.join(
+            settings.META_DATA_CACHE_DIRECTORY,
+            self.filename + '.' + self.get_md5() + settings.DATA_FILE_EXTENSION
+        )
+
+    def get_feature_data_file_path(self):
+        return os.path.join(
+            settings.FEATURE_DATA_DIRECTORY,
+            self.filename + '.' + self.get_md5() + settings.DATA_FILE_EXTENSION
+        )
 
     def fetch_cache(self):
-        cache_file_path = self.get_cache_file_path()
+        cache_file_path = self.get_meta_data_cache_file_path()
         if os.path.isfile(cache_file_path):
             with open(cache_file_path) as data_file:
                 data = json.load(data_file)
@@ -54,7 +63,7 @@ class SoundFile(object):
                 self.duration = data['duration']
 
     def write_cache(self):
-        with open(self.get_cache_file_path(), 'wb') as outfile:
+        with settings.FILE_HANDLER(self.get_meta_data_cache_file_path(), 'wb') as outfile:
             data = {}
             if self.duration:
                 data['duration'] = self.duration
