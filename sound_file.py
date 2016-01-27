@@ -3,6 +3,7 @@ import wave
 import contextlib
 import json
 import os
+import settings
 
 
 class SoundFile(object):
@@ -10,9 +11,9 @@ class SoundFile(object):
         self.is_input = is_input
         self.filename = filename
         if self.is_input:
-            self.file_path = os.path.join('input', self.filename)
+            self.file_path = os.path.join(settings.INPUT_DIRECTORY, self.filename)
         else:
-            self.file_path = os.path.join('output', self.filename)
+            self.file_path = os.path.join(settings.OUTPUT_DIRECTORY, self.filename)
         
         self.md5 = None
         self.get_md5()
