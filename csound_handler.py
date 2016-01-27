@@ -14,4 +14,6 @@ class CsoundHandler(object):
         ]
         if output_filename is not None:
             command.append('-o' + os.path.join(settings.OUTPUT_DIRECTORY, output_filename))
-        subprocess.call(command)
+
+        stdout = subprocess.check_output(command)
+        return stdout
