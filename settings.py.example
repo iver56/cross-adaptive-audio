@@ -3,3 +3,4 @@ FEATURE_DATA_DIRECTORY = 'feature_data'
 INPUT_DIRECTORY = 'input'
 META_DATA_CACHE_DIRECTORY = 'meta_data_cache'
 OUTPUT_DIRECTORY = 'output'
+DEFAULT_K_RATE = 441
