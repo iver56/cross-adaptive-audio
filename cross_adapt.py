@@ -52,7 +52,7 @@ class CrossAdapt(object):
         template.compile(
             sound_filename=self.args.sound_filename,
             data_sound_filename=self.args.data_sound_filename,
-            krate=settings.DEFAULT_K_RATE,
+            krate=settings.CSOUND_K_RATE,
             duration=duration
         )
 

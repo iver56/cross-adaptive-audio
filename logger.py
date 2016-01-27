@@ -1,24 +1,36 @@
 import json
-import os
 import settings
+import os
 
 
 class Logger(object):
-    def __init__(self, krate, output_file_path, features):
-        self.output_file_path = output_file_path
-        self.data = {
-            'krate': krate,
-            'series': {}
-        }
-        for feature in features:
-            self.data['series'][feature] = []
+    def __init__(self, feature_data_file_path, features_to_add):
+        self.feature_data_file_path = feature_data_file_path
         self.buffer = None  # holds a value temporarily before it is stored in an array
-        self.k = 0
+        self.data = None
+        self.read_existing()
+        if self.data is None:
+            self.data = {
+                'krate': settings.CSOUND_K_RATE,
+                'series': {
+                    'time': []
+                }
+            }
+        for feature in features_to_add:
+            self.data['series'][feature] = []
 
-    def log(self, feature):
+    def read_existing(self):
+        if os.path.isfile(self.feature_data_file_path):
+            with settings.FILE_HANDLER(self.feature_data_file_path) as data_file:
+                self.data = json.load(data_file)
+
+    def log_buffer(self, feature):
         self.data['series'][feature].append(self.buffer)
         self.buffer = None
 
+    def log_value(self, feature, value):
+        self.data['series'][feature].append(value)
+
     def write(self):
-        with settings.FILE_HANDLER(self.output_file_path, 'wb') as outfile:
+        with settings.FILE_HANDLER(self.feature_data_file_path, 'wb') as outfile:
             json.dump(self.data, outfile)

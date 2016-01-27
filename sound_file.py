@@ -57,7 +57,7 @@ class SoundFile(object):
     def fetch_cache(self):
         cache_file_path = self.get_meta_data_cache_file_path()
         if os.path.isfile(cache_file_path):
-            with open(cache_file_path) as data_file:
+            with settings.FILE_HANDLER(cache_file_path) as data_file:
                 data = json.load(data_file)
             if 'duration' in data and data['duration']:
                 self.duration = data['duration']

@@ -5,6 +5,7 @@ import json
 import os
 import datetime
 import settings
+import sound_file
 
 
 class Gfx(object):
@@ -39,7 +40,7 @@ class Gfx(object):
         i = 0
         for key, array in self.series.iteritems():
             for j in range(len(array)):
-                color_value = int(255 * array[j])
+                color_value = max(min(int(255 * array[j]), 255), 0)
                 color = (color_value, color_value, color_value)
                 rect = pygame.Rect(
                     int(j * self.width_per_frame),
@@ -109,8 +110,9 @@ class Visualize(object):
         self.run()
 
     def read_files(self):
-        feature_file_path = os.path.join(settings.FEATURE_DATA_DIRECTORY, self.args.input_sound_filename + settings.DATA_FILE_EXTENSION)
-        with settings.FILE_HANDLER(feature_file_path, 'rb') as data_file:
+        input_sound_file = sound_file.SoundFile(self.args.input_sound_filename)
+        feature_data_file_path = input_sound_file.get_feature_data_file_path()
+        with settings.FILE_HANDLER(feature_data_file_path, 'rb') as data_file:
             self.feature_data = json.load(data_file)
 
     def run(self):

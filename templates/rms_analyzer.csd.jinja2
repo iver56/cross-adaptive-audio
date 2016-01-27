@@ -1,6 +1,6 @@
 <CsoundSynthesizer>
     <CsOptions>
-        -i {{ file_path }}
+        -i {{ input_file_path }}
         --nosound
     </CsOptions>
     <CsInstruments>
@@ -14,18 +14,21 @@
         instr 1
 
         pyruni {{ '{{' }}
-import os, sys
 from logger import Logger
-my_logger = Logger(krate={{ krate }}, output_file_path='{{ feature_data_file_path }}', features=['rms'])
+my_logger = Logger(feature_data_file_path='{{ feature_data_file_path }}', features_to_add=['rms', 'time'])
         {{ '}}' }}
 
         ;kTime times
 
         aIn in
 
+        kTime times
+        pyassign "my_logger.buffer", kTime
+        pyrun "my_logger.log_buffer('time')"
+
         kRms rms aIn
         pyassign "my_logger.buffer", kRms
-        pyrun "my_logger.log('rms')"
+        pyrun "my_logger.log_buffer('rms')"
 
         endin
 
