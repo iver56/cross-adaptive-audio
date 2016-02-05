@@ -4,6 +4,7 @@ import contextlib
 import json
 import os
 import settings
+import analyze
 
 
 class SoundFile(object):
@@ -18,6 +19,7 @@ class SoundFile(object):
         self.md5 = None
         self.get_md5()
         self.duration = None
+        self.analysis = None
         self.fetch_cache()
 
     def get_md5(self):
@@ -42,6 +44,12 @@ class SoundFile(object):
             self.write_cache()
         return self.duration
 
+    def get_analysis(self):
+        if self.analysis is None:
+            self.analysis = analyze.Analyzer.analyze(self)
+            self.write_cache()
+        return self.analysis
+
     def get_meta_data_cache_file_path(self):
         return os.path.join(
             settings.META_DATA_CACHE_DIRECTORY,
@@ -55,12 +63,18 @@ class SoundFile(object):
         )
 
     def fetch_cache(self):
-        cache_file_path = self.get_meta_data_cache_file_path()
-        if os.path.isfile(cache_file_path):
-            with settings.FILE_HANDLER(cache_file_path) as data_file:
-                data = json.load(data_file)
+        meta_data_cache_file_path = self.get_meta_data_cache_file_path()
+        if os.path.isfile(meta_data_cache_file_path):
+            with settings.FILE_HANDLER(meta_data_cache_file_path) as meta_data_file:
+                data = json.load(meta_data_file)
             if 'duration' in data and data['duration']:
                 self.duration = data['duration']
+
+        analysis_cache_file_path = self.get_feature_data_file_path()
+        if os.path.isfile(analysis_cache_file_path):
+            with settings.FILE_HANDLER(analysis_cache_file_path) as analysis_data_file:
+                self.analysis = json.load(analysis_data_file)
+                print 'Using cached analysis'
 
     def write_cache(self):
         with settings.FILE_HANDLER(self.get_meta_data_cache_file_path(), 'wb') as outfile:

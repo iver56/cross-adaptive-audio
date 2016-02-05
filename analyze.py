@@ -10,7 +10,7 @@ import re
 import logger
 
 
-class Analyze(object):
+class Analyzer(object):
     def __init__(self):
         arg_parser = argparse.ArgumentParser()
         arg_parser.add_argument(
@@ -36,33 +36,38 @@ class Analyze(object):
             self.start_time = time.time()
 
         self.input_file_path = os.path.abspath(os.path.join(settings.INPUT_DIRECTORY, self.args.input_filename))
-        self.sound_file_to_analyse = sound_file.SoundFile(self.args.input_filename)
-        self.feature_data_file_path = self.sound_file_to_analyse.get_feature_data_file_path()
-        self.analyze_rms()  # don't need this atm, since mfcc also analyzes amplitude
-        self.analyze_mfcc()
+        self.sound_file_to_analyze = sound_file.SoundFile(self.args.input_filename)
+        self.analyze(self.sound_file_to_analyze)
 
         if self.args.print_execution_time:
             print "execution time: %s seconds" % (time.time() - self.start_time)
 
-    def analyze_rms(self):
+    @staticmethod
+    def analyze(sound_file_to_analyze):
+        Analyzer.analyze_rms(sound_file_to_analyze)  # TODO: don't need this atm, since mfcc also analyzes amplitude
+        Analyzer.analyze_mfcc(sound_file_to_analyze)
+
+    @staticmethod
+    def analyze_rms(sound_file_to_analyze):
         template = template_handler.TemplateHandler('templates/rms_analyzer.csd.jinja2')
         template.compile(
-            input_file_path=self.input_file_path,
+            input_file_path=os.path.abspath(sound_file_to_analyze.file_path),
             krate=settings.CSOUND_K_RATE,
-            duration=self.sound_file_to_analyse.get_duration(),
-            feature_data_file_path=self.feature_data_file_path
+            duration=sound_file_to_analyze.get_duration(),
+            feature_data_file_path=os.path.abspath(sound_file_to_analyze.get_feature_data_file_path())
         )
         csd_path = os.path.join(settings.CSD_DIRECTORY, 'rms_analyzer.csd')
         template.write_result(csd_path)
         csound = csound_handler.CsoundHandler(csd_path)
         csound.run()
 
-    def analyze_mfcc(self):
+    @staticmethod
+    def analyze_mfcc(sound_file_to_analyze):
         command = [
             "aubiomfcc",  # assumes that aubio is installed
 
             '-i',
-            self.input_file_path,
+            os.path.abspath(sound_file_to_analyze.file_path),
 
             '--samplerate',
             str(settings.SAMPLE_RATE),
@@ -79,7 +84,7 @@ class Analyze(object):
         for i in range(1, 13):
             features_to_add.append('mfcc_' + str(i))
 
-        my_logger = logger.Logger(self.feature_data_file_path, features_to_add)
+        my_logger = logger.Logger(sound_file_to_analyze.get_feature_data_file_path(), features_to_add)
 
         for line in stdout.split('\n'):
             values = line.split()
@@ -96,4 +101,4 @@ class Analyze(object):
         my_logger.write()
 
 if __name__ == '__main__':
-    Analyze()
+    Analyzer()

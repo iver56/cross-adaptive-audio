@@ -4,6 +4,7 @@ from os import listdir
 from os.path import isfile, join
 import re
 import json
+import sound_file
 
 
 class CreateProject(object):
@@ -72,9 +73,22 @@ class CreateProject(object):
             project_file_path = join(settings.PROJECT_DATA_DIRECTORY, project_json_filename)
             with settings.FILE_HANDLER(project_file_path, 'wb') as outfile:
                 json.dump(self.project_data, outfile)
-            print 'Created project file', project_json_filename, 'with', self.project_data['filenames'], 'sound file(s)'
+            print 'Created project file', project_json_filename, \
+                'with', len(self.project_data['filenames']), 'sound file(s)'
+            self.analyze_all()
         else:
             print 'Error: No sound files added to the project'
+
+    def analyze_all(self):
+        print 'Analyzing all sound files in project...'
+        sound_files = []
+        for filename in self.project_data['filenames']:
+            print filename
+            f = sound_file.SoundFile(filename)
+            f.get_analysis()
+
+    def calculate_standardization_parameters(self):
+        pass  # TODO
 
 
 if __name__ == '__main__':
