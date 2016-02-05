@@ -48,9 +48,18 @@ class Standardizer(object):
                 sf.write_analysis_data_cache()
 
     def get_standardized_value(self, feature, value):
+        """
+        :param feature:
+        :param value:
+        :return: A value that makes the series have zero mean and unit variance
+        """
         return (value - self.feature_statistics[feature]['mean']) / \
                self.feature_statistics[feature]['standard_deviation']
 
     @staticmethod
     def get_normalized_value(standardized_value):
+        """
+        :param standardized_value:
+        :return: A value between 0 and 1. Good for visualization.
+        """
         return 0.5 + math.tanh(standardized_value) / 2

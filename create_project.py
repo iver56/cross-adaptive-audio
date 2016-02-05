@@ -50,7 +50,7 @@ class CreateProject(object):
 
         self.create_project()
         self.analyze_all()
-        self.calculate_feature_statistics()
+        self.standardize_analyses()
         self.write_project_data()
 
     @staticmethod
@@ -85,7 +85,7 @@ class CreateProject(object):
             sf.get_analysis()
             self.sound_files.append(sf)
 
-    def calculate_feature_statistics(self):
+    def standardize_analyses(self):
         print 'Calculating standardization parameters...'
         s = standardizer.Standardizer(self.sound_files)
         s.calculate_feature_statistics()
