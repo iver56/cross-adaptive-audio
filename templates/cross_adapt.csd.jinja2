@@ -14,12 +14,13 @@
 
         pyruni {{ '{{' }}
 from reader import Reader
+import standardizer
 my_reader = Reader(data_sound_filename='{{ data_sound_filename }}')
         {{ '}}' }}
 
         aIn in
 
-        kRms pyeval "my_reader.get_next_value('rms')"
+        kRms pyeval "standardizer.Standardizer.get_normalized_value(my_reader.get_next_value('mfcc_amp'))"
 
         aIn = aIn * kRms
 

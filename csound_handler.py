@@ -16,4 +16,6 @@ class CsoundHandler(object):
             command.append('-o' + os.path.join(settings.OUTPUT_DIRECTORY, output_filename))
 
         stdout = subprocess.check_output(command)
+        if settings.VERBOSE:
+            print stdout
         return stdout
