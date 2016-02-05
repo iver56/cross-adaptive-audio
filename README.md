@@ -20,6 +20,7 @@ The project will investigate methods of evaluating the musical applicability of 
 
 ## Example commands
 
+* `python create_project.py --name test1`
 * `python analyze.py -i drums_remind_me.wav`
 * `python visualize.py -i drums_remind_me.wav`
 * `python cross_adapt.py -s synth_remind_me.wav -d drums_remind_me.wav`
