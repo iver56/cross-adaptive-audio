@@ -83,3 +83,7 @@ class SoundFile(object):
             if self.duration:
                 data['duration'] = self.duration
             json.dump(data, outfile)
+
+    def write_analysis_data_cache(self):
+        with settings.FILE_HANDLER(self.get_feature_data_file_path(), 'wb') as outfile:
+            json.dump(self.analysis, outfile)

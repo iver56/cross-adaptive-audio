@@ -14,6 +14,8 @@ else:
     FILE_HANDLER = open
     DATA_FILE_EXTENSION = '.json'
 
+VERBOSE = False
+
 """Sample rate. CD quality"""
 SAMPLE_RATE = 44100
 
@@ -23,6 +25,5 @@ AUBIO_HOP_SIZE = 256
 """The number of samples in window used for spectral and temporal computations"""
 AUBIO_BUFFER_SIZE = AUBIO_HOP_SIZE * 2
 
-"""Control rate (in number per second) for csound"""
-CSOUND_K_RATE = 175
-# TODO: maybe define ksmps instead?
+"""ksmps (number of samples per k) for csound"""
+CSOUND_KSMPS = AUBIO_HOP_SIZE

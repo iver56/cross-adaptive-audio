@@ -86,10 +86,11 @@ class CreateProject(object):
             self.sound_files.append(sf)
 
     def calculate_feature_statistics(self):
-        print 'Calculating standardization parameters'
+        print 'Calculating standardization parameters...'
         s = standardizer.Standardizer(self.sound_files)
         s.calculate_feature_statistics()
         self.project_data['feature_statistics'] = s.feature_statistics
+        s.add_standardized_series()
 
     def write_project_data(self):
         project_json_filename = self.clean_string(self.project_data['name']) + '.json'
