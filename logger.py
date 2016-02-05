@@ -11,7 +11,7 @@ class Logger(object):
         self.read_existing()
         if self.data is None:
             self.data = {
-                'krate': settings.CSOUND_K_RATE,
+                'ksmps': settings.CSOUND_KSMPS,
                 'series': {
                     'time': []
                 }

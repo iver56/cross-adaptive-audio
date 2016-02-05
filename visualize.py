@@ -12,7 +12,7 @@ class Gfx(object):
     size = width, height = 960, 540
     BLACK = 255, 255, 255
 
-    def __init__(self, series, krate=None, input_sound_filename=None):
+    def __init__(self, series, ksmps=None, input_sound_filename=None):
         self.screen = pygame.display.set_mode(self.size)
         self.clock = pygame.time.Clock()
         self.fps = 30.0
@@ -24,7 +24,7 @@ class Gfx(object):
         print self.num_frames, 'frames'
         self.width_per_frame = float(self.width) / self.num_frames
 
-        self.krate = krate
+        self.ksmps = ksmps
         self.sound = None if input_sound_filename is None else pygame.mixer.Sound(input_sound_filename)
         self.t_start = None
 
@@ -52,7 +52,7 @@ class Gfx(object):
             i += 1
 
     def draw_playhead(self):
-        current_frame_number = self.get_time_since_start() * self.krate
+        current_frame_number = self.get_time_since_start() * self.ksmps  # TODO: use ksmps correctly
         x_position = self.width_per_frame * current_frame_number
 
         color = (220, 80, 80)
@@ -82,7 +82,7 @@ class Gfx(object):
 
         self.draw_series()
 
-        if self.krate is not None:
+        if self.ksmps is not None:
             self.draw_playhead()
 
         print self.get_time_since_start()
@@ -118,7 +118,7 @@ class Visualize(object):
     def run(self):
         self.gfx = Gfx(
             self.feature_data['series'],
-            self.feature_data['krate'],
+            self.feature_data['ksmps'],
             os.path.join(settings.INPUT_DIRECTORY, self.args.input_sound_filename)
         )
         self.gfx.start_sound()

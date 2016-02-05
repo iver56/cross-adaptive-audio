@@ -52,7 +52,7 @@ class Analyzer(object):
         template = template_handler.TemplateHandler('templates/rms_analyzer.csd.jinja2')
         template.compile(
             input_file_path=os.path.abspath(sound_file_to_analyze.file_path),
-            krate=settings.CSOUND_K_RATE,
+            ksmps=settings.CSOUND_KSMPS,
             duration=sound_file_to_analyze.get_duration(),
             feature_data_file_path=os.path.abspath(sound_file_to_analyze.get_feature_data_file_path())
         )
