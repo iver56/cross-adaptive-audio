@@ -1,1 +1,2 @@
-Jinja2
+Jinja2==2.8
+statistics==1.0.3.5

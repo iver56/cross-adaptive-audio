@@ -44,7 +44,7 @@ class Analyzer(object):
 
     @staticmethod
     def analyze(sound_file_to_analyze):
-        Analyzer.analyze_rms(sound_file_to_analyze)  # TODO: don't need this atm, since mfcc also analyzes amplitude
+        # Analyzer.analyze_rms(sound_file_to_analyze)
         Analyzer.analyze_mfcc(sound_file_to_analyze)
 
     @staticmethod

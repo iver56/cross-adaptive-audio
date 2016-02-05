@@ -5,6 +5,7 @@ from os.path import isfile, join
 import re
 import json
 import sound_file
+import standardizer
 
 
 class CreateProject(object):
@@ -43,10 +44,14 @@ class CreateProject(object):
         self.project_data = {
             'name': self.args.name,
             'filenames': [],
-            'standardization_parameters': None
+            'feature_statistics': None
         }
+        self.sound_files = None
 
         self.create_project()
+        self.analyze_all()
+        self.calculate_feature_statistics()
+        self.write_project_data()
 
     @staticmethod
     def clean_string(string):
@@ -68,28 +73,31 @@ class CreateProject(object):
             lambda filename: filename.split('.')[-1] in self.WHITELISTED_FILE_EXTENSIONS,
             self.project_data['filenames']
         )
-        if len(self.project_data['filenames']) > 0:
-            project_json_filename = self.clean_string(self.project_data['name']) + '.json'
-            project_file_path = join(settings.PROJECT_DATA_DIRECTORY, project_json_filename)
-            with settings.FILE_HANDLER(project_file_path, 'wb') as outfile:
-                json.dump(self.project_data, outfile)
-            print 'Created project file', project_json_filename, \
-                'with', len(self.project_data['filenames']), 'sound file(s)'
-            self.analyze_all()
-        else:
-            print 'Error: No sound files added to the project'
+        if len(self.project_data['filenames']) == 0:
+            raise Exception('No sound files added to the project')
 
     def analyze_all(self):
         print 'Analyzing all sound files in project...'
-        sound_files = []
+        self.sound_files = []
         for filename in self.project_data['filenames']:
-            print filename
-            f = sound_file.SoundFile(filename)
-            f.get_analysis()
+            print 'Analyzing "{}"...'.format(filename)
+            sf = sound_file.SoundFile(filename)
+            sf.get_analysis()
+            self.sound_files.append(sf)
 
-    def calculate_standardization_parameters(self):
-        pass  # TODO
+    def calculate_feature_statistics(self):
+        print 'Calculating standardization parameters'
+        s = standardizer.Standardizer(self.sound_files)
+        s.calculate_feature_statistics()
+        self.project_data['feature_statistics'] = s.feature_statistics
 
+    def write_project_data(self):
+        project_json_filename = self.clean_string(self.project_data['name']) + '.json'
+        project_file_path = join(settings.PROJECT_DATA_DIRECTORY, project_json_filename)
+        with settings.FILE_HANDLER(project_file_path, 'wb') as outfile:
+            json.dump(self.project_data, outfile)
+        print 'Created project file', project_json_filename, \
+            'with', len(self.project_data['filenames']), 'sound file(s)'
 
 if __name__ == '__main__':
     CreateProject()
