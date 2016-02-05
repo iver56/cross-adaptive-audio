@@ -6,6 +6,7 @@ import os
 import datetime
 import settings
 import sound_file
+import standardizer
 
 
 class Gfx(object):
@@ -18,10 +19,11 @@ class Gfx(object):
         self.fps = 30.0
         self.series = series
         self.num_series = len(self.series)
-        print self.num_series, 'series'
         self.height_per_series = float(self.height) / self.num_series
         self.num_frames = len(self.series[self.series.keys()[0]])
-        print self.num_frames, 'frames'
+        if settings.VERBOSE:
+            print self.num_series, 'series'
+            print self.num_frames, 'frames'
         self.width_per_frame = float(self.width) / self.num_frames
 
         self.ksmps = ksmps
@@ -40,7 +42,8 @@ class Gfx(object):
         i = 0
         for key, array in self.series.iteritems():
             for j in range(len(array)):
-                color_value = max(min(int(255 * array[j]), 255), 0)
+                normalized_value = standardizer.Standardizer.get_normalized_value(array[j])
+                color_value = max(min(int(255 * normalized_value), 255), 0)
                 color = (color_value, color_value, color_value)
                 rect = pygame.Rect(
                     int(j * self.width_per_frame),
@@ -51,9 +54,11 @@ class Gfx(object):
                 pygame.draw.rect(self.screen, color, rect)
             i += 1
 
+    def get_current_frame_number(self):
+        return self.get_time_since_start() * float(settings.SAMPLE_RATE) / self.ksmps
+
     def draw_playhead(self):
-        current_frame_number = self.get_time_since_start() * self.ksmps  # TODO: use ksmps correctly
-        x_position = self.width_per_frame * current_frame_number
+        x_position = self.width_per_frame * self.get_current_frame_number()
 
         color = (220, 80, 80)
         rect = pygame.Rect(
@@ -65,6 +70,8 @@ class Gfx(object):
         pygame.draw.rect(self.screen, color, rect)
 
     def draw(self):
+        if self.get_current_frame_number() > self.num_frames:
+            sys.exit()
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 sys.exit()
@@ -85,7 +92,8 @@ class Gfx(object):
         if self.ksmps is not None:
             self.draw_playhead()
 
-        print self.get_time_since_start()
+        if settings.VERBOSE:
+            print self.get_time_since_start()
 
         pygame.display.flip()
 
@@ -117,7 +125,7 @@ class Visualize(object):
 
     def run(self):
         self.gfx = Gfx(
-            self.feature_data['series'],
+            self.feature_data['series_standardized'],
             self.feature_data['ksmps'],
             os.path.join(settings.INPUT_DIRECTORY, self.args.input_sound_filename)
         )

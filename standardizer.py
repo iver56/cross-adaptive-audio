@@ -51,7 +51,7 @@ class Standardizer(object):
         """
         :param feature:
         :param value:
-        :return: A value that makes the series have zero mean and unit variance
+        :return: A value that makes the series have zero mean and unit variance. Good for machine learning.
         """
         return (value - self.feature_statistics[feature]['mean']) / \
                self.feature_statistics[feature]['standard_deviation']
