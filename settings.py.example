@@ -3,9 +3,9 @@ FEATURE_DATA_DIRECTORY = 'feature_data'
 INPUT_DIRECTORY = 'input'
 META_DATA_CACHE_DIRECTORY = 'meta_data_cache'
 OUTPUT_DIRECTORY = 'output'
-DEFAULT_K_RATE = 441
-USE_GZIP = False
+PROJECT_DATA_DIRECTORY = 'projects'
 
+USE_GZIP = False
 if USE_GZIP:
     import gzip
     FILE_HANDLER = gzip.GzipFile
@@ -13,3 +13,16 @@ if USE_GZIP:
 else:
     FILE_HANDLER = open
     DATA_FILE_EXTENSION = '.json'
+
+"""Sample rate. CD quality"""
+SAMPLE_RATE = 44100
+
+"""The number of samples between two consecutive analysis. AKA ksmps in csound terms."""
+AUBIO_HOP_SIZE = 256
+
+"""The number of samples in window used for spectral and temporal computations"""
+AUBIO_BUFFER_SIZE = AUBIO_HOP_SIZE * 2
+
+"""Control rate (in number per second) for csound"""
+CSOUND_K_RATE = 175
+# TODO: maybe define ksmps instead?
