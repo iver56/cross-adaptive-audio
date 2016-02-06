@@ -10,13 +10,10 @@ The project will investigate methods of evaluating the musical applicability of 
 * Install csound `sudo apt-get install csound`
 * Install [aubio](http://aubio.org/download)
 * Install essentia extractors (see below)
-
-### Install essentia extractors
-
-* `wget http://essentia.upf.edu/documentation/extractors/essentia-extractors-v2.1_beta2-linux-x86_64.tar.gz`
-* `tar xzf essentia-extractors-v2.1_beta2-linux-x86_64.tar.gz`
-* `echo 'PATH=/data/essentia-extractors-v2.1_beta2/:$PATH' >> ~/.bashrc`
-* `source ~/.bashrc`
+  * `wget http://essentia.upf.edu/documentation/extractors/essentia-extractors-v2.1_beta2-linux-x86_64.tar.gz`
+  * `tar xzf essentia-extractors-v2.1_beta2-linux-x86_64.tar.gz`
+  * `echo 'PATH=/data/essentia-extractors-v2.1_beta2/:$PATH' >> ~/.bashrc`
+  * `source ~/.bashrc`
 
 ## Example commands
 
