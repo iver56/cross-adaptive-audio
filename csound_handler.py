@@ -1,3 +1,5 @@
+from __future__ import absolute_import
+from __future__ import print_function
 import subprocess
 import os
 import settings
@@ -17,5 +19,5 @@ class CsoundHandler(object):
 
         stdout = subprocess.check_output(command)
         if settings.VERBOSE:
-            print stdout
+            print(stdout)
         return stdout

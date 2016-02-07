@@ -1,3 +1,5 @@
+from __future__ import absolute_import
+from __future__ import print_function
 import settings
 import os
 
@@ -13,7 +15,7 @@ class Clean(object):
                 for currentFile in files:
                     extensions = ('.json', '.csd')
                     if any(currentFile.lower().endswith(ext) for ext in extensions):
-                        print "Removing file: " + currentFile
+                        print("Removing file: " + currentFile)
                         os.remove(os.path.join(root, currentFile))
 
 if __name__ == '__main__':

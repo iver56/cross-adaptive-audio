@@ -1,3 +1,4 @@
+from __future__ import absolute_import
 CSD_DIRECTORY = 'csd'
 FEATURE_DATA_DIRECTORY = 'feature_data'
 INPUT_DIRECTORY = 'input'

@@ -1,3 +1,5 @@
+from __future__ import absolute_import
+from __future__ import print_function
 import argparse
 import time
 import template_handler
@@ -43,7 +45,7 @@ class CrossAdapt(object):
         self.run()
 
         if self.args.print_execution_time:
-            print "execution time: %s seconds" % (time.time() - self.start_time)
+            print("execution time: %s seconds" % (time.time() - self.start_time))
 
     def run(self):
         template = template_handler.TemplateHandler('templates/cross_adapt.csd.jinja2')

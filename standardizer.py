@@ -1,3 +1,5 @@
+from __future__ import absolute_import
+from __future__ import print_function
 import statistics
 import pprint
 import settings
@@ -17,7 +19,7 @@ class Standardizer(object):
 
         for feature in self.feature_statistics:
             if settings.VERBOSE:
-                print 'Analyzing {} feature statistics'.format(feature)
+                print('Analyzing {} feature statistics'.format(feature))
             series = []
             for analysis in analyses:
                 series += analysis['series'][feature]
@@ -34,7 +36,7 @@ class Standardizer(object):
             pprint.pprint(self.feature_statistics)
 
     def add_standardized_series(self):
-        print 'Calculating and writing standardized series...'
+        print('Calculating and writing standardized series...')
 
         for sf in self.sound_files:
             analysis = sf.get_analysis()

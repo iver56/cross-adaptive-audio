@@ -1,3 +1,5 @@
+from __future__ import absolute_import
+from __future__ import print_function
 import argparse
 import settings
 from os import listdir
@@ -69,24 +71,21 @@ class CreateProject(object):
                 if isfile(join(settings.INPUT_DIRECTORY, self.args.subfolder, f))
                 ]
 
-        self.project_data['filenames'] = filter(
-            lambda filename: filename.split('.')[-1] in self.WHITELISTED_FILE_EXTENSIONS,
-            self.project_data['filenames']
-        )
+        self.project_data['filenames'] = [filename for filename in self.project_data['filenames'] if filename.split('.')[-1] in self.WHITELISTED_FILE_EXTENSIONS]
         if len(self.project_data['filenames']) == 0:
             raise Exception('No sound files added to the project')
 
     def analyze_all(self):
-        print 'Analyzing all sound files in project...'
+        print('Analyzing all sound files in project...')
         self.sound_files = []
         for filename in self.project_data['filenames']:
-            print 'Analyzing "{}"...'.format(filename)
+            print('Analyzing "{}"...'.format(filename))
             sf = sound_file.SoundFile(filename)
             sf.get_analysis()
             self.sound_files.append(sf)
 
     def standardize_analyses(self):
-        print 'Calculating standardization parameters...'
+        print('Calculating standardization parameters...')
         s = standardizer.Standardizer(self.sound_files)
         s.calculate_feature_statistics()
         self.project_data['feature_statistics'] = s.feature_statistics
@@ -97,8 +96,8 @@ class CreateProject(object):
         project_file_path = join(settings.PROJECT_DATA_DIRECTORY, project_json_filename)
         with settings.FILE_HANDLER(project_file_path, 'wb') as outfile:
             json.dump(self.project_data, outfile)
-        print 'Created project file', project_json_filename, \
-            'with', len(self.project_data['filenames']), 'sound file(s)'
+        print('Created project file', project_json_filename, \
+            'with', len(self.project_data['filenames']), 'sound file(s)')
 
 if __name__ == '__main__':
     CreateProject()

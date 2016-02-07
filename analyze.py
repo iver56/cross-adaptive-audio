@@ -1,3 +1,5 @@
+from __future__ import absolute_import
+from __future__ import print_function
 import argparse
 import time
 import template_handler
@@ -8,6 +10,7 @@ import sound_file
 import subprocess
 import re
 import logger
+from six.moves import range
 
 
 class Analyzer(object):
@@ -40,7 +43,7 @@ class Analyzer(object):
         self.analyze(self.sound_file_to_analyze)
 
         if self.args.print_execution_time:
-            print "execution time: %s seconds" % (time.time() - self.start_time)
+            print("execution time: %s seconds" % (time.time() - self.start_time))
 
     @staticmethod
     def analyze(sound_file_to_analyze):

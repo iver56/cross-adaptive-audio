@@ -1,3 +1,5 @@
+from __future__ import absolute_import
+from __future__ import print_function
 import sys
 import pygame
 import argparse
@@ -7,6 +9,7 @@ import datetime
 import settings
 import sound_file
 import standardizer
+from six.moves import range
 
 
 class Gfx(object):
@@ -20,10 +23,10 @@ class Gfx(object):
         self.series = series
         self.num_series = len(self.series)
         self.height_per_series = float(self.height) / self.num_series
-        self.num_frames = len(self.series[self.series.keys()[0]])
+        self.num_frames = len(self.series[list(self.series.keys())[0]])
         if settings.VERBOSE:
-            print self.num_series, 'series'
-            print self.num_frames, 'frames'
+            print(self.num_series, 'series')
+            print(self.num_frames, 'frames')
         self.width_per_frame = float(self.width) / self.num_frames
 
         self.ksmps = ksmps
@@ -40,7 +43,7 @@ class Gfx(object):
 
     def draw_series(self):
         i = 0
-        for key, array in self.series.iteritems():
+        for key, array in six.iteritems(self.series):
             for j in range(len(array)):
                 normalized_value = standardizer.Standardizer.get_normalized_value(array[j])
                 color_value = max(min(int(255 * normalized_value), 255), 0)
@@ -93,7 +96,7 @@ class Gfx(object):
             self.draw_playhead()
 
         if settings.VERBOSE:
-            print self.get_time_since_start()
+            print(self.get_time_since_start())
 
         pygame.display.flip()
 
@@ -131,7 +134,7 @@ class Visualize(object):
         )
         self.gfx.start_sound()
 
-        for i in xrange(2000):
+        for i in range(2000):
             self.gfx.draw()
 
 
