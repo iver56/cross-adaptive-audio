@@ -94,7 +94,7 @@ class CreateProject(object):
     def write_project_data(self):
         project_json_filename = self.clean_string(self.project_data['name']) + '.json'
         project_file_path = join(settings.PROJECT_DATA_DIRECTORY, project_json_filename)
-        with settings.FILE_HANDLER(project_file_path, 'wb') as outfile:
+        with settings.FILE_HANDLER(project_file_path, 'w') as outfile:
             json.dump(self.project_data, outfile)
         print('Created project file', project_json_filename, \
             'with', len(self.project_data['filenames']), 'sound file(s)')

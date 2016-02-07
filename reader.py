@@ -1,6 +1,5 @@
 from __future__ import absolute_import
 import json
-import os
 import settings
 import sound_file
 

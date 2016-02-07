@@ -30,8 +30,10 @@
         instr 1
 
         pyruni {{ '{{' }}
+import sys, os
+sys.path.append(os.getcwd())
 from reader import Reader
-import standardizer
+from standardizer import Standardizer
 my_reader = Reader(data_sound_filename='{{ data_sound_filename }}')
         {{ '}}' }}
 
@@ -41,21 +43,21 @@ my_reader = Reader(data_sound_filename='{{ data_sound_filename }}')
         aIn		in
         kinlevl		= 1
         aIn		= aIn *kinlevl
-        pyrun "k_drive = standardizer.Standardizer.get_normalized_value(my_reader.get_next_value('mfcc_1'))"
-        kDrive pyeval "standardizer.Standardizer.get_mapped_value(k_drive, 1, 12)"
+        pyrun "k_drive = Standardizer.get_normalized_value(my_reader.get_next_value('mfcc_1'))"
+        kDrive pyeval "Standardizer.get_mapped_value(k_drive, 1, 12)"
         kDrive		tonek kDrive, 10
-        pyrun "k_freq = standardizer.Standardizer.get_normalized_value(my_reader.get_next_value('mfcc_2'))"
-        kFreq pyeval "standardizer.Standardizer.get_mapped_value(k_freq, 20, 10000, skew_factor=0.35)"
+        pyrun "k_freq = Standardizer.get_normalized_value(my_reader.get_next_value('mfcc_2'))"
+        kFreq pyeval "Standardizer.get_mapped_value(k_freq, 20, 10000, skew_factor=0.35)"
         kFreq		tonek kFreq, 10
-        pyrun "k_resonance = standardizer.Standardizer.get_normalized_value(my_reader.get_next_value('mfcc_5'))"
-        kResonance pyeval "standardizer.Standardizer.get_mapped_value(k_resonance, 0.001, 0.95)"
+        pyrun "k_resonance = Standardizer.get_normalized_value(my_reader.get_next_value('mfcc_5'))"
+        kResonance pyeval "Standardizer.get_mapped_value(k_resonance, 0.001, 0.95)"
         kResonance	tonek kResonance, 1
-        pyrun "k_dist = standardizer.Standardizer.get_normalized_value(my_reader.get_next_value('mfcc_4'))"
-        kDist pyeval "standardizer.Standardizer.get_mapped_value(k_dist, 0.001, 10, skew_factor=0.5)"
+        pyrun "k_dist = Standardizer.get_normalized_value(my_reader.get_next_value('mfcc_4'))"
+        kDist pyeval "Standardizer.get_mapped_value(k_dist, 0.001, 10, skew_factor=0.5)"
         kDist		tonek kDist, 10
         kAutoLevel	= 0.9
-        pyrun "k_mix = standardizer.Standardizer.get_normalized_value(my_reader.get_next_value('mfcc_amp'))"
-        kMix pyeval "standardizer.Standardizer.get_mapped_value(k_mix, 0.0, 1.0)"
+        pyrun "k_mix = Standardizer.get_normalized_value(my_reader.get_next_value('mfcc_amp'))"
+        kMix pyeval "Standardizer.get_mapped_value(k_mix, 0.0, 1.0)"
         kMix		tonek kMix, 100
 
         ; stage 1, distortion

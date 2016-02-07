@@ -1,6 +1,5 @@
 from __future__ import absolute_import
 from __future__ import print_function
-import statistics
 import pprint
 import settings
 import math
@@ -12,6 +11,7 @@ class Standardizer(object):
         self.feature_statistics = {}
 
     def calculate_feature_statistics(self):
+        import statistics
         analyses = [sf.get_analysis() for sf in self.sound_files]
 
         for key in analyses[0]['series']:

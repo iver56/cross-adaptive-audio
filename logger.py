@@ -33,5 +33,5 @@ class Logger(object):
         self.data['series'][feature].append(value)
 
     def write(self):
-        with settings.FILE_HANDLER(self.feature_data_file_path, 'wb') as outfile:
+        with settings.FILE_HANDLER(self.feature_data_file_path, 'w') as outfile:
             json.dump(self.data, outfile)

@@ -5,7 +5,6 @@ import contextlib
 import json
 import os
 import settings
-import analyze
 
 
 class SoundFile(object):
@@ -48,6 +47,7 @@ class SoundFile(object):
 
     def get_analysis(self):
         if self.analysis is None:
+            import analyze
             self.analysis = analyze.Analyzer.analyze(self)
             self.fetch_analysis_data_cache()
         return self.analysis
@@ -79,12 +79,12 @@ class SoundFile(object):
                 self.analysis = json.load(analysis_data_file)
 
     def write_meta_data_cache(self):
-        with settings.FILE_HANDLER(self.get_meta_data_cache_file_path(), 'wb') as outfile:
+        with settings.FILE_HANDLER(self.get_meta_data_cache_file_path(), 'w') as outfile:
             data = {}
             if self.duration:
                 data['duration'] = self.duration
             json.dump(data, outfile)
 
     def write_analysis_data_cache(self):
-        with settings.FILE_HANDLER(self.get_feature_data_file_path(), 'wb') as outfile:
+        with settings.FILE_HANDLER(self.get_feature_data_file_path(), 'w') as outfile:
             json.dump(self.analysis, outfile)

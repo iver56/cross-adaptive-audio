@@ -81,7 +81,7 @@ class Analyzer(object):
             '--hopsize',
             str(settings.AUBIO_HOP_SIZE)
         ]
-        stdout = subprocess.check_output(command)
+        stdout = subprocess.check_output(command).decode('utf-8')
 
         features_to_add = ['mfcc_time', 'mfcc_amp']
         for i in range(1, 13):
