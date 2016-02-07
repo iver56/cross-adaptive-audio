@@ -62,4 +62,5 @@ target/
 # Misc
 .idea
 venv
+venv3
 settings.py

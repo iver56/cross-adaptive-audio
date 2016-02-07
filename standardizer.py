@@ -53,8 +53,10 @@ class Standardizer(object):
         :param value:
         :return: A value that makes the series have zero mean and unit variance. Good for machine learning.
         """
-        return (value - self.feature_statistics[feature]['mean']) / \
-               self.feature_statistics[feature]['standard_deviation']
+        standardized_value = (value - self.feature_statistics[feature]['mean']) / \
+                             self.feature_statistics[feature]['standard_deviation']
+        standardized_value = max(min(standardized_value, 3), -3)  # clip extreme values
+        return standardized_value
 
     @staticmethod
     def get_normalized_value(standardized_value):
