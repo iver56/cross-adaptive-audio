@@ -5,11 +5,12 @@ The project will investigate methods of evaluating the musical applicability of 
 ## Setup (Ubuntu)
 
 * `cp settings.py.example settings.py`
-* `virtualenv venv`
+* Initialize virtual environment: `virtualenv -p /usr/bin/python3 venv3`
+* Activate virtual environment : `source venv3/bin/activate`
 * `make`
-* Install csound `sudo apt-get install csound`
-* Install [aubio](http://aubio.org/download)
-* Install essentia extractors (see below)
+* Install csound: `sudo apt-get install csound`
+* Install [aubio](http://aubio.org/download): `apt-get install aubio-tools libaubio-dev libaubio-doc`
+* Install essentia extractors:
   * `wget http://essentia.upf.edu/documentation/extractors/essentia-extractors-v2.1_beta2-linux-x86_64.tar.gz`
   * `tar xzf essentia-extractors-v2.1_beta2-linux-x86_64.tar.gz`
   * `echo 'PATH=/data/essentia-extractors-v2.1_beta2/:$PATH' >> ~/.bashrc`
