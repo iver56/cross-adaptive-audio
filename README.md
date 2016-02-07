@@ -6,8 +6,6 @@ The project will investigate methods of evaluating the musical applicability of 
 
 * Clone this repository
 * Get a local settings file: `cp settings.py.example settings.py`
-* Initialize virtual environment: `virtualenv -p /usr/bin/python3 venv3`
-* Activate virtual environment : `source venv3/bin/activate`
 * Install dependencies: `make`
 * Install csound: `sudo apt-get install csound`
 * Install [aubio](http://aubio.org/download): `apt-get install aubio-tools libaubio-dev libaubio-doc`
@@ -24,7 +22,7 @@ The project will investigate methods of evaluating the musical applicability of 
 
 ## Example commands
 
-* `python create_project.py --name test1`
-* `python analyze.py -i drums_remind_me.wav`
-* `python visualize.py -i drums_remind_me.wav`
-* `python cross_adapt.py -s synth_remind_me.wav -d drums_remind_me.wav`
+* `[sudo] python create_project.py --name test1`
+* `[sudo] python analyze.py -i drums_remind_me.wav`
+* `[sudo] python visualize.py -i drums_remind_me.wav`
+* `[sudo] python cross_adapt.py -s synth_remind_me.wav -d drums_remind_me.wav`

@@ -1,2 +1,4 @@
 Jinja2==2.8
 statistics==1.0.3.5
+six
+futures==3.0.4
