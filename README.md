@@ -4,6 +4,7 @@ The project will investigate methods of evaluating the musical applicability of 
 
 ## Setup (Ubuntu)
 
+* Clone this repository
 * Get a local settings file: `cp settings.py.example settings.py`
 * Initialize virtual environment: `virtualenv -p /usr/bin/python3 venv3`
 * Activate virtual environment : `source venv3/bin/activate`
@@ -15,6 +16,11 @@ The project will investigate methods of evaluating the musical applicability of 
   * `tar xzf essentia-extractors-v2.1_beta2-linux-x86_64.tar.gz`
   * `echo 'PATH=/data/essentia-extractors-v2.1_beta2/:$PATH' >> ~/.bashrc`
   * `source ~/.bashrc`
+* Install MultiNEAT:
+  * Install boost c++ libraries: `sudo apt-get install libboost-all-dev`
+  * `git clone https://github.com/peter-ch/MultiNEAT.git`
+  * `cd MultiNEAT`
+  * `sudo python setup.py install`
 
 ## Example commands
 
