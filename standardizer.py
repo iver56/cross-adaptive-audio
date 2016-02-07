@@ -63,3 +63,22 @@ class Standardizer(object):
         :return: A value between 0 and 1. Good for visualization.
         """
         return 0.5 + math.tanh(standardized_value) / 2
+
+    @staticmethod
+    def get_mapped_value(normalized_value, min_value, max_value, skew_factor=1.0):
+        """
+        :param normalized_value: input value between 0 and 1
+        :param min_value: minimum target value
+        :param max_value: maximum target value
+        :param skew_factor: a value between 0 and 1 gives exponential-like qualities. 1 => linear.
+        :return: value between minimum and maximum with a specific skew
+        """
+        if skew_factor < 0:
+            raise Exception('skew_factor must be positive')
+        elif normalized_value < 0 or normalized_value > 1:
+            raise Exception('normalized_value must be between 0 and 1 (inclusive)')
+        elif min_value > max_value:
+            raise Exception('min_value must not be greater than max_value')
+
+        skewed_value = math.exp(math.log(normalized_value) / skew_factor)
+        return min_value + (max_value - min_value) * skewed_value
