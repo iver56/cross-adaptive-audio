@@ -36,6 +36,7 @@ http://csound.github.io/download.html
 * `pip install MultiNEAT-0.3-cp27-none-win32.whl`
 * Install OpenCV: http://docs.opencv.org/2.4/doc/tutorials/introduction/windows_install/windows_install.html
 * Install Python bindings for OpenCV: http://docs.opencv.org/master/d5/de5/tutorial_py_setup_in_windows.html#gsc.tab=0
+* Install pygame (optional): `sudo apt-get install python-pygame`
 
 ### Install Aubio
 * Download http://aubio.org/bin/0.4.2/aubio-0.4.2.win32_binary.zip
@@ -44,6 +45,9 @@ http://csound.github.io/download.html
 ### Install Essentia Extractors
 * Download tar for windows at http://essentia.upf.edu/documentation/extractors/
 * Extract and add to the PATH variable
+
+### Install Pygame (optional)
+http://www.pygame.org/download.shtml
 
 ## Setup
 
