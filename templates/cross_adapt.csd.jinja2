@@ -1,6 +1,6 @@
 ;    Copyright 2015 Oeyvind Brandtsegg
 ;
-;    This file is part of the Signal Interaction Toolkit
+;    Parts of this file originates from the Signal Interaction Toolkit
 ;
 ;    The Signal Interaction Toolkit is free software: you can redistribute it and/or modify
 ;    it under the terms of the GNU General Public License version 3
@@ -41,24 +41,32 @@ my_reader = Reader(data_sound_filename='{{ data_sound_filename }}')
         ; LPF18 Filter
         ;****************************************************************
         aIn		in
-        kinlevl		= 1
-        aIn		= aIn *kinlevl
+
         pyrun "k_drive = Standardizer.get_normalized_value(my_reader.get_next_value('mfcc_1'))"
         kDrive pyeval "Standardizer.get_mapped_value(k_drive, 1, 12)"
         kDrive		tonek kDrive, 10
-        pyrun "k_freq = Standardizer.get_normalized_value(my_reader.get_next_value('mfcc_2'))"
+
+        pyrun "k_freq = Standardizer.get_normalized_value(my_reader.get_next_value('mfcc_6'))"
         kFreq pyeval "Standardizer.get_mapped_value(k_freq, 20, 10000, skew_factor=0.35)"
         kFreq		tonek kFreq, 10
+
         pyrun "k_resonance = Standardizer.get_normalized_value(my_reader.get_next_value('mfcc_5'))"
         kResonance pyeval "Standardizer.get_mapped_value(k_resonance, 0.001, 0.95)"
-        kResonance	tonek kResonance, 1
+        kResonance	tonek kResonance, 10
+
         pyrun "k_dist = Standardizer.get_normalized_value(my_reader.get_next_value('mfcc_4'))"
         kDist pyeval "Standardizer.get_mapped_value(k_dist, 0.001, 10, skew_factor=0.5)"
         kDist		tonek kDist, 10
+
         kAutoLevel	= 0.9
+
         pyrun "k_mix = Standardizer.get_normalized_value(my_reader.get_next_value('mfcc_amp'))"
         kMix pyeval "Standardizer.get_mapped_value(k_mix, 0.0, 1.0)"
-        kMix		tonek kMix, 100
+        kMix		tonek kMix, 10
+
+        pyrun "k_post_gain = Standardizer.get_normalized_value(my_reader.get_next_value('mfcc_7'))"
+        kPostGain pyeval "Standardizer.get_mapped_value(k_post_gain, 0.0, 1.0)"
+        kPostGain	tonek kPostGain, 10
 
         ; stage 1, distortion
         kpregain	= kDrive				; dist amount
@@ -73,7 +81,8 @@ my_reader = Reader(data_sound_filename='{{ data_sound_filename }}')
         afilt		lpf18 adist, kFreq, kResonance, kDist
         kleveladjust	= 1/(sqrt(kDrive)+(kDist*2))				; attempt automatic level adjustment according to distortion drive
         afilt		= (afilt*(1-kAutoLevel))+(afilt*kleveladjust*kAutoLevel)	; and select balance between autogained and straight dist signal
-        aOut		= (afilt*kMix)+(aIn*(1-kMix))
+
+        aOut		= (afilt*kMix)+(aIn*(1-kMix)) * kPostGain
 
         out aOut
 
