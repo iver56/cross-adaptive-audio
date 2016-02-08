@@ -9,6 +9,7 @@ import datetime
 import settings
 import sound_file
 import standardizer
+import six
 from six.moves import range
 
 
@@ -110,7 +111,7 @@ class Visualize(object):
             dest='input_sound_filename',
             type=str,
             help='The name of the sound file (wav)',
-            required=False
+            required=True
         )
         self.args = arg_parser.parse_args()
 
