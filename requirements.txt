@@ -1,4 +1,7 @@
 Jinja2==2.8
 statistics==1.0.3.5
-six
+six==1.10.0
 futures==3.0.4
+matplotlib==1.5.1
+numpy==1.10.4
+MultiNEAT==0.3
