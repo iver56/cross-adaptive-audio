@@ -7,6 +7,10 @@ import math
 
 class Standardizer(object):
     def __init__(self, sound_files):
+        """
+        :param sound_files: SoundFile instances with series to be analyzed and/or standardized
+        :return:
+        """
         self.sound_files = sound_files
         self.feature_statistics = {}
 
@@ -36,6 +40,11 @@ class Standardizer(object):
             pprint.pprint(self.feature_statistics)
 
     def set_feature_statistics(self, project):
+        """
+        If features statistics have been calculated for a project previously, use this method to set feature statistics
+        :param project:
+        :return:
+        """
         self.feature_statistics = project.data['feature_statistics']
 
     def add_standardized_series(self):
