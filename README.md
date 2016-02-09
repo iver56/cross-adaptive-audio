@@ -61,3 +61,4 @@ http://www.pygame.org/download.shtml
 * `[sudo] python analyze.py -i drums.wav`
 * `[sudo] python visualize.py -i drums.wav`
 * `[sudo] python cross_adapt.py -s synth.wav -d drums.wav`
+* `[sudo] python fitness_evaluator.py -i drums.wav synth.wav`
