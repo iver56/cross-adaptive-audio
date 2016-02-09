@@ -65,7 +65,7 @@ my_reader = Reader(data_sound_filename='{{ data_sound_filename }}')
         kMix		tonek kMix, 10
 
         pyrun "k_post_gain = Standardizer.get_normalized_value(my_reader.get_next_value('mfcc_7'))"
-        kPostGain pyeval "Standardizer.get_mapped_value(k_post_gain, 0.0, 1.0)"
+        kPostGain pyeval "Standardizer.get_mapped_value(k_post_gain, 0.0, 3.16227, skew_factor=0.3)"
         kPostGain	tonek kPostGain, 10
 
         ; stage 1, distortion
