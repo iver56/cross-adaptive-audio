@@ -10,6 +10,8 @@ import sound_file
 
 
 class CrossAdapt(object):
+    NUM_PARAMETERS = 6
+
     def __init__(self):
         arg_parser = argparse.ArgumentParser()
         arg_parser.add_argument(

@@ -7,7 +7,6 @@ import settings
 class TestMultiNeat(unittest.TestCase):
     def evaluate(self, genome):
         # this creates a neural network (phenotype) from the genome
-
         net = NEAT.NeuralNetwork()
         genome.BuildPhenotype(net)
 
@@ -34,15 +33,15 @@ class TestMultiNeat(unittest.TestCase):
         params = NEAT.Parameters()
         params.PopulationSize = 100
         genome = NEAT.Genome(
-            0,
+            0,  # ID
             3,  # number of inputs. Note: always add one extra input, according to http://multineat.com/docs.html
-            0,
+            0,  # number of hidden nodes
             2,  # number of outputs
-            False,
-            NEAT.ActivationFunction.UNSIGNED_SIGMOID,
-            NEAT.ActivationFunction.UNSIGNED_SIGMOID,
-            0,
-            params
+            False,  # FS_NEAT
+            NEAT.ActivationFunction.UNSIGNED_SIGMOID,  # OutputActType
+            NEAT.ActivationFunction.UNSIGNED_SIGMOID,  # HiddenActType
+            0,  # SeedType
+            params  # Parameters
         )
         pop = NEAT.Population(
             genome,
