@@ -45,10 +45,10 @@ class SoundFile(object):
             self.write_meta_data_cache()
         return self.duration
 
-    def get_analysis(self):
-        if self.analysis is None:
+    def get_analysis(self, ensure_standardized_series=False):
+        if self.analysis is None or (ensure_standardized_series and 'series_standardized' not in self.analysis):
             import analyze
-            self.analysis = analyze.Analyzer.analyze(self)
+            self.analysis = analyze.Analyzer.analyze(self, ensure_standardized_series)
             self.fetch_analysis_data_cache()
         return self.analysis
 

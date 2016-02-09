@@ -9,7 +9,7 @@ import settings
 import sound_file
 
 
-class CrossAdapt(object):
+class CrossAdapter(object):
     NUM_PARAMETERS = 6
 
     def __init__(self):
@@ -44,27 +44,33 @@ class CrossAdapt(object):
         if self.args.print_execution_time:
             self.start_time = time.time()
 
-        self.run()
+        input_sound = sound_file.SoundFile(self.args.sound_filename)
+        param_sound = sound_file.SoundFile(self.args.data_sound_filename)
+        self.cross_adapt(input_sound, param_sound)
 
         if self.args.print_execution_time:
             print("execution time: %s seconds" % (time.time() - self.start_time))
 
-    def run(self):
+    @staticmethod
+    def cross_adapt(input_sound, param_sound):
         template = template_handler.TemplateHandler('templates/cross_adapt.csd.jinja2')
-        sound_file_to_analyse = sound_file.SoundFile(self.args.sound_filename)
-        duration = sound_file_to_analyse.get_duration()
         template.compile(
-            sound_filename=self.args.sound_filename,
-            data_sound_filename=self.args.data_sound_filename,
+            sound_filename=input_sound.filename,
+            data_sound_filename=param_sound.filename,
             ksmps=settings.CSOUND_KSMPS,
-            duration=duration
+            duration=input_sound.get_duration()
         )
 
         csd_path = os.path.join(settings.CSD_DIRECTORY, 'cross_adapt.csd')
         template.write_result(csd_path)
         csound = csound_handler.CsoundHandler(csd_path)
-        output_filename = self.args.sound_filename + '.processed.wav'
+        output_filename = input_sound.filename + '.cross_adapted.{0}.{1}.wav'.format(
+            input_sound.get_md5(),
+            param_sound.get_md5()
+        )
         csound.run(output_filename)
+        output_sound_file = sound_file.SoundFile(output_filename, is_input=False)
+        return output_sound_file
 
 if __name__ == '__main__':
-    CrossAdapt()
+    CrossAdapter()

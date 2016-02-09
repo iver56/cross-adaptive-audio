@@ -37,7 +37,7 @@ class TestMultiNeat(unittest.TestCase):
             3,  # number of inputs. Note: always add one extra input, according to http://multineat.com/docs.html
             0,  # number of hidden nodes
             2,  # number of outputs
-            False,  # FS_NEAT
+            False,  # FS_NEAT; automatically determine an appropriate set of inputs for the evolved networks
             NEAT.ActivationFunction.UNSIGNED_SIGMOID,  # OutputActType
             NEAT.ActivationFunction.UNSIGNED_SIGMOID,  # HiddenActType
             0,  # SeedType
@@ -48,7 +48,7 @@ class TestMultiNeat(unittest.TestCase):
             params,
             True,  # whether the population should be randomized
             1.0,  # how much the population should be randomized,
-            1  # seed for a pseudo-random number generator, perhaps?
+            settings.PRNG_SEED
         )
 
         for generation in range(3):

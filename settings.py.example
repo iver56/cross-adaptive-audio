@@ -6,6 +6,7 @@ META_DATA_CACHE_DIRECTORY = 'meta_data_cache'
 OUTPUT_DIRECTORY = 'output'
 PROJECT_DATA_DIRECTORY = 'projects'
 CURRENT_PROJECT_FILE = 'test.json'
+PRNG_SEED = 1
 
 USE_GZIP = False
 if USE_GZIP:
