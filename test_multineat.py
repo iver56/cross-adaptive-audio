@@ -1,6 +1,7 @@
 from __future__ import absolute_import
 import unittest
 import MultiNEAT as NEAT
+import settings
 
 
 class TestMultiNeat(unittest.TestCase):
@@ -15,6 +16,12 @@ class TestMultiNeat(unittest.TestCase):
         net.Input([1.0, 0.0, 1.0])
         net.Activate()
         output = net.Output()
+
+        if settings.VERBOSE:
+            s = ''
+            for node in output:
+                s += str(node) + '   '
+            print(s)
 
         # the output can be used as any other Python iterable. For the purposes of the tutorial,
         # we will consider the fitness of the individual to be the neural network that outputs constantly
@@ -45,7 +52,7 @@ class TestMultiNeat(unittest.TestCase):
             1  # seed for a pseudo-random number generator, perhaps?
         )
 
-        for generation in range(100):  # run for 100 generations
+        for generation in range(3):
             # retrieve a list of all genomes in the population
             genome_list = NEAT.GetGenomeList(pop)
 
