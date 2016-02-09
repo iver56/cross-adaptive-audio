@@ -58,6 +58,6 @@ http://www.pygame.org/download.shtml
 ## Example commands
 
 * `[sudo] python create_project.py --name test1`
-* `[sudo] python analyze.py -i drums_remind_me.wav`
-* `[sudo] python visualize.py -i drums_remind_me.wav`
-* `[sudo] python cross_adapt.py -s synth_remind_me.wav -d drums_remind_me.wav`
+* `[sudo] python analyze.py -i drums.wav`
+* `[sudo] python visualize.py -i drums.wav`
+* `[sudo] python cross_adapt.py -s synth.wav -d drums.wav`

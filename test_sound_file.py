@@ -9,7 +9,7 @@ class TestSoundFile(unittest.TestCase):
         settings.INPUT_DIRECTORY = 'test_audio'
 
     def test_sound_file(self):
-        my_sound_file = sound_file.SoundFile('drums_remind_me.wav')
+        my_sound_file = sound_file.SoundFile('drums.wav')
         self.assertEqual(my_sound_file.get_md5(), 'f1a64ffcd2c2c3d7b5fa27cfb520c626')
         self.assertAlmostEqual(my_sound_file.get_duration(), 7.89278911565)
 
