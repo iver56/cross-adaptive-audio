@@ -5,6 +5,7 @@ import contextlib
 import json
 import os
 import settings
+import analyze
 
 
 class SoundFile(object):
@@ -88,3 +89,16 @@ class SoundFile(object):
     def write_analysis_data_cache(self):
         with settings.FILE_HANDLER(self.get_feature_data_file_path(), 'w') as outfile:
             json.dump(self.analysis, outfile)
+
+    def get_standardized_feature_vector(self, k):
+        """
+        Get a feature vector for a given frame k.
+        Assumes that self.analysis['series_standardized'] is defined and k is within bounds.
+        May raise an exception otherwise
+        :param k:
+        :return: list
+        """
+        feature_vector = []
+        for feature in analyze.Analyzer.FEATURES:
+            feature_vector.append(self.analysis['series_standardized'][feature][k])
+        return feature_vector
