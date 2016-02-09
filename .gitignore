@@ -64,3 +64,4 @@ target/
 venv
 venv3
 settings.py
+binaries
