@@ -16,6 +16,11 @@ import project
 
 
 class Analyzer(object):
+    FEATURES = ['mfcc_time', 'mfcc_amp']
+    for i in range(1, 13):
+        FEATURES.append('mfcc_' + str(i))
+    NUM_FEATURES = len(FEATURES)
+
     def __init__(self):
         arg_parser = argparse.ArgumentParser()
         arg_parser.add_argument(
@@ -69,6 +74,7 @@ class Analyzer(object):
 
     @staticmethod
     def analyze_rms(sound_file_to_analyze):
+        # This method is unused
         template = template_handler.TemplateHandler('templates/rms_analyzer.csd.jinja2')
         template.compile(
             input_file_path=os.path.abspath(sound_file_to_analyze.file_path),
@@ -100,11 +106,7 @@ class Analyzer(object):
         ]
         stdout = subprocess.check_output(command).decode('utf-8')
 
-        features_to_add = ['mfcc_time', 'mfcc_amp']
-        for i in range(1, 13):
-            features_to_add.append('mfcc_' + str(i))
-
-        my_logger = logger.Logger(sound_file_to_analyze.get_feature_data_file_path(), features_to_add)
+        my_logger = logger.Logger(sound_file_to_analyze.get_feature_data_file_path(), Analyzer.FEATURES)
 
         for line in stdout.split('\n'):
             values = line.split()
