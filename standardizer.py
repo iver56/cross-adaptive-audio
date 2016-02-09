@@ -35,6 +35,9 @@ class Standardizer(object):
         if settings.VERBOSE:
             pprint.pprint(self.feature_statistics)
 
+    def set_feature_statistics(self, project):
+        self.feature_statistics = project.data['feature_statistics']
+
     def add_standardized_series(self):
         print('Calculating and writing standardized series...')
 

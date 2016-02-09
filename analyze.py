@@ -11,6 +11,8 @@ import subprocess
 import re
 import logger
 from six.moves import range
+import standardizer
+import project
 
 
 class Analyzer(object):
@@ -23,6 +25,15 @@ class Analyzer(object):
             type=str,
             help='The name of the input file',
             required=True
+        )
+        arg_parser.add_argument(
+            '--standardize',
+            nargs='?',
+            dest='add_standardized_series',
+            help='Add standardized series with respect to the current project as defined in settings.py',
+            const=True,
+            required=False,
+            default=False
         )
         arg_parser.add_argument(
             '--print-execution-time',
@@ -40,15 +51,21 @@ class Analyzer(object):
 
         self.input_file_path = os.path.abspath(os.path.join(settings.INPUT_DIRECTORY, self.args.input_filename))
         self.sound_file_to_analyze = sound_file.SoundFile(self.args.input_filename)
-        self.analyze(self.sound_file_to_analyze)
+        self.analyze(self.sound_file_to_analyze, self.args.add_standardized_series)
 
         if self.args.print_execution_time:
             print("execution time: %s seconds" % (time.time() - self.start_time))
 
     @staticmethod
-    def analyze(sound_file_to_analyze):
+    def analyze(sound_file_to_analyze, add_standardized_series=False):
         # Analyzer.analyze_rms(sound_file_to_analyze)
         Analyzer.analyze_mfcc(sound_file_to_analyze)
+
+        if add_standardized_series:
+            std = standardizer.Standardizer([sound_file_to_analyze])
+            current_project = project.Project.get_current_project()
+            std.set_feature_statistics(current_project)
+            std.add_standardized_series()
 
     @staticmethod
     def analyze_rms(sound_file_to_analyze):
