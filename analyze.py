@@ -8,9 +8,7 @@ import settings
 import os
 import sound_file
 import subprocess
-import re
 import logger
-from six.moves import range
 import standardizer
 import project
 

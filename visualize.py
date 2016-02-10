@@ -10,7 +10,6 @@ import settings
 import sound_file
 import standardizer
 import six
-from six.moves import range
 
 
 class Gfx(object):
