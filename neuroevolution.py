@@ -10,7 +10,7 @@ import statistics
 import time
 
 
-class NeuroEvolution(object):
+class Neuroevolution(object):
     def __init__(self):
         arg_parser = argparse.ArgumentParser()
         arg_parser.add_argument(
@@ -142,4 +142,4 @@ class NeuroEvolution(object):
         return fitness
 
 if __name__ == '__main__':
-    NeuroEvolution()
+    Neuroevolution()

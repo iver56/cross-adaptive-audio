@@ -5,6 +5,9 @@ import settings
 
 
 class FitnessEvaluator(object):
+    GLOBAL_SIMILARITY_WEIGHT = 1.0
+    LOCAL_SIMILARITY_WEIGHT = 1.0
+
     @staticmethod
     def evaluate(param_sound, output_sound):
         """
@@ -14,6 +17,16 @@ class FitnessEvaluator(object):
         :return:
         """
 
+        # global_similarity = FitnessEvaluator.get_global_similarity(param_sound, output_sound)
+        local_similarity = FitnessEvaluator.get_local_similarity(param_sound, output_sound)
+
+        return (
+            # FitnessEvaluator.GLOBAL_SIMILARITY_WEIGHT * global_similarity +
+            FitnessEvaluator.LOCAL_SIMILARITY_WEIGHT * local_similarity
+        )
+
+    @staticmethod
+    def get_global_similarity(param_sound, output_sound):
         # Compare global stats:
         param_standardizer = standardizer.Standardizer([param_sound])
         output_standardizer = standardizer.Standardizer([output_sound])
@@ -38,8 +51,30 @@ class FitnessEvaluator(object):
         if settings.VERBOSE:
             print('global_stats_distance', global_stats_distance)
 
-        fitness = 1.0 / (1 + global_stats_distance)
-        return fitness
+        return 1.0 / (1 + global_stats_distance)
+
+    @staticmethod
+    def get_local_similarity(param_sound, output_sound):
+        param_sound_analysis = param_sound.get_analysis(ensure_standardized_series=True)
+        output_sound_analysis = output_sound.get_analysis(ensure_standardized_series=True)
+
+        euclidean_distance_sum = 0
+        for k in range(param_sound.get_num_frames()):
+            sum_of_squared_differences = 0
+            for feature in param_sound_analysis['series_standardized']:
+                param_value = param_sound_analysis['series_standardized'][feature][k]
+                output_value = output_sound_analysis['series_standardized'][feature][k]
+
+                sum_of_squared_differences += (param_value - output_value) ** 2
+            euclidean_distance = math.sqrt(sum_of_squared_differences)
+            euclidean_distance_sum += euclidean_distance
+
+        average_euclidean_distance = euclidean_distance_sum / param_sound.get_num_frames()
+
+        if settings.VERBOSE:
+            print('local_stats_average_distance', average_euclidean_distance)
+
+        return 1.0 / (1 + average_euclidean_distance)
 
     @staticmethod
     def get_euclidean_distance(vector_a, vector_b):
@@ -72,6 +107,7 @@ class CommandLineFitnessTool(object):
             print(FitnessEvaluator.evaluate(sound_file_a, sound_file_b))
         else:
             raise Exception('Two file names must be specified')
+
 
 if __name__ == '__main__':
     CommandLineFitnessTool()
