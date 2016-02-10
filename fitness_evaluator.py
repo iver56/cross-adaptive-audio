@@ -1,7 +1,7 @@
 from __future__ import print_function
 import math
 import standardizer
-import pprint
+import settings
 
 
 class FitnessEvaluator(object):
@@ -34,9 +34,11 @@ class FitnessEvaluator(object):
             global_output_feature_vector,
             global_param_feature_vector
         )
-        print('global_stats_distance', global_stats_distance)
-        fitness = 1.0 / (1 + global_stats_distance)
 
+        if settings.VERBOSE:
+            print('global_stats_distance', global_stats_distance)
+
+        fitness = 1.0 / (1 + global_stats_distance)
         return fitness
 
     @staticmethod

@@ -22,10 +22,40 @@ class NeuroEvolution(object):
             required=True,
             default=[]
         )
-        args = arg_parser.parse_args()
-        if len(args.input_files) == 2:
-            self.param_sound = sound_file.SoundFile(args.input_files[0])
-            self.input_sound = sound_file.SoundFile(args.input_files[1])
+        arg_parser.add_argument(
+            '-g'
+            '--num-generations',
+            dest='num_generations',
+            type=int,
+            required=False,
+            choices=range(1, 2000),
+            default=20
+        )
+        arg_parser.add_argument(
+            '-p'
+            '--population_size',
+            dest='population_size',
+            type=int,
+            required=False,
+            choices=range(2, 2000),
+            default=20
+        )
+        arg_parser.add_argument(
+            '-s'
+            '--seed',
+            dest='seed',
+            type=int,
+            required=False,
+            default=None
+        )
+        self.args = arg_parser.parse_args()
+
+        if self.args.seed is not None:
+            settings.PRNG_SEED = self.args.seed
+
+        if len(self.args.input_files) == 2:
+            self.param_sound = sound_file.SoundFile(self.args.input_files[0])
+            self.input_sound = sound_file.SoundFile(self.args.input_files[1])
             self.num_frames = min(self.param_sound.get_num_frames(), self.input_sound.get_num_frames())
 
             self.param_input_vectors = []
@@ -40,7 +70,7 @@ class NeuroEvolution(object):
 
     def run(self):
         params = NEAT.Parameters()
-        params.PopulationSize = 5  # TODO
+        params.PopulationSize = self.args.population_size
         num_inputs = analyze.Analyzer.NUM_FEATURES + 1  # always add one extra input, see http://multineat.com/docs.html
         num_outputs = cross_adapt.CrossAdapter.NUM_PARAMETERS
         num_hidden_nodes = 0
@@ -63,7 +93,7 @@ class NeuroEvolution(object):
             settings.PRNG_SEED
         )
 
-        for generation in range(3):  # TODO
+        for generation in range(self.args.num_generations):
             print('generation {}'.format(generation))
             # retrieve a list of all genomes in the population
             genome_list = NEAT.GetGenomeList(pop)

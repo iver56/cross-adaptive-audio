@@ -50,7 +50,8 @@ class Standardizer(object):
         self.feature_statistics = project.data['feature_statistics']
 
     def add_standardized_series(self):
-        print('Calculating and writing standardized series...')
+        if settings.VERBOSE:
+            print('Calculating and writing standardized series...')
 
         for sf in self.sound_files:
             analysis = sf.get_analysis()
