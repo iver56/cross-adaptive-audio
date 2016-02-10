@@ -19,7 +19,7 @@ class CrossAdapter(object):
         data_md5 = hashlib.md5(json.dumps(channels)).hexdigest()
 
         data_file_path = os.path.join(
-            settings.FEATURE_DATA_DIRECTORY,
+            settings.NEURAL_OUTPUT_DIRECTORY,
             param_sound.filename + '.neural_output.gen{0}.{1}.json'.format(generation, data_md5)
         )
         l = logger.Logger(data_file_path, features_to_add=None, suppress_initialization=True)

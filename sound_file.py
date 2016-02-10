@@ -61,7 +61,7 @@ class SoundFile(object):
 
     def get_feature_data_file_path(self):
         return os.path.join(
-            settings.FEATURE_DATA_DIRECTORY,
+            settings.INPUT_FEATURE_DATA_DIRECTORY if self.is_input else settings.OUTPUT_FEATURE_DATA_DIRECTORY,
             self.filename + '.' + self.get_md5() + settings.DATA_FILE_EXTENSION
         )
 
