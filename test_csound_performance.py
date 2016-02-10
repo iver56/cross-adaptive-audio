@@ -8,10 +8,10 @@ import os
 import time
 
 
-class TestParallelizableCsound(unittest.TestCase):
+class TestCsoundPerformance(unittest.TestCase):
     def setUp(self):
         settings.INPUT_DIRECTORY = 'test_audio'
-        self.num_sounds = 100
+        self.num_sounds = 20
         self.drums = sound_file.SoundFile('drums.wav')
 
     def test_serial_execution(self):
