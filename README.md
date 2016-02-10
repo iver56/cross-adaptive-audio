@@ -60,5 +60,4 @@ http://www.pygame.org/download.shtml
 * `[sudo] python create_project.py --name test1`
 * `[sudo] python analyze.py -i drums.wav`
 * `[sudo] python visualize.py -i drums.wav`
-* `[sudo] python cross_adapt.py -i drums.wav synth.wav`
 * `[sudo] python fitness_evaluator.py -i drums.wav synth.wav`
