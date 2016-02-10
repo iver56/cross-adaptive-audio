@@ -20,8 +20,7 @@ class CsoundHandler(object):
         if settings.VERBOSE:
             p = subprocess.Popen(command)
         else:
-            devnull = open(os.devnull, 'w')
-            p = subprocess.Popen(command, stdout=devnull)
+            p = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         if not async:
             p.wait()
         return p
