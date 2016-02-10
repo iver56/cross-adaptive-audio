@@ -90,6 +90,9 @@ class SoundFile(object):
         with settings.FILE_HANDLER(self.get_feature_data_file_path(), 'w') as outfile:
             json.dump(self.analysis, outfile)
 
+    def get_num_frames(self):
+        return len(self.analysis['series']['mfcc_time'])
+
     def get_standardized_feature_vector(self, k):
         """
         Get a feature vector for a given frame k.

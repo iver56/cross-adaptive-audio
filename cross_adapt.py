@@ -15,20 +15,14 @@ class CrossAdapter(object):
     def __init__(self):
         arg_parser = argparse.ArgumentParser()
         arg_parser.add_argument(
-            '-s',
-            '--sound',
-            dest='sound_filename',
+            '-i',
+            '--input',
+            dest='input_files',
+            nargs='+',
             type=str,
-            help='The name of the sound file to be processed',
-            required=True
-        )
-        arg_parser.add_argument(
-            '-d',
-            '--data',
-            dest='data_sound_filename',
-            type=str,
-            help='The name of the sound file to be used as basis for input to the effect',
-            required=True
+            help='The filename of the parameter sound and the filename of the input sound, respectively',
+            required=True,
+            default=[]
         )
         arg_parser.add_argument(
             '--print-execution-time',
@@ -41,11 +35,14 @@ class CrossAdapter(object):
         )
         self.args = arg_parser.parse_args()
 
+        if len(self.args.input_files) != 2:
+            raise Exception('Two filenames must be specified')
+
         if self.args.print_execution_time:
             self.start_time = time.time()
 
-        input_sound = sound_file.SoundFile(self.args.sound_filename)
-        param_sound = sound_file.SoundFile(self.args.data_sound_filename)
+        param_sound = sound_file.SoundFile(self.args.input_files[0])
+        input_sound = sound_file.SoundFile(self.args.input_files[1])
         self.cross_adapt(input_sound, param_sound)
 
         if self.args.print_execution_time:
