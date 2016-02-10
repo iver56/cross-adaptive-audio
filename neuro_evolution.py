@@ -7,6 +7,7 @@ import argparse
 import sound_file
 import fitness_evaluator
 import statistics
+import time
 
 
 class NeuroEvolution(object):
@@ -94,6 +95,7 @@ class NeuroEvolution(object):
         )
 
         for generation in range(1, self.args.num_generations + 1):
+            generation_start_time = time.time()
             print('generation {}'.format(generation))
             # retrieve a list of all genomes in the population
             genome_list = NEAT.GetGenomeList(pop)
@@ -114,6 +116,7 @@ class NeuroEvolution(object):
 
             # advance to the next generation
             pop.Epoch()
+            print("Generation execution time: %s seconds" % (time.time() - generation_start_time))
 
     def evaluate(self, genome, generation):
         # this creates a neural network (phenotype) from the genome
