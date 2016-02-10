@@ -14,11 +14,11 @@ class Standardizer(object):
         self.sound_files = sound_files
         self.feature_statistics = {}
 
-    def calculate_feature_statistics(self):
+    def calculate_feature_statistics(self, series_key='series'):
         import statistics
         analyses = [sf.get_analysis() for sf in self.sound_files]
 
-        for key in analyses[0]['series']:
+        for key in analyses[0][series_key]:
             self.feature_statistics[key] = {'min': None, 'max': None, 'mean': None, 'standard_deviation': None}
 
         for feature in self.feature_statistics:
@@ -26,7 +26,7 @@ class Standardizer(object):
                 print('Analyzing {} feature statistics'.format(feature))
             series = []
             for analysis in analyses:
-                series += analysis['series'][feature]
+                series += analysis[series_key][feature]
 
             if len(series) == 0:
                 continue
@@ -38,6 +38,8 @@ class Standardizer(object):
 
         if settings.VERBOSE:
             pprint.pprint(self.feature_statistics)
+
+        return self.feature_statistics
 
     def set_feature_statistics(self, project):
         """

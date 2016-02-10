@@ -14,9 +14,7 @@ class Logger(object):
             if self.data is None:
                 self.data = {
                     'ksmps': settings.CSOUND_KSMPS,
-                    'series': {
-                        'time': []
-                    }
+                    'series': {}
                 }
             if features_to_add is not None:
                 for feature in features_to_add:

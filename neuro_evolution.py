@@ -103,6 +103,7 @@ class NeuroEvolution(object):
             output_vectors,
             generation
         )
+        resulting_sound.get_analysis(ensure_standardized_series=True)
 
         fitness = fitness_evaluator.FitnessEvaluator.evaluate(self.param_sound, resulting_sound)
         return fitness
