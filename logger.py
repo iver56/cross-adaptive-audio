@@ -5,20 +5,22 @@ import os
 
 
 class Logger(object):
-    def __init__(self, feature_data_file_path, features_to_add):
+    def __init__(self, feature_data_file_path, features_to_add=None, suppress_initialization=False):
         self.feature_data_file_path = feature_data_file_path
-        self.buffer = None  # holds a value temporarily before it is stored in an array
         self.data = None
-        self.read_existing()
-        if self.data is None:
-            self.data = {
-                'ksmps': settings.CSOUND_KSMPS,
-                'series': {
-                    'time': []
+        self.buffer = None  # holds a value temporarily before it is stored in an array
+        if not suppress_initialization:
+            self.read_existing()
+            if self.data is None:
+                self.data = {
+                    'ksmps': settings.CSOUND_KSMPS,
+                    'series': {
+                        'time': []
+                    }
                 }
-            }
-        for feature in features_to_add:
-            self.data['series'][feature] = []
+            if features_to_add is not None:
+                for feature in features_to_add:
+                    self.data['series'][feature] = []
 
     def read_existing(self):
         if os.path.isfile(self.feature_data_file_path):
