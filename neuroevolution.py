@@ -103,16 +103,20 @@ class Neuroevolution(object):
             fitness_list = []
             # apply the evaluation function to all genomes
             for genome in genome_list:
-                fitness = self.evaluate(genome, generation)
+                fitness, output_sound = self.evaluate(genome, generation)
                 genome.SetFitness(fitness)
-                fitness_list.append(fitness)
+                fitness_list.append((fitness, genome, output_sound))
+            fitness_list.sort(reverse=True)
 
-            avg_fitness = statistics.mean(fitness_list)
-            print('avg_fitness: {}'.format(avg_fitness))
+            print('best fitness: {0:.5f}'.format(fitness_list[0][0]))
+            avg_fitness = statistics.mean([x[0] for x in fitness_list])
+            print('avg fitness: {0:.5f}'.format(avg_fitness))
 
-            # at this point we may output some information regarding the progress of evolution, best fitness, etc.
-            # it's also the place to put any code that tracks the progress and saves the best genome or the entire
-            # population. We skip all of this in the tutorial.
+            # delete all but best fit results from this generation
+            for i in range(1, len(fitness_list)):
+                fitness_list[i][2].delete()  # delete the sound and its data
+
+            # TODO: store genome
 
             # advance to the next generation
             pop.Epoch()
@@ -139,7 +143,7 @@ class Neuroevolution(object):
         resulting_sound.get_analysis(ensure_standardized_series=True)
 
         fitness = fitness_evaluator.FitnessEvaluator.evaluate(self.param_sound, resulting_sound)
-        return fitness
+        return fitness, resulting_sound
 
 if __name__ == '__main__':
     Neuroevolution()

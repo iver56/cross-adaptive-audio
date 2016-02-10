@@ -105,3 +105,19 @@ class SoundFile(object):
         for feature in analyze.Analyzer.FEATURES:
             feature_vector.append(self.analysis['series_standardized'][feature][k])
         return feature_vector
+
+    def delete(self):
+        try:
+            os.remove(self.get_meta_data_cache_file_path())
+        except OSError:
+            pass
+
+        try:
+            os.remove(self.get_feature_data_file_path())
+        except OSError:
+            pass
+
+        try:
+            os.remove(self.file_path)
+        except OSError:
+            pass
