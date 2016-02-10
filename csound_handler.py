@@ -9,20 +9,7 @@ class CsoundHandler(object):
     def __init__(self, csd_filename):
         self.csd_filename = csd_filename
 
-    def run(self, output_filename=None):
-        command = [
-            "csound",
-            self.csd_filename
-        ]
-        if output_filename is not None:
-            command.append('-o' + os.path.join(settings.OUTPUT_DIRECTORY, output_filename))
-
-        stdout = subprocess.check_output(command)
-        if settings.VERBOSE:
-            print(stdout)
-        return stdout
-
-    def run_async(self, output_filename=None):
+    def run(self, output_filename=None, async=False):
         command = [
             "csound",
             self.csd_filename
@@ -35,4 +22,6 @@ class CsoundHandler(object):
         else:
             devnull = open(os.devnull, 'w')
             p = subprocess.Popen(command, stdout=devnull)
+        if not async:
+            p.wait()
         return p

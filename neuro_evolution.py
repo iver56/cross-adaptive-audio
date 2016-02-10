@@ -93,7 +93,7 @@ class NeuroEvolution(object):
             settings.PRNG_SEED
         )
 
-        for generation in range(self.args.num_generations):
+        for generation in range(1, self.args.num_generations + 1):
             print('generation {}'.format(generation))
             # retrieve a list of all genomes in the population
             genome_list = NEAT.GetGenomeList(pop)

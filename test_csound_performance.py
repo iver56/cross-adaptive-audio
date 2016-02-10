@@ -30,7 +30,7 @@ class TestCsoundPerformance(unittest.TestCase):
             template.write_result(csd_path)
             csound = csound_handler.CsoundHandler(csd_path)
             output_filename = self.drums.filename + '.test_processed_{}.wav'.format(i)
-            csound.run(output_filename)
+            csound.run(output_filename, async=False)
 
         print("Serial execution time for {0} sounds: {1} seconds".format(
             self.num_sounds,
@@ -55,7 +55,7 @@ class TestCsoundPerformance(unittest.TestCase):
             template.write_result(csd_path)
             csound = csound_handler.CsoundHandler(csd_path)
             output_filename = self.drums.filename + '.test_processed_{}.wav'.format(i)
-            p = csound.run_async(output_filename)
+            p = csound.run(output_filename, async=True)
             processes.append(p)
 
         for p in processes:
