@@ -61,13 +61,13 @@ http://www.pygame.org/download.shtml
 * `[sudo] python analyze.py -i drums.wav`
 * `[sudo] python visualize.py -i drums.wav`
 * `[sudo] python fitness_evaluator.py -i drums.wav synth.wav`
-* `[sudo] python neuroevolution.py -i drums.wav synth.wav -g 10 -p 100`
+* `[sudo] python neuroevolution.py -i drums.wav synth.wav -g 100 -p 30`
 * `make clean` (remove data written during an experiment, but keep data about input files)
 * `make clean-all` (remove all calculated data)
 
-## Ramdisk (Ubuntu)
+## RAM disk (Ubuntu)
 
-Experiments can run ~10-30% faster (depending on hardware) if you use a RAM disk to remove I/O overhead.
+Experiments can run ~10-30% faster (depending on hardware) if you use a RAM disk to reduce I/O overhead.
 
 `sudo mkdir -p /mnt/ramdisk`
 `sudo mount -t tmpfs -o size=3072m tmpfs /mnt/ramdisk`

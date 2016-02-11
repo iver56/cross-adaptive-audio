@@ -2,6 +2,7 @@ import os
 
 
 BASE_DIR = './'
+# BASE_DIR = '/mnt/ramdisk'  # when using a RAM disk
 
 CSD_DIRECTORY = os.path.join(BASE_DIR, 'csd')
 INPUT_FEATURE_DATA_DIRECTORY = os.path.join(BASE_DIR, 'input_feature_data')
