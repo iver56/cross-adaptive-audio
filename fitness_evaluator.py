@@ -61,7 +61,7 @@ class FitnessEvaluator(object):
         euclidean_distance_sum = 0
         for k in range(param_sound.get_num_frames()):
             sum_of_squared_differences = 0
-            for feature in param_sound_analysis['series_standardized']:
+            for feature in ['mfcc_amp']:  # param_sound_analysis['series_standardized']:
                 param_value = param_sound_analysis['series_standardized'][feature][k]
                 output_value = output_sound_analysis['series_standardized'][feature][k]
 

@@ -91,7 +91,7 @@ class SoundFile(object):
             json.dump(self.analysis, outfile)
 
     def get_num_frames(self):
-        return len(self.analysis['series']['mfcc_time'])
+        return len(self.analysis['series']['mfcc_amp'])
 
     def get_standardized_feature_vector(self, k):
         """

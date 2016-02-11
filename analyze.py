@@ -14,7 +14,7 @@ import project
 
 
 class Analyzer(object):
-    FEATURES = ['mfcc_time', 'mfcc_amp']
+    FEATURES = ['mfcc_amp']
     for i in range(1, 13):
         FEATURES.append('mfcc_' + str(i))
     NUM_FEATURES = len(FEATURES)
@@ -110,8 +110,8 @@ class Analyzer(object):
             values = line.split()
             if not values:
                 continue
-            mfcc_time = float(values[0])
-            my_logger.log_value('mfcc_time', mfcc_time)
+            # mfcc_time = float(values[0])
+            # my_logger.log_value('mfcc_time', mfcc_time)
             mfcc_amp = float(values[1])
             my_logger.log_value('mfcc_amp', mfcc_amp)
             for i in range(len(values) - 2):
