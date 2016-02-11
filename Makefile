@@ -11,4 +11,4 @@ clean:
 
 .PHONY: clean-all
 clean-all:
-	python clean.py
+	python clean.py --ensure-directories

@@ -2,7 +2,11 @@ import os
 
 
 BASE_DIR = './'
-# BASE_DIR = '/mnt/ramdisk'  # when using a RAM disk
+RAM_DISK_DIR = '/mnt/ramdisk'
+USE_RAM_DISK = False
+
+if USE_RAM_DISK:
+    BASE_DIR = RAM_DISK_DIR
 
 CSD_DIRECTORY = os.path.join(BASE_DIR, 'csd')
 INPUT_FEATURE_DATA_DIRECTORY = os.path.join(BASE_DIR, 'input_feature_data')
@@ -12,6 +16,7 @@ INPUT_DIRECTORY = os.path.join(BASE_DIR, 'input')
 META_DATA_CACHE_DIRECTORY = os.path.join(BASE_DIR, 'meta_data_cache')
 OUTPUT_DIRECTORY = os.path.join(BASE_DIR, 'output')
 PROJECT_DATA_DIRECTORY = os.path.join(BASE_DIR, 'projects')
+TEST_AUDIO_DIRECTORY = 'test_audio'
 
 CURRENT_PROJECT_FILE = 'test.json'
 PRNG_SEED = 2
@@ -38,3 +43,5 @@ AUBIO_BUFFER_SIZE = AUBIO_HOP_SIZE * 2
 
 """ksmps (number of samples per k) for csound"""
 CSOUND_KSMPS = AUBIO_HOP_SIZE
+
+WHITELISTED_SOUND_FILE_EXTENSIONS = ['wav']

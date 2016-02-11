@@ -11,17 +11,15 @@ import standardizer
 
 
 class CreateProject(object):
-    WHITELISTED_FILE_EXTENSIONS = ['wav']
-
     def __init__(self):
         arg_parser = argparse.ArgumentParser()
         arg_parser.add_argument(
             '-n',
             '--name',
             dest='name',
-            required=True,
+            required=False,
             help='The name of the project',
-            default=''
+            default='test'
         )
         arg_parser.add_argument(
             '-i',
@@ -72,7 +70,7 @@ class CreateProject(object):
                 ]
 
         self.project_data['filenames'] = [filename for filename in self.project_data['filenames'] if
-                                          filename.split('.')[-1] in self.WHITELISTED_FILE_EXTENSIONS]
+                                          filename.split('.')[-1] in settings.WHITELISTED_SOUND_FILE_EXTENSIONS]
         if len(self.project_data['filenames']) == 0:
             raise Exception('No sound files added to the project')
 
