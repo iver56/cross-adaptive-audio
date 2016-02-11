@@ -64,3 +64,18 @@ http://www.pygame.org/download.shtml
 * `[sudo] python neuroevolution.py -i drums.wav synth.wav -g 10 -p 100`
 * `make clean` (remove data written during an experiment, but keep data about input files)
 * `make clean-all` (remove all calculated data)
+
+## Ramdisk (Ubuntu)
+
+Experiments can run ~10-30% faster (depending on hardware) if you use a RAM disk to remove I/O overhead.
+
+`sudo mkdir -p /mnt/ramdisk`
+`sudo mount -t tmpfs -o size=3072m tmpfs /mnt/ramdisk`
+
+`sudo nano /etc/fstab` and add the following line:
+`tmpfs       /mnt/ramdisk tmpfs   nodev,nosuid,noexec,nodiratime,size=3072M   0 0`
+
+The ramdisk should now be mounted on startup/reboot. You can confirm this by rebooting and running
+`df -h /mnt/ramdisk`
+
+Finally, set BASE_DIR in settings.py to '/mnt/ramdisk'
