@@ -35,8 +35,8 @@ http://csound.github.io/download.html
 * `pip install numpy-1.10.4+mkl-cp27-none-win32.whl`
 * `pip install matplotlib-1.5.1-cp27-none-win32.whl`
 * `pip install MultiNEAT-0.3-cp27-none-win32.whl`
-* Install OpenCV: http://docs.opencv.org/2.4/doc/tutorials/introduction/windows_install/windows_install.html
-* Install Python bindings for OpenCV: http://docs.opencv.org/master/d5/de5/tutorial_py_setup_in_windows.html#gsc.tab=0
+* Install OpenCV (optional): http://docs.opencv.org/2.4/doc/tutorials/introduction/windows_install/windows_install.html
+* Install Python bindings for OpenCV (optional): http://docs.opencv.org/master/d5/de5/tutorial_py_setup_in_windows.html#gsc.tab=0
 
 ### Install Aubio
 * Download http://aubio.org/bin/0.4.2/aubio-0.4.2.win32_binary.zip

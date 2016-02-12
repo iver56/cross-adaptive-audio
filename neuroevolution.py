@@ -9,6 +9,11 @@ import fitness_evaluator
 import statistics
 import time
 
+try:
+    import cv2
+    import numpy as np
+except:
+    pass
 
 class Neuroevolution(object):
     def __init__(self):
@@ -49,6 +54,16 @@ class Neuroevolution(object):
             required=False,
             default=None
         )
+        arg_parser.add_argument(
+            '-v',
+            '--visualize',
+            nargs='?',
+            dest='visualize',
+            help='Visualize the best neural network in each generation',
+            const=True,
+            required=False,
+            default=False
+        )
         self.args = arg_parser.parse_args()
 
         if self.args.seed is not None:
@@ -73,8 +88,8 @@ class Neuroevolution(object):
         params = NEAT.Parameters()
         params.PopulationSize = self.args.population_size
         num_inputs = analyze.Analyzer.NUM_FEATURES + 1  # always add one extra input, see http://multineat.com/docs.html
-        num_outputs = cross_adapt.CrossAdapter.NUM_PARAMETERS
         num_hidden_nodes = 0
+        num_outputs = cross_adapt.CrossAdapter.NUM_PARAMETERS
         genome = NEAT.Genome(
             0,  # ID
             num_inputs,
@@ -111,6 +126,14 @@ class Neuroevolution(object):
             print('best fitness: {0:.5f}'.format(fitness_list[0][0]))
             avg_fitness = statistics.mean([x[0] for x in fitness_list])
             print('avg fitness: {0:.5f}'.format(avg_fitness))
+
+            if self.args.visualize:
+                net = NEAT.NeuralNetwork()
+                fitness_list[0][1].BuildPhenotype(net)
+                img = np.zeros((500, 500, 3), dtype=np.uint8)
+                NEAT.DrawPhenotype(img, (0, 0, 500, 500), net)
+                cv2.imshow("NN", img)
+                cv2.waitKey(1)
 
             # delete all but best fit results from this generation
             for i in range(1, len(fitness_list)):
