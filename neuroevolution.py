@@ -74,13 +74,13 @@ class Neuroevolution(object):
         params.PopulationSize = self.args.population_size
         num_inputs = analyze.Analyzer.NUM_FEATURES + 1  # always add one extra input, see http://multineat.com/docs.html
         num_outputs = cross_adapt.CrossAdapter.NUM_PARAMETERS
-        num_hidden_nodes = 6
+        num_hidden_nodes = 0
         genome = NEAT.Genome(
             0,  # ID
             num_inputs,
             num_hidden_nodes,
             num_outputs,
-            True,  # FS_NEAT
+            False,  # FS_NEAT
             NEAT.ActivationFunction.UNSIGNED_SIGMOID,  # OutputActType
             NEAT.ActivationFunction.TANH,  # HiddenActType
             0,  # SeedType
@@ -90,7 +90,7 @@ class Neuroevolution(object):
             genome,
             params,
             True,  # whether the population should be randomized
-            1.0,  # how much the population should be randomized,
+            2.0,  # how much the population should be randomized,
             settings.PRNG_SEED
         )
 
