@@ -10,6 +10,7 @@ import settings
 import sound_file
 import standardizer
 import six
+import analyze
 
 
 class Gfx(object):
@@ -42,7 +43,6 @@ class Gfx(object):
         return (datetime.datetime.now() - self.t_start).total_seconds()
 
     def draw_series(self):
-        i = 0
         for key, array in six.iteritems(self.series):
             for j in range(len(array)):
                 normalized_value = standardizer.Standardizer.get_normalized_value(array[j])
@@ -50,12 +50,11 @@ class Gfx(object):
                 color = (color_value, color_value, color_value)
                 rect = pygame.Rect(
                     int(j * self.width_per_frame),
-                    int(i * self.height_per_series),
+                    int(analyze.Analyzer.FEATURES[key] * self.height_per_series),
                     self.width_per_frame,
                     self.height_per_series
                 )
                 pygame.draw.rect(self.screen, color, rect)
-            i += 1
 
     def get_current_frame_number(self):
         return self.get_time_since_start() * float(settings.SAMPLE_RATE) / self.ksmps

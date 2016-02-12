@@ -14,9 +14,9 @@ import project
 
 
 class Analyzer(object):
-    FEATURES = ['mfcc_amp']
+    FEATURES = {'mfcc_amp': 0}
     for i in range(1, 13):
-        FEATURES.append('mfcc_' + str(i))
+        FEATURES['mfcc_' + str(i)] = i
     NUM_FEATURES = len(FEATURES)
 
     def __init__(self):
@@ -119,6 +119,7 @@ class Analyzer(object):
                 my_logger.log_value('mfcc_{}'.format(i + 1), mfcc_band)
 
         my_logger.write()
+
 
 if __name__ == '__main__':
     Analyzer()
