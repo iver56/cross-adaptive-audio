@@ -15,6 +15,7 @@ try:
 except:
     pass
 
+
 class Neuroevolution(object):
     def __init__(self):
         arg_parser = argparse.ArgumentParser()
@@ -34,7 +35,6 @@ class Neuroevolution(object):
             dest='num_generations',
             type=int,
             required=False,
-            choices=range(1, 2000),
             default=20
         )
         arg_parser.add_argument(
@@ -43,7 +43,6 @@ class Neuroevolution(object):
             dest='population_size',
             type=int,
             required=False,
-            choices=range(2, 2000),
             default=20
         )
         arg_parser.add_argument(

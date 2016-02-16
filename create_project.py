@@ -72,7 +72,7 @@ class CreateProject(object):
         self.project_data['filenames'] = [filename for filename in self.project_data['filenames'] if
                                           filename.split('.')[-1] in settings.WHITELISTED_SOUND_FILE_EXTENSIONS]
         if len(self.project_data['filenames']) == 0:
-            raise Exception('No sound files added to the project')
+            raise Exception('No sound files found. Make sure that you have sound files in the input folder')
 
     def analyze_all(self):
         print('Analyzing all sound files in project...')

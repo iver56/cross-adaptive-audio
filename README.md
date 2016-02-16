@@ -28,10 +28,12 @@ https://www.python.org/downloads/
 http://csound.github.io/download.html
 
 ### Install HyperNEAT and dependencies (numpy, matplotlib, opencv with python bindings)
+Building these dependencies from source can be difficult and time-consuming, so let's download wheel binaries instead
+
 * Go to http://www.lfd.uci.edu/~gohlke/pythonlibs/#multineat
-* Download numpy-1.10.4+mkl-cp27-none-win32.whl
-* Download matplotlib-1.5.1-cp27-none-win32.whl
-* Download MultiNEAT-0.3-cp27-none-win32.whl
+    * Download numpy-1.10.4+mkl-cp27-none-win32.whl
+    * Download matplotlib-1.5.1-cp27-none-win32.whl
+    * Download MultiNEAT-0.3-cp27-none-win32.whl
 * `pip install numpy-1.10.4+mkl-cp27-none-win32.whl`
 * `pip install matplotlib-1.5.1-cp27-none-win32.whl`
 * `pip install MultiNEAT-0.3-cp27-none-win32.whl`
@@ -57,7 +59,7 @@ http://www.pygame.org/download.shtml
 
 ## Example commands
 
-* `python create_project.py --name test1`
+* `python create_project.py`
 * `python analyze.py -i drums.wav`
 * `python visualize.py -i drums.wav`
 * `python fitness_evaluator.py -i drums.wav synth.wav`
