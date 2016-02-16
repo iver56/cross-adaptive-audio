@@ -13,10 +13,10 @@ The project will investigate methods of evaluating the musical applicability of 
   * `echo 'PATH=/data/essentia-extractors-v2.1_beta2/:$PATH' >> ~/.bashrc`
   * `source ~/.bashrc`
 * Install MultiNEAT:
-  * Install boost c++ libraries: `sudo apt-get install libboost-all-dev`
+  * Install boost c++ libraries: `[sudo] apt-get install libboost-all-dev`
   * `git clone https://github.com/peter-ch/MultiNEAT.git`
   * `cd MultiNEAT`
-  * `sudo python setup.py install`
+  * `[sudo] python setup.py install`
 * Install pygame (optional): `sudo apt-get install python-pygame`
 
 ## Install dependencies (Windows)
@@ -51,21 +51,22 @@ Building these dependencies from source can be difficult and time-consuming, so 
 ### Install Pygame (optional)
 http://www.pygame.org/download.shtml
 
-## Setup
+## Setup of this project
 
 * Clone this repository
 * Get a local settings file: `cp settings.py.example settings.py`
-* Install dependencies: `[sudo] pip install -r requirements.txt`
+* Make sure that all dependencies are installed: `[sudo] pip install -r requirements.txt`
 
 ## Example commands
 
-* `python create_project.py`
-* `python analyze.py -i drums.wav`
-* `python visualize.py -i drums.wav`
-* `python fitness_evaluator.py -i drums.wav synth.wav`
-* `[sudo] python neuroevolution.py -i drums.wav synth.wav -g 100 -p 30`
+* `[sudo] python test_multineat.py` (check if MultiNEAT works)
+* `python create_project.py` (find and analyze a collection of sound files in the input folder)
+* `python analyze.py -i drums.wav` (manually analyze drums.wav and put the result in a json file)
+* `python visualize.py -i drums.wav` (visualize the analysis of drums.wav)
+* `python fitness_evaluator.py -i drums.wav synth.wav` (print a number that represents the similarity between drums.wav and synth.wav)
+* `[sudo] python neuroevolution.py -i drums.wav synth.wav -g 100 -p 30` (run the genetic algorithm for 100 generations with a population of 30)
 * `make clean` (remove data written during an experiment, but keep data about input files)
-* `make clean-all` (remove all calculated data)
+* `make clean-all` (remove all calculated data and ensure that directories are present in the RAM disk)
 
 ## RAM disk (Ubuntu)
 
