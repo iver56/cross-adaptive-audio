@@ -59,7 +59,7 @@ http://www.pygame.org/download.shtml
 
 ## Example commands
 
-* `[sudo] python test_multineat.py` (check if MultiNEAT works)
+* `make test` (run all tests)
 * `python create_project.py` (find and analyze a collection of sound files in the input folder)
 * `python analyze.py -i drums.wav` (manually analyze drums.wav and put the result in a json file)
 * `python visualize.py -i drums.wav` (visualize the analysis of drums.wav)

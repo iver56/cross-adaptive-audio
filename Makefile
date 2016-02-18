@@ -12,3 +12,7 @@ clean:
 .PHONY: clean-all
 clean-all:
 	python clean.py --ensure-directories
+
+.PHONY: test
+test:
+	nosetests
