@@ -30,7 +30,7 @@ else:
     FILE_HANDLER = open
     DATA_FILE_EXTENSION = '.json'
 
-VERBOSE = False
+VERBOSE = False  # Set this to True for debugging purposes
 
 """Sample rate. CD quality"""
 SAMPLE_RATE = 44100

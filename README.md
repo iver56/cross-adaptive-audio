@@ -64,7 +64,7 @@ http://www.pygame.org/download.shtml
 * `python analyze.py -i drums.wav` (manually analyze drums.wav and put the result in a json file)
 * `python visualize.py -i drums.wav` (visualize the analysis of drums.wav)
 * `python fitness_evaluator.py -i drums.wav synth.wav` (print a number that represents the similarity between drums.wav and synth.wav)
-* `[sudo] python neuroevolution.py -i drums.wav synth.wav -g 100 -p 30` (run the genetic algorithm for 100 generations with a population of 30)
+* `python neuroevolution.py -i drums.wav synth.wav -g 100 -p 30` (run the genetic algorithm for 100 generations with a population of 30)
 * `make clean` (remove data written during an experiment, but keep data about input files)
 * `make clean-all` (remove all calculated data and ensure that directories are present in the RAM disk)
 
