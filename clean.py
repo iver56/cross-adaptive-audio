@@ -48,7 +48,8 @@ class Cleaner(object):
                 settings.INPUT_DIRECTORY,
                 settings.META_DATA_CACHE_DIRECTORY,
                 settings.OUTPUT_DIRECTORY,
-                settings.PROJECT_DATA_DIRECTORY
+                settings.PROJECT_DATA_DIRECTORY,
+                settings.STATS_DATA_DIRECTORY
             ]
 
             for path in all_paths:

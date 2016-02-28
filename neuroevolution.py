@@ -8,12 +8,15 @@ import sound_file
 import fitness_evaluator
 import statistics
 import time
+import logger
+import os
 
 try:
     import cv2
     import numpy as np
 except:
-    pass
+    if settings.VERBOSE:
+        print('OpenCV + python bindings and/or numpy, which are required for visualization, could not be imported')
 
 
 class Neuroevolution(object):
@@ -81,6 +84,12 @@ class Neuroevolution(object):
         else:
             raise Exception('Two filenames must be specified')
 
+        self.stats_logger = logger.Logger(
+            os.path.join(settings.STATS_DATA_DIRECTORY, 'stats.json'),
+            suppress_initialization=True
+        )
+        self.stats_logger.data = []
+
         self.run()
 
     def run(self):
@@ -122,9 +131,20 @@ class Neuroevolution(object):
                 fitness_list.append((fitness, genome, output_sound))
             fitness_list.sort(reverse=True)
 
-            print('best fitness: {0:.5f}'.format(fitness_list[0][0]))
-            avg_fitness = statistics.mean([x[0] for x in fitness_list])
+            fitness_list_flat = [x[0] for x in fitness_list]
+            max_fitness = fitness_list_flat[0]
+            print('best fitness: {0:.5f}'.format(max_fitness))
+            avg_fitness = statistics.mean(fitness_list_flat)
+            fitness_std_dev = statistics.pstdev(fitness_list_flat)
             print('avg fitness: {0:.5f}'.format(avg_fitness))
+            stats_item = {
+                'generation': generation,
+                'fitness_max': max_fitness,
+                'fitness_avg': avg_fitness,
+                'fitness_std_dev': fitness_std_dev
+            }
+            self.stats_logger.data.append(stats_item)
+            self.stats_logger.write()
 
             if self.args.visualize:
                 net = NEAT.NeuralNetwork()
