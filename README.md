@@ -17,7 +17,7 @@ The project will investigate methods of evaluating the musical applicability of 
   * `git clone https://github.com/peter-ch/MultiNEAT.git`
   * `cd MultiNEAT`
   * `[sudo] python setup.py install`
-* Install pygame (optional): `sudo apt-get install python-pygame`
+* Install NodeJS (optional)
 
 ## Install dependencies (Windows)
 
@@ -37,8 +37,6 @@ Building these dependencies from source can be difficult and time-consuming, so 
 * `pip install numpy-1.10.4+mkl-cp27-none-win32.whl`
 * `pip install matplotlib-1.5.1-cp27-none-win32.whl`
 * `pip install MultiNEAT-0.3-cp27-none-win32.whl`
-* Install OpenCV (optional): http://docs.opencv.org/2.4/doc/tutorials/introduction/windows_install/windows_install.html
-* Install Python bindings for OpenCV (optional): http://docs.opencv.org/master/d5/de5/tutorial_py_setup_in_windows.html#gsc.tab=0
 
 ### Install Aubio
 * Download http://aubio.org/bin/0.4.2/aubio-0.4.2.win32_binary.zip
@@ -48,14 +46,15 @@ Building these dependencies from source can be difficult and time-consuming, so 
 * Download tar for windows at http://essentia.upf.edu/documentation/extractors/
 * Extract and add to the PATH variable
 
-### Install Pygame (optional)
-http://www.pygame.org/download.shtml
+### Install NodeJS (optional)
+https://nodejs.org/en/download/
 
 ## Setup of this project
 
 * Clone this repository
 * Get a local settings file: `cp settings.py.example settings.py`
 * Make sure that all dependencies are installed: `[sudo] pip install -r requirements.txt`
+* Navigate to the node_server folder and run `npm install`
 
 ## Example commands
 
@@ -67,6 +66,7 @@ http://www.pygame.org/download.shtml
 * `python neuroevolution.py -i drums.wav synth.wav -g 100 -p 30` (run the genetic algorithm for 100 generations with a population of 30)
 * `make clean` (remove data written during an experiment, but keep data about input files)
 * `make clean-all` (remove all calculated data and ensure that directories are present in the RAM disk)
+* `make serve` (start a server for a web client that can interactively visualize the experiment data)
 
 ## RAM disk (Ubuntu)
 
