@@ -1,0 +1,30 @@
+{
+  "name": "cross-adaptive-audio-server",
+  "version": "0.0.1",
+  "description": "Server for pushing data to a web client that visualizes evolution of cross-adaptive audio",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/iver56/cross-adaptive-audio.git"
+  },
+  "keywords": [
+    "audio",
+    "neuroevolution",
+    "visualization"
+  ],
+  "bugs": {
+    "url": "https://github.com/iver56/cross-adaptive-audio/issues"
+  },
+  "author": "Iver Jordal",
+  "license": "GPL-3.0",
+  "homepage": "https://github.com/iver56/cross-adaptive-audio#readme",
+  "dependencies": {
+    "chokidar": "^1.4.3",
+    "console-stamp": "^0.2.0",
+    "jsonfile": "^2.2.3",
+    "websocket": "^1.0.22"
+  }
+}
