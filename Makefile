@@ -16,3 +16,7 @@ clean-all:
 .PHONY: test
 test:
 	nosetests
+
+.PHONY: serve
+serve:
+	node node_server/server.js

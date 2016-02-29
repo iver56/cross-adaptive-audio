@@ -3,13 +3,26 @@ var chokidar = require('chokidar');
 var util = require('util');
 require('console-stamp')(console, '[HH:MM:ss]');
 var p = require('path');
-var jsonfile = require('jsonfile')
+var jsonfile = require('jsonfile');
+var express = require('express');
+
+
+process.on('uncaughtException', function(err) {
+    console.log(err);
+});
+
+var staticServer = express();
+staticServer.use(express.static(p.join(__dirname, '..', 'web_client')));
+var staticServerPort = 8080;
+staticServer.listen(staticServerPort, function() {
+    console.log('File server is listening on port ' + staticServerPort);
+});
 
 var server = http.createServer(function (request, response) {
 });
-
-server.listen(1337, function () {
-    console.log((new Date()) + ' Server is listening on port 1337');
+var webSocketServerPort = 1337;
+server.listen(webSocketServerPort, function () {
+    console.log('WebSocket server is listening on port ' + webSocketServerPort);
 });
 
 var WebSocketServer = require('websocket').server;
@@ -54,7 +67,7 @@ wsServer.on('request', function (r) {
     // Store the connection method so we can loop through & contact all clients
     clients[id] = connection;
 
-    console.log((new Date()) + ' Connection accepted [' + id + ']');
+    console.log('Connection accepted [' + id + ']');
 
     // Create event listener
     connection.on('message', function (msg) {
@@ -65,7 +78,7 @@ wsServer.on('request', function (r) {
 
     connection.on('close', function (reasonCode, description) {
         delete clients[id];
-        console.log((new Date()) + ' Peer ' + connection.remoteAddress + ' disconnected.');
+        console.log('Peer ' + connection.remoteAddress + ' disconnected.');
     });
 
 });
