@@ -1,16 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Cross-adaptive audio</title>
-  <script src="js/communication.js"></script>
-</head>
-<body>
+    <meta charset="UTF-8">
+    <title>Cross-adaptive audio</title>
+    <script src="lib/angular/angular.js"></script>
+    <script src="lib/d3/d3.min.js"></script>
+    <script src="lib/line-chart/LineChart.min.js"></script>
+    <link rel="stylesheet" href="lib/line-chart/LineChart.min.css">
 
-<form>
-  <input type="button" onclick="sendMessage()" value="Send message">
-</form>
-<ul id="players"></ul>
+    <script src="src/app.js"></script>
+
+    <script src="src/controllers/mainCtrl.js"></script>
+
+    <script src="src/services/communicationService.js"></script>
+    <script src="src/services/statsService.js"></script>
+
+    <script src="src/directives/statsChart.js"></script>
+</head>
+
+<body ng-app="crossAdaptiveAudioApp" ng-controller="MainCtrl as main">
+
+<stats-chart></stats-chart>
 
 </body>
 </html>

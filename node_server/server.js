@@ -33,27 +33,41 @@ wsServer = new WebSocketServer({
 var count = 0;
 var clients = {};
 
-function broadcastFile(filePath, key) {
-    jsonfile.readFile(filePath, function (err, obj) {
-        var objectToBroadcast = {
-            key: key,
-            data: obj
-        };
-        var objectAsJson = JSON.stringify(objectToBroadcast);
+// TODO: don't hard code paths, but read them from the settings file
+var statsDir = p.join(__dirname, '..', 'stats');
+var statsFilePath = p.join(statsDir, 'stats.json');
+
+function sendObject(objectToSend, client) {
+    var objectAsJson = JSON.stringify(objectToSend);
+    if (client) {
+        client.sendUTF(objectAsJson);
+    } else {
         for (var i in clients) {
             if (clients.hasOwnProperty(i)) {
                 clients[i].sendUTF(objectAsJson);
             }
         }
+    }
+}
+
+function sendFile(filePath, key, client) {
+    jsonfile.readFile(filePath, function (err, obj) {
+        var objectToSend = {
+            key: key,
+            data: obj
+        };
+        sendObject(objectToSend, client);
     })
 }
 
-// TODO: don't hard code paths, but read them from the settings file
-var statsDir = p.join('..', 'stats');
+function sendStatsFile(client) {
+    sendFile(statsFilePath, 'stats.json', client)
+}
+
 chokidar.watch(statsDir, {ignored: /[\/\\]\./}).on('change', function (path, stats) {
     if (path.endsWith('stats.json')) {
         console.log('stats.json changed');
-        broadcastFile(path, 'stats.json')
+        sendStatsFile(); // broadcast to all clients
     }
 });
 
@@ -69,11 +83,11 @@ wsServer.on('request', function (r) {
 
     console.log('Connection accepted [' + id + ']');
 
+    sendStatsFile(connection);
+
     // Create event listener
     connection.on('message', function (msg) {
         console.log(msg);
-
-        broadcastStats();
     });
 
     connection.on('close', function (reasonCode, description) {
