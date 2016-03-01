@@ -39,6 +39,15 @@
           {
             axis: "y",
             dataset: "stats",
+            key: "fitness_min",
+            label: "Min fitness",
+            color: "#FF4F86",
+            type: ['line', 'dot'],
+            id: 'fitness_min'
+          },
+          {
+            axis: "y",
+            dataset: "stats",
             key: "fitness_std_dev",
             label: "Standard deviation",
             color: "#60E246",

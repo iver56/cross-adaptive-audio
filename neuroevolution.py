@@ -133,12 +133,14 @@ class Neuroevolution(object):
 
             fitness_list_flat = [x[0] for x in fitness_list]
             max_fitness = fitness_list_flat[0]
+            min_fitness = fitness_list_flat[-1]
             print('best fitness: {0:.5f}'.format(max_fitness))
             avg_fitness = statistics.mean(fitness_list_flat)
             fitness_std_dev = statistics.pstdev(fitness_list_flat)
             print('avg fitness: {0:.5f}'.format(avg_fitness))
             stats_item = {
                 'generation': generation,
+                'fitness_min': min_fitness,
                 'fitness_max': max_fitness,
                 'fitness_avg': avg_fitness,
                 'fitness_std_dev': fitness_std_dev,
