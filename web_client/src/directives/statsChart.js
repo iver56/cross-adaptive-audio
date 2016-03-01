@@ -57,7 +57,7 @@
 
       $scope.$watch(function() {
         return statsService.data;
-      }, function(data) {
+      }, function() {
         vm.data.stats = statsService.data;
       });
     }

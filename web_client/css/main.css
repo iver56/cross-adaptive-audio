@@ -6,7 +6,12 @@ md-content {
 .stats-chart {
   width: 100%;
   height: 300px;
-  position: relative;
+  margin-bottom: 50px;
+}
+
+.histogram-chart {
+  width: 100%;
+  height: 200px;
   margin-bottom: 50px;
 }
 
