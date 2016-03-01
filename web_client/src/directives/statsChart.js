@@ -56,11 +56,36 @@
           }
         ],
         axes: {x: {key: "generation"}},
+        tooltipHook: function(d) {
+          if (typeof d === 'undefined') {
+            return;
+          }
+          var rows = d.map(function(s) {
+            return {
+              label: s.series.label,
+              value: s.row.y1.toPrecision(4),
+              color: s.series.color,
+              id: s.series.id
+            }
+          });
+          return {
+            abscissas: 'Generation ' + d[0].row.x,
+            rows: rows
+          };
+        },
         margin: {
           top: 10,
           right: 30,
           bottom: 20,
           left: 30
+        },
+        zoom: {
+          x: true,
+          y: true
+        },
+        pan: {
+          x: true,
+          y: true
         }
       };
 

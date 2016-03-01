@@ -51,9 +51,20 @@
             }
           });
           return {
-            abscissas: '[' + parseFloat(d[0].row.x).toFixed(2) + " - " + parseFloat(d[0].row.x + statsService.histogramOptions.step).toFixed(2) + ']',
+            abscissas: (
+              '[' + parseFloat(d[0].row.x).toFixed(3) + " - " +
+              parseFloat(d[0].row.x + statsService.histogramOptions.step).toFixed(3) + ']'
+            ),
             rows: rows
           };
+        },
+        zoom: {
+          x: true,
+          y: false
+        },
+        pan: {
+          x: true,
+          y: false
         }
       };
 

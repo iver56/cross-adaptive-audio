@@ -11,7 +11,7 @@
       that.numGenerations = 1;
       that.populationSize = null;
       that.histogramOptions = {
-        numBins: 100,
+        numBins: 200,
         minValue: 0.0,
         maxValue: 1.0
       };
