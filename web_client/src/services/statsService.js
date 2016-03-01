@@ -6,8 +6,8 @@
     .service('statsService', function() {
       var that = this;
 
-      that.data = [];
-      that.selectedGeneration = 1;
+      that.data = null;
+      that.selectedGeneration = null;
       that.numGenerations = 1;
       that.populationSize = null;
       that.histogramOptions = {
@@ -23,6 +23,9 @@
           that.numGenerations = data.length;
           that.data = data;
           that.populationSize = data[0].fitness_values.length;
+          if (!that.selectedGeneration) {
+            that.selectedGeneration = that.numGenerations;
+          }
         }
       };
 

@@ -38,6 +38,7 @@
       <span class="md-body-1">generation</span>
     </div>
     <md-slider
+        ng-if="selectGeneration.statsService.selectedGeneration"
         flex
         md-discrete
         ng-model="selectGeneration.statsService.selectedGeneration"
