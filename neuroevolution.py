@@ -33,7 +33,7 @@ class Neuroevolution(object):
             default=[]
         )
         arg_parser.add_argument(
-            '-g'
+            '-g',
             '--num-generations',
             dest='num_generations',
             type=int,
@@ -41,7 +41,7 @@ class Neuroevolution(object):
             default=20
         )
         arg_parser.add_argument(
-            '-p'
+            '-p',
             '--population_size',
             dest='population_size',
             type=int,
@@ -49,7 +49,7 @@ class Neuroevolution(object):
             default=20
         )
         arg_parser.add_argument(
-            '-s'
+            '-s',
             '--seed',
             dest='seed',
             type=int,
@@ -141,7 +141,8 @@ class Neuroevolution(object):
                 'generation': generation,
                 'fitness_max': max_fitness,
                 'fitness_avg': avg_fitness,
-                'fitness_std_dev': fitness_std_dev
+                'fitness_std_dev': fitness_std_dev,
+                'fitness_values': fitness_list_flat
             }
             self.stats_logger.data.append(stats_item)
             self.stats_logger.write()
