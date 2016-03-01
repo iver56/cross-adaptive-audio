@@ -46,14 +46,18 @@
             id: 'fitness_std_dev'
           }
         ],
-        axes: {x: {key: "generation"}}
+        axes: {x: {key: "generation"}},
+        margin: {
+          top: 10,
+          right: 30,
+          bottom: 20,
+          left: 30
+        }
       };
-
 
       $scope.$watch(function() {
         return statsService.data;
       }, function(data) {
-        console.log('stats data changed!');
         vm.data.stats = statsService.data;
       });
     }

@@ -1,0 +1,15 @@
+md-content {
+  margin: 10px;
+  padding: 10px;
+}
+
+.stats-chart {
+  width: 100%;
+  height: 300px;
+  position: relative;
+  margin-bottom: 50px;
+}
+
+.chart-legend {
+  position: static !important;
+}

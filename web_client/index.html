@@ -3,24 +3,51 @@
 <head>
   <meta charset="UTF-8">
   <title>Cross-adaptive audio</title>
+
+  <!-- Libs -->
   <script src="lib/angular/angular.js"></script>
+  <script src="lib/angular/angular-animate.js"></script>
+  <script src="lib/angular/angular-aria.js"></script>
   <script src="lib/d3/d3.min.js"></script>
   <script src="lib/line-chart/LineChart.min.js"></script>
   <link rel="stylesheet" href="lib/line-chart/LineChart.min.css">
+  <link rel="stylesheet" href="lib/angular-material/angular-material.css">
+  <script src="lib/angular-material/angular-material.js"></script>
 
+  <!-- App-specific files -->
   <script src="src/app.js"></script>
 
-  <script src="src/controllers/mainCtrl.js"></script>
+  <script src="src/controllers/selectGenerationCtrl.js"></script>
 
   <script src="src/services/communicationService.js"></script>
   <script src="src/services/statsService.js"></script>
 
   <script src="src/directives/statsChart.js"></script>
+
+  <link rel="stylesheet" href="css/main.css">
 </head>
 
-<body ng-app="crossAdaptiveAudioApp" ng-controller="MainCtrl as main">
+<body ng-app="crossAdaptiveAudioApp">
 
-<stats-chart></stats-chart>
+<md-content>
+  <stats-chart></stats-chart>
+
+  <div layout ng-controller="SelectGenerationCtrl as selectGeneration">
+    <div flex="10" layout layout-align="center center">
+      <span class="md-body-1">generation</span>
+    </div>
+    <md-slider
+        flex
+        md-discrete
+        ng-model="selectGeneration.statsService.selectedGeneration"
+        step="1"
+        min="1"
+        max="{{ selectGeneration.statsService.numGenerations }}"
+        aria-label="Selected generation"
+    >
+    </md-slider>
+  </div>
+</md-content>
 
 </body>
 </html>

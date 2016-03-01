@@ -19,7 +19,7 @@
           var noOp = false;
 
           if (message.key === 'stats.json') {
-            statsService.data = message.data;
+            statsService.setData(message.data);
           } else {
             // no operation
             noOp = true;
