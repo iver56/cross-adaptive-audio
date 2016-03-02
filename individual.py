@@ -9,7 +9,7 @@ class Individual(object):
     def __init__(self, genotype, generation):
         self.genotype = genotype
         self.generation = generation
-        #pprint.pprint(inspect.getmembers(genotype))
+        # pprint.pprint(inspect.getmembers(genotype))
         self.id = genotype.GetID()
         self.output_sound = None
         self.neural_output = None
@@ -25,6 +25,12 @@ class Individual(object):
                 settings.GENOTYPE_DATA_DIRECTORY,
                 'genotype_{}.txt'.format(self.id)
         )
+
+    def get_genome_data(self):
+        genome_data_file_path = self.get_genome_data_file_path()
+        with open(genome_data_file_path, 'r') as genome_data_file:
+            genome_data = genome_data_file.read()
+        return genome_data
 
     def save_genotype_data_file(self):
         self.genotype.Save(self.get_genome_data_file_path())
@@ -46,10 +52,11 @@ class Individual(object):
         return {
             'id': self.id,
             'fitness': self.genotype.GetFitness(),
-            'genome_data_file_path': self.get_genome_data_file_path(),  # TODO: data, not file path
+            'genome_data': self.get_genome_data(),
             'neural_output': self.neural_output.channels,
             'output_sound_feature_data': self.output_sound.get_analysis(
-                    ensure_standardized_series=True)
+                    ensure_standardized_series=True),
+            'output_sound_file_path': self.output_sound.file_path
         }
 
     def get_short_serialized_representation(self):
