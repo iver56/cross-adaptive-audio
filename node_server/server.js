@@ -12,7 +12,7 @@ process.on('uncaughtException', function(err) {
 });
 
 var staticServer = express();
-staticServer.use(express.static(p.join(__dirname, '..', 'web_client')));
+staticServer.use(express.static(p.join(__dirname, '..')));
 var staticServerPort = 8080;
 staticServer.listen(staticServerPort, function() {
   console.log('File server is listening on port ' + staticServerPort);
