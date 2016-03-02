@@ -22,7 +22,7 @@
         if (data) {
           that.numGenerations = data.length;
           that.data = data;
-          that.populationSize = data[0].fitness_values.length;
+          that.populationSize = data[data.length - 1].fitness_values.length;
           if (!that.selectedGeneration) {
             that.selectedGeneration = that.numGenerations;
           }

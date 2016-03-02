@@ -75,9 +75,9 @@
         },
         margin: {
           top: 10,
-          right: 30,
+          right: 35,
           bottom: 20,
-          left: 30
+          left: 35
         },
         zoom: {
           x: true,
