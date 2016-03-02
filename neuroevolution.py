@@ -141,14 +141,14 @@ class Neuroevolution(object):
                 that_individual.set_output_sound(output_sound)
                 that_individual.save()
                 individuals.append(that_individual)
-            individuals.sort(key=lambda x: x.genotype.GetFitness())
+            individuals.sort(key=lambda i: i.genotype.GetFitness())
 
-            fitness_list_flat = [x.genotype.GetFitness() for x in individuals]
-            max_fitness = fitness_list_flat[-1]
-            min_fitness = fitness_list_flat[0]
+            flat_fitness_list = [i.genotype.GetFitness() for i in individuals]
+            max_fitness = flat_fitness_list[-1]
+            min_fitness = flat_fitness_list[0]
             print('best fitness: {0:.5f}'.format(max_fitness))
-            avg_fitness = statistics.mean(fitness_list_flat)
-            fitness_std_dev = statistics.pstdev(fitness_list_flat)
+            avg_fitness = statistics.mean(flat_fitness_list)
+            fitness_std_dev = statistics.pstdev(flat_fitness_list)
             print('avg fitness: {0:.5f}'.format(avg_fitness))
             stats_item = {
                 'generation': generation,
@@ -156,7 +156,7 @@ class Neuroevolution(object):
                 'fitness_max': max_fitness,
                 'fitness_avg': avg_fitness,
                 'fitness_std_dev': fitness_std_dev,
-                'fitness_values': fitness_list_flat
+                'individuals': [i.get_short_serialized_representation() for i in individuals]
             }
             self.stats_logger.data.append(stats_item)
             self.stats_logger.write()

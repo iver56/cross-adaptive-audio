@@ -22,7 +22,7 @@
         if (data) {
           that.numGenerations = data.length;
           that.data = data;
-          that.populationSize = data[data.length - 1].fitness_values.length;
+          that.populationSize = data[data.length - 1].individuals.length;
           if (!that.selectedGeneration) {
             that.selectedGeneration = that.numGenerations;
           }
@@ -31,7 +31,7 @@
 
       that.getHistogramData = function() {
         var bins = [];
-        var fitnessValues = that.data[that.selectedGeneration - 1].fitness_values;
+        var individuals = that.data[that.selectedGeneration - 1].individuals;
         for (var i = 0; i < that.histogramOptions.numBins; i++) {
           var bin = {
             minValue: that.histogramOptions.minValue + i * that.histogramOptions.step,
@@ -40,10 +40,14 @@
           };
           bins.push(bin);
         }
-        for (var i = fitnessValues.length; i--;) {
+        for (var i = individuals.length; i--;) {
           var binIndex = Math.max(
             Math.min(
-              parseInt(that.histogramOptions.numBins * (fitnessValues[i] - that.histogramOptions.minValue) / that.histogramOptions.difference),
+              parseInt(
+                that.histogramOptions.numBins
+                * (individuals[i].fitness - that.histogramOptions.minValue)
+                / that.histogramOptions.difference
+              ),
               that.histogramOptions.numBins - 1
             ),
             0
