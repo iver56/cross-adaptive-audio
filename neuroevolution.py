@@ -10,6 +10,7 @@ import statistics
 import time
 import logger
 import os
+import individual
 
 try:
     import cv2
@@ -62,6 +63,15 @@ class Neuroevolution(object):
             nargs='?',
             dest='visualize',
             help='Visualize the best neural network in each generation',
+            const=True,
+            required=False,
+            default=False
+        )
+        arg_parser.add_argument(
+            '--keep-only-best',
+            nargs='?',
+            dest='keep_only_best',
+            help='Delete all sounds but the fittest in each generation',
             const=True,
             required=False,
             default=False
@@ -121,19 +131,21 @@ class Neuroevolution(object):
             generation_start_time = time.time()
             print('generation {}'.format(generation))
             # retrieve a list of all genomes in the population
-            genome_list = NEAT.GetGenomeList(pop)
+            genotypes = NEAT.GetGenomeList(pop)
 
-            fitness_list = []
-            # apply the evaluation function to all genomes
-            for genome in genome_list:
-                fitness, output_sound = self.evaluate(genome, generation)
-                genome.SetFitness(fitness)
-                fitness_list.append((fitness, genome, output_sound))
-            fitness_list.sort(reverse=True)
+            individuals = []
+            for genotype in genotypes:
+                that_individual = individual.Individual(genotype, generation)
+                fitness, output_sound = self.evaluate(that_individual, generation)
+                that_individual.set_fitness(fitness)
+                that_individual.set_output_sound(output_sound)
+                that_individual.save_genotype_data_file()
+                individuals.append(that_individual)
+            individuals.sort(key=lambda x: x.genotype.GetFitness())
 
-            fitness_list_flat = [x[0] for x in fitness_list]
-            max_fitness = fitness_list_flat[0]
-            min_fitness = fitness_list_flat[-1]
+            fitness_list_flat = [x.genotype.GetFitness() for x in individuals]
+            max_fitness = fitness_list_flat[-1]
+            min_fitness = fitness_list_flat[0]
             print('best fitness: {0:.5f}'.format(max_fitness))
             avg_fitness = statistics.mean(fitness_list_flat)
             fitness_std_dev = statistics.pstdev(fitness_list_flat)
@@ -151,26 +163,25 @@ class Neuroevolution(object):
 
             if self.args.visualize:
                 net = NEAT.NeuralNetwork()
-                fitness_list[0][1].BuildPhenotype(net)
+                individuals[-1].genotype.BuildPhenotype(net)  # build phenotype from best genotype
                 img = np.zeros((500, 500, 3), dtype=np.uint8)
                 NEAT.DrawPhenotype(img, (0, 0, 500, 500), net)
                 cv2.imshow("NN", img)
                 cv2.waitKey(1)
 
-            # delete all but best fit results from this generation
-            for i in range(1, len(fitness_list)):
-                fitness_list[i][2].delete()  # delete the sound and its data
-
-            # TODO: store genome
+            if self.args.keep_only_best:
+                # delete all but best fit results from this generation
+                for i in range(len(individuals) - 1):
+                    individuals[i].output_sound.delete()  # delete the sound and its data
 
             # advance to the next generation
             pop.Epoch()
             print("Generation execution time: %s seconds" % (time.time() - generation_start_time))
 
-    def evaluate(self, genome, generation):
+    def evaluate(self, individual, generation):
         # this creates a neural network (phenotype) from the genome
         net = NEAT.NeuralNetwork()
-        genome.BuildPhenotype(net)  # TODO: How about BuildHyperNEATPhenotype instead
+        individual.genotype.BuildPhenotype(net)  # TODO: How about BuildHyperNEATPhenotype instead
 
         output_vectors = []
         for input_vector in self.param_input_vectors:
@@ -179,13 +190,14 @@ class Neuroevolution(object):
             output = net.Output()
             output_vectors.append(list(output))
 
-        resulting_sound = cross_adapt.CrossAdapter.cross_adapt(
+        resulting_sound, resulting_neural_output = cross_adapt.CrossAdapter.cross_adapt(
             self.param_sound,
             self.input_sound,
             output_vectors,
             generation
         )
         resulting_sound.get_analysis(ensure_standardized_series=True)
+        individual.set_neural_output(resulting_neural_output)
 
         fitness = fitness_evaluator.FitnessEvaluator.evaluate(self.param_sound, resulting_sound)
         return fitness, resulting_sound

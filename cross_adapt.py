@@ -8,6 +8,7 @@ import sound_file
 import logger
 import hashlib
 import json
+import neural_output
 
 
 class CrossAdapter(object):
@@ -25,6 +26,7 @@ class CrossAdapter(object):
         l = logger.Logger(data_file_path, features_to_add=None, suppress_initialization=True)
         l.data = channels
         l.write()
+        that_neural_output = neural_output.NeuralOutput(data_file_path, channels)
 
         template = template_handler.TemplateHandler('templates/cross_adapt.csd.jinja2')
         template.compile(
@@ -40,4 +42,4 @@ class CrossAdapter(object):
         output_filename = input_sound.filename + '.cross_adapted.gen{0:04d}.{1}.wav'.format(generation, data_md5)
         csound.run(output_filename, async=False)
         output_sound_file = sound_file.SoundFile(output_filename, is_input=False)
-        return output_sound_file
+        return output_sound_file, that_neural_output
