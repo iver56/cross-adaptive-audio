@@ -66,10 +66,7 @@ class Individual(object):
         """
         return {
             'id': self.id,
-            'fitness': self.genotype.GetFitness(),
-            'genome_data_file_path': self.get_genome_data_file_path(),
-            'neural_output_file_path': self.neural_output.data_file_path,
-            'output_sound_feature_data_file_path': self.output_sound.get_feature_data_file_path()
+            'fitness': self.genotype.GetFitness()
         }
 
     def save(self):
