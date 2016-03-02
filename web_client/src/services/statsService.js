@@ -8,6 +8,7 @@
 
       that.data = null;
       that.selectedGeneration = null;
+      that.selectedIndividualIndex = 0;
       that.numGenerations = 1;
       that.populationSize = null;
       that.histogramOptions = {
