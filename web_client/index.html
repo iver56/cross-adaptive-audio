@@ -17,8 +17,9 @@
   <!-- App-specific files -->
   <script src="src/app.js"></script>
 
-  <script src="src/controllers/selectGenerationCtrl.js"></script>
-  <script src="src/controllers/selectIndividualCtrl.js"></script>
+  <script src="src/controllers/mainCtrl.js"></script>
+  <script src="src/controllers/generationCtrl.js"></script>
+  <script src="src/controllers/individualCtrl.js"></script>
 
   <script src="src/services/communicationService.js"></script>
   <script src="src/services/statsService.js"></script>
@@ -29,7 +30,7 @@
   <link rel="stylesheet" href="css/main.css">
 </head>
 
-<body ng-app="crossAdaptiveAudioApp">
+<body ng-app="crossAdaptiveAudioApp" ng-controller="MainCtrl as main">
 
 <md-content>
   <h3>Fitness plot</h3>
@@ -38,18 +39,18 @@
 
   <h3>Select generation for histogram fitness plot</h3>
   <p>Interaction: While slider is focused, use the arrow keys to navigate</p>
-  <div layout ng-controller="SelectGenerationCtrl as selectGeneration">
+  <div layout ng-controller="GenerationCtrl as generation">
     <div flex="10" layout layout-align="center center">
       <span class="md-body-1">generation</span>
     </div>
     <md-slider
-        ng-if="selectGeneration.statsService.selectedGeneration"
+        ng-if="statsService.selectedGeneration"
         flex
         md-discrete
-        ng-model="selectGeneration.statsService.selectedGeneration"
+        ng-model="statsService.selectedGeneration"
         step="1"
         min="1"
-        max="{{ selectGeneration.statsService.numGenerations }}"
+        max="{{ statsService.numGenerations }}"
         aria-label="Selected generation"
     >
     </md-slider>
@@ -59,21 +60,21 @@
 
   <h3>Select individual to visualize</h3>
   <p>Sorted by fitness (best to the right)</p>
-  <div ng-controller="SelectIndividualCtrl as selectIndividual">
+  <div ng-controller="IndividualCtrl as individual">
     <div layout>
       <div flex="10" layout layout-align="center center">
         <span class="md-body-1">individual</span>
       </div>
       <md-slider
-          ng-if="selectIndividual.statsService.selectedGeneration"
+          ng-if="statsService.selectedGeneration"
           flex
           md-discrete
-          ng-model="selectIndividual.statsService.selectedIndividualIndex"
+          ng-model="statsService.selectedIndividualIndex"
           step="1"
           min="0"
-          max="{{ selectIndividual.statsService.populationSize - 1 }}"
+          max="{{ statsService.populationSize - 1 }}"
           aria-label="Selected individual"
-          ng-change="selectIndividual.selectedIndividualChanged()"
+          ng-change="individual.selectedIndividualChanged()"
       >
       </md-slider>
     </div>
@@ -82,16 +83,16 @@
         <md-card-title-text>
           <span class="md-headline">
             Individual
-            {{ selectIndividual.statsService.data[selectIndividual.statsService.selectedGeneration - 1].individuals[selectIndividual.statsService.selectedIndividualIndex].id }}
+            {{ statsService.data[statsService.selectedGeneration - 1].individuals[statsService.selectedIndividualIndex].id }}
           </span>
           <span class="md-subhead">
-            Fitness: {{ selectIndividual.statsService.data[selectIndividual.statsService.selectedGeneration - 1].individuals[selectIndividual.statsService.selectedIndividualIndex].fitness }}
+            Fitness: {{ statsService.data[statsService.selectedGeneration - 1].individuals[statsService.selectedIndividualIndex].fitness }}
           </span>
         </md-card-title-text>
       </md-card-title>
       <md-card-content>
-        <pre ng-if="selectIndividual.individualDetails">{{ selectIndividual.individualDetails.genome_data }}</pre>
-        <p ng-if="!selectIndividual.loading && selectIndividual.individualDetails === null">
+        <pre ng-if="individual.individualDetails">{{ individual.individualDetails.genome_data }}</pre>
+        <p ng-if="!individual.loading && individual.individualDetails === null">
           Detailed data about this individual is not available. It might have been deleted.
         </p>
       </md-card-content>

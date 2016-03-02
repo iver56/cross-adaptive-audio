@@ -1,9 +1,8 @@
 'use strict';
 
 angular.module('crossAdaptiveAudioApp')
-  .controller('SelectIndividualCtrl', function($scope, statsService, communicationService, $http) {
+  .controller('IndividualCtrl', function($scope, statsService, communicationService, $http) {
     var vm = this;
-    vm.statsService = statsService;
     vm.individual = null;
     vm.individualDetails = null;
     vm.loading = true;
