@@ -2,6 +2,7 @@ import pprint
 import inspect
 import os
 import settings
+import json
 
 
 class Individual(object):
@@ -36,3 +37,37 @@ class Individual(object):
 
     def set_neural_output(self, neural_output):
         self.neural_output = neural_output
+
+    def get_serialized_representation(self):
+        """
+        Get a serialized representation where data is included directly
+        :return:
+        """
+        return {
+            'id': self.id,
+            'fitness': self.genotype.GetFitness(),
+            'genome_data_file_path': self.get_genome_data_file_path(),  # TODO: data, not file path
+            'neural_output': self.neural_output.channels,
+            'output_sound_feature_data': self.output_sound.get_analysis(
+                    ensure_standardized_series=True)
+        }
+
+    def get_short_serialized_representation(self):
+        """
+        Get a serialized representation with only references to data files
+        :return:
+        """
+        return {
+            'id': self.id,
+            'fitness': self.genotype.GetFitness(),
+            'genome_data_file_path': self.get_genome_data_file_path(),
+            'neural_output_file_path': self.neural_output.data_file_path,
+            'output_sound_feature_data_file_path': self.output_sound.get_feature_data_file_path()
+        }
+
+    def save(self):
+        self.save_genotype_data_file()
+        file_path = self.get_individual_data_file_path()
+        data = self.get_serialized_representation()
+        with settings.FILE_HANDLER(file_path, 'w') as outfile:
+            json.dump(data, outfile)

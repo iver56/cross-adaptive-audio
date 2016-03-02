@@ -139,7 +139,7 @@ class Neuroevolution(object):
                 fitness, output_sound = self.evaluate(that_individual, generation)
                 that_individual.set_fitness(fitness)
                 that_individual.set_output_sound(output_sound)
-                that_individual.save_genotype_data_file()
+                that_individual.save()
                 individuals.append(that_individual)
             individuals.sort(key=lambda x: x.genotype.GetFitness())
 
