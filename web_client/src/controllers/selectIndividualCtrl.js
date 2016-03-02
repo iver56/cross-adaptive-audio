@@ -6,7 +6,7 @@ angular.module('crossAdaptiveAudioApp')
     vm.statsService = statsService;
     vm.individual = null;
     vm.individualDetails = null;
-    vm.loading = false;
+    vm.loading = true;
 
     $scope.$watch(function() {
       return statsService.data &&
@@ -24,12 +24,12 @@ angular.module('crossAdaptiveAudioApp')
     vm.fetchWholeIndividualRepresentation = function() {
       vm.loading = true;
       $http.get('/individuals/individual_' + vm.individual.id + '.json').then(function(response) {
-        console.log(response);
         vm.individualDetails = response.data;
         vm.loading = false;
       }, function(response) {
         console.error(response);
         vm.loading = false;
+        vm.individualDetails = null;
       });
     }
   });

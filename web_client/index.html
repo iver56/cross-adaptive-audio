@@ -90,7 +90,10 @@
         </md-card-title-text>
       </md-card-title>
       <md-card-content>
-        <pre>{{ selectIndividual.individualDetails.genome_data }}</pre>
+        <pre ng-if="selectIndividual.individualDetails">{{ selectIndividual.individualDetails.genome_data }}</pre>
+        <p ng-if="!selectIndividual.loading && selectIndividual.individualDetails === null">
+          Detailed data about this individual is not available. It might have been deleted.
+        </p>
       </md-card-content>
     </md-card>
 
