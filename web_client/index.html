@@ -22,6 +22,7 @@
 
   <script src="src/services/communicationService.js"></script>
   <script src="src/services/statsService.js"></script>
+  <script src="src/services/individualService.js"></script>
 
   <script src="src/directives/statsChart.js"></script>
   <script src="src/directives/histogramChart.js"></script>
@@ -32,8 +33,12 @@
 <body ng-app="crossAdaptiveAudioApp">
 
 <md-content>
+  <h3>Fitness plot</h3>
+  <p>Interaction: Drag with the mouse to pan. Hold alt and select with mouse to zoom. Click series in the legend to toggle visibility.</p>
   <stats-chart></stats-chart>
 
+  <h3>Select generation for histogram fitness plot</h3>
+  <p>Interaction: While slider is focused, use the arrow keys to navigate</p>
   <div layout ng-controller="SelectGenerationCtrl as selectGeneration">
     <div flex="10" layout layout-align="center center">
       <span class="md-body-1">generation</span>
@@ -53,6 +58,8 @@
 
   <histogram-chart></histogram-chart>
 
+  <h3>Select individual to visualize</h3>
+  <p>Sorted by fitness (best to the right)</p>
   <div ng-controller="SelectIndividualCtrl as selectIndividual">
     <div layout>
       <div flex="10" layout layout-align="center center">
@@ -67,6 +74,7 @@
           min="0"
           max="{{ selectIndividual.statsService.populationSize - 1 }}"
           aria-label="Selected individual"
+          ng-change="selectIndividual.selectedIndividualChanged()"
       >
       </md-slider>
     </div>
@@ -82,6 +90,9 @@
           </span>
         </md-card-title-text>
       </md-card-title>
+      <md-card-content>
+        <pre>{{ selectIndividual.individualService.selectedIndividual.genome_data }}</pre>
+      </md-card-content>
     </md-card>
 
   </div>
