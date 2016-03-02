@@ -1,11 +1,11 @@
 'use strict';
 
 angular.module('crossAdaptiveAudioApp')
-  .controller('SelectIndividualCtrl', function($scope, statsService, communicationService, individualService) {
+  .controller('SelectIndividualCtrl', function($scope, statsService, communicationService, $http) {
     var vm = this;
     vm.statsService = statsService;
-    vm.individualService = individualService;
     vm.individual = null;
+    vm.individualDetails = null;
     vm.loading = false;
 
     $scope.$watch(function() {
@@ -22,10 +22,14 @@ angular.module('crossAdaptiveAudioApp')
     });
 
     vm.fetchWholeIndividualRepresentation = function() {
-      var message = JSON.stringify({
-        'type': 'getFullIndividualRepresentation',
-        'key': vm.individual.id
+      vm.loading = true;
+      $http.get('/individuals/individual_' + vm.individual.id + '.json').then(function(response) {
+        console.log(response);
+        vm.individualDetails = response.data;
+        vm.loading = false;
+      }, function(response) {
+        console.error(response);
+        vm.loading = false;
       });
-      communicationService.sendMessage(message);
     }
   });

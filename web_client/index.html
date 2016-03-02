@@ -22,7 +22,6 @@
 
   <script src="src/services/communicationService.js"></script>
   <script src="src/services/statsService.js"></script>
-  <script src="src/services/individualService.js"></script>
 
   <script src="src/directives/statsChart.js"></script>
   <script src="src/directives/histogramChart.js"></script>
@@ -91,7 +90,7 @@
         </md-card-title-text>
       </md-card-title>
       <md-card-content>
-        <pre>{{ selectIndividual.individualService.selectedIndividual.genome_data }}</pre>
+        <pre>{{ selectIndividual.individualDetails.genome_data }}</pre>
       </md-card-content>
     </md-card>
 

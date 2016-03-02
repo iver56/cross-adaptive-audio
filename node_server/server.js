@@ -35,7 +35,6 @@ var clients = {};
 
 // TODO: don't hard code paths, but read them from the settings file
 var statsDir = p.join(__dirname, '..', 'stats');
-var individualsDir = p.join(__dirname, '..', 'individuals');
 var statsFilePath = p.join(statsDir, 'stats.json');
 
 function sendObject(objectToSend, client) {
@@ -65,12 +64,6 @@ function sendStatsFile(client) {
   sendFile(statsFilePath, 'stats.json', client)
 }
 
-function sendIndividualFile(individualId, client) {
-  var filename = 'individual_' + individualId.toString() + '.json';
-  var individualFilePath = p.join(individualsDir, filename);
-  sendFile(individualFilePath, filename, client)
-}
-
 chokidar.watch(statsDir, {ignored: /[\/\\]\./}).on('change', function(path, stats) {
   if (path.endsWith('stats.json')) {
     console.log('stats.json changed');
@@ -95,11 +88,6 @@ wsServer.on('request', function(r) {
   // Create event listener
   connection.on('message', function(message) {
     var msgObject = JSON.parse(message.utf8Data);
-
-    if (msgObject.type === 'getFullIndividualRepresentation') {
-      sendIndividualFile(msgObject.key, connection);
-    }
-
   });
 
   connection.on('close', function(reasonCode, description) {
