@@ -1,8 +1,9 @@
 import pprint
-import inspect
+# import inspect
 import os
 import settings
 import json
+import neural_network_representation
 
 
 class Individual(object):
@@ -44,6 +45,11 @@ class Individual(object):
     def set_neural_output(self, neural_output):
         self.neural_output = neural_output
 
+    def get_neural_network_representation(self):
+        return neural_network_representation.get_neural_network_representation(
+                self.genotype
+        )
+
     def get_serialized_representation(self):
         """
         Get a serialized representation where data is included directly
@@ -56,7 +62,8 @@ class Individual(object):
             'neural_output': self.neural_output.channels,
             'output_sound_feature_data': self.output_sound.get_analysis(
                     ensure_standardized_series=True),
-            'output_sound_file_path': self.output_sound.file_path
+            'output_sound_file_path': self.output_sound.file_path,
+            'neural_network_representation': self.get_neural_network_representation()
         }
 
     def get_short_serialized_representation(self):
