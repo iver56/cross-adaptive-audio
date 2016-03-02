@@ -18,3 +18,9 @@ md-content {
 .chart-legend {
   position: static !important;
 }
+
+#sigma-container {
+  max-width: 400px;
+  height: 400px;
+  margin: auto;
+}

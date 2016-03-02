@@ -13,6 +13,7 @@
   <link rel="stylesheet" href="lib/line-chart/LineChart.min.css">
   <link rel="stylesheet" href="lib/angular-material/angular-material.css">
   <script src="lib/angular-material/angular-material.js"></script>
+  <script src="lib/sigma/sigma.min.js"></script>
 
   <!-- App-specific files -->
   <script src="src/app.js"></script>
@@ -26,6 +27,7 @@
 
   <script src="src/directives/statsChart.js"></script>
   <script src="src/directives/histogramChart.js"></script>
+  <script src="src/directives/neuralNetworkViz.js"></script>
 
   <link rel="stylesheet" href="css/main.css">
 </head>
@@ -91,10 +93,14 @@
         </md-card-title-text>
       </md-card-title>
       <md-card-content>
-        <pre ng-if="individual.individualDetails">{{ individual.individualDetails.genome_data }}</pre>
         <p ng-if="!individual.loading && individual.individualDetails === null">
           Detailed data about this individual is not available. It might have been deleted.
         </p>
+        <neural-network-viz
+            ng-if="individual.individualDetails.neural_network_representation"
+            graph="individual.individualDetails.neural_network_representation"
+        >
+        </neural-network-viz>
       </md-card-content>
     </md-card>
 
