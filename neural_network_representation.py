@@ -110,7 +110,8 @@ def get_neural_network_representation(nn, is_substrate=False):
         connections.append({
             'id': 'e{}'.format(i),
             'source': 'n{}'.format(connection.source_neuron_idx),
-            'target': 'n{}'.format(connection.target_neuron_idx)
+            'target': 'n{}'.format(connection.target_neuron_idx),
+            'weight': connection.weight
         })
         i += 1
 
