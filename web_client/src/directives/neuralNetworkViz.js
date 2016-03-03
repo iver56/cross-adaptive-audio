@@ -28,6 +28,7 @@
           } else if (vm.graph.nodes[i].type === 'output') {
             vm.graph.nodes[i].color = '#FF8F54';
           }
+          delete vm.graph.nodes[i].type;
         }
 
         for (var i = 0; i < vm.graph.edges.length; i++) {
