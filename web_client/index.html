@@ -14,6 +14,8 @@
   <link rel="stylesheet" href="lib/angular-material/angular-material.css">
   <script src="lib/angular-material/angular-material.js"></script>
   <script src="lib/sigma/sigma.min.js"></script>
+  <script src="lib/wavesurfer/wavesurfer.min.js"></script>
+  <script src="lib/debounce/angular-debounce.min.js"></script>
 
   <!-- App-specific files -->
   <script src="src/app.js"></script>
@@ -28,6 +30,7 @@
   <script src="src/directives/statsChart.js"></script>
   <script src="src/directives/histogramChart.js"></script>
   <script src="src/directives/neuralNetworkViz.js"></script>
+  <script src="src/directives/waveform.js"></script>
 
   <link rel="stylesheet" href="css/main.css">
 </head>
@@ -99,8 +102,11 @@
         <neural-network-viz
             ng-if="individual.individualDetails.neural_network_representation"
             graph="individual.individualDetails.neural_network_representation"
-        >
-        </neural-network-viz>
+        ></neural-network-viz>
+        <waveform
+            ng-if="individual.individualDetails.output_sound_file_path"
+            sound="individual.individualDetails.output_sound_file_path"
+        ></waveform>
       </md-card-content>
     </md-card>
 

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('crossAdaptiveAudioApp')
-  .controller('IndividualCtrl', function($scope, statsService, communicationService, $http) {
+  .controller('IndividualCtrl', function($scope, statsService, communicationService, $http, debounce) {
     var vm = this;
     vm.individual = null;
     vm.individualDetails = null;
@@ -12,13 +12,13 @@ angular.module('crossAdaptiveAudioApp')
         statsService.data[statsService.selectedGeneration - 1] &&
         statsService.data[statsService.selectedGeneration - 1]
           .individuals[statsService.selectedIndividualIndex].id
-    }, function() {
+    }, debounce(100, function() {
       if (statsService.data && statsService.data[statsService.selectedGeneration - 1]) {
         vm.individual = statsService.data[statsService.selectedGeneration - 1]
           .individuals[statsService.selectedIndividualIndex];
         vm.fetchWholeIndividualRepresentation();
       }
-    });
+    }));
 
     vm.fetchWholeIndividualRepresentation = function() {
       vm.loading = true;

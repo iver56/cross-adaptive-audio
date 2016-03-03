@@ -7,13 +7,14 @@
 
   function NeuralNetworkViz() {
 
-    function NeuralNetworkVizCtrl($scope) {
+    function NeuralNetworkVizCtrl($scope, debounce) {
       var vm = this;
 
       vm.sigmaContainer = document.getElementById('sigma-container');
       vm.sigmaInstance = new window.sigma(vm.sigmaContainer);
       vm.sigmaInstance.settings({
-        labelSize: 'proportional'
+        labelSize: 'proportional',
+        sideMargin: 0.02
       });
 
       vm.preProcessGraph = function() {
@@ -25,12 +26,12 @@
 
       $scope.$watch(function() {
         return vm.graph;
-      }, function() {
+      }, debounce(100, function() {
         vm.sigmaInstance.graph.clear();
         vm.preProcessGraph();
         vm.sigmaInstance.graph.read(vm.graph);
         vm.sigmaInstance.refresh();
-      })
+      }))
     }
 
     return {

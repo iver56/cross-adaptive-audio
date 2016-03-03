@@ -1,0 +1,10 @@
+<div id="waveform-container"></div>
+<div class="sound-controls">
+  <md-button
+      class="md-raised"
+      ng-click="wf.wavesurfer.playPause()"
+      ng-disabled="!wf.isReady"
+  >
+    {{ wf.isReady ? (wf.wavesurfer.isPlaying() ? 'Pause': 'Play') : 'Loading...' }}
+  </md-button>
+</div>

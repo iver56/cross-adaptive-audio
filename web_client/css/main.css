@@ -1,5 +1,5 @@
 md-content {
-  margin: 10px;
+  margin: 5px;
   padding: 10px;
 }
 
@@ -24,4 +24,9 @@ md-content {
   height: 400px;
   margin: auto;
   cursor: move;
+  border: solid 1px #eee;
+}
+
+#waveform-container {
+  border: solid 1px #eee;
 }
