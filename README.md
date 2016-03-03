@@ -27,7 +27,7 @@ https://www.python.org/downloads/
 ### Install Csound
 http://csound.github.io/download.html
 
-### Install HyperNEAT and dependencies (numpy, matplotlib, opencv with python bindings)
+### Install HyperNEAT and dependencies (numpy, matplotlib)
 Building these dependencies from source can be difficult and time-consuming, so let's download wheel binaries instead
 
 * Go to http://www.lfd.uci.edu/~gohlke/pythonlibs/#multineat
@@ -48,6 +48,9 @@ Building these dependencies from source can be difficult and time-consuming, so 
 
 ### Install NodeJS (optional)
 https://nodejs.org/en/download/
+
+### Install GNU make for Windows (optional)
+http://www.equation.com/servlet/equation.cmd?fa=make
 
 ## Setup of this project
 
