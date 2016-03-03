@@ -13,7 +13,7 @@ angular.module('crossAdaptiveAudioApp')
         statsService.data[statsService.selectedGeneration - 1]
           .individuals[statsService.selectedIndividualIndex].id
     }, function() {
-      if (statsService.data) {
+      if (statsService.data && statsService.data[statsService.selectedGeneration - 1]) {
         vm.individual = statsService.data[statsService.selectedGeneration - 1]
           .individuals[statsService.selectedIndividualIndex];
         vm.fetchWholeIndividualRepresentation();

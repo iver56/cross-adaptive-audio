@@ -52,11 +52,15 @@ function sendObject(objectToSend, client) {
 
 function sendFile(filePath, key, client) {
   jsonfile.readFile(filePath, function(err, obj) {
-    var objectToSend = {
-      key: key,
-      data: obj
-    };
-    sendObject(objectToSend, client);
+    if (err) {
+      console.error(err);
+    } else {
+      var objectToSend = {
+        key: key,
+        data: obj
+      };
+      sendObject(objectToSend, client);
+    }
   })
 }
 
@@ -67,7 +71,9 @@ function sendStatsFile(client) {
 chokidar.watch(statsDir, {ignored: /[\/\\]\./}).on('change', function(path, stats) {
   if (path.endsWith('stats.json')) {
     console.log('stats.json changed');
-    sendStatsFile(); // broadcast to all clients
+    setTimeout(function() {
+      sendStatsFile(); // broadcast to all clients
+    }, 500);
   }
 });
 
