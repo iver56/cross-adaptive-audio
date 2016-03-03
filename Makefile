@@ -13,6 +13,10 @@ clean:
 clean-all:
 	python clean.py --ensure-directories
 
+.PHONY: project
+project:
+	python create_project.py
+
 .PHONY: test
 test:
 	nosetests
