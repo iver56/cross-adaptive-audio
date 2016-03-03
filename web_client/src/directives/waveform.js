@@ -10,17 +10,26 @@
     function WaveformCtrl($scope, debounce) {
       var vm = this;
 
+      vm.updatePlaybackRate = function() {
+        vm.mappedPlaybackRate = Math.pow(vm.playbackRate, 3);
+        vm.wavesurfer.setPlaybackRate(vm.mappedPlaybackRate);
+      };
+      vm.resetPlaybackRate = function() {
+        vm.playbackRate = 1.0;
+        vm.updatePlaybackRate();
+      };
+
       vm.wavesurfer = window.WaveSurfer.create({
         container: '#waveform-container',
         waveColor: 'violet',
         progressColor: 'purple'
       });
 
-      function sanitizeFilePath(filePath){
+      function sanitizeFilePath(filePath) {
         return filePath.replace(/^\.\//, '/').replace(/\\/g, '/');
       }
 
-      vm.wavesurfer.on('ready', function () {
+      vm.wavesurfer.on('ready', function() {
         console.log('wavesurfer is ready for action');
         vm.isReady = true;
         if (!$scope.$$phase) {
@@ -28,7 +37,7 @@
         }
       });
 
-      vm.wavesurfer.on('finish', function () {
+      vm.wavesurfer.on('finish', function() {
         console.log('wavesurfer is finished playing');
         if (!$scope.$$phase) {
           $scope.$apply();
@@ -42,7 +51,7 @@
         vm.wavesurfer.load(sanitizeFilePath(vm.sound));
       }));
 
-      vm.onKeyUp = function (e) {
+      vm.onKeyUp = function(e) {
         var noOp = false;
         if (e.keyCode === 32) {  // space
           if (vm.isReady) {
@@ -59,12 +68,13 @@
         }
       };
 
-      vm.init = function () {
+      vm.init = function() {
         window.addEventListener("keyup", vm.onKeyUp, false);
+        vm.resetPlaybackRate();
       };
       vm.init();
 
-      $scope.$on("$destroy", function () {
+      $scope.$on("$destroy", function() {
         window.removeEventListener("keyup", vm.onKeyUp, false);
       });
     }
