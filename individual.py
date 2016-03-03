@@ -21,21 +21,6 @@ class Individual(object):
                 'individual_{}.json'.format(self.id)
         )
 
-    def get_genome_data_file_path(self):
-        return os.path.join(
-                settings.GENOTYPE_DATA_DIRECTORY,
-                'genotype_{}.txt'.format(self.id)
-        )
-
-    def get_genome_data(self):
-        genome_data_file_path = self.get_genome_data_file_path()
-        with open(genome_data_file_path, 'r') as genome_data_file:
-            genome_data = genome_data_file.read()
-        return genome_data
-
-    def save_genotype_data_file(self):
-        self.genotype.Save(self.get_genome_data_file_path())
-
     def set_fitness(self, fitness):
         self.genotype.SetFitness(fitness)
 
@@ -58,7 +43,6 @@ class Individual(object):
         return {
             'id': self.id,
             'fitness': self.genotype.GetFitness(),
-            'genome_data': self.get_genome_data(),
             'neural_output': self.neural_output.channels,
             'output_sound_feature_data': self.output_sound.get_analysis(
                     ensure_standardized_series=True),
@@ -77,8 +61,16 @@ class Individual(object):
         }
 
     def save(self):
-        self.save_genotype_data_file()
         file_path = self.get_individual_data_file_path()
         data = self.get_serialized_representation()
         with settings.FILE_HANDLER(file_path, 'w') as outfile:
             json.dump(data, outfile)
+
+    def delete(self):
+        self.output_sound.delete()
+        self.neural_output.delete()
+
+        try:
+            os.remove(self.get_individual_data_file_path())
+        except OSError:
+            pass

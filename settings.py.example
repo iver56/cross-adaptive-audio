@@ -17,7 +17,6 @@ META_DATA_CACHE_DIRECTORY = os.path.join(BASE_DIR, 'meta_data_cache')
 OUTPUT_DIRECTORY = os.path.join(BASE_DIR, 'output')
 PROJECT_DATA_DIRECTORY = os.path.join(BASE_DIR, 'projects')
 STATS_DATA_DIRECTORY = os.path.join(BASE_DIR, 'stats')
-GENOTYPE_DATA_DIRECTORY = os.path.join(BASE_DIR, 'genotypes')
 INDIVIDUAL_DATA_DIRECTORY = os.path.join(BASE_DIR, 'individuals')
 TEST_AUDIO_DIRECTORY = 'test_audio'
 

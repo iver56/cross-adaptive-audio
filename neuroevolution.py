@@ -172,7 +172,7 @@ class Neuroevolution(object):
             if self.args.keep_only_best:
                 # delete all but best fit results from this generation
                 for i in range(len(individuals) - 1):
-                    individuals[i].output_sound.delete()  # delete the sound and its data
+                    individuals[i].delete()  # delete the sound and its data
 
             # advance to the next generation
             pop.Epoch()

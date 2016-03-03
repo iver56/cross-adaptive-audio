@@ -14,6 +14,7 @@
         vm.mappedPlaybackRate = Math.pow(vm.playbackRate, 3);
         vm.wavesurfer.setPlaybackRate(vm.mappedPlaybackRate);
       };
+
       vm.resetPlaybackRate = function() {
         vm.playbackRate = 1.0;
         vm.updatePlaybackRate();
@@ -30,7 +31,6 @@
       }
 
       vm.wavesurfer.on('ready', function() {
-        console.log('wavesurfer is ready for action');
         vm.isReady = true;
         if (!$scope.$$phase) {
           $scope.$apply();
@@ -38,7 +38,6 @@
       });
 
       vm.wavesurfer.on('finish', function() {
-        console.log('wavesurfer is finished playing');
         if (!$scope.$$phase) {
           $scope.$apply();
         }
