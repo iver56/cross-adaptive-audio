@@ -52,7 +52,8 @@
             label: "Standard deviation",
             color: "#60E246",
             type: ['line', 'dot'],
-            id: 'fitness_std_dev'
+            id: 'fitness_std_dev',
+            visible: false
           }
         ],
         axes: {x: {key: "generation"}},
