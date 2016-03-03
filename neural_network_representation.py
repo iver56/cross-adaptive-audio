@@ -100,7 +100,8 @@ def get_neural_network_representation(nn, is_substrate=False):
             'x': neuron.x,
             'y': neuron.y,
             'size': neuron_radius,
-            'label': label
+            'label': label,
+            'type': neuron_type
         })
         i += 1
 
