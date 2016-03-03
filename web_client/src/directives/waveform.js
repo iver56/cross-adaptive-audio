@@ -40,8 +40,33 @@
       }, debounce(100, function() {
         vm.isReady = false;
         vm.wavesurfer.load(sanitizeFilePath(vm.sound));
-        console.log('loading')
       }));
+
+      vm.onKeyUp = function (e) {
+        var noOp = false;
+        if (e.keyCode === 32) {  // space
+          if (vm.isReady) {
+            vm.wavesurfer.playPause();
+          }
+        } else {
+          // no operation
+          noOp = true;
+        }
+        if (!noOp) {
+          if (!$scope.$$phase) {
+            $scope.$apply();
+          }
+        }
+      };
+
+      vm.init = function () {
+        window.addEventListener("keyup", vm.onKeyUp, false);
+      };
+      vm.init();
+
+      $scope.$on("$destroy", function () {
+        window.removeEventListener("keyup", vm.onKeyUp, false);
+      });
     }
 
     return {
