@@ -20,7 +20,9 @@ class Cleaner(object):
         paths = [
             settings.OUTPUT_FEATURE_DATA_DIRECTORY,
             settings.CSD_DIRECTORY,
-            settings.NEURAL_OUTPUT_DIRECTORY
+            settings.NEURAL_OUTPUT_DIRECTORY,
+            settings.INDIVIDUAL_DATA_DIRECTORY,
+            settings.STATS_DATA_DIRECTORY
         ]
         extensions = ['.json', '.csd']
         if not keep_input_feature_data:
