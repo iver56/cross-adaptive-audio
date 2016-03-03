@@ -37,7 +37,15 @@
 
 <body ng-app="crossAdaptiveAudioApp" ng-controller="MainCtrl as main">
 
-<md-content>
+<md-content ng-if="!statsService.data">
+  <md-progress-linear md-mode="indeterminate"></md-progress-linear>
+  <h1>Waiting for data</h1>
+  <p>Things will start showing up here when the first generation is done.</p>
+  <p>If you haven't started your experiment yet, you may do that now from your command line. Example command:</p>
+  <pre>python neuroevolution.py -i drums.wav noise.wav -g 30 -p 20</pre>
+</md-content>
+
+<md-content ng-if="statsService.data">
   <h3>Fitness plot</h3>
   <p>Interaction: Drag with the mouse to pan. Hold alt and drag to zoom. Click series in the legend to toggle visibility.</p>
   <stats-chart></stats-chart>
