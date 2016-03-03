@@ -12,6 +12,11 @@
 
       vm.sigmaContainer = document.getElementById('sigma-container');
       vm.sigmaInstance = new window.sigma(vm.sigmaContainer);
+      vm.sigmaInstance.settings({
+        edgeColor: 'default',
+        defaultEdgeColor: '#999',
+        labelSize: 'proportional'
+      });
 
       $scope.$watch(function() {
         return vm.graph;

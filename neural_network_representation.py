@@ -4,6 +4,8 @@ Based on https://github.com/peter-ch/MultiNEAT/blob/master/MultiNEAT/viz.py
 
 from _MultiNEAT import *
 import numpy as np
+import analyze
+import cross_adapt
 
 
 def is_almost_equal(a, b, margin):
@@ -25,12 +27,12 @@ def get_neural_network_representation(nn, is_substrate=False):
 
     # not a substrate, compute the node coordinates
     for i, n in enumerate(nn.neurons):
-        nn.neurons[i].x = 0
-        nn.neurons[i].y = 0
+        nn.neurons[i].x = 0.0
+        nn.neurons[i].y = 0.0
 
     rect_x = 0.0
     rect_y = 0.0
-    rect_x_size = 1.0
+    rect_x_size = 3.0
     rect_y_size = 1.0
     neuron_radius = 0.03
 
@@ -67,23 +69,38 @@ def get_neural_network_representation(nn, is_substrate=False):
 
     neurons = []
     i = 0
+    counter = {
+        'unknown': 0,
+        'input': 0,
+        'bias': 0,
+        'hidden': 0,
+        'output': 0
+    }
     for neuron in nn.neurons:
-        type_label = ''
+        neuron_type = 'unknown'
         if neuron.type == NeuronType.INPUT:
-            type_label = 'input'
+            neuron_type = 'input'
         elif neuron.type == NeuronType.BIAS:
-            type_label = 'bias'
+            neuron_type = 'bias'
         elif neuron.type == NeuronType.HIDDEN:
-            type_label = 'hidden'
+            neuron_type = 'hidden'
         elif neuron.type == NeuronType.OUTPUT:
-            type_label = 'output'
+            neuron_type = 'output'
+
+        label = neuron_type
+        if neuron_type == 'input':
+            label = analyze.Analyzer.FEATURES_LIST[counter['input']]
+        elif neuron_type == 'output':
+            label = cross_adapt.CrossAdapter.PARAMETER_LIST[counter['output']]
+
+        counter[neuron_type] += 1
 
         neurons.append({
             'id': 'n{}'.format(i),
             'x': neuron.x,
             'y': neuron.y,
             'size': neuron_radius,
-            'label': type_label
+            'label': label
         })
         i += 1
 

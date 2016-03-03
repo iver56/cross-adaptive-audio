@@ -15,8 +15,11 @@ import project
 
 class Analyzer(object):
     FEATURES = {'mfcc_amp': 0}
+    FEATURES_LIST = ['mfcc_amp']
     for i in range(1, 13):
-        FEATURES['mfcc_' + str(i)] = i
+        label = 'mfcc_' + str(i)
+        FEATURES[label] = i
+        FEATURES_LIST.append(label)
     NUM_FEATURES = len(FEATURES)
 
     def __init__(self):
