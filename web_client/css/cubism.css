@@ -1,0 +1,91 @@
+#cubism-scroll-container {
+  overflow-x: scroll;
+}
+
+#cubism-container {
+  font-family: "Helvetica Neue", Helvetica, sans-serif;
+  display: inline-block;
+  position: relative;
+}
+
+#cubism-container svg {
+  font: 10px sans-serif;
+}
+
+#cubism-container .axis path, .axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+#cubism-container .axis {
+  font: 10px sans-serif;
+}
+
+#cubism-container .axis text {
+  transition: fill-opacity 250ms linear;
+}
+
+#cubism-container .axis path {
+  /*display: none;*/
+}
+
+#cubism-container .axis line {
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+#cubism-container .horizon {
+  position: relative;
+  border-top: solid 1px #000;
+  border-bottom: solid 1px #000;
+}
+
+#cubism-container .horizon + .horizon {
+  border-top: none;
+}
+
+#cubism-container .horizon canvas {
+  display: block;
+}
+
+#cubism-container .horizon .value {
+  bottom: 0;
+  line-height: 30px;
+  margin: 0 6px;
+  padding-right: 5px;
+  position: absolute;
+  white-space: nowrap;
+  background-color: rgba(255, 255, 255, 0.5);
+  width: 50px;
+  text-align: right;
+}
+
+#cubism-container .horizon .title {
+  line-height: 30px;
+  bottom: 0;
+  margin: 0 6px;
+  position: absolute;
+  white-space: nowrap;
+  opacity: 1;
+  left: 0;
+  transition: opacity 0.2s;
+  background-color: rgba(255, 255, 255, 0.5);
+  display: inline-block;
+  filter: blur(5px);
+}
+
+#cubism-container .horizon .value {
+  right: 0;
+}
+
+#cubism-container .line {
+  background: #000;
+  opacity: .5;
+  z-index: 2;
+  position: absolute;
+}
+
+#cubism-container .tick:first-child {
+  display: none;
+}

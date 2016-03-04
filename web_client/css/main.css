@@ -19,15 +19,3 @@ md-content {
   position: static !important;
 }
 
-#sigma-container {
-  width: 100%;
-  height: 400px;
-  margin: auto;
-  cursor: move;
-  border: solid 1px #eee;
-}
-
-#waveform-container {
-  margin: 5px 0;
-  border: solid 1px #eee;
-}

@@ -16,6 +16,8 @@
   <script src="lib/sigma/sigma.min.js"></script>
   <script src="lib/wavesurfer/wavesurfer.min.js"></script>
   <script src="lib/debounce/angular-debounce.min.js"></script>
+  <script src="lib/limit/limit.js"></script>
+  <script src="lib/cubism/cubism.v1.js"></script>
 
   <!-- App-specific files -->
   <script src="src/app.js"></script>
@@ -32,8 +34,12 @@
   <script src="src/directives/histogramChart.js"></script>
   <script src="src/directives/neuralNetworkViz.js"></script>
   <script src="src/directives/waveform.js"></script>
+  <script src="src/directives/cubism.js"></script>
 
   <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/neural-network-viz.css">
+  <link rel="stylesheet" href="css/waveform.css">
+  <link rel="stylesheet" href="css/cubism.css">
 </head>
 
 <body ng-app="crossAdaptiveAudioApp" ng-controller="MainCtrl as main">
@@ -116,6 +122,10 @@
             ng-if="individual.individualDetails.output_sound_file_path"
             sound="individual.individualDetails.output_sound_file_path"
         ></waveform>
+        <cubism
+            ng-if="individual.individualDetails.output_sound_feature_data"
+            series="individual.individualDetails.output_sound_feature_data"
+        ></cubism>
       </md-card-content>
     </md-card>
 
