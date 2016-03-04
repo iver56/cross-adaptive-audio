@@ -7,7 +7,7 @@
 
   function NeuralNetworkViz() {
 
-    function NeuralNetworkVizCtrl($scope, debounce) {
+    function NeuralNetworkVizCtrl($scope, debounce, colorService) {
       var vm = this;
 
       vm.sigmaContainer = document.getElementById('sigma-container');
@@ -32,8 +32,7 @@
         }
 
         for (var i = 0; i < vm.graph.edges.length; i++) {
-          var greyValue = (255 - 255 * (Math.tanh(vm.graph.edges[i].weight) * 0.5 + 0.5)) | 0;
-          vm.graph.edges[i].color = 'rgb(' + greyValue + ',' + greyValue + ',' + greyValue + ')';
+          vm.graph.edges[i].color = colorService.getColor(vm.graph.edges[i].weight);
         }
       };
 
