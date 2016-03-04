@@ -14,20 +14,20 @@
       vm.sigmaInstance = new window.sigma(vm.sigmaContainer);
       vm.sigmaInstance.settings({
         labelSize: 'proportional',
-        sideMargin: 0.02
+        sideMargin: 0.02,
+        mouseWheelEnabled: false
       });
+
+      vm.nodeColors = {
+        input: '#FF4F86',
+        bias: '#60E246',
+        hidden: '#1F77B4',
+        output: '#FF8F54'
+      };
 
       vm.preProcessGraph = function() {
         for (var i = 0; i < vm.graph.nodes.length; i++) {
-          if (vm.graph.nodes[i].type === 'input') {
-            vm.graph.nodes[i].color = '#FF4F86';
-          } else if (vm.graph.nodes[i].type === 'bias') {
-            vm.graph.nodes[i].color = '#60E246';
-          } else if (vm.graph.nodes[i].type === 'hidden') {
-            vm.graph.nodes[i].color = '#1F77B4';
-          } else if (vm.graph.nodes[i].type === 'output') {
-            vm.graph.nodes[i].color = '#FF8F54';
-          }
+          vm.graph.nodes[i].color = vm.nodeColors[vm.graph.nodes[i].type];
           delete vm.graph.nodes[i].type;
         }
 
