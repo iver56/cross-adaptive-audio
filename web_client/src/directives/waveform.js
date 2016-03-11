@@ -7,7 +7,7 @@
 
   function Waveform() {
 
-    function WaveformCtrl($scope, debounce, sampleRate) {
+    function WaveformCtrl($scope, debounce, sampleRate, $rootScope) {
       var vm = this;
 
       vm.updatePlaybackRate = function() {
@@ -44,6 +44,12 @@
         if (!$scope.$$phase) {
           $scope.$apply();
         }
+      });
+
+      vm.wavesurfer.on('scroll', function(e) {
+        $rootScope.$emit('waveform.scroll', {
+          scrollLeft: e.target.scrollLeft
+        });
       });
 
       $scope.$watch(function() {

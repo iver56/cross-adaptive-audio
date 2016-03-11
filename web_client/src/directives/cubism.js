@@ -7,7 +7,7 @@
 
   function Cubism() {
 
-    function CubismCtrl($scope, debounce, sampleRate) {
+    function CubismCtrl($scope, debounce, sampleRate, $rootScope) {
       var vm = this;
 
       // define the order of the series
@@ -33,22 +33,18 @@
         vm.showGraph();
       }));
 
+      vm.$scrollContainer = $('#cubism-scroll-container');
+
+      $rootScope.$on('waveform.scroll', function(e, payload) {
+        vm.$scrollContainer.scrollLeft(payload.scrollLeft);
+      });
+
       vm.reset = function() {
         // Remove the DOM elements and recreate them. Kinda hacky.
-
-        var cubismScrollContainer = document.getElementById("cubism-scroll-container");
-        while (cubismScrollContainer && cubismScrollContainer.firstChild) {
-          cubismScrollContainer.removeChild(cubismScrollContainer.firstChild);
-        }
-
-        var cubismContainer = document.createElement('div');
-        cubismContainer.id = 'cubism-container';
-        cubismScrollContainer.appendChild(cubismContainer);
-
-        var cubismGraph = document.createElement('div');
-        cubismGraph.id = 'cubism-graph';
-        cubismContainer.appendChild(cubismGraph);
-
+        var $cubismContainer = $('<div id="cubism-container"></div>');
+        var $cubismGraph = $('<div id="cubism-graph"></div>');
+        $cubismContainer.append($cubismGraph);
+        vm.$scrollContainer.empty().append($cubismContainer);
       };
 
       vm.showGraph = function() {
