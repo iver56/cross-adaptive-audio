@@ -7,7 +7,7 @@
 
   function Waveform() {
 
-    function WaveformCtrl($scope, debounce) {
+    function WaveformCtrl($scope, debounce, sampleRate) {
       var vm = this;
 
       vm.updatePlaybackRate = function() {
@@ -23,7 +23,10 @@
       vm.wavesurfer = window.WaveSurfer.create({
         container: '#waveform-container',
         waveColor: 'violet',
-        progressColor: 'purple'
+        progressColor: 'purple',
+        fillParent: false,
+        minPxPerSec: sampleRate / vm.ksmps,
+        scrollParent: true
       });
 
       function sanitizeFilePath(filePath) {
@@ -82,7 +85,8 @@
       restrict: 'E',
       scope: {},
       bindToController: {
-        sound: '='
+        sound: '=',
+        ksmps: '='
       },
       templateUrl: 'views/waveform.html',
       controller: WaveformCtrl,

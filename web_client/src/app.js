@@ -7,4 +7,5 @@ angular
   .run(function(communicationService) {
     communicationService.init();
   })
+  .constant('sampleRate', 44100)
 ;

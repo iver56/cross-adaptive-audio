@@ -7,7 +7,7 @@
 
   function Cubism() {
 
-    function CubismCtrl($scope, debounce) {
+    function CubismCtrl($scope, debounce, sampleRate) {
       var vm = this;
 
       // define the order of the series
@@ -54,7 +54,7 @@
       vm.showGraph = function() {
         vm.reset();
 
-        var stepTimeInMs = vm.series.ksmps * 1000 / 44100;
+        var stepTimeInMs = vm.series.ksmps * 1000 / sampleRate;
         var numSteps = vm.series.series_standardized['mfcc_amp'].length;
 
         // create context and horizon
