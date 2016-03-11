@@ -72,21 +72,23 @@
 
         var graph = vm.sigmaInstance.graph;
         var neighbors = graph.getNeighbors(nodeId);
+        var nodesIndex = neighbors.nodesIndex;
+        var nodeDetails = nodesIndex[nodeId];
 
         $tooltip.empty();
 
         var hasNoEdges = true;
 
         if (!$.isEmptyObject(neighbors.inNeighbors)) {
-          $tooltip.append($('<span>Incoming edge(s):</span>'));
-          var $inNeighborsUl = getNeighborsUl(neighbors.inNeighbors, neighbors.nodesIndex);
+          $tooltip.append($('<span>Incoming edge(s) to ' + nodeDetails.label + ':</span>'));
+          var $inNeighborsUl = getNeighborsUl(neighbors.inNeighbors, nodesIndex);
           $tooltip.append($inNeighborsUl);
           hasNoEdges = false;
         }
 
         if (!$.isEmptyObject(neighbors.outNeighbors)) {
-          $tooltip.append($('<span>Outgoing edge(s):</span>'));
-          var $outNeighborsUl = getNeighborsUl(neighbors.outNeighbors, neighbors.nodesIndex);
+          $tooltip.append($('<span>Outgoing edge(s) from ' + nodeDetails.label + ':</span>'));
+          var $outNeighborsUl = getNeighborsUl(neighbors.outNeighbors, nodesIndex);
           $tooltip.append($outNeighborsUl);
           hasNoEdges = false;
         }
