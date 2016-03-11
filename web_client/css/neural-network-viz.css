@@ -25,4 +25,5 @@
   cursor: auto;
   overflow-y: scroll;
   z-index: 3;
+  margin-top: 20px;
 }

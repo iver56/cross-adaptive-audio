@@ -94,7 +94,7 @@
         }
 
         if (hasNoEdges) {
-          $tooltip.append($('<span>This node has no incoming or outgoing edges</span>'));
+          $tooltip.append($('<span>' + nodeDetails.label + ' doesn\'t have any incoming or outgoing edges</span>'));
         }
         $tooltip.attr('title', '').attr('data-node-id', nodeId);
       };
