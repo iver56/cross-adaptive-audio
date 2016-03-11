@@ -60,10 +60,17 @@
         return $ul;
       }
 
-      vm.tooltipPlugin.bind('shown', function(e) {
-        var $tooltip = $(vm.sigmaContainer).find('.sigma-tooltip');
+      vm.renderTooltip = function(nodeId) {
+        var $tooltip = $(vm.sigmaContainer).find('.sigma-tooltip:visible');
+        if (!$tooltip.length) {
+          return;
+        }
+
+        if (!nodeId) {
+          nodeId = $tooltip.attr('data-node-id');
+        }
+
         var graph = vm.sigmaInstance.graph;
-        var nodeId = e.data.node.id;
         var neighbors = graph.getNeighbors(nodeId);
 
         $tooltip.empty();
@@ -87,7 +94,12 @@
         if (hasNoEdges) {
           $tooltip.append($('<span>This node has no incoming or outgoing edges</span>'));
         }
-        $tooltip.attr('title', '');
+        $tooltip.attr('title', '').attr('data-node-id', nodeId);
+      };
+
+      vm.tooltipPlugin.bind('shown', function(e) {
+        var nodeId = e.data.node.id;
+        vm.renderTooltip(nodeId);
       });
 
       vm.showResetZoomButton = function() {
@@ -132,6 +144,7 @@
         vm.preProcessGraph();
         vm.sigmaInstance.graph.read(vm.graph);
         vm.sigmaInstance.refresh();
+        vm.renderTooltip();
       }))
     }
 
