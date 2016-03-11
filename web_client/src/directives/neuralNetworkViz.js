@@ -1,6 +1,14 @@
 (function() {
   'use strict';
 
+  window.sigma.prototype.resetZoom = function() {
+    var camera = this.cameras[0];
+    camera.ratio = 1;
+    camera.x = 0;
+    camera.y = 0;
+    this.refresh();
+  };
+
   angular
     .module('crossAdaptiveAudioApp')
     .directive('neuralNetworkViz', NeuralNetworkViz);
@@ -15,7 +23,25 @@
       vm.sigmaInstance.settings({
         labelSize: 'proportional',
         sideMargin: 0.02,
-        mouseWheelEnabled: false
+        mouseWheelEnabled: false,
+        labelSizeRatio: 1.2
+      });
+
+      vm.showResetZoomButton = function() {
+        vm.sigmaContainer.getElementsByClassName('reset-zoom')[0].style.display = 'block';
+      };
+
+      vm.resetZoom = function() {
+        vm.sigmaInstance.resetZoom();
+        vm.sigmaContainer.getElementsByClassName('reset-zoom')[0].style.display = 'none';
+      };
+
+      vm.sigmaInstance.bind("doubleClickStage", function() {
+        vm.showResetZoomButton();
+      });
+
+      vm.sigmaInstance.bind("doubleClickNode", function() {
+        vm.showResetZoomButton();
       });
 
       vm.nodeColors = {

@@ -4,4 +4,13 @@
   margin: auto;
   cursor: move;
   border: solid 1px #eee;
+  position: relative;
+}
+
+#sigma-container .reset-zoom {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  display: none;
+  z-index: 1;
 }
