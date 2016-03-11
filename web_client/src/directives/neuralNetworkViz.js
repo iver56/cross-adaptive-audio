@@ -9,6 +9,12 @@
     this.refresh();
   };
 
+  window.sigma.classes.graph.addMethod('getNeighbors', function(nodeId) {
+    var inNeighbors = this.inNeighborsIndex[nodeId] || {};
+    var outNeighbors = this.outNeighborsIndex[nodeId] || {};
+    return {inNeighbors: inNeighbors, outNeighbors: outNeighbors, nodesIndex: this.nodesIndex};
+  });
+
   angular
     .module('crossAdaptiveAudioApp')
     .directive('neuralNetworkViz', NeuralNetworkViz);
@@ -27,13 +33,72 @@
         labelSizeRatio: 1.2
       });
 
+      vm.tooltipPlugin = window.sigma.plugins.tooltips(vm.sigmaInstance, vm.sigmaInstance.renderers[0], {
+        node: {
+          show: 'clickNode',
+          hide: 'clickStage',
+          autoadjust: true,
+          cssClass: 'sigma-tooltip md-whiteframe-2dp',
+          template: '',
+          delay: 300
+        }
+      });
+
+      function getNeighborsUl (neighborsObj, nodesIndex) {
+        var $ul = $('<ul></ul>');
+        for (var neighborNodeId in neighborsObj) {
+          if (Object.prototype.hasOwnProperty.call(neighborsObj, neighborNodeId)) {
+            var neighbour = neighborsObj[neighborNodeId];
+            var nodeDetails = nodesIndex[neighborNodeId];
+            var edgeKey = Object.keys(neighborsObj[neighborNodeId])[0];
+            var edge = neighbour[edgeKey];
+            var $li = $(
+              '<li>' + nodeDetails.label + ' (weight: <span title="' + edge.weight + '">' + edge.weight.toFixed(2) + '</span>)</li>'
+            );
+            $ul.append($li);
+          }
+        }
+        return $ul;
+      }
+
+      vm.tooltipPlugin.bind('shown', function(e) {
+        setTimeout(function() {
+          var $tooltip = $(vm.sigmaContainer).find('.sigma-tooltip');
+          var graph = vm.sigmaInstance.graph;
+          var nodeId = e.data.node.id;
+          var neighbors = graph.getNeighbors(nodeId);
+
+          $tooltip.empty();
+
+          var hasNoEdges = true;
+
+          if (!$.isEmptyObject(neighbors.inNeighbors)) {
+            $tooltip.append($('<span>Incoming edge(s):</span>'));
+            var $inNeighborsUl = getNeighborsUl(neighbors.inNeighbors, neighbors.nodesIndex);
+            $tooltip.append($inNeighborsUl);
+            hasNoEdges = false;
+          }
+
+          if (!$.isEmptyObject(neighbors.outNeighbors)) {
+            $tooltip.append($('<span>Outgoing edge(s):</span>'));
+            var $outNeighborsUl = getNeighborsUl(neighbors.outNeighbors, neighbors.nodesIndex);
+            $tooltip.append($outNeighborsUl);
+            hasNoEdges = false;
+          }
+
+          if (hasNoEdges) {
+            $tooltip.append($('<span>This node has no incoming or outgoing edges</span>'));
+          }
+        }, 0);
+      });
+
       vm.showResetZoomButton = function() {
-        vm.sigmaContainer.getElementsByClassName('reset-zoom')[0].style.display = 'block';
+        $(vm.sigmaContainer).find('.reset-zoom').fadeIn();
       };
 
       vm.resetZoom = function() {
         vm.sigmaInstance.resetZoom();
-        vm.sigmaContainer.getElementsByClassName('reset-zoom')[0].style.display = 'none';
+        $(vm.sigmaContainer).find('.reset-zoom').fadeOut();
       };
 
       vm.sigmaInstance.bind("doubleClickStage", function() {

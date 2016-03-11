@@ -14,3 +14,14 @@
   display: none;
   z-index: 1;
 }
+
+#sigma-container .sigma-tooltip {
+  padding: 5px;
+  width: 250px;
+  height: auto;
+  max-height: 300px;
+  background-color: #fafafa;
+  font-size: 90%;
+  cursor: auto;
+  overflow-y: scroll;
+}
