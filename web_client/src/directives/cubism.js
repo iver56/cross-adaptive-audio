@@ -62,7 +62,11 @@
           .serverDelay(+new Date())
           .clientDelay(-numSteps * stepTimeInMs)
           ;
-        var horizon = context.horizon().extent([-3, 3]).format(d3.format('.3f'));
+        var horizon = context.horizon()
+          .extent([-3, 3])
+          .format(d3.format('.3f'))
+          .colors([].concat(window.colorbrewer.RdBu["6"]).reverse())
+          ;
 
         // define metric accessor
         function metricAccessor(name) {
