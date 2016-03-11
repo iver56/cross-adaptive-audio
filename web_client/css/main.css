@@ -1,21 +1,7 @@
 md-content {
-  margin: 5px;
-  padding: 10px;
-}
-
-.stats-chart {
-  width: 100%;
-  height: 300px;
-  margin-bottom: 50px;
-}
-
-.histogram-chart {
-  width: 100%;
-  height: 200px;
-  margin-bottom: 50px;
+  padding: 0 5px 10px;
 }
 
 .chart-legend {
   position: static !important;
 }
-

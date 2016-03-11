@@ -57,56 +57,82 @@
   <md-progress-linear md-mode="indeterminate"></md-progress-linear>
   <h1>Waiting for data</h1>
   <p>Things will start showing up here when the first generation is done.</p>
-  <p>If you haven't started your experiment yet, you may do that now from your command line. Example command:</p>
+  <p>If you haven't started your experiment yet, you may do that now from your command line. Example
+    command:</p>
   <pre>python neuroevolution.py -i drums.wav noise.wav -g 30 -p 20</pre>
 </md-content>
 
 <md-content ng-if="statsService.data">
-  <h3>Fitness plot</h3>
-  <p>Interaction: Drag with the mouse to pan. Hold alt and drag to zoom. Double-click to reset zoom/pan. Click series in the legend to toggle visibility.</p>
-  <stats-chart></stats-chart>
 
-  <h3>Select generation for histogram fitness plot</h3>
-  <p>Interaction: While slider is focused, use the arrow keys to navigate</p>
-  <div layout ng-controller="GenerationCtrl as generation">
-    <div flex="10" layout layout-align="center center">
-      <span class="md-body-1">generation</span>
-    </div>
-    <md-slider
-        ng-if="statsService.selectedGeneration"
-        flex
-        md-discrete
-        ng-model="statsService.selectedGeneration"
-        step="1"
-        min="1"
-        max="{{ statsService.numGenerations }}"
-        aria-label="Selected generation"
-    >
-    </md-slider>
+  <div layout="column" layout-gt-sm="row">
+    <md-card flex>
+      <md-card-title>
+        <md-card-title-text>
+          <span class="md-headline">
+            Fitness plot
+          </span>
+          <span class="md-subhead">
+            Interaction: Drag with the mouse to pan. Hold alt and drag to zoom. Double-click to
+            reset zoom/pan. Click series in the legend to toggle visibility.
+          </span>
+        </md-card-title-text>
+      </md-card-title>
+      <md-card-content>
+        <stats-chart></stats-chart>
+      </md-card-content>
+    </md-card>
+    <md-card flex>
+      <md-card-title>
+        <md-card-title-text>
+          <span class="md-headline">
+            Select generation for histogram fitness plot
+          </span>
+          <span class="md-subhead">
+            Interaction: While slider is focused, use the arrow keys to navigate
+          </span>
+        </md-card-title-text>
+      </md-card-title>
+      <md-card-content>
+        <div layout ng-controller="GenerationCtrl as generation">
+          <md-slider
+              ng-if="statsService.selectedGeneration"
+              flex
+              md-discrete
+              ng-model="statsService.selectedGeneration"
+              step="1"
+              min="1"
+              max="{{ statsService.numGenerations }}"
+              aria-label="Selected generation"
+          >
+          </md-slider>
+        </div>
+
+        <histogram-chart></histogram-chart>
+      </md-card-content>
+    </md-card>
   </div>
 
-  <histogram-chart></histogram-chart>
-
-  <h3>Select individual to visualize</h3>
-  <p>Sorted by fitness (best to the right)</p>
   <div ng-controller="IndividualCtrl as individual">
-    <div layout>
-      <div flex="10" layout layout-align="center center">
-        <span class="md-body-1">individual</span>
+
+    <div class="layout-padding">
+      <span class="md-headline">Select individual</span>
+      <span class="md-subhead">sorted by fitness (best to the right)</span>
+      <div layout>
+        <md-slider
+            ng-if="statsService.selectedGeneration"
+            flex
+            md-discrete
+            ng-model="statsService.selectedIndividualIndex"
+            step="1"
+            min="0"
+            max="{{ statsService.populationSize - 1 }}"
+            aria-label="Selected individual"
+            ng-change="individual.selectedIndividualChanged()"
+        >
+        </md-slider>
       </div>
-      <md-slider
-          ng-if="statsService.selectedGeneration"
-          flex
-          md-discrete
-          ng-model="statsService.selectedIndividualIndex"
-          step="1"
-          min="0"
-          max="{{ statsService.populationSize - 1 }}"
-          aria-label="Selected individual"
-          ng-change="individual.selectedIndividualChanged()"
-      >
-      </md-slider>
     </div>
+
     <md-card>
       <md-card-title>
         <md-card-title-text>
