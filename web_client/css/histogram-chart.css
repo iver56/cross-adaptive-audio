@@ -1,0 +1,7 @@
+histogram-chart {
+  cursor: move;
+}
+
+histogram-chart .chart-tooltip {
+  cursor: auto;
+}

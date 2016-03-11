@@ -1,0 +1,7 @@
+stats-chart {
+  cursor: move;
+}
+
+stats-chart .chart-tooltip {
+  cursor: auto;
+}

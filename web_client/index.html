@@ -34,15 +34,21 @@
   <script src="src/services/colorService.js"></script>
 
   <script src="src/directives/statsChart.js"></script>
+  <link rel="stylesheet" href="css/stats-chart.css">
+
   <script src="src/directives/histogramChart.js"></script>
+  <link rel="stylesheet" href="css/histogram-chart.css">
+
   <script src="src/directives/neuralNetworkViz.js"></script>
+  <link rel="stylesheet" href="css/neural-network-viz.css">
+
   <script src="src/directives/waveform.js"></script>
+  <link rel="stylesheet" href="css/waveform.css">
+
   <script src="src/directives/cubism.js"></script>
+  <link rel="stylesheet" href="css/cubism.css">
 
   <link rel="stylesheet" href="css/main.css">
-  <link rel="stylesheet" href="css/neural-network-viz.css">
-  <link rel="stylesheet" href="css/waveform.css">
-  <link rel="stylesheet" href="css/cubism.css">
 </head>
 
 <body ng-app="crossAdaptiveAudioApp" ng-controller="MainCtrl as main">
@@ -57,7 +63,7 @@
 
 <md-content ng-if="statsService.data">
   <h3>Fitness plot</h3>
-  <p>Interaction: Drag with the mouse to pan. Hold alt and drag to zoom. Click series in the legend to toggle visibility.</p>
+  <p>Interaction: Drag with the mouse to pan. Hold alt and drag to zoom. Double-click to reset zoom/pan. Click series in the legend to toggle visibility.</p>
   <stats-chart></stats-chart>
 
   <h3>Select generation for histogram fitness plot</h3>
