@@ -39,12 +39,11 @@
           hide: 'clickStage',
           autoadjust: true,
           cssClass: 'sigma-tooltip md-whiteframe-2dp',
-          template: '',
           delay: 300
         }
       });
 
-      function getNeighborsUl (neighborsObj, nodesIndex) {
+      function getNeighborsUl(neighborsObj, nodesIndex) {
         var $ul = $('<ul></ul>');
         for (var neighborNodeId in neighborsObj) {
           if (Object.prototype.hasOwnProperty.call(neighborsObj, neighborNodeId)) {
@@ -53,7 +52,7 @@
             var edgeKey = Object.keys(neighborsObj[neighborNodeId])[0];
             var edge = neighbour[edgeKey];
             var $li = $(
-              '<li>' + nodeDetails.label + ' (weight: <span title="' + edge.weight + '">' + edge.weight.toFixed(2) + '</span>)</li>'
+              '<li>' + nodeDetails.label + ' (<span title="' + edge.weight + '">weight: ' + edge.weight.toFixed(2) + '</span>)</li>'
             );
             $ul.append($li);
           }
@@ -62,34 +61,33 @@
       }
 
       vm.tooltipPlugin.bind('shown', function(e) {
-        setTimeout(function() {
-          var $tooltip = $(vm.sigmaContainer).find('.sigma-tooltip');
-          var graph = vm.sigmaInstance.graph;
-          var nodeId = e.data.node.id;
-          var neighbors = graph.getNeighbors(nodeId);
+        var $tooltip = $(vm.sigmaContainer).find('.sigma-tooltip');
+        var graph = vm.sigmaInstance.graph;
+        var nodeId = e.data.node.id;
+        var neighbors = graph.getNeighbors(nodeId);
 
-          $tooltip.empty();
+        $tooltip.empty();
 
-          var hasNoEdges = true;
+        var hasNoEdges = true;
 
-          if (!$.isEmptyObject(neighbors.inNeighbors)) {
-            $tooltip.append($('<span>Incoming edge(s):</span>'));
-            var $inNeighborsUl = getNeighborsUl(neighbors.inNeighbors, neighbors.nodesIndex);
-            $tooltip.append($inNeighborsUl);
-            hasNoEdges = false;
-          }
+        if (!$.isEmptyObject(neighbors.inNeighbors)) {
+          $tooltip.append($('<span>Incoming edge(s):</span>'));
+          var $inNeighborsUl = getNeighborsUl(neighbors.inNeighbors, neighbors.nodesIndex);
+          $tooltip.append($inNeighborsUl);
+          hasNoEdges = false;
+        }
 
-          if (!$.isEmptyObject(neighbors.outNeighbors)) {
-            $tooltip.append($('<span>Outgoing edge(s):</span>'));
-            var $outNeighborsUl = getNeighborsUl(neighbors.outNeighbors, neighbors.nodesIndex);
-            $tooltip.append($outNeighborsUl);
-            hasNoEdges = false;
-          }
+        if (!$.isEmptyObject(neighbors.outNeighbors)) {
+          $tooltip.append($('<span>Outgoing edge(s):</span>'));
+          var $outNeighborsUl = getNeighborsUl(neighbors.outNeighbors, neighbors.nodesIndex);
+          $tooltip.append($outNeighborsUl);
+          hasNoEdges = false;
+        }
 
-          if (hasNoEdges) {
-            $tooltip.append($('<span>This node has no incoming or outgoing edges</span>'));
-          }
-        }, 0);
+        if (hasNoEdges) {
+          $tooltip.append($('<span>This node has no incoming or outgoing edges</span>'));
+        }
+        $tooltip.attr('title', '');
       });
 
       vm.showResetZoomButton = function() {

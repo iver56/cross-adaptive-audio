@@ -24,4 +24,5 @@
   font-size: 90%;
   cursor: auto;
   overflow-y: scroll;
+  z-index: 3;
 }
