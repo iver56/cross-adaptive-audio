@@ -21,9 +21,9 @@
 
       that.setData = function(data) {
         if (data) {
-          that.numGenerations = data.length;
+          that.numGenerations = data.generations.length;
           that.data = data;
-          that.populationSize = data[data.length - 1].individuals.length;
+          that.populationSize = data.generations[that.numGenerations - 1].individuals.length;
           if (!that.selectedGeneration) {
             that.selectedGeneration = that.numGenerations;
           }
@@ -32,7 +32,7 @@
 
       that.getHistogramData = function() {
         var bins = [];
-        var individuals = that.data[that.selectedGeneration - 1].individuals;
+        var individuals = that.data.generations[that.selectedGeneration - 1].individuals;
         for (var i = 0; i < that.histogramOptions.numBins; i++) {
           var bin = {
             minValue: that.histogramOptions.minValue + i * that.histogramOptions.step,

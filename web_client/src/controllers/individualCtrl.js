@@ -9,12 +9,13 @@ angular.module('crossAdaptiveAudioApp')
 
     $scope.$watch(function() {
       return statsService.data &&
-        statsService.data[statsService.selectedGeneration - 1] &&
-        statsService.data[statsService.selectedGeneration - 1]
+        statsService.data.generations &&
+        statsService.data.generations[statsService.selectedGeneration - 1] &&
+        statsService.data.generations[statsService.selectedGeneration - 1]
           .individuals[statsService.selectedIndividualIndex].id
     }, debounce(100, function() {
-      if (statsService.data && statsService.data[statsService.selectedGeneration - 1]) {
-        vm.individual = statsService.data[statsService.selectedGeneration - 1]
+      if (statsService.data && statsService.data.generations && statsService.data.generations[statsService.selectedGeneration - 1]) {
+        vm.individual = statsService.data.generations[statsService.selectedGeneration - 1]
           .individuals[statsService.selectedIndividualIndex];
         vm.fetchWholeIndividualRepresentation();
       }

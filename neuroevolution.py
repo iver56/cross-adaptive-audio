@@ -159,7 +159,9 @@ class Neuroevolution(object):
                 os.path.join(settings.STATS_DATA_DIRECTORY, 'stats.json'),
                 suppress_initialization=True
         )
-        self.stats_logger.data = []
+        self.stats_logger.data = {
+            'generations': []
+        }
 
         self.run()
 
@@ -224,7 +226,7 @@ class Neuroevolution(object):
                 'fitness_std_dev': fitness_std_dev,
                 'individuals': [i.get_short_serialized_representation() for i in individuals]
             }
-            self.stats_logger.data.append(stats_item)
+            self.stats_logger.data['generations'].append(stats_item)
             self.stats_logger.write()
 
             if self.args.visualize:

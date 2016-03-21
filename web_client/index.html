@@ -53,7 +53,7 @@
 
 <body ng-app="crossAdaptiveAudioApp" ng-controller="MainCtrl as main">
 
-<md-content ng-if="!statsService.data">
+<md-content ng-if="!statsService.data.generations">
   <md-progress-linear md-mode="indeterminate"></md-progress-linear>
   <h1>Waiting for data</h1>
   <p>Things will start showing up here when the first generation is done.</p>
@@ -62,8 +62,7 @@
   <pre>python neuroevolution.py -i drums.wav noise.wav -g 30 -p 20</pre>
 </md-content>
 
-<md-content ng-if="statsService.data">
-
+<md-content ng-if="statsService.data.generations">
   <div layout="column" layout-gt-sm="row">
     <md-card flex>
       <md-card-title>
@@ -138,10 +137,10 @@
         <md-card-title-text>
           <span class="md-headline">
             Individual
-            {{ statsService.data[statsService.selectedGeneration - 1].individuals[statsService.selectedIndividualIndex].id }}
+            {{ statsService.data.generations[statsService.selectedGeneration - 1].individuals[statsService.selectedIndividualIndex].id }}
           </span>
           <span class="md-subhead">
-            Fitness: {{ statsService.data[statsService.selectedGeneration - 1].individuals[statsService.selectedIndividualIndex].fitness }}
+            Fitness: {{ statsService.data.generations[statsService.selectedGeneration - 1].individuals[statsService.selectedIndividualIndex].fitness }}
           </span>
         </md-card-title-text>
       </md-card-title>

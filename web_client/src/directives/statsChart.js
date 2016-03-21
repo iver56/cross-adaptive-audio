@@ -91,9 +91,9 @@
       };
 
       $scope.$watch(function() {
-        return statsService.data;
+        return statsService.data && statsService.data.generations;
       }, function() {
-        vm.data.stats = statsService.data;
+        vm.data.stats = statsService.data.generations;
       });
     }
 

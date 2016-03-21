@@ -71,7 +71,7 @@
       $scope.$watch(function() {
         return statsService.selectedGeneration
       }, function() {
-        if (statsService.data) {
+        if (statsService.data && statsService.data.generations) {
           vm.data.bins = statsService.getHistogramData();
           vm.options.axes.y.max = statsService.populationSize;
         }
