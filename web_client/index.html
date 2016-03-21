@@ -157,13 +157,16 @@
         <br>
         <md-radio-group ng-model="individual.selectedSound" layout="row">
           <md-radio-button value="param_sound" title="{{statsService.data.param_sound.file_path}}">
-            Param sound (A)
+            Param (A)
           </md-radio-button>
           <md-radio-button value="input_sound" title="{{statsService.data.input_sound.file_path}}">
-            Input sound (B)
+            Input (B)
           </md-radio-button>
           <md-radio-button value="output_sound" title="The output sound is the processed input sound">
-            Output sound (C)
+            Output (C)
+          </md-radio-button>
+          <md-radio-button value="diff_b_a" title="How is the input sound different from the parameter sound">
+            Diff(B, A)
           </md-radio-button>
           <md-radio-button value="diff_c_a" title="How is the output sound different from the parameter sound">
             Diff(C, A)
@@ -212,6 +215,12 @@
           <cubism
               ng-if="individual.selectedSound === 'diff_c_a' && individual.individualDetails.output_sound.feature_data"
               series="individual.individualDetails.output_sound.feature_data"
+              subtract="statsService.data.param_sound.feature_data"
+          ></cubism>
+
+          <cubism
+              ng-if="individual.selectedSound === 'diff_b_a' && statsService.data.input_sound.feature_data"
+              series="statsService.data.input_sound.feature_data"
               subtract="statsService.data.param_sound.feature_data"
           ></cubism>
 
