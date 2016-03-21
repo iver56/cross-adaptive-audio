@@ -44,9 +44,7 @@ class Individual(object):
             'id': self.id,
             'fitness': self.genotype.GetFitness(),
             'neural_output': self.neural_output.channels,
-            'output_sound_feature_data': self.output_sound.get_analysis(
-                    ensure_standardized_series=True),
-            'output_sound_file_path': self.output_sound.file_path,
+            'output_sound': self.output_sound.get_serialized_representation(),
             'neural_network_representation': self.get_neural_network_representation()
         }
 

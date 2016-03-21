@@ -5,6 +5,7 @@
   <title>Cross-adaptive audio</title>
 
   <!-- Libs -->
+  <script src="lib/jquery/jquery.min.js"></script>
   <script src="lib/angular/angular.js"></script>
   <script src="lib/angular/angular-animate.js"></script>
   <script src="lib/angular/angular-aria.js"></script>
@@ -19,7 +20,6 @@
   <script src="lib/debounce/angular-debounce.min.js"></script>
   <script src="lib/limit/limit.js"></script>
   <script src="lib/cubism/cubism.v1.js"></script>
-  <script src="lib/jquery/jquery.min.js"></script>
   <script src="lib/colorbrewer/colorbrewer.js"></script>
 
   <!-- App-specific files -->
@@ -142,6 +142,7 @@
           <span class="md-subhead">
             Fitness: {{ statsService.data.generations[statsService.selectedGeneration - 1].individuals[statsService.selectedIndividualIndex].fitness }}
           </span>
+
         </md-card-title-text>
       </md-card-title>
       <md-card-content>
@@ -152,14 +153,44 @@
             ng-if="individual.individualDetails.neural_network_representation"
             graph="individual.individualDetails.neural_network_representation"
         ></neural-network-viz>
+
+        <md-radio-group ng-model="individual.selectedSound">
+          <md-radio-button value="param_sound">Param sound</md-radio-button>
+          <md-radio-button value="input_sound">Input sound</md-radio-button>
+          <md-radio-button value="output_sound">Output sound</md-radio-button>
+        </md-radio-group>
+
         <waveform
-            ng-if="individual.individualDetails.output_sound_file_path"
-            sound="individual.individualDetails.output_sound_file_path"
-            ksmps="individual.individualDetails.output_sound_feature_data.ksmps"
+            ng-if="individual.selectedSound === 'param_sound' && statsService.data.param_sound"
+            sound="statsService.data.param_sound.file_path"
+            ksmps="statsService.data.param_sound.feature_data.ksmps"
         ></waveform>
+
+        <waveform
+            ng-if="individual.selectedSound === 'input_sound' && statsService.data.input_sound"
+            sound="statsService.data.input_sound.file_path"
+            ksmps="statsService.data.input_sound.feature_data.ksmps"
+        ></waveform>
+
+        <waveform
+            ng-if="individual.selectedSound === 'output_sound' && individual.individualDetails.output_sound.file_path"
+            sound="individual.individualDetails.output_sound.file_path"
+            ksmps="individual.individualDetails.output_sound.feature_data.ksmps"
+        ></waveform>
+
         <cubism
-            ng-if="individual.individualDetails.output_sound_feature_data"
-            series="individual.individualDetails.output_sound_feature_data"
+            ng-if="individual.selectedSound === 'param_sound' && statsService.data.param_sound"
+            series="statsService.data.param_sound.feature_data"
+        ></cubism>
+
+        <cubism
+            ng-if="individual.selectedSound === 'input_sound' && statsService.data.input_sound"
+            series="statsService.data.input_sound.feature_data"
+        ></cubism>
+
+        <cubism
+            ng-if="individual.selectedSound === 'output_sound' && individual.individualDetails.output_sound.feature_data"
+            series="individual.individualDetails.output_sound.feature_data"
         ></cubism>
       </md-card-content>
     </md-card>

@@ -6,6 +6,7 @@ angular.module('crossAdaptiveAudioApp')
     vm.individual = null;
     vm.individualDetails = null;
     vm.loading = true;
+    vm.selectedSound = 'output_sound';
 
     $scope.$watch(function() {
       return statsService.data &&

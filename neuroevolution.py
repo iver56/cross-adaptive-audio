@@ -160,6 +160,8 @@ class Neuroevolution(object):
                 suppress_initialization=True
         )
         self.stats_logger.data = {
+            'param_sound': self.param_sound.get_serialized_representation(),
+            'input_sound': self.input_sound.get_serialized_representation(),
             'generations': []
         }
 

@@ -7,8 +7,10 @@
 
   function Waveform() {
 
-    function WaveformCtrl($scope, debounce, sampleRate, $rootScope) {
+    function WaveformCtrl($scope, debounce, sampleRate, $rootScope, $element) {
       var vm = this;
+
+      vm.container = $($element[0]).find('.waveform-container')[0];
 
       vm.updatePlaybackRate = function() {
         vm.mappedPlaybackRate = Math.pow(vm.playbackRate, 3);
@@ -21,7 +23,7 @@
       };
 
       vm.wavesurfer = window.WaveSurfer.create({
-        container: '#waveform-container',
+        container: vm.container,
         waveColor: 'violet',
         progressColor: 'purple',
         fillParent: false,
@@ -73,17 +75,19 @@
           if (!$scope.$$phase) {
             $scope.$apply();
           }
+          e.preventDefault();
         }
       };
 
       vm.init = function() {
-        window.addEventListener("keyup", vm.onKeyUp, false);
+        window.addEventListener("keydown", vm.onKeyUp, false);
         vm.resetPlaybackRate();
       };
       vm.init();
 
       $scope.$on("$destroy", function() {
-        window.removeEventListener("keyup", vm.onKeyUp, false);
+        window.removeEventListener("keydown", vm.onKeyUp, false);
+        vm.wavesurfer.destroy();
       });
     }
 

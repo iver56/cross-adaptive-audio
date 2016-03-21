@@ -106,6 +106,12 @@ class SoundFile(object):
             feature_vector.append(self.analysis['series_standardized'][feature][k])
         return feature_vector
 
+    def get_serialized_representation(self):
+        return {
+            'feature_data': self.get_analysis(ensure_standardized_series=True),
+            'file_path': self.file_path
+        }
+
     def delete(self):
         try:
             os.remove(self.get_meta_data_cache_file_path())

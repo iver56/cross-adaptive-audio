@@ -1,55 +1,55 @@
-#cubism-scroll-container {
+.cubism-scroll-container {
   overflow-x: scroll;
 }
 
-#cubism-container {
+.cubism-container {
   font-family: "Helvetica Neue", Helvetica, sans-serif;
   display: inline-block;
   position: relative;
 }
 
-#cubism-container svg {
+.cubism-container svg {
   font: 10px sans-serif;
 }
 
-#cubism-container .axis path, .axis line {
+.cubism-container .axis path, .axis line {
   fill: none;
   stroke: #000;
   shape-rendering: crispEdges;
 }
 
-#cubism-container .axis {
+.cubism-container .axis {
   font: 10px sans-serif;
 }
 
-#cubism-container .axis text {
+.cubism-container .axis text {
   transition: fill-opacity 250ms linear;
 }
 
-#cubism-container .axis path {
+.cubism-container .axis path {
   /*display: none;*/
 }
 
-#cubism-container .axis line {
+.cubism-container .axis line {
   stroke: #000;
   shape-rendering: crispEdges;
 }
 
-#cubism-container .horizon {
+.cubism-container .horizon {
   position: relative;
   border-top: solid 1px #000;
   border-bottom: solid 1px #000;
 }
 
-#cubism-container .horizon + .horizon {
+.cubism-container .horizon + .horizon {
   border-top: none;
 }
 
-#cubism-container .horizon canvas {
+.cubism-container .horizon canvas {
   display: block;
 }
 
-#cubism-container .horizon .value {
+.cubism-container .horizon .value {
   bottom: 0;
   line-height: 30px;
   margin: 0 6px;
@@ -61,7 +61,7 @@
   text-align: right;
 }
 
-#cubism-container .horizon .title {
+.cubism-container .horizon .title {
   line-height: 30px;
   bottom: 0;
   margin: 0 6px;
@@ -74,17 +74,17 @@
   display: inline-block;
 }
 
-#cubism-container .horizon .value {
+.cubism-container .horizon .value {
   right: 0;
 }
 
-#cubism-container .line {
+.cubism-container .line {
   background: #000;
   opacity: .5;
   z-index: 2;
   position: absolute;
 }
 
-#cubism-container .tick:first-child {
+.cubism-container .tick:first-child {
   display: none;
 }

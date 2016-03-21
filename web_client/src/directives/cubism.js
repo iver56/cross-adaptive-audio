@@ -7,7 +7,7 @@
 
   function Cubism() {
 
-    function CubismCtrl($scope, debounce, sampleRate, $rootScope) {
+    function CubismCtrl($scope, debounce, sampleRate, $rootScope, $element) {
       var vm = this;
 
       // define the order of the series
@@ -33,7 +33,7 @@
         vm.showGraph();
       }));
 
-      vm.$scrollContainer = $('#cubism-scroll-container');
+      vm.$scrollContainer = $($element[0]).find('.cubism-scroll-container');
 
       $rootScope.$on('waveform.scroll', function(e, payload) {
         vm.$scrollContainer.scrollLeft(payload.scrollLeft);
@@ -41,8 +41,8 @@
 
       vm.reset = function() {
         // Remove the DOM elements and recreate them. Kinda hacky.
-        var $cubismContainer = $('<div id="cubism-container"></div>');
-        var $cubismGraph = $('<div id="cubism-graph"></div>');
+        var $cubismContainer = $('<div class="cubism-container"></div>');
+        var $cubismGraph = $('<div class="cubism-graph"></div>');
         $cubismContainer.append($cubismGraph);
         vm.$scrollContainer.empty().append($cubismContainer);
       };
@@ -87,7 +87,7 @@
         horizon.metric(metricAccessor);
 
         // draw graph
-        d3.select("#cubism-graph").selectAll(".horizon")
+        d3.select(".cubism-graph").selectAll(".horizon")
           .data(series)
           .enter()
           .append("div")
@@ -95,7 +95,7 @@
           .call(horizon);
 
         // set rule (a vertical line that updates on hover)
-        d3.select("#cubism-container").append("div")
+        d3.select(".cubism-container").append("div")
           .attr("class", "rule")
           .call(context.rule());
 
@@ -111,7 +111,7 @@
         var axis = context.axis();
         axis.focusFormat(d3.time.format('%-M:%S:%L'));
         axis.tickFormat(d3.time.format('%-M:%S'));
-        d3.select("#cubism-graph").append("div").attr("class", "axis").append("g").call(axis);
+        d3.select(".cubism-graph").append("div").attr("class", "axis").append("g").call(axis);
 
         context.stop();  // shouldn't poll new data as if it's real time
       };
