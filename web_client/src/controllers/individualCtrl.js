@@ -13,6 +13,8 @@ angular.module('crossAdaptiveAudioApp')
         statsService.data.generations &&
         statsService.data.generations[statsService.selectedGeneration - 1] &&
         statsService.data.generations[statsService.selectedGeneration - 1]
+          .individuals[statsService.selectedIndividualIndex] &&
+        statsService.data.generations[statsService.selectedGeneration - 1]
           .individuals[statsService.selectedIndividualIndex].id
     }, debounce(100, function() {
       if (statsService.data && statsService.data.generations && statsService.data.generations[statsService.selectedGeneration - 1]) {

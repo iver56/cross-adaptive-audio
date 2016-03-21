@@ -71,7 +71,16 @@
         // define metric accessor
         function metricAccessor(name) {
           return context.metric(function(start, stop, step, callback) {
-            var values = vm.series.series_standardized[name];
+            var values;
+            if (vm.subtract && vm.subtract.series_standardized) {
+              values = [];
+              for (var i = 0; i < vm.series.series_standardized[name].length; i++) {
+                var value = vm.series.series_standardized[name][i] - vm.subtract.series_standardized[name][i];
+                values.push(value);
+              }
+            } else {
+              values = vm.series.series_standardized[name];
+            }
             callback(null, values);
           }, name);
         }
@@ -121,7 +130,8 @@
       restrict: 'E',
       scope: {},
       bindToController: {
-        series: '='
+        series: '=',
+        subtract: '='
       },
       templateUrl: 'views/cubism.html',
       controller: CubismCtrl,

@@ -156,9 +156,21 @@
 
         <br>
         <md-radio-group ng-model="individual.selectedSound" layout="row">
-          <md-radio-button value="param_sound">Param sound</md-radio-button>
-          <md-radio-button value="input_sound">Input sound</md-radio-button>
-          <md-radio-button value="output_sound">Output sound</md-radio-button>
+          <md-radio-button value="param_sound" title="{{statsService.data.param_sound.file_path}}">
+            Param sound (A)
+          </md-radio-button>
+          <md-radio-button value="input_sound" title="{{statsService.data.input_sound.file_path}}">
+            Input sound (B)
+          </md-radio-button>
+          <md-radio-button value="output_sound" title="The output sound is the processed input sound">
+            Output sound (C)
+          </md-radio-button>
+          <md-radio-button value="diff_c_a" title="How is the output sound different from the parameter sound">
+            Diff(C, A)
+          </md-radio-button>
+          <md-radio-button value="diff_c_b" title="How is the output sound different from the input sound">
+            Diff(C, B)
+          </md-radio-button>
         </md-radio-group>
 
         <div style="min-height: 200px;">
@@ -195,6 +207,18 @@
           <cubism
               ng-if="individual.selectedSound === 'output_sound' && individual.individualDetails.output_sound.feature_data"
               series="individual.individualDetails.output_sound.feature_data"
+          ></cubism>
+
+          <cubism
+              ng-if="individual.selectedSound === 'diff_c_a' && individual.individualDetails.output_sound.feature_data"
+              series="individual.individualDetails.output_sound.feature_data"
+              subtract="statsService.data.param_sound.feature_data"
+          ></cubism>
+
+          <cubism
+              ng-if="individual.selectedSound === 'diff_c_b' && individual.individualDetails.output_sound.feature_data"
+              series="individual.individualDetails.output_sound.feature_data"
+              subtract="statsService.data.input_sound.feature_data"
           ></cubism>
         </div>
       </md-card-content>
