@@ -154,44 +154,49 @@
             graph="individual.individualDetails.neural_network_representation"
         ></neural-network-viz>
 
-        <md-radio-group ng-model="individual.selectedSound">
+        <br>
+        <md-radio-group ng-model="individual.selectedSound" layout="row">
           <md-radio-button value="param_sound">Param sound</md-radio-button>
           <md-radio-button value="input_sound">Input sound</md-radio-button>
           <md-radio-button value="output_sound">Output sound</md-radio-button>
         </md-radio-group>
 
-        <waveform
-            ng-if="individual.selectedSound === 'param_sound' && statsService.data.param_sound"
-            sound="statsService.data.param_sound.file_path"
-            ksmps="statsService.data.param_sound.feature_data.ksmps"
-        ></waveform>
+        <div style="min-height: 200px;">
+          <waveform
+              ng-if="individual.selectedSound === 'param_sound' && statsService.data.param_sound"
+              sound="statsService.data.param_sound.file_path"
+              ksmps="statsService.data.param_sound.feature_data.ksmps"
+          ></waveform>
 
-        <waveform
-            ng-if="individual.selectedSound === 'input_sound' && statsService.data.input_sound"
-            sound="statsService.data.input_sound.file_path"
-            ksmps="statsService.data.input_sound.feature_data.ksmps"
-        ></waveform>
+          <waveform
+              ng-if="individual.selectedSound === 'input_sound' && statsService.data.input_sound"
+              sound="statsService.data.input_sound.file_path"
+              ksmps="statsService.data.input_sound.feature_data.ksmps"
+          ></waveform>
 
-        <waveform
-            ng-if="individual.selectedSound === 'output_sound' && individual.individualDetails.output_sound.file_path"
-            sound="individual.individualDetails.output_sound.file_path"
-            ksmps="individual.individualDetails.output_sound.feature_data.ksmps"
-        ></waveform>
+          <waveform
+              ng-if="individual.selectedSound === 'output_sound' && individual.individualDetails.output_sound.file_path"
+              sound="individual.individualDetails.output_sound.file_path"
+              ksmps="individual.individualDetails.output_sound.feature_data.ksmps"
+          ></waveform>
+        </div>
 
-        <cubism
-            ng-if="individual.selectedSound === 'param_sound' && statsService.data.param_sound"
-            series="statsService.data.param_sound.feature_data"
-        ></cubism>
+        <div style="min-height: 447px">
+          <cubism
+              ng-if="individual.selectedSound === 'param_sound' && statsService.data.param_sound"
+              series="statsService.data.param_sound.feature_data"
+          ></cubism>
 
-        <cubism
-            ng-if="individual.selectedSound === 'input_sound' && statsService.data.input_sound"
-            series="statsService.data.input_sound.feature_data"
-        ></cubism>
+          <cubism
+              ng-if="individual.selectedSound === 'input_sound' && statsService.data.input_sound"
+              series="statsService.data.input_sound.feature_data"
+          ></cubism>
 
-        <cubism
-            ng-if="individual.selectedSound === 'output_sound' && individual.individualDetails.output_sound.feature_data"
-            series="individual.individualDetails.output_sound.feature_data"
-        ></cubism>
+          <cubism
+              ng-if="individual.selectedSound === 'output_sound' && individual.individualDetails.output_sound.feature_data"
+              series="individual.individualDetails.output_sound.feature_data"
+          ></cubism>
+        </div>
       </md-card-content>
     </md-card>
 
