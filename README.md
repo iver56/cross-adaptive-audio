@@ -70,6 +70,8 @@ http://www.equation.com/servlet/equation.cmd?fa=make
 * `make clean` (remove data written during an experiment, but keep data about input files)
 * `make clean-all` (remove all calculated data and ensure that directories are present in the RAM disk)
 * `make serve` (start a server for a web client that can interactively visualize the experiment data)
+    * Go to localhost:8080 in your favorite browser and you'll see a GUI that looks somewhat like this:
+    ![Screenshot of visualization](visualization-screenshot.png)
 
 ## RAM disk (Ubuntu)
 
