@@ -255,6 +255,7 @@ class Neuroevolution(object):
 
         output_vectors = []
         for input_vector in self.param_input_vectors:
+            net.Flush()
             net.Input(input_vector)
             net.Activate()
             output = net.Output()

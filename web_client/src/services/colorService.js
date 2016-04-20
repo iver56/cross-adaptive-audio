@@ -22,15 +22,15 @@
       };
 
       // http://stackoverflow.com/a/32171077/2319697
-      //colorChannelA and colorChannelB are ints ranging from 0 to 255
+      // colorChannelA and colorChannelB are ints ranging from 0 to 255
       that.colorChannelMixer = function(colorChannelA, colorChannelB, amountToMix) {
         var channelA = colorChannelA * (1 - amountToMix);
         var channelB = colorChannelB * amountToMix;
         return parseInt(channelA + channelB);
       };
 
-      //rgb1 and rgb2 are arrays, amountToMix ranges from 0.0 to 1.0
-      //example (red): rgb1 = [255,0,0]
+      // rgb1 and rgb2 are arrays, amountToMix ranges from 0.0 to 1.0
+      // example (red): rgb1 = [255,0,0]
       that.colorMixer = function(rgb1, rgb2, amountToMix) {
         var r = that.colorChannelMixer(rgb1[0], rgb2[0], amountToMix);
         var g = that.colorChannelMixer(rgb1[1], rgb2[1], amountToMix);
