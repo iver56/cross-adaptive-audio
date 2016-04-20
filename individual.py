@@ -4,6 +4,7 @@ import os
 import settings
 import json
 import neural_network_representation
+import cross_adapt
 
 
 class Individual(object):
@@ -35,6 +36,18 @@ class Individual(object):
                 self.genotype
         )
 
+    def get_neural_output_representation(self):
+        channels = self.neural_output.channels
+        series_standardized = {}
+        for i in range(len(cross_adapt.CrossAdapter.PARAMETER_LIST)):
+            parameter = cross_adapt.CrossAdapter.PARAMETER_LIST[i]
+            series_standardized[parameter] = channels[i]
+        return {
+            'series_standardized': series_standardized,
+            'ksmps': settings.CSOUND_KSMPS,
+            'order': cross_adapt.CrossAdapter.PARAMETER_LIST
+        }
+
     def get_serialized_representation(self):
         """
         Get a serialized representation where data is included directly
@@ -43,7 +56,7 @@ class Individual(object):
         return {
             'id': self.id,
             'fitness': self.genotype.GetFitness(),
-            'neural_output': self.neural_output.channels,
+            'neural_output': self.get_neural_output_representation(),
             'output_sound': self.output_sound.get_serialized_representation(),
             'neural_network_representation': self.get_neural_network_representation()
         }

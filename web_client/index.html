@@ -32,6 +32,7 @@
   <script src="src/services/communicationService.js"></script>
   <script src="src/services/statsService.js"></script>
   <script src="src/services/colorService.js"></script>
+  <script src="src/services/cubismService.js"></script>
 
   <script src="src/directives/statsChart.js"></script>
   <link rel="stylesheet" href="css/stats-chart.css">
@@ -228,6 +229,14 @@
               ng-if="individual.selectedSound === 'diff_c_b' && individual.individualDetails.output_sound.feature_data"
               series="individual.individualDetails.output_sound.feature_data"
               subtract="statsService.data.input_sound.feature_data"
+          ></cubism>
+        </div>
+
+        <div>
+          <cubism
+              ng-if="individual.selectedSound === 'output_sound' && individual.individualDetails.neural_output"
+              series="individual.individualDetails.neural_output"
+              extent="[0, 1]"
           ></cubism>
         </div>
       </md-card-content>

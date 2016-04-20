@@ -107,8 +107,10 @@ class SoundFile(object):
         return feature_vector
 
     def get_serialized_representation(self):
+        feature_data = self.get_analysis(ensure_standardized_series=True)
+        feature_data['order'] = analyze.Analyzer.FEATURES_LIST
         return {
-            'feature_data': self.get_analysis(ensure_standardized_series=True),
+            'feature_data': feature_data,
             'file_path': self.file_path
         }
 
