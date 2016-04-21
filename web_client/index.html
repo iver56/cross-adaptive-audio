@@ -156,7 +156,11 @@
         ></neural-network-viz>
 
         <br>
-        <md-radio-group ng-model="individual.selectedSound" layout="row">
+        <md-radio-group
+            ng-if="individual.individualDetails"
+            ng-model="individual.selectedSound"
+            layout="row"
+        >
           <md-radio-button value="param_sound" title="{{statsService.data.param_sound.file_path}}">
             Param (A)
           </md-radio-button>
@@ -197,7 +201,7 @@
           ></waveform>
         </div>
 
-        <div style="min-height: 447px">
+        <div style="min-height: 200px">
           <cubism
               ng-if="individual.selectedSound === 'param_sound' && statsService.data.param_sound"
               series="statsService.data.param_sound.feature_data"
