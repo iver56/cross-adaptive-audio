@@ -78,6 +78,7 @@ class Standardizer(object):
     @staticmethod
     def get_normalized_value(standardized_value):
         """
+        Sigmoid. TODO: Remove this function
         :param standardized_value:
         :return: A value between 0 and 1. Good for visualization.
         """
@@ -92,15 +93,10 @@ class Standardizer(object):
         :param skew_factor: a value between 0 and 1 gives exponential-like qualities. 1 => linear.
         :return: value between minimum and maximum with a specific skew
         """
-        if skew_factor < 0:
-            raise Exception('skew_factor must be positive')
-        elif normalized_value < 0 or normalized_value > 1:
-            raise Exception('normalized_value must be between 0 and 1 (inclusive)')
-        elif min_value > max_value:
-            raise Exception('min_value must not be greater than max_value')
-
         if normalized_value == 0.0:
+            # Avoid domain error (math.log can't deal with zero)
             return min_value
 
         skewed_value = math.exp(math.log(normalized_value) / skew_factor)
-        return min_value + (max_value - min_value) * skewed_value
+        result = min_value + (max_value - min_value) * skewed_value
+        return result

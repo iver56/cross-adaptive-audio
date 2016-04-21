@@ -33,9 +33,20 @@ class TestStandardizer(unittest.TestCase):
         self.assertGreater(mapped_value, 0.0)
 
         mapped_value = standardizer.Standardizer.get_mapped_value(
+            normalized_value=0.013, min_value=0.0, max_value=3.0, skew_factor=0.3
+        )
+        self.assertLess(mapped_value, 0.013)
+        self.assertGreater(mapped_value, 0.0)
+
+        mapped_value = standardizer.Standardizer.get_mapped_value(
             normalized_value=0.0, min_value=0.0, max_value=3.0, skew_factor=0.3
         )
         self.assertAlmostEqual(mapped_value, 0.0)
+
+    def test_normalized_value(self):
+        normalized_value = standardizer.Standardizer.get_normalized_value(0.0)
+        self.assertAlmostEqual(normalized_value, 0.5)
+
 
 if __name__ == '__main__':
     unittest.main()
