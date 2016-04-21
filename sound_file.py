@@ -6,6 +6,7 @@ import json
 import os
 import settings
 import analyze
+import six
 
 
 class SoundFile(object):
@@ -91,7 +92,8 @@ class SoundFile(object):
             json.dump(self.analysis, outfile)
 
     def get_num_frames(self):
-        return len(self.analysis['series']['mfcc_amp'])
+        arbitrary_series = six.next(six.itervalues(self.analysis['series']))
+        return len(arbitrary_series)
 
     def get_standardized_feature_vector(self, k):
         """
