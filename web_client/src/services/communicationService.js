@@ -7,7 +7,7 @@
       var that = this;
 
       that.init = function() {
-        that.ws = new WebSocket('ws://localhost:1337', 'echo-protocol');
+        that.ws = new WebSocket('ws://' + location.hostname + ':1337', 'echo-protocol');
 
         that.sendMessage = function(message) {
           that.ws.send(message);
