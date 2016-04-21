@@ -84,7 +84,7 @@ my_reader = Reader(data_file_path=r{{ data_file_path | tojson }})
         kleveladjust	= 1/(sqrt(kDrive)+(kDist*2))				; attempt automatic level adjustment according to distortion drive
         afilt		= (afilt*(1-kAutoLevel))+(afilt*kleveladjust*kAutoLevel)	; and select balance between autogained and straight dist signal
 
-        aOut		= (afilt*kMix)+(aIn*(1-kMix)) * kPostGain
+        aOut		= ((afilt * kMix) + (aIn * (1 - kMix))) * kPostGain
 
         out aOut
 
