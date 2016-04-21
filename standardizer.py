@@ -99,5 +99,8 @@ class Standardizer(object):
         elif min_value > max_value:
             raise Exception('min_value must not be greater than max_value')
 
+        if normalized_value == 0.0:
+            return min_value
+
         skewed_value = math.exp(math.log(normalized_value) / skew_factor)
         return min_value + (max_value - min_value) * skewed_value
