@@ -16,8 +16,8 @@ class CrossAdapter(object):
     NUM_PARAMETERS = len(PARAMETER_LIST)
 
     @staticmethod
-    def cross_adapt(param_sound, input_sound, vectors, generation):
-        channels = zip(*vectors)
+    def cross_adapt(param_sound, input_sound, parameter_vectors, generation):
+        channels = zip(*parameter_vectors)
         data_md5 = hashlib.md5(json.dumps(channels)).hexdigest()
 
         data_file_path = os.path.join(

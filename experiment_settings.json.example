@@ -1,0 +1,9 @@
+{
+  "similarity_channels": [
+    "mfcc_amp"
+  ],
+  "neural_input_channels": [
+    "mfcc_amp",
+    "mfcc_1"
+  ]
+}

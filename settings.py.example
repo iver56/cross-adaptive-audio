@@ -1,4 +1,6 @@
 import os
+import json
+import copy
 
 
 BASE_DIR = './'
@@ -47,3 +49,12 @@ AUBIO_BUFFER_SIZE = AUBIO_HOP_SIZE * 2
 CSOUND_KSMPS = AUBIO_HOP_SIZE
 
 WHITELISTED_SOUND_FILE_EXTENSIONS = ['wav']
+
+with FILE_HANDLER('experiment_settings.json') as data_file:
+    experiment_settings = json.load(data_file)
+    SIMILARITY_CHANNELS = experiment_settings['similarity_channels']
+    NEURAL_INPUT_CHANNELS = experiment_settings['neural_input_channels']
+    ANALYZE_CHANNELS = copy.deepcopy(NEURAL_INPUT_CHANNELS)
+    for channel in SIMILARITY_CHANNELS:
+        if channel not in ANALYZE_CHANNELS:
+            ANALYZE_CHANNELS.append(channel)

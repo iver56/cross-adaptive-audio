@@ -149,7 +149,7 @@ class Neuroevolution(object):
 
             self.param_input_vectors = []
             for k in range(self.num_frames):
-                vector = self.param_sound.get_standardized_feature_vector(k)
+                vector = self.param_sound.get_standardized_neural_input_vector(k)
                 vector.append(1.0)  # bias input
                 self.param_input_vectors.append(vector)
         else:

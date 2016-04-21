@@ -14,12 +14,11 @@ import project
 
 
 class Analyzer(object):
-    FEATURES = {'mfcc_amp': 0}
-    FEATURES_LIST = ['mfcc_amp']
-    for i in range(1, 13):
-        label = 'mfcc_' + str(i)
+    FEATURES_LIST = settings.ANALYZE_CHANNELS
+    FEATURES = {}
+    for i in range(len(FEATURES_LIST)):
+        label = FEATURES_LIST[i]
         FEATURES[label] = i
-        FEATURES_LIST.append(label)
     NUM_FEATURES = len(FEATURES)
 
     def __init__(self):
@@ -55,7 +54,9 @@ class Analyzer(object):
         if self.args.print_execution_time:
             self.start_time = time.time()
 
-        self.input_file_path = os.path.abspath(os.path.join(settings.INPUT_DIRECTORY, self.args.input_filename))
+        self.input_file_path = os.path.abspath(
+            os.path.join(settings.INPUT_DIRECTORY, self.args.input_filename)
+        )
         self.sound_file_to_analyze = sound_file.SoundFile(self.args.input_filename)
         self.analyze(self.sound_file_to_analyze, self.args.add_standardized_series)
 
@@ -81,7 +82,8 @@ class Analyzer(object):
             input_file_path=os.path.abspath(sound_file_to_analyze.file_path),
             ksmps=settings.CSOUND_KSMPS,
             duration=sound_file_to_analyze.get_duration(),
-            feature_data_file_path=os.path.abspath(sound_file_to_analyze.get_feature_data_file_path())
+            feature_data_file_path=os.path.abspath(
+                sound_file_to_analyze.get_feature_data_file_path())
         )
         csd_path = os.path.join(settings.CSD_DIRECTORY, 'rms_analyzer.csd')
         template.write_result(csd_path)
@@ -107,7 +109,8 @@ class Analyzer(object):
         ]
         stdout = subprocess.check_output(command).decode('utf-8')
 
-        my_logger = logger.Logger(sound_file_to_analyze.get_feature_data_file_path(), Analyzer.FEATURES)
+        my_logger = logger.Logger(sound_file_to_analyze.get_feature_data_file_path(),
+                                  Analyzer.FEATURES)
 
         for line in stdout.split('\n'):
             values = line.split()
@@ -116,10 +119,13 @@ class Analyzer(object):
             # mfcc_time = float(values[0])
             # my_logger.log_value('mfcc_time', mfcc_time)
             mfcc_amp = float(values[1])
-            my_logger.log_value('mfcc_amp', mfcc_amp)
+            if 'mfcc_amp' in Analyzer.FEATURES:
+                my_logger.log_value('mfcc_amp', mfcc_amp)
             for i in range(len(values) - 2):
                 mfcc_band = float(values[i + 2])
-                my_logger.log_value('mfcc_{}'.format(i + 1), mfcc_band)
+                feature_key = 'mfcc_{}'.format(i + 1)
+                if feature_key in Analyzer.FEATURES:
+                    my_logger.log_value(feature_key, mfcc_band)
 
         my_logger.write()
 

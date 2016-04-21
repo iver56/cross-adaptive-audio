@@ -56,6 +56,7 @@ http://www.equation.com/servlet/equation.cmd?fa=make
 
 * Clone this repository
 * Get a local settings file: `cp settings.py.example settings.py`
+* Create a settings file for your experiment(s): `cp experiment_settings.json.example experiment_settings.json`
 * Make sure that all dependencies are installed: `[sudo] pip install -r requirements.txt`
 * Navigate to the node_server folder and run `npm install`
 

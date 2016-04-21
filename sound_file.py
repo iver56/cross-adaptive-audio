@@ -95,16 +95,16 @@ class SoundFile(object):
         arbitrary_series = six.next(six.itervalues(self.analysis['series']))
         return len(arbitrary_series)
 
-    def get_standardized_feature_vector(self, k):
+    def get_standardized_neural_input_vector(self, k):
         """
-        Get a feature vector for a given frame k.
+        Get a neural input vector for a given frame k.
         Assumes that self.analysis['series_standardized'] is defined and k is within bounds.
         May raise an exception otherwise
         :param k:
         :return: list
         """
         feature_vector = []
-        for feature in analyze.Analyzer.FEATURES:
+        for feature in settings.NEURAL_INPUT_CHANNELS:
             feature_vector.append(self.analysis['series_standardized'][feature][k])
         return feature_vector
 

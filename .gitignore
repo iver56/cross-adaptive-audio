@@ -65,6 +65,7 @@ venv3
 settings.py
 binaries
 results
+experiment_settings.json
 
 # NodeJS
 node_modules
