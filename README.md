@@ -17,7 +17,8 @@ The project will investigate methods of evaluating the musical applicability of 
   * `git clone https://github.com/peter-ch/MultiNEAT.git`
   * `cd MultiNEAT`
   * `[sudo] python setup.py install`
-* Install NodeJS (optional)
+* Install NodeJS
+  * `sudo apt-get install nodejs npm`
 
 ## Install dependencies (Windows)
 
