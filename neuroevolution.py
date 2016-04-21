@@ -116,7 +116,7 @@ class Neuroevolution(object):
                 help='MutateRemLinkProb: Probability for a baby to be mutated with the'
                      ' Remove-Link mutation',
                 required=False,
-                default=0.03
+                default=0.06
         )
         arg_parser.add_argument(
                 '--rem-simple-neuron-prob',
