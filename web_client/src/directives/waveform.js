@@ -31,7 +31,7 @@
         scrollParent: true
       });
 
-      function sanitizeFilePath(filePath) {
+      vm.sanitizeFilePath = function(filePath) {
         return filePath.replace(/^\.\//, '/').replace(/\\/g, '/');
       }
 
@@ -58,7 +58,7 @@
         return vm.sound;
       }, debounce(100, function() {
         vm.isReady = false;
-        vm.wavesurfer.load(sanitizeFilePath(vm.sound));
+        vm.wavesurfer.load(vm.sanitizeFilePath(vm.sound));
       }));
 
       vm.onKeyUp = function(e) {
