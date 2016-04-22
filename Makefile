@@ -27,4 +27,4 @@ test:
 
 .PHONY: serve
 serve:
-	node node_server/server.js
+	python serve.py
