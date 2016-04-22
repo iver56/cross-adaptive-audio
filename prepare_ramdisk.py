@@ -50,3 +50,5 @@ dir_util.copy_tree(
     os.path.join('.', node_server_dir_name),
     os.path.join(settings.BASE_DIR, node_server_dir_name)
 )
+
+print('Done')

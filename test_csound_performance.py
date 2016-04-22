@@ -16,8 +16,8 @@ class TestCsoundPerformance(unittest.TestCase):
         self.files_to_delete = []
 
     def tearDown(self):
-        for filename in self.files_to_delete:
-            os.remove(os.path.join(settings.OUTPUT_DIRECTORY, filename))
+        for file_path in self.files_to_delete:
+            os.remove(file_path)
 
     def test_serial_execution(self):
         self.start_time = time.time()
@@ -36,7 +36,8 @@ class TestCsoundPerformance(unittest.TestCase):
             csound = csound_handler.CsoundHandler(csd_path)
             output_filename = self.drums.filename + '.test_processed_{}.wav'.format(i)
             csound.run(output_filename, async=False)
-            self.files_to_delete.append(output_filename)
+            self.files_to_delete.append(csd_path)
+            self.files_to_delete.append(os.path.join(settings.OUTPUT_DIRECTORY, output_filename))
 
         print("Serial execution time for {0} sounds: {1} seconds".format(
             self.num_sounds,
@@ -63,7 +64,8 @@ class TestCsoundPerformance(unittest.TestCase):
             output_filename = self.drums.filename + '.test_processed_{}.wav'.format(i)
             p = csound.run(output_filename, async=True)
             processes.append(p)
-            self.files_to_delete.append(output_filename)
+            self.files_to_delete.append(csd_path)
+            self.files_to_delete.append(os.path.join(settings.OUTPUT_DIRECTORY, output_filename))
 
         for p in processes:
             p.wait()
