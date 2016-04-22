@@ -12,14 +12,16 @@ class Individual(object):
         self.genotype = genotype
         self.generation = generation
         # pprint.pprint(inspect.getmembers(genotype))
-        self.id = genotype.GetID()
         self.output_sound = None
         self.neural_output = None
+
+    def get_id(self):
+        return self.output_sound.get_md5()
 
     def get_individual_data_file_path(self):
         return os.path.join(
                 settings.INDIVIDUAL_DATA_DIRECTORY,
-                'individual_{}.json'.format(self.id)
+                'individual_{}.json'.format(self.get_id())
         )
 
     def set_fitness(self, fitness):

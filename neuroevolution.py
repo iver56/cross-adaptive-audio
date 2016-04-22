@@ -174,6 +174,8 @@ class Neuroevolution(object):
         }
         self.max_fitness = None
         self.last_fitness_improvement = 0  # generation number
+        if self.args.keep_only_best:
+            self.best_individual_ids = set()
 
         self.run()
 
@@ -253,6 +255,8 @@ class Neuroevolution(object):
             self.stats_logger.data['generations'].append(stats_item)
             self.stats_logger.write()
 
+            self.best_individual_ids.add(individuals[-1].get_id())
+
             if self.args.visualize:
                 net = NEAT.NeuralNetwork()
                 individuals[-1].genotype.BuildPhenotype(net)  # build phenotype from best genotype
@@ -264,7 +268,8 @@ class Neuroevolution(object):
             if self.args.keep_only_best:
                 # delete all but best fit results from this generation
                 for i in range(len(individuals) - 1):
-                    individuals[i].delete()  # delete the sound and its data
+                    if individuals[i].get_id() not in self.best_individual_ids:
+                        individuals[i].delete()  # delete the sound and its data
 
             if self.has_patience_ended(max_fitness, generation):
                 print(
