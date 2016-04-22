@@ -8,7 +8,7 @@
 
       that.data = null;
       that.selectedGeneration = null;
-      that.selectedIndividualIndex = 0;
+      that.selectedIndividualIndex = null;
       that.numGenerations = 1;
       that.populationSize = null;
       that.histogramOptions = {
@@ -24,8 +24,11 @@
           that.numGenerations = data.generations.length;
           that.data = data;
           that.populationSize = data.generations[that.numGenerations - 1].individuals.length;
-          if (!that.selectedGeneration) {
+          if (null === that.selectedGeneration) {
             that.selectedGeneration = that.numGenerations;
+          }
+          if (null === that.selectedIndividualIndex || that.selectedIndividualIndex > that.populationSize - 1) {
+            that.selectedIndividualIndex = that.populationSize - 1;
           }
         }
       };
