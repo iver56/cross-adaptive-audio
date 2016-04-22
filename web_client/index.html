@@ -138,10 +138,14 @@
         <md-card-title-text>
           <span class="md-headline">
             Individual
-            {{ statsService.data.generations[statsService.selectedGeneration - 1].individuals[statsService.selectedIndividualIndex].id }}
+            <span
+                title="{{ statsService.data.generations[statsService.selectedGeneration - 1].individuals[statsService.selectedIndividualIndex].id}}">
+            {{ statsService.data.generations[statsService.selectedGeneration - 1].individuals[statsService.selectedIndividualIndex].id | limitTo:8}}
+            </span>
           </span>
-          <span class="md-subhead">
-            Fitness: {{ statsService.data.generations[statsService.selectedGeneration - 1].individuals[statsService.selectedIndividualIndex].fitness }}
+          <span class="md-subhead"
+                title="{{ statsService.data.generations[statsService.selectedGeneration - 1].individuals[statsService.selectedIndividualIndex].fitness }}">
+            Fitness: {{ statsService.data.generations[statsService.selectedGeneration - 1].individuals[statsService.selectedIndividualIndex].fitness | number:4 }}
           </span>
 
         </md-card-title-text>
@@ -167,16 +171,28 @@
           <md-radio-button value="input_sound" title="{{statsService.data.input_sound.file_path}}">
             Input (B)
           </md-radio-button>
-          <md-radio-button value="output_sound" title="The output sound is the processed input sound">
+          <md-radio-button
+              value="output_sound"
+              title="The output sound is the processed input sound"
+          >
             Output (C)
           </md-radio-button>
-          <md-radio-button value="diff_b_a" title="How is the input sound different from the parameter sound">
+          <md-radio-button
+              value="diff_b_a"
+              title="How is the input sound different from the parameter sound"
+          >
             Diff(B, A)
           </md-radio-button>
-          <md-radio-button value="diff_c_a" title="How is the output sound different from the parameter sound">
+          <md-radio-button
+              value="diff_c_a"
+              title="How is the output sound different from the parameter sound"
+          >
             Diff(C, A)
           </md-radio-button>
-          <md-radio-button value="diff_c_b" title="How is the output sound different from the input sound">
+          <md-radio-button
+              value="diff_c_b"
+              title="How is the output sound different from the input sound"
+          >
             Diff(C, B)
           </md-radio-button>
         </md-radio-group>

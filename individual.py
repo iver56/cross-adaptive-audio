@@ -54,7 +54,7 @@ class Individual(object):
         :return:
         """
         return {
-            'id': self.id,
+            'id': self.output_sound.get_md5(),
             'fitness': self.genotype.GetFitness(),
             'neural_output': self.get_neural_output_representation(),
             'output_sound': self.output_sound.get_serialized_representation(),
@@ -67,7 +67,7 @@ class Individual(object):
         :return:
         """
         return {
-            'id': self.id,
+            'id': self.output_sound.get_md5(),
             'fitness': self.genotype.GetFitness()
         }
 
