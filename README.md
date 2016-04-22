@@ -88,4 +88,4 @@ Experiments can run ~10-30% faster (depending on hardware) if you use a RAM disk
 The ramdisk should now be mounted on startup/reboot. You can confirm this by rebooting and running
 `df -h /mnt/ramdisk`
 
-Finally, set BASE_DIR in settings.py to '/mnt/ramdisk'
+Finally, set BASE_DIR in settings.py to '/mnt/ramdisk' and run `make prepare-ramdisk`
