@@ -27,13 +27,13 @@
         waveColor: 'violet',
         progressColor: 'purple',
         fillParent: false,
-        minPxPerSec: sampleRate / vm.ksmps,
+        minPxPerSec: sampleRate / vm.sound.feature_data.ksmps,
         scrollParent: true
       });
 
-      vm.sanitizeFilePath = function(filePath) {
-        return filePath.replace(/^\.\//, '/').replace(/\\/g, '/');
-      }
+      vm.getFilePath = function() {
+        return '/' + (vm.sound.is_input ? 'input' : 'output') + '/' + vm.sound.filename;
+      };
 
       vm.wavesurfer.on('ready', function() {
         vm.isReady = true;
@@ -55,10 +55,10 @@
       });
 
       $scope.$watch(function() {
-        return vm.sound;
+        return vm.sound && vm.sound.filename;
       }, debounce(100, function() {
         vm.isReady = false;
-        vm.wavesurfer.load(vm.sanitizeFilePath(vm.sound));
+        vm.wavesurfer.load(vm.getFilePath());
       }));
 
       vm.onKeyUp = function(e) {
@@ -95,8 +95,7 @@
       restrict: 'E',
       scope: {},
       bindToController: {
-        sound: '=',
-        ksmps: '='
+        sound: '='
       },
       templateUrl: 'views/waveform.html',
       controller: WaveformCtrl,

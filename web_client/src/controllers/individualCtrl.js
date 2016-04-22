@@ -30,7 +30,6 @@ angular.module('crossAdaptiveAudioApp')
         vm.individualDetails = response.data;
         vm.loading = false;
       }, function(response) {
-        console.error(response);
         vm.loading = false;
         vm.individualDetails = null;
       });

@@ -200,24 +200,21 @@
         <div style="min-height: 200px;">
           <waveform
               ng-if="individual.selectedSound === 'param_sound' && statsService.data.param_sound"
-              sound="statsService.data.param_sound.file_path"
-              ksmps="statsService.data.param_sound.feature_data.ksmps"
+              sound="statsService.data.param_sound"
           ></waveform>
 
           <waveform
               ng-if="individual.selectedSound === 'input_sound' && statsService.data.input_sound"
-              sound="statsService.data.input_sound.file_path"
-              ksmps="statsService.data.input_sound.feature_data.ksmps"
+              sound="statsService.data.input_sound"
           ></waveform>
 
           <waveform
-              ng-if="individual.selectedSound === 'output_sound' && individual.individualDetails.output_sound.file_path"
-              sound="individual.individualDetails.output_sound.file_path"
-              ksmps="individual.individualDetails.output_sound.feature_data.ksmps"
+              ng-if="individual.selectedSound === 'output_sound' && individual.individualDetails.output_sound"
+              sound="individual.individualDetails.output_sound"
           ></waveform>
         </div>
 
-        <div style="min-height: 200px">
+        <div style="min-height: 100px">
           <cubism
               ng-if="individual.selectedSound === 'param_sound' && statsService.data.param_sound"
               series="statsService.data.param_sound.feature_data"
@@ -252,7 +249,7 @@
           ></cubism>
         </div>
 
-        <div>
+        <div style="min-height: 100px;">
           <cubism
               ng-if="individual.selectedSound === 'output_sound' && individual.individualDetails.neural_output"
               series="individual.individualDetails.neural_output"

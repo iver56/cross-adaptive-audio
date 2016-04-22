@@ -113,7 +113,8 @@ class SoundFile(object):
         feature_data['order'] = analyze.Analyzer.FEATURES_LIST
         return {
             'feature_data': feature_data,
-            'file_path': self.file_path
+            'filename': self.filename,
+            'is_input': self.is_input
         }
 
     def delete(self):
