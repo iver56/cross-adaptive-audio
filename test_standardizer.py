@@ -43,10 +43,6 @@ class TestStandardizer(unittest.TestCase):
         )
         self.assertAlmostEqual(mapped_value, 0.0)
 
-    def test_normalized_value(self):
-        normalized_value = standardizer.Standardizer.get_normalized_value(0.0)
-        self.assertAlmostEqual(normalized_value, 0.5)
-
 
 if __name__ == '__main__':
     unittest.main()

@@ -76,15 +76,6 @@ class Standardizer(object):
         return standardized_value
 
     @staticmethod
-    def get_normalized_value(standardized_value):
-        """
-        Sigmoid. TODO: Remove this function
-        :param standardized_value:
-        :return: A value between 0 and 1. Good for visualization.
-        """
-        return 0.5 + math.tanh(standardized_value) / 2
-
-    @staticmethod
     def get_mapped_value(normalized_value, min_value, max_value, skew_factor=1.0):
         """
         :param normalized_value: input value between 0 and 1
