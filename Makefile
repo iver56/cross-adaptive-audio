@@ -7,11 +7,15 @@ update:
 
 .PHONY: clean
 clean:
-	python clean.py --keep-project-data --keep-input-feature-data --keep-output-sounds
+	python clean.py --keep-project-data --keep-input-feature-data
 
 .PHONY: clean-all
 clean-all:
-	python clean.py --ensure-directories
+	python clean.py
+
+.PHONY: prepare-ramdisk
+prepare-ramdisk:
+	python prepare_ramdisk.py
 
 .PHONY: project
 project:
