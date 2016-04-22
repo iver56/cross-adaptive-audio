@@ -11,6 +11,7 @@ import time
 import logger
 import os
 import individual
+import project
 
 try:
     import cv2
@@ -145,6 +146,8 @@ class Neuroevolution(object):
             default=False
         )
         self.args = arg_parser.parse_args()
+
+        project.Project.assert_project_exists()
 
         if self.args.seed is not None:
             settings.PRNG_SEED = self.args.seed

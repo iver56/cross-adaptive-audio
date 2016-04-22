@@ -20,6 +20,17 @@ class Project(object):
                 self.data = json.load(project_data_file_path)
 
     @staticmethod
+    def assert_project_exists():
+        if Project.get_current_project().data is None:
+            raise Exception(
+                'Could not find project "{}".'
+                ' You can create a project by running `make project`'.format(
+                    settings.CURRENT_PROJECT_FILE
+                )
+            )
+
+
+    @staticmethod
     def get_current_project():
         if Project.current_project is None:
             Project.current_project = Project(settings.CURRENT_PROJECT_FILE)
