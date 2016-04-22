@@ -25,116 +25,124 @@ class Neuroevolution(object):
     def __init__(self):
         arg_parser = argparse.ArgumentParser()
         arg_parser.add_argument(
-                '-i',
-                '--input',
-                dest='input_files',
-                nargs='+',
-                type=str,
-                help='The filename of the parameter sound and the filename of the input sound, respectively',
-                required=True,
-                default=[]
+            '-i',
+            '--input',
+            dest='input_files',
+            nargs='+',
+            type=str,
+            help='The filename of the parameter sound and the filename of the input sound, respectively',
+            required=True,
+            default=[]
         )
         arg_parser.add_argument(
-                '-g',
-                '--num-generations',
-                dest='num_generations',
-                type=int,
-                required=False,
-                default=20
+            '-g',
+            '--num-generations',
+            dest='num_generations',
+            type=int,
+            required=False,
+            default=20
         )
         arg_parser.add_argument(
-                '-p',
-                '--population_size',
-                dest='population_size',
-                type=int,
-                required=False,
-                default=20
+            '-p',
+            '--population_size',
+            dest='population_size',
+            type=int,
+            required=False,
+            default=20
         )
         arg_parser.add_argument(
-                '-s',
-                '--seed',
-                dest='seed',
-                type=int,
-                required=False,
-                default=None
+            '--patience',
+            dest='patience',
+            help='Number of generations with no improvement before stopping',
+            type=int,
+            required=False,
+            default=5
         )
         arg_parser.add_argument(
-                '-v',
-                '--visualize',
-                nargs='?',
-                dest='visualize',
-                help='Visualize the best neural network in each generation',
-                const=True,
-                required=False,
-                default=False
+            '-s',
+            '--seed',
+            dest='seed',
+            type=int,
+            required=False,
+            default=None
         )
         arg_parser.add_argument(
-                '--keep-only-best',
-                nargs='?',
-                dest='keep_only_best',
-                help='Delete all sounds but the fittest in each generation',
-                const=True,
-                required=False,
-                default=False
+            '-v',
+            '--visualize',
+            nargs='?',
+            dest='visualize',
+            help='Visualize the best neural network in each generation',
+            const=True,
+            required=False,
+            default=False
         )
         arg_parser.add_argument(
-                '--allow-clones',
-                nargs='?',
-                dest='allow_clones',
-                help="""Allow clones or nearly identical genomes to exist simultaneously in the
+            '--keep-only-best',
+            nargs='?',
+            dest='keep_only_best',
+            help='Delete all sounds but the fittest in each generation',
+            const=True,
+            required=False,
+            default=False
+        )
+        arg_parser.add_argument(
+            '--allow-clones',
+            nargs='?',
+            dest='allow_clones',
+            help="""Allow clones or nearly identical genomes to exist simultaneously in the
                     population. This is useful for non-deterministic environments,
                     as the same individual will get more than one chance to prove himself, also
                     there will be more chances the same individual to mutate in different ways.
                     The drawback is greatly increased time for reproduction. If you want to
                     search quickly, yet less efficient, leave this to true.""",
-                const=True,
-                required=False,
-                default=False
+            const=True,
+            required=False,
+            default=False
         )
         arg_parser.add_argument(
-                '--add-neuron-prob',
-                dest='add_neuron_probability',
-                type=float,
-                help='MutateAddNeuronProb: Probability for a baby to be mutated with the'
-                     ' Add-Neuron mutation',
-                required=False,
-                default=0.03
+            '--add-neuron-prob',
+            dest='add_neuron_probability',
+            type=float,
+            help='MutateAddNeuronProb: Probability for a baby to be mutated with the'
+                 ' Add-Neuron mutation',
+            required=False,
+            default=0.03
         )
         arg_parser.add_argument(
-                '--add-link-prob',
-                dest='add_link_probability',
-                type=float,
-                help='MutateAddLinkProb: Probability for a baby to be mutated with the'
-                     ' Add-Link mutation',
-                required=False,
-                default=0.03
+            '--add-link-prob',
+            dest='add_link_probability',
+            type=float,
+            help='MutateAddLinkProb: Probability for a baby to be mutated with the'
+                 ' Add-Link mutation',
+            required=False,
+            default=0.03
         )
         arg_parser.add_argument(
-                '--rem-link-prob',
-                dest='remove_link_probability',
-                type=float,
-                help='MutateRemLinkProb: Probability for a baby to be mutated with the'
-                     ' Remove-Link mutation',
-                required=False,
-                default=0.06
+            '--rem-link-prob',
+            dest='remove_link_probability',
+            type=float,
+            help='MutateRemLinkProb: Probability for a baby to be mutated with the'
+                 ' Remove-Link mutation',
+            required=False,
+            default=0.06
         )
         arg_parser.add_argument(
-                '--rem-simple-neuron-prob',
-                dest='remove_simple_neuron_probability',
-                type=float,
-                help='MutateRemSimpleNeuronProb: Probability for a baby that a simple neuron'
-                     ' will be replaced with a link',
-                required=False,
-                default=0.03
+            '--rem-simple-neuron-prob',
+            dest='remove_simple_neuron_probability',
+            type=float,
+            help='MutateRemSimpleNeuronProb: Probability for a baby that a simple neuron'
+                 ' will be replaced with a link',
+            required=False,
+            default=0.03
         )
         arg_parser.add_argument(
-                '--fs-neat',
-                nargs='?',
-                dest='fs_neat',
-                help='Use FS-NEAT',
-                const=True,
-                required=False,
-                default=False
+            '--fs-neat',
+            nargs='?',
+            dest='fs_neat',
+            help='Use FS-NEAT',
+            const=True,
+            required=False,
+            default=False
         )
         self.args = arg_parser.parse_args()
 
@@ -156,16 +164,30 @@ class Neuroevolution(object):
             raise Exception('Two filenames must be specified')
 
         self.stats_logger = logger.Logger(
-                os.path.join(settings.STATS_DATA_DIRECTORY, 'stats.json'),
-                suppress_initialization=True
+            os.path.join(settings.STATS_DATA_DIRECTORY, 'stats.json'),
+            suppress_initialization=True
         )
         self.stats_logger.data = {
             'param_sound': self.param_sound.get_serialized_representation(),
             'input_sound': self.input_sound.get_serialized_representation(),
             'generations': []
         }
+        self.max_fitness = None
+        self.last_fitness_improvement = 0  # generation number
 
         self.run()
+
+    def has_patience_ended(self, max_fitness, generation):
+        """
+        Return True if patience has ended, i.e. too many generations have passed without
+        improving max fitness
+        """
+        if self.max_fitness is None or max_fitness > self.max_fitness:
+            self.max_fitness = max_fitness
+            self.last_fitness_improvement = generation
+            return False  # There is progress. Keep going.
+        elif generation - self.last_fitness_improvement >= self.args.patience:
+            return True  # Patience has ended. Stop evolving.
 
     def run(self):
         params = NEAT.Parameters()
@@ -179,22 +201,22 @@ class Neuroevolution(object):
         num_hidden_nodes = 0
         num_outputs = cross_adapt.CrossAdapter.NUM_PARAMETERS
         genome = NEAT.Genome(
-                0,  # ID
-                num_inputs,
-                num_hidden_nodes,
-                num_outputs,
-                self.args.fs_neat,
-                NEAT.ActivationFunction.UNSIGNED_SIGMOID,  # OutputActType
-                NEAT.ActivationFunction.TANH,  # HiddenActType
-                0,  # SeedType
-                params  # Parameters
+            0,  # ID
+            num_inputs,
+            num_hidden_nodes,
+            num_outputs,
+            self.args.fs_neat,
+            NEAT.ActivationFunction.UNSIGNED_SIGMOID,  # OutputActType
+            NEAT.ActivationFunction.TANH,  # HiddenActType
+            0,  # SeedType
+            params  # Parameters
         )
         pop = NEAT.Population(
-                genome,
-                params,
-                True,  # whether the population should be randomized
-                2.0,  # how much the population should be randomized,
-                settings.PRNG_SEED
+            genome,
+            params,
+            True,  # whether the population should be randomized
+            2.0,  # how much the population should be randomized,
+            settings.PRNG_SEED
         )
 
         for generation in range(1, self.args.num_generations + 1):
@@ -216,7 +238,7 @@ class Neuroevolution(object):
             flat_fitness_list = [i.genotype.GetFitness() for i in individuals]
             max_fitness = flat_fitness_list[-1]
             min_fitness = flat_fitness_list[0]
-            print('best fitness: {0:.5f}'.format(max_fitness))
+            print('max fitness: {0:.5f}'.format(max_fitness))
             avg_fitness = statistics.mean(flat_fitness_list)
             fitness_std_dev = statistics.pstdev(flat_fitness_list)
             print('avg fitness: {0:.5f}'.format(avg_fitness))
@@ -244,6 +266,13 @@ class Neuroevolution(object):
                 for i in range(len(individuals) - 1):
                     individuals[i].delete()  # delete the sound and its data
 
+            if self.has_patience_ended(max_fitness, generation):
+                print(
+                    'Patience has ended because max fitness has not improved for {} generations.'
+                    ' Stopping.'.format(self.args.patience)
+                )
+                break
+
             # advance to the next generation
             pop.Epoch()
             print("Generation execution time: %s seconds" % (time.time() - generation_start_time))
@@ -262,10 +291,10 @@ class Neuroevolution(object):
             output_vectors.append(list(output))
 
         resulting_sound, resulting_neural_output = cross_adapt.CrossAdapter.cross_adapt(
-                self.param_sound,
-                self.input_sound,
-                output_vectors,
-                generation
+            self.param_sound,
+            self.input_sound,
+            output_vectors,
+            generation
         )
         resulting_sound.get_analysis(ensure_standardized_series=True)
         individual.set_neural_output(resulting_neural_output)
