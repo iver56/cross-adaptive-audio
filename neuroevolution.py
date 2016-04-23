@@ -209,7 +209,7 @@ class Neuroevolution(object):
 
         run_start_time = time.time()
         self.run()
-        print("Run execution time: {0} seconds".format(time.time() - run_start_time))
+        print("Run execution time: {0:.2f} seconds".format(time.time() - run_start_time))
 
     def has_patience_ended(self, max_fitness, generation):
         """
@@ -320,7 +320,9 @@ class Neuroevolution(object):
 
             # advance to the next generation
             pop.Epoch()
-            print("Generation execution time: %s seconds" % (time.time() - generation_start_time))
+            print("Generation execution time: {0:.2f} seconds".format(
+                time.time() - generation_start_time)
+            )
 
     def evaluate(self, individual, generation):
         # this creates a neural network (phenotype) from the genome
