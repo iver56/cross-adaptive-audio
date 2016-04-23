@@ -9,17 +9,34 @@ import logger
 import hashlib
 import json
 import neural_output
+import standardizer
 
 
 class CrossAdapter(object):
     @staticmethod
-    def cross_adapt(param_sound, input_sound, parameter_vectors, generation):
+    def cross_adapt(target_sound, input_sound, parameter_vectors, effect, generation):
+
+        # map normalized values to the appropriate ranges of the effect parameters
+        for i in range(effect.num_parameters):
+            mapping = effect.parameters[i]['mapping']
+            min_value = mapping['min_value']
+            max_value = mapping['max_value']
+            skew_factor = mapping['skew_factor']
+
+            for parameter_vector in parameter_vectors:
+                parameter_vector[i] = standardizer.Standardizer.get_mapped_value(
+                    normalized_value=parameter_vector[i],
+                    min_value=min_value,
+                    max_value=max_value,
+                    skew_factor=skew_factor
+                )
+
         channels = zip(*parameter_vectors)
         data_md5 = hashlib.md5(json.dumps(channels)).hexdigest()
 
         data_file_path = os.path.join(
             settings.NEURAL_OUTPUT_DIRECTORY,
-            param_sound.filename + '.neural_output.gen{0:04d}.{1}.json'.format(generation, data_md5)
+            target_sound.filename + '.neural_output.gen{0:04d}.{1}.json'.format(generation, data_md5)
         )
         l = logger.Logger(data_file_path, features_to_add=None, suppress_initialization=True)
         l.data = channels

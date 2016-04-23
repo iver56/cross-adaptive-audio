@@ -12,48 +12,48 @@ effects = {
             {
                 'name': 'drive',
                 'mapping': {
-                    'min': 1.0,
-                    'max': 12.0,
+                    'min_value': 1.0,
+                    'max_value': 12.0,
                     'skew_factor': 1.0
                 }
             },
             {
                 'name': 'freq',
                 'mapping': {
-                    'min': 20.0,
-                    'max': 10000.0,
+                    'min_value': 20.0,
+                    'max_value': 10000.0,
                     'skew_factor': 0.3
                 }
             },
             {
                 'name': 'resonance',
                 'mapping': {
-                    'min': 0.001,
-                    'max': 0.95,
+                    'min_value': 0.001,
+                    'max_value': 0.95,
                     'skew_factor': 1.0
                 }
             },
             {
                 'name': 'dist',
                 'mapping': {
-                    'min': 0.001,
-                    'max': 10,
+                    'min_value': 0.001,
+                    'max_value': 10,
                     'skew_factor': 0.5
                 }
             },
             {
                 'name': 'mix',
                 'mapping': {
-                    'min': 0.0,
-                    'max': 1.0,
+                    'min_value': 0.0,
+                    'max_value': 1.0,
                     'skew_factor': 1.0
                 }
             },
             {
                 'name': 'post_gain',
                 'mapping': {
-                    'min': 0.0,
-                    'max': 3.16227,
+                    'min_value': 0.0,
+                    'max_value': 3.16227,
                     'skew_factor': 0.3
                 }
             }

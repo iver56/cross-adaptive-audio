@@ -5,7 +5,6 @@ Based on https://github.com/peter-ch/MultiNEAT/blob/master/MultiNEAT/viz.py
 from _MultiNEAT import *
 import numpy as np
 import analyze
-import cross_adapt
 
 
 def is_almost_equal(a, b, margin):

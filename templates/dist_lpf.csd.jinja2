@@ -33,7 +33,6 @@
 import sys, os
 sys.path.append(os.getcwd())
 from reader import Reader
-from standardizer import Standardizer
 my_reader = Reader(data_file_path=r{{ data_file_path | tojson }})
         {{ '}}' }}
 
@@ -51,24 +50,24 @@ my_reader = Reader(data_file_path=r{{ data_file_path | tojson }})
         ;****************************************************************
         aIn		in
 
-        kDrive pyeval "Standardizer.get_mapped_value(my_reader.get_current_channel_value(0), 1, 12)"
+        kDrive pyeval "my_reader.get_current_channel_value(0)"
         kDrive		tonek kDrive, 50
 
-        kFreq pyeval "Standardizer.get_mapped_value(my_reader.get_current_channel_value(1), 20, 10000, skew_factor=0.3)"
+        kFreq pyeval "my_reader.get_current_channel_value(1)"
         kFreq		tonek kFreq, 50
 
-        kResonance pyeval "Standardizer.get_mapped_value(my_reader.get_current_channel_value(2), 0.001, 0.95)"
+        kResonance pyeval "my_reader.get_current_channel_value(2)"
         kResonance	tonek kResonance, 50
 
-        kDist pyeval "Standardizer.get_mapped_value(my_reader.get_current_channel_value(3), 0.001, 10, skew_factor=0.5)"
+        kDist pyeval "my_reader.get_current_channel_value(3)"
         kDist		tonek kDist, 50
 
         kAutoLevel	= 0.9
 
-        kMix pyeval "Standardizer.get_mapped_value(my_reader.get_current_channel_value(4), 0.0, 1.0)"
+        kMix pyeval "my_reader.get_current_channel_value(4)"
         kMix		tonek kMix, 50
 
-        kPostGain pyeval "Standardizer.get_mapped_value(my_reader.get_current_channel_value(5), 0.0, 3.16227, skew_factor=0.3)"
+        kPostGain pyeval "my_reader.get_current_channel_value(5)"
         kPostGain	tonek kPostGain, 50
 
         pyrun "my_reader.increment_k()"
