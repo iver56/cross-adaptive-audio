@@ -1,21 +1,29 @@
-<div class="waveform-container" title="{{ wf.getFilePath(wf.sound) }}"></div>
+<div class="waveform-container" title="{{ wf.getFilePath() }}"></div>
 <div class="sound-controls" layout>
 
-  <div flex="15">
+  <div flex>
     <md-button
         class="md-raised"
         ng-click="wf.wavesurfer.playPause()"
         onkeyup="event.stopPropagation()"
         ng-disabled="!wf.isReady"
     >
-      <md-tooltip md-direction="right">
+      <md-tooltip md-direction="top">
         Keyboard shortcut: space
       </md-tooltip>
       {{ wf.isReady ? (wf.wavesurfer.isPlaying() ? 'Pause': 'Play') : 'Loading...' }}
     </md-button>
   </div>
 
-  <div flex></div>
+  <div flex>
+    <md-button
+        class="md-primary"
+        ng-href="{{ wf.getFilePath() }}"
+        target="_blank"
+    >
+      Download
+    </md-button>
+  </div>
 
   <div flex="30">
     <label>Playback rate: {{ wf.mappedPlaybackRate | number : 2 }}</label>
