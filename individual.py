@@ -82,11 +82,12 @@ class Individual(object):
         with settings.FILE_HANDLER(file_path, 'w') as outfile:
             json.dump(data, outfile)
 
-    def delete(self):
+    def delete(self, try_delete_serialized_representation=True):
         self.output_sound.delete()
         self.neural_output.delete()
 
-        try:
-            os.remove(self.get_individual_data_file_path())
-        except OSError:
-            pass
+        if try_delete_serialized_representation:
+            try:
+                os.remove(self.get_individual_data_file_path())
+            except OSError:
+                pass

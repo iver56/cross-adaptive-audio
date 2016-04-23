@@ -207,7 +207,9 @@ class Neuroevolution(object):
         if self.args.keep_only_best:
             self.best_individual_ids = set()
 
+        run_start_time = time.time()
         self.run()
+        print("Run execution time: {0} seconds".format(time.time() - run_start_time))
 
     def has_patience_ended(self, max_fitness, generation):
         """
@@ -267,7 +269,6 @@ class Neuroevolution(object):
                 fitness, output_sound = self.evaluate(that_individual, generation)
                 that_individual.set_fitness(fitness)
                 that_individual.set_output_sound(output_sound)
-                that_individual.save()  # TODO: do not save if --keep-only-best and not best
                 individuals.append(that_individual)
             individuals.sort(key=lambda i: i.genotype.GetFitness())
 
@@ -278,6 +279,19 @@ class Neuroevolution(object):
             avg_fitness = statistics.mean(flat_fitness_list)
             fitness_std_dev = statistics.pstdev(flat_fitness_list)
             print('avg fitness: {0:.5f}'.format(avg_fitness))
+
+            if self.args.keep_only_best:
+                self.best_individual_ids.add(individuals[-1].get_id())
+                individuals[-1].save()
+
+                # delete all but best fit results from this generation
+                for i in range(len(individuals) - 1):
+                    if individuals[i].get_id() not in self.best_individual_ids:
+                        individuals[i].delete(try_delete_serialized_representation=False)
+            else:
+                for that_individual in individuals:
+                    that_individual.save()
+
             stats_item = {
                 'generation': generation,
                 'fitness_min': min_fitness,
@@ -296,14 +310,6 @@ class Neuroevolution(object):
                 NEAT.DrawPhenotype(img, (0, 0, 500, 500), net)
                 cv2.imshow("NN", img)
                 cv2.waitKey(1)
-
-            if self.args.keep_only_best:
-                self.best_individual_ids.add(individuals[-1].get_id())
-
-                # delete all but best fit results from this generation
-                for i in range(len(individuals) - 1):
-                    if individuals[i].get_id() not in self.best_individual_ids:
-                        individuals[i].delete()  # delete the sound and its data
 
             if self.has_patience_ended(max_fitness, generation):
                 print(
