@@ -29,7 +29,7 @@ class CrossAdapter(object):
         l.write()
         that_neural_output = neural_output.NeuralOutput(data_file_path, channels)
 
-        template = template_handler.TemplateHandler('templates/cross_adapt.csd.jinja2')
+        template = template_handler.TemplateHandler('templates/dist_lpf.csd.jinja2')
         template.compile(
             input_sound_filename=input_sound.filename,
             data_file_path=data_file_path,
