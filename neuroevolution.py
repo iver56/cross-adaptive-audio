@@ -270,10 +270,12 @@ class Neuroevolution(object):
                     neural_input_mode=self.args.neural_input_mode,
                     effect=self.effect
                 )
-                fitness, output_sound = self.evaluate(that_individual, generation)
-                that_individual.set_fitness(fitness)
+                output_sound = self.produce_output_sound(that_individual, generation)
                 that_individual.set_output_sound(output_sound)
                 individuals.append(that_individual)
+
+            self.evaluate_fitness(individuals)
+
             individuals.sort(key=lambda i: i.genotype.GetFitness())
 
             flat_fitness_list = [i.genotype.GetFitness() for i in individuals]
@@ -328,7 +330,7 @@ class Neuroevolution(object):
                 time.time() - generation_start_time)
             )
 
-    def evaluate(self, individual, generation):
+    def produce_output_sound(self, individual, generation):
         # this creates a neural network (phenotype) from the genome
         net = NEAT.NeuralNetwork()
         individual.genotype.BuildPhenotype(net)  # TODO: How about BuildHyperNEATPhenotype instead
@@ -349,11 +351,17 @@ class Neuroevolution(object):
             effect=self.effect,
             generation=generation
         )
-        resulting_sound.get_analysis(ensure_standardized_series=True)
 
-        fitness = fitness_evaluator.FitnessEvaluator.evaluate(self.param_sound, resulting_sound)
-        return fitness, resulting_sound
+        return resulting_sound
 
+    def evaluate_fitness(self, individuals):
+
+        for that_individual in individuals:
+            fitness = fitness_evaluator.FitnessEvaluator.evaluate(
+                self.param_sound,
+                that_individual.output_sound
+            )
+            that_individual.set_fitness(fitness)
 
 if __name__ == '__main__':
     Neuroevolution()

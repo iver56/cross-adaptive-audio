@@ -67,7 +67,7 @@ http://www.equation.com/servlet/equation.cmd?fa=make
 * `python create_project.py` (find and analyze a collection of sound files in the input folder)
 * `python analyze.py -i drums.wav` (manually analyze drums.wav and put the result in a json file)
 * `python fitness_evaluator.py -i drums.wav synth.wav` (print a number that represents the similarity between drums.wav and synth.wav)
-* `python neuroevolution.py -i drums.wav synth.wav -g 100 -p 30` (run the genetic algorithm for 100 generations with a population of 30)
+* `python neuroevolution.py -i drums.wav synth.wav -g 20 -p 30` (run the genetic algorithm for 20 generations with a population of 30)
 * `make clean` (remove data written during an experiment, but keep project and analysis of input files)
 * `make clean-all` (remove all calculated data)
 * `make prepare-ramdisk` (ensure that directories are present in the RAM disk. Copy audio input files and the web-based visualization system)
@@ -77,7 +77,7 @@ http://www.equation.com/servlet/equation.cmd?fa=make
 
 ## RAM disk (Ubuntu)
 
-Experiments can run ~10-30% faster (depending on hardware) if you use a RAM disk to reduce I/O overhead.
+Experiments can run ~10% faster if you use a RAM disk to reduce I/O overhead.
 
 * `sudo mkdir -p /mnt/ramdisk`
 * `sudo mount -t tmpfs -o size=3072m tmpfs /mnt/ramdisk`
