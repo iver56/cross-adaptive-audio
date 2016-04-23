@@ -29,7 +29,6 @@ class Project(object):
                 )
             )
 
-
     @staticmethod
     def get_current_project():
         if Project.current_project is None:

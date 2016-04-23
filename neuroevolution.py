@@ -145,6 +145,16 @@ class Neuroevolution(object):
             required=False,
             default=False
         )
+        arg_parser.add_argument(
+            '--neural-input',
+            dest='neural_input_mode',
+            type=str,
+            choices=['a', 'ab', 'b'],
+            help='What to use as neural input. Mode a: target sound. Mode ab: target sound and'
+                 ' input sound. Mode b: input sound.',
+            required=False,
+            default="a"
+        )
         self.args = arg_parser.parse_args()
 
         project.Project.assert_project_exists()
@@ -158,11 +168,23 @@ class Neuroevolution(object):
             self.num_frames = min(self.param_sound.get_num_frames(),
                                   self.input_sound.get_num_frames())
 
-            self.param_input_vectors = []
-            for k in range(self.num_frames):
-                vector = self.param_sound.get_standardized_neural_input_vector(k)
-                vector.append(1.0)  # bias input
-                self.param_input_vectors.append(vector)
+            self.neural_input_vectors = []
+            if self.args.neural_input_mode == 'a':
+                for k in range(self.num_frames):
+                    vector = self.param_sound.get_standardized_neural_input_vector(k)
+                    vector.append(1.0)  # bias input
+                    self.neural_input_vectors.append(vector)
+            elif self.args.neural_input_mode == 'ab':
+                for k in range(self.num_frames):
+                    vector = self.param_sound.get_standardized_neural_input_vector(k)
+                    vector += self.input_sound.get_standardized_neural_input_vector(k)
+                    vector.append(1.0)  # bias input
+                    self.neural_input_vectors.append(vector)
+            elif self.args.neural_input_mode == 'b':
+                for k in range(self.num_frames):
+                    vector = self.input_sound.get_standardized_neural_input_vector(k)
+                    vector.append(1.0)  # bias input
+                    self.neural_input_vectors.append(vector)
         else:
             raise Exception('Two filenames must be specified')
 
@@ -202,7 +224,7 @@ class Neuroevolution(object):
         params.MutateAddLinkProb = self.args.add_link_probability
         params.MutateRemLinkProb = self.args.remove_link_probability
         params.MutateRemSimpleNeuronProb = self.args.remove_simple_neuron_probability
-        num_inputs = analyze.Analyzer.NUM_FEATURES + 1  # always add one extra input, see http://multineat.com/docs.html
+        num_inputs = len(self.neural_input_vectors[0])
         num_hidden_nodes = 0
         num_outputs = cross_adapt.CrossAdapter.NUM_PARAMETERS
         genome = NEAT.Genome(
@@ -232,11 +254,15 @@ class Neuroevolution(object):
 
             individuals = []
             for genotype in genotypes:
-                that_individual = individual.Individual(genotype, generation)
+                that_individual = individual.Individual(
+                    genotype,
+                    generation,
+                    self.args.neural_input_mode
+                )
                 fitness, output_sound = self.evaluate(that_individual, generation)
                 that_individual.set_fitness(fitness)
                 that_individual.set_output_sound(output_sound)
-                that_individual.save()
+                that_individual.save()  # TODO: do not save if --keep-only-best and not best
                 individuals.append(that_individual)
             individuals.sort(key=lambda i: i.genotype.GetFitness())
 
@@ -291,7 +317,7 @@ class Neuroevolution(object):
         individual.genotype.BuildPhenotype(net)  # TODO: How about BuildHyperNEATPhenotype instead
 
         output_vectors = []
-        for input_vector in self.param_input_vectors:
+        for input_vector in self.neural_input_vectors:
             net.Flush()
             net.Input(input_vector)
             net.Activate()

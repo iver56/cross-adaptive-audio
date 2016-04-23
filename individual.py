@@ -8,20 +8,21 @@ import cross_adapt
 
 
 class Individual(object):
-    def __init__(self, genotype, generation):
+    def __init__(self, genotype, generation, neural_input_mode):
         self.genotype = genotype
         self.generation = generation
         # pprint.pprint(inspect.getmembers(genotype))
         self.output_sound = None
         self.neural_output = None
+        self.neural_input_mode = neural_input_mode
 
     def get_id(self):
         return self.output_sound.get_md5()
 
     def get_individual_data_file_path(self):
         return os.path.join(
-                settings.INDIVIDUAL_DATA_DIRECTORY,
-                'individual_{}.json'.format(self.get_id())
+            settings.INDIVIDUAL_DATA_DIRECTORY,
+            'individual_{}.json'.format(self.get_id())
         )
 
     def set_fitness(self, fitness):
@@ -35,7 +36,9 @@ class Individual(object):
 
     def get_neural_network_representation(self):
         return neural_network_representation.get_neural_network_representation(
-                self.genotype
+            nn=self.genotype,
+            neural_input_mode=self.neural_input_mode,
+            is_substrate=False
         )
 
     def get_neural_output_representation(self):
