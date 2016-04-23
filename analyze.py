@@ -11,6 +11,8 @@ import subprocess
 import logger
 import standardizer
 import project
+from multiprocessing.dummy import Pool
+from subprocess import Popen, PIPE, STDOUT
 
 
 class Analyzer(object):
@@ -64,15 +66,19 @@ class Analyzer(object):
             print("execution time: %s seconds" % (time.time() - self.start_time))
 
     @staticmethod
+    def add_standardized_series(that_sound_file):
+        std = standardizer.Standardizer([that_sound_file])
+        current_project = project.Project.get_current_project()
+        std.set_feature_statistics(current_project)
+        std.add_standardized_series()
+
+    @staticmethod
     def analyze(sound_file_to_analyze, add_standardized_series=False):
         # Analyzer.analyze_rms(sound_file_to_analyze)
-        Analyzer.analyze_mfcc(sound_file_to_analyze)
+        Analyzer.analyze_mfcc(sound_file_to_analyze)  # assuming that this is already done
 
         if add_standardized_series:
-            std = standardizer.Standardizer([sound_file_to_analyze])
-            current_project = project.Project.get_current_project()
-            std.set_feature_statistics(current_project)
-            std.add_standardized_series()
+            Analyzer.add_standardized_series(sound_file_to_analyze)
 
     @staticmethod
     def analyze_rms(sound_file_to_analyze):
@@ -109,14 +115,12 @@ class Analyzer(object):
         ]
 
     @staticmethod
-    def analyze_mfcc(sound_file_to_analyze):
-        command = Analyzer.get_analyze_mfcc_command(sound_file_to_analyze)
-        stdout = subprocess.check_output(command).decode('utf-8')
-
+    def write_mfcc_analysis(sound_file_to_analyze, lines):
+        # TODO: writing to file is inefficient.. let's handle it internally in python instead
         my_logger = logger.Logger(sound_file_to_analyze.get_feature_data_file_path(),
                                   Analyzer.FEATURES)
 
-        for line in stdout.split('\n'):
+        for line in lines:
             values = line.split()
             if not values:
                 continue
@@ -132,6 +136,37 @@ class Analyzer(object):
                     my_logger.log_value(feature_key, mfcc_band)
 
         my_logger.write()
+
+    @staticmethod
+    def analyze_mfcc(sound_file_to_analyze):
+        # TODO: this method may be removed in the future
+        command = Analyzer.get_analyze_mfcc_command(sound_file_to_analyze)
+        stdout = subprocess.check_output(command).decode('utf-8')
+        lines = stdout.split('\n')
+        Analyzer.write_mfcc_analysis(sound_file_to_analyze, lines)
+
+    @staticmethod
+    def analyze_mfcc_parallel(sound_files_to_analyze):
+        commands = [Analyzer.get_analyze_mfcc_command(sound) for sound in sound_files_to_analyze]
+
+        # run commands in parallel
+        processes = [
+            Popen(
+                command,
+                stdin=PIPE,
+                stdout=PIPE,
+                stderr=STDOUT
+            )
+            for command in commands
+            ]
+
+        # collect output in parallel
+        def get_lines(process):
+            return process.communicate()[0].splitlines()
+
+        outputs = Pool(len(processes)).map(get_lines, processes)
+        for i in range(len(sound_files_to_analyze)):
+            Analyzer.write_mfcc_analysis(sound_files_to_analyze[i], outputs[i])
 
 
 if __name__ == '__main__':

@@ -26,30 +26,10 @@ class TestCrossAdapt(unittest.TestCase):
             time.time() - self.start_time)
         )
 
-    def test_multithreading(self):
-        from multiprocessing.dummy import Pool  # thread pool
-        from subprocess import Popen, PIPE, STDOUT
-
+    def test_parallel_analysis(self):
         self.start_time = time.time()
 
-        commands = [Analyzer.get_analyze_mfcc_command(sound) for sound in self.sounds]
-
-        # run commands in parallel
-        processes = [
-            Popen(
-                command,
-                stdin=PIPE,
-                stdout=PIPE,
-                stderr=STDOUT
-            )
-            for command in commands
-            ]
-
-        # collect output in parallel
-        def get_lines(process):
-            return process.communicate()[0].splitlines()
-
-        outputs = Pool(len(processes)).map(get_lines, processes)
+        Analyzer.analyze_mfcc_parallel(self.sounds)
 
         print("Parallel execution time: {0} seconds".format(
             time.time() - self.start_time)

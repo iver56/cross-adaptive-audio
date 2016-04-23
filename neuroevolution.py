@@ -355,13 +355,21 @@ class Neuroevolution(object):
         return resulting_sound
 
     def evaluate_fitness(self, individuals):
+        sound_files_to_analyze = [
+            individual.output_sound for individual in individuals
+            if individual.output_sound.analysis is None or 'series_standardized' not in individual.output_sound.analysis
+            ]
+        analyze.Analyzer.analyze_mfcc_parallel(sound_files_to_analyze)
 
         for that_individual in individuals:
+            analyze.Analyzer.add_standardized_series(that_individual.output_sound)
+            that_individual.output_sound.fetch_analysis_data_cache()
             fitness = fitness_evaluator.FitnessEvaluator.evaluate(
                 self.param_sound,
                 that_individual.output_sound
             )
             that_individual.set_fitness(fitness)
+
 
 if __name__ == '__main__':
     Neuroevolution()
