@@ -146,12 +146,12 @@ class Neuroevolution(object):
             default=False
         )
         arg_parser.add_argument(
-            '--neural-input',
+            '--neural-input-mode',
             dest='neural_input_mode',
             type=str,
-            choices=['a', 'ab', 'b'],
+            choices=['a', 'ab', 'b', 's'],
             help='What to use as neural input. Mode a: target sound. Mode ab: target sound and'
-                 ' input sound. Mode b: input sound.',
+                 ' input sound. Mode b: input sound. Mode s: static input, i.e. only bias.',
             required=False,
             default="a"
         )
@@ -184,6 +184,11 @@ class Neuroevolution(object):
                 for k in range(self.num_frames):
                     vector = self.input_sound.get_standardized_neural_input_vector(k)
                     vector.append(1.0)  # bias input
+                    self.neural_input_vectors.append(vector)
+            elif self.args.neural_input_mode == 's':
+                self.args.add_neuron_probability = 0.0
+                for k in range(self.num_frames):
+                    vector = [1.0]  # bias input
                     self.neural_input_vectors.append(vector)
         else:
             raise Exception('Two filenames must be specified')
