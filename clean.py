@@ -18,7 +18,6 @@ class Cleaner(object):
         paths = [
             settings.OUTPUT_FEATURE_DATA_DIRECTORY,
             settings.CSD_DIRECTORY,
-            settings.NEURAL_OUTPUT_DIRECTORY,
             settings.INDIVIDUAL_DATA_DIRECTORY,
             settings.STATS_DATA_DIRECTORY
         ]

@@ -1,12 +1,12 @@
 from __future__ import absolute_import
 import unittest
 import settings
-import os
 import sound_file
 import cross_adapt
 import time
 import project
 import effect
+import copy
 
 
 class TestCrossAdapt(unittest.TestCase):
@@ -24,14 +24,14 @@ class TestCrossAdapt(unittest.TestCase):
         )
         print('num_frames', num_frames)
         constant_parameter_vector = [0.5] * that_effect.num_parameters
-        parameter_vectors = [constant_parameter_vector] * num_frames
+        parameter_vectors = [copy.deepcopy(constant_parameter_vector) for i in range(num_frames)]
 
         self.start_time = time.time()
 
-        output_sound_file, that_neural_output = cross_adapt.CrossAdapter.cross_adapt(
-            target_sound,
+        output_sound_file = cross_adapt.CrossAdapter.cross_adapt(
             input_sound,
             parameter_vectors,
+            that_effect,
             generation=0
         )
 

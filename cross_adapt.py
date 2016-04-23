@@ -5,16 +5,16 @@ import csound_handler
 import os
 import settings
 import sound_file
-import logger
 import hashlib
 import json
-import neural_output
 import standardizer
+import copy
 
 
 class CrossAdapter(object):
     @staticmethod
-    def cross_adapt(target_sound, input_sound, parameter_vectors, effect, generation):
+    def cross_adapt(input_sound, parameter_vectors, effect, generation):
+        vectors = copy.deepcopy(parameter_vectors)
 
         # map normalized values to the appropriate ranges of the effect parameters
         for i in range(effect.num_parameters):
@@ -23,7 +23,7 @@ class CrossAdapter(object):
             max_value = mapping['max_value']
             skew_factor = mapping['skew_factor']
 
-            for parameter_vector in parameter_vectors:
+            for parameter_vector in vectors:
                 parameter_vector[i] = standardizer.Standardizer.get_mapped_value(
                     normalized_value=parameter_vector[i],
                     min_value=min_value,
@@ -34,19 +34,15 @@ class CrossAdapter(object):
         channels = zip(*parameter_vectors)
         data_md5 = hashlib.md5(json.dumps(channels)).hexdigest()
 
-        data_file_path = os.path.join(
-            settings.NEURAL_OUTPUT_DIRECTORY,
-            target_sound.filename + '.neural_output.gen{0:04d}.{1}.json'.format(generation, data_md5)
-        )
-        l = logger.Logger(data_file_path, features_to_add=None, suppress_initialization=True)
-        l.data = channels
-        l.write()
-        that_neural_output = neural_output.NeuralOutput(data_file_path, channels)
+        channels_csv = []
+        for channel in channels:
+            channel_csv = ','.join(map(str, channel))
+            channels_csv.append(channel_csv)
 
         template = template_handler.TemplateHandler('templates/dist_lpf.csd.jinja2')
         template.compile(
             input_sound_filename=input_sound.filename,
-            data_file_path=data_file_path,
+            parameter_channels=channels_csv,
             ksmps=settings.CSOUND_KSMPS,
             duration=input_sound.get_duration()
         )
@@ -57,4 +53,4 @@ class CrossAdapter(object):
         output_filename = input_sound.filename + '.cross_adapted.gen{0:04d}.{1}.wav'.format(generation, data_md5)
         csound.run(output_filename, async=False)
         output_sound_file = sound_file.SoundFile(output_filename, is_input=False)
-        return output_sound_file, that_neural_output
+        return output_sound_file

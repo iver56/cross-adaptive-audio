@@ -13,7 +13,7 @@ class Individual(object):
         self.generation = generation
         # pprint.pprint(inspect.getmembers(genotype))
         self.output_sound = None
-        self.neural_output = None
+        self.neural_output_channels = None
         self.neural_input_mode = neural_input_mode
         self.effect = effect
 
@@ -33,7 +33,7 @@ class Individual(object):
         self.output_sound = output_sound
 
     def set_neural_output(self, neural_output):
-        self.neural_output = neural_output
+        self.neural_output_channels = neural_output
 
     def get_neural_network_representation(self):
         return neural_network_representation.get_neural_network_representation(
@@ -44,11 +44,10 @@ class Individual(object):
         )
 
     def get_neural_output_representation(self):
-        channels = self.neural_output.channels
         series_standardized = {}
         for i in range(self.effect.num_parameters):
             parameter_key = self.effect.parameter_names[i]
-            series_standardized[parameter_key] = channels[i]
+            series_standardized[parameter_key] = self.neural_output_channels[i]
         return {
             'series_standardized': series_standardized,
             'ksmps': settings.CSOUND_KSMPS,
@@ -86,7 +85,6 @@ class Individual(object):
 
     def delete(self, try_delete_serialized_representation=True):
         self.output_sound.delete()
-        self.neural_output.delete()
 
         if try_delete_serialized_representation:
             try:

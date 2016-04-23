@@ -341,15 +341,15 @@ class Neuroevolution(object):
             output = net.Output()
             output_vectors.append(list(output))
 
-        resulting_sound, resulting_neural_output = cross_adapt.CrossAdapter.cross_adapt(
-            target_sound=self.param_sound,
+        individual.set_neural_output(zip(*output_vectors))
+
+        resulting_sound = cross_adapt.CrossAdapter.cross_adapt(
             input_sound=self.input_sound,
             parameter_vectors=output_vectors,
             effect=self.effect,
             generation=generation
         )
         resulting_sound.get_analysis(ensure_standardized_series=True)
-        individual.set_neural_output(resulting_neural_output)
 
         fitness = fitness_evaluator.FitnessEvaluator.evaluate(self.param_sound, resulting_sound)
         return fitness, resulting_sound
