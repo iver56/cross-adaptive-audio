@@ -91,8 +91,8 @@ class Analyzer(object):
         csound.run()
 
     @staticmethod
-    def analyze_mfcc(sound_file_to_analyze):
-        command = [
+    def get_analyze_mfcc_command(sound_file_to_analyze):
+        return [
             "aubiomfcc",  # assumes that aubio is installed
 
             '-i',
@@ -107,6 +107,10 @@ class Analyzer(object):
             '--hopsize',
             str(settings.AUBIO_HOP_SIZE)
         ]
+
+    @staticmethod
+    def analyze_mfcc(sound_file_to_analyze):
+        command = Analyzer.get_analyze_mfcc_command(sound_file_to_analyze)
         stdout = subprocess.check_output(command).decode('utf-8')
 
         my_logger = logger.Logger(sound_file_to_analyze.get_feature_data_file_path(),
