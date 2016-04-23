@@ -8,13 +8,14 @@ import cross_adapt
 
 
 class Individual(object):
-    def __init__(self, genotype, generation, neural_input_mode):
+    def __init__(self, genotype, generation, neural_input_mode, effect):
         self.genotype = genotype
         self.generation = generation
         # pprint.pprint(inspect.getmembers(genotype))
         self.output_sound = None
         self.neural_output = None
         self.neural_input_mode = neural_input_mode
+        self.effect = effect
 
     def get_id(self):
         return self.output_sound.get_md5()
@@ -38,19 +39,20 @@ class Individual(object):
         return neural_network_representation.get_neural_network_representation(
             nn=self.genotype,
             neural_input_mode=self.neural_input_mode,
+            effect=self.effect,
             is_substrate=False
         )
 
     def get_neural_output_representation(self):
         channels = self.neural_output.channels
         series_standardized = {}
-        for i in range(len(cross_adapt.CrossAdapter.PARAMETER_LIST)):
-            parameter = cross_adapt.CrossAdapter.PARAMETER_LIST[i]
-            series_standardized[parameter] = channels[i]
+        for i in range(self.effect.num_parameters):
+            parameter_key = self.effect.parameter_names[i]
+            series_standardized[parameter_key] = channels[i]
         return {
             'series_standardized': series_standardized,
             'ksmps': settings.CSOUND_KSMPS,
-            'order': cross_adapt.CrossAdapter.PARAMETER_LIST
+            'order': self.effect.parameter_names
         }
 
     def get_serialized_representation(self):

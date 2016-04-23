@@ -6,6 +6,7 @@ import sound_file
 import cross_adapt
 import time
 import project
+import effect
 
 
 class TestCrossAdapt(unittest.TestCase):
@@ -14,6 +15,7 @@ class TestCrossAdapt(unittest.TestCase):
         project.Project.assert_project_exists()
 
     def test_sound_file(self):
+        that_effect = effect.effects['dist_lpf']
         target_sound = sound_file.SoundFile('drums.wav')
         input_sound = sound_file.SoundFile('noise.wav')
         num_frames = min(
@@ -21,7 +23,7 @@ class TestCrossAdapt(unittest.TestCase):
             input_sound.get_num_frames()
         )
         print('num_frames', num_frames)
-        constant_parameter_vector = [0.5] * cross_adapt.CrossAdapter.NUM_PARAMETERS
+        constant_parameter_vector = [0.5] * that_effect.num_parameters
         parameter_vectors = [constant_parameter_vector] * num_frames
 
         self.start_time = time.time()

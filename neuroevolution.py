@@ -12,6 +12,7 @@ import logger
 import os
 import individual
 import project
+import effect
 
 try:
     import cv2
@@ -207,6 +208,8 @@ class Neuroevolution(object):
         if self.args.keep_only_best:
             self.best_individual_ids = set()
 
+        self.effect = effect.effects['dist_lpf']  # TODO: let key be a part of the experiment spec
+
         run_start_time = time.time()
         self.run()
         print("Run execution time: {0:.2f} seconds".format(time.time() - run_start_time))
@@ -233,7 +236,7 @@ class Neuroevolution(object):
         params.MutateRemSimpleNeuronProb = self.args.remove_simple_neuron_probability
         num_inputs = len(self.neural_input_vectors[0])
         num_hidden_nodes = 0
-        num_outputs = cross_adapt.CrossAdapter.NUM_PARAMETERS
+        num_outputs = self.effect.num_parameters
         genome = NEAT.Genome(
             0,  # ID
             num_inputs,
@@ -262,9 +265,10 @@ class Neuroevolution(object):
             individuals = []
             for genotype in genotypes:
                 that_individual = individual.Individual(
-                    genotype,
-                    generation,
-                    self.args.neural_input_mode
+                    genotype=genotype,
+                    generation=generation,
+                    neural_input_mode=self.args.neural_input_mode,
+                    effect=self.effect
                 )
                 fitness, output_sound = self.evaluate(that_individual, generation)
                 that_individual.set_fitness(fitness)

@@ -12,9 +12,6 @@ import neural_output
 
 
 class CrossAdapter(object):
-    PARAMETER_LIST = ['drive', 'freq', 'resonance', 'dist', 'mix', 'post_gain']
-    NUM_PARAMETERS = len(PARAMETER_LIST)
-
     @staticmethod
     def cross_adapt(param_sound, input_sound, parameter_vectors, generation):
         channels = zip(*parameter_vectors)
