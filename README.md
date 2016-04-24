@@ -64,8 +64,7 @@ http://www.equation.com/servlet/equation.cmd?fa=make
 ## Example commands
 
 * `make test` (run all tests)
-* `python create_project.py` (find and analyze a collection of sound files in the input folder)
-* `python analyze.py -i drums.wav` (manually analyze drums.wav and put the result in a json file)
+* `make project` (find and analyze a collection of sound files in the input folder)
 * `python fitness_evaluator.py -i drums.wav synth.wav` (print a number that represents the similarity between drums.wav and synth.wav)
 * `python neuroevolution.py -i drums.wav synth.wav -g 20 -p 30` (run the genetic algorithm for 20 generations with a population of 30)
 * `make clean` (remove data written during an experiment, but keep project and analysis of input files)
