@@ -3,11 +3,13 @@ import settings
 import sound_file
 import fitness_evaluator
 import analyze
+import project
 
 
 class TestFitnessEvaluator(unittest.TestCase):
     def setUp(self):
         settings.INPUT_DIRECTORY = 'test_audio'
+        project.Project.assert_project_exists()
 
     def test_fitness_evaluator(self):
         drums = sound_file.SoundFile('drums.wav')

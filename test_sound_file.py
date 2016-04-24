@@ -3,11 +3,13 @@ import unittest
 import settings
 import sound_file
 import analyze
+import project
 
 
 class TestSoundFile(unittest.TestCase):
     def setUp(self):
         settings.INPUT_DIRECTORY = 'test_audio'
+        project.Project.assert_project_exists()
 
     def test_sound_file(self):
         my_sound_file = sound_file.SoundFile('drums.wav')

@@ -35,8 +35,7 @@ class TestCrossAdapt(unittest.TestCase):
         output_sound_file = cross_adapt.CrossAdapter.cross_adapt(
             input_sound,
             parameter_vectors,
-            that_effect,
-            generation=0
+            that_effect
         )
 
         print("Execution time: {0} seconds".format(

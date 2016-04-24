@@ -354,8 +354,7 @@ class Neuroevolution(object):
         resulting_sound = cross_adapt.CrossAdapter.cross_adapt(
             input_sound=self.input_sound,
             parameter_vectors=output_vectors,
-            effect=self.effect,
-            generation=generation
+            effect=self.effect
         )
 
         return resulting_sound
