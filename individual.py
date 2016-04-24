@@ -18,14 +18,8 @@ class Individual(object):
         self.id = None
 
     def get_id(self):
+        """individuals with the same neural network have the same id"""
         if self.id is None:
-            """
-            state = self.genotype.__getstate__()
-            pieces = state.split(' ')
-            pieces = [pieces[i] for i in range(len(pieces)) if i != 5]  # remove ID at index 5
-            state = ' '.join(pieces)
-            return hashlib.md5(state.encode('utf-8')).hexdigest()
-            """
             nn_repr = self.get_neural_network_representation()
             self.id = hashlib.md5(json.dumps(nn_repr).encode('utf-8')).hexdigest()
         return self.id

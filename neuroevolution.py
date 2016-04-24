@@ -267,10 +267,12 @@ class Neuroevolution(object):
         for generation in range(1, self.args.num_generations + 1):
             generation_start_time = time.time()
             print('generation {}'.format(generation))
-            # retrieve a list of all genomes in the population
+
+            # Retrieve a list of all genomes in the population
             genotypes = NEAT.GetGenomeList(pop)
 
             individuals = []
+            all_individuals = []
             for genotype in genotypes:
                 that_individual = individual.Individual(
                     genotype=genotype,
@@ -284,51 +286,78 @@ class Neuroevolution(object):
                         print(that_individual.get_id() + ' already exists. Will not evaluate again')
 
                     that_individual.set_fitness(self.individual_fitness[that_individual.get_id()])
+                else:
+                    individuals.append(that_individual)
+                all_individuals.append(that_individual)
 
-                output_sound = self.produce_output_sound(that_individual)
-                that_individual.set_output_sound(output_sound)
+            # Check for duplicate individuals
+            duplicates = {}
+            unique_individuals = {}
+            for ind in individuals:
+                if ind.get_id() in unique_individuals:
+                    if ind.get_id() in duplicates:
+                        duplicates[ind.get_id()].append(ind)
+                    else:
+                        duplicates[ind.get_id()] = [ind]
+                else:
+                    unique_individuals[ind.get_id()] = ind
+            if settings.VERBOSE and len(duplicates):
+                print('duplicates', duplicates)
 
-                individuals.append(that_individual)
+            # Produce sound files for each unique individual
+            for individual_id in unique_individuals:
+                output_sound = self.produce_output_sound(unique_individuals[individual_id])
+                unique_individuals[individual_id].set_output_sound(output_sound)
 
-            individuals_to_be_evaluated = [i for i in individuals if not i.genotype.GetFitness()]
-            self.evaluate_fitness(individuals_to_be_evaluated)
+            # Evaluate fitness of each unique individual
+            unique_individuals_list = [unique_individuals[ind_id] for ind_id in unique_individuals]
+            self.evaluate_fitness(unique_individuals_list)
 
-            individuals.sort(key=lambda i: i.genotype.GetFitness())
+            # Set analysis and fitness on duplicates
+            for individual_id in duplicates:
+                for ind in duplicates[individual_id]:
+                    ind.set_output_sound(unique_individuals[individual_id].output_sound)
+                    ind.set_fitness(unique_individuals[individual_id].genotype.GetFitness())
 
-            flat_fitness_list = [i.genotype.GetFitness() for i in individuals]
+            # Calculate and write stats
+            all_individuals.sort(key=lambda i: i.genotype.GetFitness())
+            flat_fitness_list = [i.genotype.GetFitness() for i in all_individuals]
             max_fitness = flat_fitness_list[-1]
             min_fitness = flat_fitness_list[0]
             print('max fitness: {0:.5f}'.format(max_fitness))
             avg_fitness = statistics.mean(flat_fitness_list)
             fitness_std_dev = statistics.pstdev(flat_fitness_list)
             print('avg fitness: {0:.5f}'.format(avg_fitness))
-
-            if self.args.keep_only_best:
-                self.best_individual_ids.add(individuals[-1].get_id())
-                individuals[-1].save()
-
-                # delete all but best fit results from this generation
-                for i in range(len(individuals) - 1):
-                    if individuals[i].get_id() not in self.best_individual_ids:
-                        individuals[i].delete(try_delete_serialized_representation=False)
-            else:
-                for that_individual in individuals:
-                    individual_id = that_individual.get_id()
-                    if individual_id not in self.individual_fitness:
-                        that_individual.save()
-                    self.individual_fitness[individual_id] = that_individual.genotype.GetFitness()
-
             stats_item = {
                 'generation': generation,
                 'fitness_min': min_fitness,
                 'fitness_max': max_fitness,
                 'fitness_avg': avg_fitness,
                 'fitness_std_dev': fitness_std_dev,
-                'individuals': [i.get_short_serialized_representation() for i in individuals]
+                'individuals': [i.get_short_serialized_representation() for i in all_individuals]
             }
             self.stats_logger.data['generations'].append(stats_item)
             self.stats_logger.write()
 
+            # Store individual(s)
+            if self.args.keep_only_best:
+                unique_individuals_list.sort(key=lambda i: i.genotype.GetFitness())
+                self.best_individual_ids.add(unique_individuals_list[-1].get_id())
+                unique_individuals_list[-1].save()
+
+                # delete all but best fit results from this generation
+                for i in range(len(unique_individuals_list) - 1):
+                    if unique_individuals_list[i].get_id() not in self.best_individual_ids:
+                        unique_individuals_list[i].delete(try_delete_serialized_representation=False)
+            else:
+                # keep all individuals
+                for that_individual in unique_individuals_list:
+                    individual_id = that_individual.get_id()
+                    if individual_id not in self.individual_fitness:
+                        that_individual.save()
+                    self.individual_fitness[individual_id] = that_individual.genotype.GetFitness()
+
+            # visualize.. TODO: remove
             if self.args.visualize:
                 net = NEAT.NeuralNetwork()
                 individuals[-1].genotype.BuildPhenotype(net)  # build phenotype from best genotype
@@ -358,7 +387,7 @@ class Neuroevolution(object):
 
         # this creates a neural network (phenotype) from the genome
         net = NEAT.NeuralNetwork()
-        that_individual.genotype.BuildPhenotype(net)  # TODO: How about BuildHyperNEATPhenotype instead
+        that_individual.genotype.BuildPhenotype(net)
 
         output_vectors = []
         for input_vector in self.neural_input_vectors:
@@ -380,38 +409,17 @@ class Neuroevolution(object):
         return resulting_sound
 
     def evaluate_fitness(self, individuals):
-        # check for duplicates
-        duplicates = {}
-        unique_individuals = {}
-        for ind in individuals:
-            if ind.get_id() in unique_individuals:
-                if ind.get_id() in duplicates:
-                    duplicates[ind.get_id()].append(ind)
-                else:
-                    duplicates[ind.get_id()] = [ind]
-            else:
-                unique_individuals[ind.get_id()] = ind
-
-        if settings.VERBOSE and len(duplicates):
-            print('duplicates', duplicates)
-
         sound_files_to_analyze = [
-            unique_individuals[individual_id].output_sound for individual_id in unique_individuals
+            that_individual.output_sound for that_individual in individuals
             ]
         analyze.Analyzer.analyze_multiple(sound_files_to_analyze, standardize=True)
 
-        for individual_id in unique_individuals:
+        for that_individual in individuals:
             fitness = fitness_evaluator.FitnessEvaluator.evaluate(
                 self.param_sound,
-                unique_individuals[individual_id].output_sound
+                that_individual.output_sound
             )
-            unique_individuals[individual_id].set_fitness(fitness)
-
-        # set analysis and fitness on duplicates
-        for individual_id in duplicates:
-            for ind in duplicates[individual_id]:
-                ind.output_sound.analysis = unique_individuals[individual_id].output_sound.analysis
-                ind.set_fitness(unique_individuals[individual_id].genotype.GetFitness())
+            that_individual.set_fitness(fitness)
 
 
 if __name__ == '__main__':
