@@ -47,13 +47,6 @@ class SoundFile(object):
             self.duration = self.compute_duration()
         return self.duration
 
-    def get_analysis(self, ensure_standardized_series=False):
-        if self.analysis is None:
-            raise Exception(str(self) + ' lacks analysis')
-        if ensure_standardized_series and 'series_standardized' not in self.analysis:
-            raise Exception('Standardized analysis needs to be calculated on beforehand!')
-        return self.analysis
-
     def get_num_frames(self):
         arbitrary_series = six.next(six.itervalues(self.analysis['series']))
         return len(arbitrary_series)
@@ -72,10 +65,9 @@ class SoundFile(object):
         return feature_vector
 
     def get_serialized_representation(self):
-        feature_data = self.get_analysis(ensure_standardized_series=True)
-        feature_data['order'] = analyze.Analyzer.FEATURES_LIST
+        self.analysis['order'] = analyze.Analyzer.FEATURES_LIST
         return {
-            'feature_data': feature_data,
+            'feature_data': self.analysis,
             'filename': self.filename,
             'is_input': self.is_input
         }

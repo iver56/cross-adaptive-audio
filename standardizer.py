@@ -16,17 +16,20 @@ class Standardizer(object):
         self.feature_statistics = {}
 
     def calculate_feature_statistics(self, series_key='series'):
-        analyses = [sf.get_analysis() for sf in self.sound_files]
-
-        for key in analyses[0][series_key]:
-            self.feature_statistics[key] = {'min': None, 'max': None, 'mean': None, 'standard_deviation': None}
+        for key in self.sound_files[0].analysis[series_key]:
+            self.feature_statistics[key] = {
+                'min': None,
+                'max': None,
+                'mean': None,
+                'standard_deviation': None
+            }
 
         for feature in self.feature_statistics:
             if settings.VERBOSE:
                 print('Analyzing {} feature statistics'.format(feature))
             series = []
-            for analysis in analyses:
-                series += analysis[series_key][feature]
+            for sf in self.sound_files:
+                series += sf.analysis[series_key][feature]
 
             if len(series) == 0:
                 continue
@@ -54,13 +57,12 @@ class Standardizer(object):
             print('Calculating and writing standardized series...')
 
         for sf in self.sound_files:
-            analysis = sf.get_analysis()
-            if 'series_standardized' not in analysis:
-                analysis['series_standardized'] = {}
+            if 'series_standardized' not in sf.analysis:
+                sf.analysis['series_standardized'] = {}
                 for feature in self.feature_statistics:
-                    analysis['series_standardized'][feature] = [
+                    sf.analysis['series_standardized'][feature] = [
                         self.get_standardized_value(feature, value)
-                        for value in analysis['series'][feature]
+                        for value in sf.analysis['series'][feature]
                         ]
 
     def get_standardized_value(self, feature, value):

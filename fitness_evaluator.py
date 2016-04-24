@@ -2,6 +2,7 @@ from __future__ import print_function
 import math
 import standardizer
 import settings
+import analyze
 
 
 class FitnessEvaluator(object):
@@ -59,15 +60,12 @@ class FitnessEvaluator(object):
 
     @staticmethod
     def get_local_similarity(param_sound, output_sound):
-        param_sound_analysis = param_sound.get_analysis(ensure_standardized_series=True)
-        output_sound_analysis = output_sound.get_analysis(ensure_standardized_series=True)
-
         euclidean_distance_sum = 0
         for k in range(param_sound.get_num_frames()):
             sum_of_squared_differences = 0
             for feature in settings.SIMILARITY_CHANNELS:
-                param_value = param_sound_analysis['series_standardized'][feature][k]
-                output_value = output_sound_analysis['series_standardized'][feature][k]
+                param_value = param_sound.analysis['series_standardized'][feature][k]
+                output_value = output_sound.analysis['series_standardized'][feature][k]
 
                 sum_of_squared_differences += (param_value - output_value) ** 2
             euclidean_distance = math.sqrt(sum_of_squared_differences)
@@ -108,6 +106,9 @@ class CommandLineFitnessTool(object):
         if len(args.input_files) == 2:
             sound_file_a = sound_file.SoundFile(args.input_files[0])
             sound_file_b = sound_file.SoundFile(args.input_files[1])
+
+            analyze.Analyzer.analyze_multiple([sound_file_a, sound_file_b], standardize=True)
+
             print(FitnessEvaluator.evaluate(sound_file_a, sound_file_b))
         else:
             raise Exception('Two file names must be specified')
