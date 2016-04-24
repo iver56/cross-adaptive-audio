@@ -13,7 +13,6 @@ class TestSoundFile(unittest.TestCase):
 
     def test_sound_file(self):
         my_sound_file = sound_file.SoundFile('drums.wav')
-        self.assertEqual(my_sound_file.get_md5(), '1fce4b6c64a5c8c6a416928e60d4f686')
         self.assertAlmostEqual(my_sound_file.get_duration(), 7.89278911565)
 
         analyze.Analyzer.analyze_multiple([my_sound_file], standardize=True)

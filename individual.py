@@ -1,24 +1,26 @@
-import pprint
-# import inspect
 import os
 import settings
 import json
 import neural_network_representation
-import cross_adapt
+import pickle
+import hashlib
 
 
 class Individual(object):
     def __init__(self, genotype, generation, neural_input_mode, effect):
         self.genotype = genotype
         self.generation = generation
-        # pprint.pprint(inspect.getmembers(genotype))
         self.output_sound = None
         self.neural_output_channels = None
         self.neural_input_mode = neural_input_mode
         self.effect = effect
 
     def get_id(self):
-        return self.output_sound.get_md5()
+        state = self.genotype.__getstate__()
+        pieces = state.split(' ')
+        pieces = [pieces[i] for i in range(len(pieces)) if i != 5]  # remove ID at index 5
+        state = ' '.join(pieces)
+        return hashlib.md5(state.encode('utf-8')).hexdigest()
 
     def get_individual_data_file_path(self):
         return os.path.join(
@@ -60,7 +62,7 @@ class Individual(object):
         :return:
         """
         return {
-            'id': self.output_sound.get_md5(),
+            'id': self.get_id(),
             'fitness': self.genotype.GetFitness(),
             'neural_output': self.get_neural_output_representation(),
             'output_sound': self.output_sound.get_serialized_representation(),
@@ -73,7 +75,7 @@ class Individual(object):
         :return:
         """
         return {
-            'id': self.output_sound.get_md5(),
+            'id': self.get_id(),
             'fitness': self.genotype.GetFitness()
         }
 

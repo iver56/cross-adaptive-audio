@@ -1,8 +1,6 @@
 from __future__ import absolute_import
-import hashlib
 import wave
 import contextlib
-import json
 import os
 import settings
 import analyze
@@ -18,22 +16,11 @@ class SoundFile(object):
         else:
             self.file_path = os.path.join(settings.OUTPUT_DIRECTORY, self.filename)
         
-        self.md5 = None
-        self.get_md5()
         self.duration = None
         self.analysis = {
             'ksmps': settings.CSOUND_KSMPS,
             'series': {}
         }
-
-    def get_md5(self):
-        if self.md5 is None:
-            my_hash = hashlib.md5()
-            with open(self.file_path, "rb") as f:
-                for chunk in iter(lambda: f.read(4096), b""):
-                    my_hash.update(chunk)
-            self.md5 = my_hash.hexdigest()
-        return self.md5
 
     def compute_duration(self):
         with contextlib.closing(wave.open(self.file_path, 'r')) as f:
