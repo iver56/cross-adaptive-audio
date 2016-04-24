@@ -21,9 +21,11 @@ class SoundFile(object):
         self.md5 = None
         self.get_md5()
         self.duration = None
-        self.analysis = None
-        self.fetch_meta_data_cache()
-        self.fetch_analysis_data_cache()
+        self.analysis = {
+            'ksmps': settings.CSOUND_KSMPS,
+            'series': {}
+        }
+        self.fetch_meta_data_cache()  # TODO: remove
 
     def get_md5(self):
         if self.md5 is None:
@@ -48,10 +50,10 @@ class SoundFile(object):
         return self.duration
 
     def get_analysis(self, ensure_standardized_series=False):
-        if self.analysis is None or (ensure_standardized_series and 'series_standardized' not in self.analysis):
-            import analyze
-            self.analysis = analyze.Analyzer.analyze(self, ensure_standardized_series)
-            self.fetch_analysis_data_cache()
+        if self.analysis is None:
+            raise Exception(str(self) + ' lacks analysis')
+        if ensure_standardized_series and 'series_standardized' not in self.analysis:
+            raise Exception('Standardized analysis needs to be calculated on beforehand!')
         return self.analysis
 
     def get_meta_data_cache_file_path(self):
@@ -67,6 +69,8 @@ class SoundFile(object):
         )
 
     def fetch_meta_data_cache(self):
+        # TODO: this should be removed
+
         meta_data_cache_file_path = self.get_meta_data_cache_file_path()
         if os.path.isfile(meta_data_cache_file_path):
             with settings.FILE_HANDLER(meta_data_cache_file_path) as meta_data_file:
@@ -74,22 +78,12 @@ class SoundFile(object):
             if 'duration' in data and data['duration']:
                 self.duration = data['duration']
 
-    def fetch_analysis_data_cache(self):
-        analysis_cache_file_path = self.get_feature_data_file_path()
-        if os.path.isfile(analysis_cache_file_path):
-            with settings.FILE_HANDLER(analysis_cache_file_path) as analysis_data_file:
-                self.analysis = json.load(analysis_data_file)
-
     def write_meta_data_cache(self):
         with settings.FILE_HANDLER(self.get_meta_data_cache_file_path(), 'w') as outfile:
             data = {}
             if self.duration:
                 data['duration'] = self.duration
             json.dump(data, outfile)
-
-    def write_analysis_data_cache(self):
-        with settings.FILE_HANDLER(self.get_feature_data_file_path(), 'w') as outfile:
-            json.dump(self.analysis, outfile)
 
     def get_num_frames(self):
         arbitrary_series = six.next(six.itervalues(self.analysis['series']))

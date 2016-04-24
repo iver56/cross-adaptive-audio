@@ -62,7 +62,6 @@ class Standardizer(object):
                         self.get_standardized_value(feature, value)
                         for value in analysis['series'][feature]
                         ]
-                sf.write_analysis_data_cache()
 
     def get_standardized_value(self, feature, value):
         """

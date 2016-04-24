@@ -8,6 +8,7 @@ import re
 import json
 import sound_file
 import standardizer
+import analyze
 
 
 class CreateProject(object):
@@ -78,10 +79,9 @@ class CreateProject(object):
         print('Analyzing all sound files in project...')
         self.sound_files = []
         for filename in self.project_data['filenames']:
-            print('Analyzing "{}"...'.format(filename))
             sf = sound_file.SoundFile(filename)
-            sf.get_analysis()
             self.sound_files.append(sf)
+        analyze.Analyzer.analyze_mfcc_parallel(self.sound_files)
 
     def standardize_analyses(self):
         print('Calculating standardization parameters...')

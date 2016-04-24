@@ -166,6 +166,12 @@ class Neuroevolution(object):
         if len(self.args.input_files) == 2:
             self.param_sound = sound_file.SoundFile(self.args.input_files[0])
             self.input_sound = sound_file.SoundFile(self.args.input_files[1])
+
+            analyze.Analyzer.analyze_multiple(
+                [self.param_sound, self.input_sound],
+                standardize=True
+            )
+
             self.num_frames = min(self.param_sound.get_num_frames(),
                                   self.input_sound.get_num_frames())
 
@@ -359,11 +365,10 @@ class Neuroevolution(object):
             individual.output_sound for individual in individuals
             if individual.output_sound.analysis is None or 'series_standardized' not in individual.output_sound.analysis
             ]
-        analyze.Analyzer.analyze_mfcc_parallel(sound_files_to_analyze)
+
+        analyze.Analyzer.analyze_multiple(sound_files_to_analyze, standardize=True)
 
         for that_individual in individuals:
-            analyze.Analyzer.add_standardized_series(that_individual.output_sound)
-            that_individual.output_sound.fetch_analysis_data_cache()
             fitness = fitness_evaluator.FitnessEvaluator.evaluate(
                 self.param_sound,
                 that_individual.output_sound

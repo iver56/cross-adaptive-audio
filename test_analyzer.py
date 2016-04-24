@@ -20,7 +20,7 @@ class TestCrossAdapt(unittest.TestCase):
         self.start_time = time.time()
 
         for sound in self.sounds:
-            Analyzer.analyze_mfcc(sound)
+            Analyzer.analyze_mfcc_parallel([sound])
 
         print("Serial execution time: {0} seconds".format(
             time.time() - self.start_time)

@@ -52,5 +52,8 @@ class CrossAdapter(object):
         csound = csound_handler.CsoundHandler(csd_path)
         output_filename = input_sound.filename + '.cross_adapted.gen{0:04d}.{1}.wav'.format(generation, data_md5)
         csound.run(output_filename, async=False)
-        output_sound_file = sound_file.SoundFile(output_filename, is_input=False)
+        output_sound_file = sound_file.SoundFile(
+            output_filename,
+            is_input=False
+        )
         return output_sound_file
