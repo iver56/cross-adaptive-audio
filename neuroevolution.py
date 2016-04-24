@@ -216,6 +216,8 @@ class Neuroevolution(object):
 
         self.effect = effect.effects['dist_lpf']  # TODO: let key be a part of the experiment spec
 
+        self.individual_fitness = {}  # individual id => individual fitness
+
         run_start_time = time.time()
         self.run()
         print("Run execution time: {0:.2f} seconds".format(time.time() - run_start_time))
@@ -276,12 +278,20 @@ class Neuroevolution(object):
                     neural_input_mode=self.args.neural_input_mode,
                     effect=self.effect
                 )
+
+                if that_individual.get_id() in self.individual_fitness:
+                    if settings.VERBOSE or True:
+                        print(that_individual.get_id() + ' already exists. Will not evaluate again')
+
+                    that_individual.set_fitness(self.individual_fitness[that_individual.get_id()])
+
                 output_sound = self.produce_output_sound(that_individual)
                 that_individual.set_output_sound(output_sound)
 
                 individuals.append(that_individual)
 
-            self.evaluate_fitness(individuals)
+            individuals_to_be_evaluated = [i for i in individuals if not i.genotype.GetFitness()]
+            self.evaluate_fitness(individuals_to_be_evaluated)
 
             individuals.sort(key=lambda i: i.genotype.GetFitness())
 
@@ -303,7 +313,10 @@ class Neuroevolution(object):
                         individuals[i].delete(try_delete_serialized_representation=False)
             else:
                 for that_individual in individuals:
-                    that_individual.save()
+                    individual_id = that_individual.get_id()
+                    if individual_id not in self.individual_fitness:
+                        that_individual.save()
+                    self.individual_fitness[individual_id] = that_individual.genotype.GetFitness()
 
             stats_item = {
                 'generation': generation,
@@ -337,26 +350,15 @@ class Neuroevolution(object):
                 time.time() - generation_start_time)
             )
 
-    def produce_output_sound(self, individual):
+    def produce_output_sound(self, that_individual):
         output_filename = '{0}.cross_adapted.{1}.wav'.format(
             self.input_sound.filename,
-            individual.get_id()
+            that_individual.get_id()
         )
-
-        # TODO: don't check if file exists, but check a dictionary for the individual id
-        if os.path.exists(os.path.join(settings.OUTPUT_DIRECTORY, output_filename)):
-            if settings.VERBOSE:
-                print(output_filename + ' already exists. Will not cross adapt again.')
-
-            # TODO: also set fitness on the individual and prevent it from being analyzed
-            return sound_file.SoundFile(
-                output_filename,
-                is_input=False
-            )
 
         # this creates a neural network (phenotype) from the genome
         net = NEAT.NeuralNetwork()
-        individual.genotype.BuildPhenotype(net)  # TODO: How about BuildHyperNEATPhenotype instead
+        that_individual.genotype.BuildPhenotype(net)  # TODO: How about BuildHyperNEATPhenotype instead
 
         output_vectors = []
         for input_vector in self.neural_input_vectors:
@@ -366,7 +368,7 @@ class Neuroevolution(object):
             output = net.Output()
             output_vectors.append(list(output))
 
-        individual.set_neural_output(zip(*output_vectors))
+        that_individual.set_neural_output(zip(*output_vectors))
 
         resulting_sound = cross_adapt.CrossAdapter.cross_adapt(
             input_sound=self.input_sound,
@@ -380,8 +382,6 @@ class Neuroevolution(object):
     def evaluate_fitness(self, individuals):
         sound_files_to_analyze = [
             individual.output_sound for individual in individuals
-            if (individual.output_sound.analysis is None) or
-            'series_standardized' not in individual.output_sound.analysis
             ]
 
         analyze.Analyzer.analyze_multiple(sound_files_to_analyze, standardize=True)
