@@ -75,10 +75,15 @@ http://www.equation.com/servlet/equation.cmd?fa=make
     * Go to localhost:8080 in your favorite browser and you'll see a GUI that looks somewhat like this:
     ![Screenshot of visualization](visualization-screenshot.png)
 
-## RAM disk (Ubuntu)
+## Use RAM disk
 
-Experiments can run ~10% faster if you use a RAM disk to reduce I/O overhead.
+Experiments can run ~10% faster if you use a RAM disk to reduce I/O overhead. When you have a
+RAM disk running, set `BASE_DIR` in settings.py to the path of the RAM disk
+(f.ex. `'/mnt/ramdisk'` for Ubuntu or `'R:\\'` for Windows) and run `make prepare-ramdisk`
 
+### RAM disk setup (Ubuntu)
+
+Assuming you have no RAM disk set up already, and you want one with 3 GB of space:
 * `sudo mkdir -p /mnt/ramdisk`
 * `sudo mount -t tmpfs -o size=3072m tmpfs /mnt/ramdisk`
 
@@ -88,4 +93,10 @@ Experiments can run ~10% faster if you use a RAM disk to reduce I/O overhead.
 The ramdisk should now be mounted on startup/reboot. You can confirm this by rebooting and running
 `df -h /mnt/ramdisk`
 
-Finally, set BASE_DIR in settings.py to '/mnt/ramdisk' and run `make prepare-ramdisk`
+### RAM disk setup (Windows)
+
+I haven't been able to get a performance gain by using a RAM disk on a Windows machine with an SSD,
+but if you want to try, you can install a program like this:
+https://www.softperfect.com/products/ramdisk/
+
+Use at your own risk
