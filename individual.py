@@ -15,17 +15,20 @@ class Individual(object):
         self.neural_input_mode = neural_input_mode
         self.effect = effect
         self.nn_representation = None
+        self.id = None
 
     def get_id(self):
-        """
-        state = self.genotype.__getstate__()
-        pieces = state.split(' ')
-        pieces = [pieces[i] for i in range(len(pieces)) if i != 5]  # remove ID at index 5
-        state = ' '.join(pieces)
-        return hashlib.md5(state.encode('utf-8')).hexdigest()
-        """
-        nn_repr = self.get_neural_network_representation()
-        return hashlib.md5(json.dumps(nn_repr).encode('utf-8')).hexdigest()
+        if self.id is None:
+            """
+            state = self.genotype.__getstate__()
+            pieces = state.split(' ')
+            pieces = [pieces[i] for i in range(len(pieces)) if i != 5]  # remove ID at index 5
+            state = ' '.join(pieces)
+            return hashlib.md5(state.encode('utf-8')).hexdigest()
+            """
+            nn_repr = self.get_neural_network_representation()
+            self.id = hashlib.md5(json.dumps(nn_repr).encode('utf-8')).hexdigest()
+        return self.id
 
     def get_individual_data_file_path(self):
         return os.path.join(
@@ -88,6 +91,10 @@ class Individual(object):
 
     def save(self):
         file_path = self.get_individual_data_file_path()
+        if os.path.exists(file_path):
+            if settings.VERBOSE:
+                print('individual {} already exists'.format(self.get_id()))
+            return
         data = self.get_serialized_representation()
         with settings.FILE_HANDLER(file_path, 'w') as outfile:
             json.dump(data, outfile)
