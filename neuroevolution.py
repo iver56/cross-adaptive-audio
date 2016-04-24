@@ -14,14 +14,6 @@ import individual
 import project
 import effect
 
-try:
-    import cv2
-    import numpy as np
-except:
-    if settings.VERBOSE:
-        print(
-            'OpenCV + python bindings and/or numpy, which are required for visualization, could not be imported')
-
 
 class Neuroevolution(object):
     def __init__(self):
@@ -67,16 +59,6 @@ class Neuroevolution(object):
             type=int,
             required=False,
             default=None
-        )
-        arg_parser.add_argument(
-            '-v',
-            '--visualize',
-            nargs='?',
-            dest='visualize',
-            help='Visualize the best neural network in each generation',
-            const=True,
-            required=False,
-            default=False
         )
         arg_parser.add_argument(
             '--keep-only-best',
@@ -356,15 +338,6 @@ class Neuroevolution(object):
                     if individual_id not in self.individual_fitness:
                         that_individual.save()
                     self.individual_fitness[individual_id] = that_individual.genotype.GetFitness()
-
-            # visualize.. TODO: remove
-            if self.args.visualize:
-                net = NEAT.NeuralNetwork()
-                individuals[-1].genotype.BuildPhenotype(net)  # build phenotype from best genotype
-                img = np.zeros((500, 500, 3), dtype=np.uint8)
-                NEAT.DrawPhenotype(img, (0, 0, 500, 500), net)
-                cv2.imshow("NN", img)
-                cv2.waitKey(1)
 
             if self.has_patience_ended(max_fitness, generation):
                 print(

@@ -47,7 +47,7 @@ Building these dependencies from source can be difficult and time-consuming, so 
 * Download tar for windows at http://essentia.upf.edu/documentation/extractors/
 * Extract and add to the PATH variable
 
-### Install NodeJS (optional)
+### Install NodeJS
 https://nodejs.org/en/download/
 
 ### Install GNU make for Windows (optional)
