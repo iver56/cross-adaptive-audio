@@ -14,13 +14,18 @@ class Individual(object):
         self.neural_output_channels = None
         self.neural_input_mode = neural_input_mode
         self.effect = effect
+        self.nn_representation = None
 
     def get_id(self):
+        """
         state = self.genotype.__getstate__()
         pieces = state.split(' ')
         pieces = [pieces[i] for i in range(len(pieces)) if i != 5]  # remove ID at index 5
         state = ' '.join(pieces)
         return hashlib.md5(state.encode('utf-8')).hexdigest()
+        """
+        nn_repr = self.get_neural_network_representation()
+        return hashlib.md5(json.dumps(nn_repr).encode('utf-8')).hexdigest()
 
     def get_individual_data_file_path(self):
         return os.path.join(
@@ -38,12 +43,14 @@ class Individual(object):
         self.neural_output_channels = neural_output
 
     def get_neural_network_representation(self):
-        return neural_network_representation.get_neural_network_representation(
-            nn=self.genotype,
-            neural_input_mode=self.neural_input_mode,
-            effect=self.effect,
-            is_substrate=False
-        )
+        if self.nn_representation is None:
+            self.nn_representation = neural_network_representation.get_neural_network_representation(
+                nn=self.genotype,
+                neural_input_mode=self.neural_input_mode,
+                effect=self.effect,
+                is_substrate=False
+            )
+        return self.nn_representation
 
     def get_neural_output_representation(self):
         series_standardized = {}
