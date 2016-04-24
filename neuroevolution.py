@@ -280,7 +280,7 @@ class Neuroevolution(object):
                 )
 
                 if that_individual.get_id() in self.individual_fitness:
-                    if settings.VERBOSE or True:
+                    if settings.VERBOSE:
                         print(that_individual.get_id() + ' already exists. Will not evaluate again')
 
                     that_individual.set_fitness(self.individual_fitness[that_individual.get_id()])
@@ -380,18 +380,38 @@ class Neuroevolution(object):
         return resulting_sound
 
     def evaluate_fitness(self, individuals):
-        sound_files_to_analyze = [
-            individual.output_sound for individual in individuals
-            ]
+        # check for duplicates
+        duplicates = {}
+        unique_individuals = {}
+        for ind in individuals:
+            if ind.get_id() in unique_individuals:
+                if ind.get_id() in duplicates:
+                    duplicates[ind.get_id()].append(ind)
+                else:
+                    duplicates[ind.get_id()] = [ind]
+            else:
+                unique_individuals[ind.get_id()] = ind
 
+        if settings.VERBOSE and len(duplicates):
+            print('duplicates', duplicates)
+
+        sound_files_to_analyze = [
+            unique_individuals[individual_id].output_sound for individual_id in unique_individuals
+            ]
         analyze.Analyzer.analyze_multiple(sound_files_to_analyze, standardize=True)
 
-        for that_individual in individuals:
+        for individual_id in unique_individuals:
             fitness = fitness_evaluator.FitnessEvaluator.evaluate(
                 self.param_sound,
-                that_individual.output_sound
+                unique_individuals[individual_id].output_sound
             )
-            that_individual.set_fitness(fitness)
+            unique_individuals[individual_id].set_fitness(fitness)
+
+        # set analysis and fitness on duplicates
+        for individual_id in duplicates:
+            for ind in duplicates[individual_id]:
+                ind.output_sound.analysis = unique_individuals[individual_id].output_sound.analysis
+                ind.set_fitness(unique_individuals[individual_id].genotype.GetFitness())
 
 
 if __name__ == '__main__':
