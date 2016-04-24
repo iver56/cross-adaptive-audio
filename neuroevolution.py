@@ -82,7 +82,7 @@ class Neuroevolution(object):
             '--keep-only-best',
             nargs='?',
             dest='keep_only_best',
-            help='Delete all sounds but the fittest in each generation',
+            help='Store only fittest individual in each generation. Improves perf and saves storage',
             const=True,
             required=False,
             default=False
