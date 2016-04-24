@@ -7,7 +7,7 @@ update:
 
 .PHONY: clean
 clean:
-	python clean.py --keep-project-data --keep-input-feature-data
+	python clean.py --keep-project-data
 
 .PHONY: clean-all
 clean-all:

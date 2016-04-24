@@ -25,7 +25,6 @@ class SoundFile(object):
             'ksmps': settings.CSOUND_KSMPS,
             'series': {}
         }
-        self.fetch_meta_data_cache()  # TODO: remove
 
     def get_md5(self):
         if self.md5 is None:
@@ -46,7 +45,6 @@ class SoundFile(object):
     def get_duration(self):
         if self.duration is None:
             self.duration = self.compute_duration()
-            self.write_meta_data_cache()
         return self.duration
 
     def get_analysis(self, ensure_standardized_series=False):
@@ -55,35 +53,6 @@ class SoundFile(object):
         if ensure_standardized_series and 'series_standardized' not in self.analysis:
             raise Exception('Standardized analysis needs to be calculated on beforehand!')
         return self.analysis
-
-    def get_meta_data_cache_file_path(self):
-        return os.path.join(
-            settings.META_DATA_CACHE_DIRECTORY,
-            self.filename + '.' + self.get_md5() + settings.DATA_FILE_EXTENSION
-        )
-
-    def get_feature_data_file_path(self):
-        return os.path.join(
-            settings.INPUT_FEATURE_DATA_DIRECTORY if self.is_input else settings.OUTPUT_FEATURE_DATA_DIRECTORY,
-            self.filename + '.' + self.get_md5() + settings.DATA_FILE_EXTENSION
-        )
-
-    def fetch_meta_data_cache(self):
-        # TODO: this should be removed
-
-        meta_data_cache_file_path = self.get_meta_data_cache_file_path()
-        if os.path.isfile(meta_data_cache_file_path):
-            with settings.FILE_HANDLER(meta_data_cache_file_path) as meta_data_file:
-                data = json.load(meta_data_file)
-            if 'duration' in data and data['duration']:
-                self.duration = data['duration']
-
-    def write_meta_data_cache(self):
-        with settings.FILE_HANDLER(self.get_meta_data_cache_file_path(), 'w') as outfile:
-            data = {}
-            if self.duration:
-                data['duration'] = self.duration
-            json.dump(data, outfile)
 
     def get_num_frames(self):
         arbitrary_series = six.next(six.itervalues(self.analysis['series']))
@@ -112,16 +81,6 @@ class SoundFile(object):
         }
 
     def delete(self):
-        try:
-            os.remove(self.get_meta_data_cache_file_path())
-        except OSError:
-            pass
-
-        try:
-            os.remove(self.get_feature_data_file_path())
-        except OSError:
-            pass
-
         try:
             os.remove(self.file_path)
         except OSError:

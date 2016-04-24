@@ -9,10 +9,7 @@ if not settings.USE_RAM_DISK:
 
 all_paths = [
     settings.CSD_DIRECTORY,
-    settings.INPUT_FEATURE_DATA_DIRECTORY,
-    settings.OUTPUT_FEATURE_DATA_DIRECTORY,
     settings.INPUT_DIRECTORY,
-    settings.META_DATA_CACHE_DIRECTORY,
     settings.OUTPUT_DIRECTORY,
     settings.PROJECT_DATA_DIRECTORY,
     settings.STATS_DATA_DIRECTORY,

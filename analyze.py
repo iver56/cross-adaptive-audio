@@ -45,7 +45,8 @@ class Analyzer(object):
             ksmps=settings.CSOUND_KSMPS,
             duration=sound_file_to_analyze.get_duration(),
             feature_data_file_path=os.path.abspath(
-                sound_file_to_analyze.get_feature_data_file_path())
+                sound_file_to_analyze.get_feature_data_file_path()  # TODO: use other path
+            )
         )
         csd_path = os.path.join(settings.CSD_DIRECTORY, 'rms_analyzer.csd')
         template.write_result(csd_path)
