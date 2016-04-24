@@ -276,8 +276,9 @@ class Neuroevolution(object):
                     neural_input_mode=self.args.neural_input_mode,
                     effect=self.effect
                 )
-                output_sound = self.produce_output_sound(that_individual, generation)
+                output_sound = self.produce_output_sound(that_individual)
                 that_individual.set_output_sound(output_sound)
+
                 individuals.append(that_individual)
 
             self.evaluate_fitness(individuals)
@@ -336,7 +337,23 @@ class Neuroevolution(object):
                 time.time() - generation_start_time)
             )
 
-    def produce_output_sound(self, individual, generation):
+    def produce_output_sound(self, individual):
+        output_filename = '{0}.cross_adapted.{1}.wav'.format(
+            self.input_sound.filename,
+            individual.get_id()
+        )
+
+        # TODO: don't check if file exists, but check a dictionary for the individual id
+        if os.path.exists(os.path.join(settings.OUTPUT_DIRECTORY, output_filename)):
+            if settings.VERBOSE:
+                print(output_filename + ' already exists. Will not cross adapt again.')
+
+            # TODO: also set fitness on the individual and prevent it from being analyzed
+            return sound_file.SoundFile(
+                output_filename,
+                is_input=False
+            )
+
         # this creates a neural network (phenotype) from the genome
         net = NEAT.NeuralNetwork()
         individual.genotype.BuildPhenotype(net)  # TODO: How about BuildHyperNEATPhenotype instead
@@ -354,7 +371,8 @@ class Neuroevolution(object):
         resulting_sound = cross_adapt.CrossAdapter.cross_adapt(
             input_sound=self.input_sound,
             parameter_vectors=output_vectors,
-            effect=self.effect
+            effect=self.effect,
+            output_filename=output_filename
         )
 
         return resulting_sound
@@ -362,7 +380,8 @@ class Neuroevolution(object):
     def evaluate_fitness(self, individuals):
         sound_files_to_analyze = [
             individual.output_sound for individual in individuals
-            if individual.output_sound.analysis is None or 'series_standardized' not in individual.output_sound.analysis
+            if (individual.output_sound.analysis is None) or
+            'series_standardized' not in individual.output_sound.analysis
             ]
 
         analyze.Analyzer.analyze_multiple(sound_files_to_analyze, standardize=True)

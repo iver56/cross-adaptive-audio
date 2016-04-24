@@ -13,18 +13,8 @@ import copy
 
 class CrossAdapter(object):
     @staticmethod
-    def cross_adapt(input_sound, parameter_vectors, effect):
+    def cross_adapt(input_sound, parameter_vectors, effect, output_filename):
         vectors = copy.deepcopy(parameter_vectors)
-        data_md5 = hashlib.md5(json.dumps(vectors)).hexdigest()
-        output_filename = input_sound.filename + '.cross_adapted.{}.wav'.format(data_md5)
-
-        if os.path.exists(os.path.join(settings.OUTPUT_DIRECTORY, output_filename)):
-            if settings.VERBOSE:
-                print(output_filename + ' already exists. Will not cross adapt again.')
-            return sound_file.SoundFile(
-                output_filename,
-                is_input=False
-            )
 
         # map normalized values to the appropriate ranges of the effect parameters
         for i in range(effect.num_parameters):
