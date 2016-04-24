@@ -2,6 +2,7 @@ import unittest
 import settings
 import sound_file
 import fitness_evaluator
+import analyze
 
 
 class TestFitnessEvaluator(unittest.TestCase):
@@ -12,6 +13,9 @@ class TestFitnessEvaluator(unittest.TestCase):
         drums = sound_file.SoundFile('drums.wav')
         synth = sound_file.SoundFile('synth.wav')
         vocal = sound_file.SoundFile('vocal.wav')
+
+        analyze.Analyzer.analyze_multiple([drums, synth, vocal], standardize=True)
+
         fitness1 = fitness_evaluator.FitnessEvaluator.evaluate(drums, drums)
         fitness2 = fitness_evaluator.FitnessEvaluator.evaluate(drums, synth)
         fitness3 = fitness_evaluator.FitnessEvaluator.evaluate(drums, vocal)
