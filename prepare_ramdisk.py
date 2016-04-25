@@ -13,10 +13,12 @@ all_paths = [
     settings.OUTPUT_DIRECTORY,
     settings.PROJECT_DATA_DIRECTORY,
     settings.STATS_DATA_DIRECTORY,
-    settings.INDIVIDUAL_DATA_DIRECTORY
+    settings.INDIVIDUAL_DATA_DIRECTORY,
+    settings.EFFECT_DIRECTORY
 ]
 
 input_dir_not_ramdisk = os.path.join('.', 'input')
+effects_dir_not_ramdisk = os.path.join('.', 'effects')
 web_client_dir_name = 'web_client'
 node_server_dir_name = 'node_server'
 
@@ -29,6 +31,12 @@ print('Copying input audio files to input folder in RAM disk...')
 dir_util.copy_tree(
     input_dir_not_ramdisk,
     settings.INPUT_DIRECTORY
+)
+
+print('Copying effects to RAM disk...')
+dir_util.copy_tree(
+    effects_dir_not_ramdisk,
+    settings.EFFECT_DIRECTORY
 )
 
 print('Copying web client files to RAM disk...')
