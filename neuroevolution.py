@@ -182,6 +182,13 @@ class Neuroevolution(object):
         else:
             raise Exception('Two filenames must be specified')
 
+        self.effect = effect.effects['dist_lpf']  # TODO: let key be a part of the experiment spec
+        self.cross_adapter = cross_adapt.CrossAdapter(
+            input_sound=self.input_sound,
+            neural_input_vectors=self.neural_input_vectors,
+            effect=self.effect
+        )
+
         self.stats_logger = logger.Logger(
             os.path.join(settings.STATS_DATA_DIRECTORY, 'stats.json'),
             suppress_initialization=True
@@ -195,8 +202,6 @@ class Neuroevolution(object):
         self.last_fitness_improvement = 0  # generation number
         if self.args.keep_only_best:
             self.best_individual_ids = set()
-
-        self.effect = effect.effects['dist_lpf']  # TODO: let key be a part of the experiment spec
 
         self.individual_fitness = {}  # individual id => individual fitness
 
@@ -289,7 +294,7 @@ class Neuroevolution(object):
             unique_individuals_list = [unique_individuals[ind_id] for ind_id in unique_individuals]
 
             # Produce sound files for each unique individual
-            self.produce_output_sounds(unique_individuals_list)
+            self.cross_adapter.produce_output_sounds(unique_individuals_list)
 
             # Evaluate fitness of each unique individual
             self.evaluate_fitness(unique_individuals_list)
@@ -350,51 +355,6 @@ class Neuroevolution(object):
             print("Generation execution time: {0:.2f} seconds".format(
                 time.time() - generation_start_time)
             )
-
-    def produce_output_sounds(self, individuals):
-        processes = []
-        csd_paths = []
-        for that_individual in individuals:
-            process, output_sound, csd_path = self.produce_output_sound(that_individual)
-            processes.append(process)
-            csd_paths.append(csd_path)
-            that_individual.set_output_sound(output_sound)
-
-        for i in range(len(processes)):
-            processes[i].wait()
-            try:
-                os.remove(csd_paths[i])
-            except OSError:
-                print('Warning: Failed to remove {}'.format(csd_paths[i]))
-
-    def produce_output_sound(self, that_individual):
-        output_filename = '{0}.cross_adapted.{1}.wav'.format(
-            self.input_sound.filename,
-            that_individual.get_id()
-        )
-
-        # this creates a neural network (phenotype) from the genome
-        net = NEAT.NeuralNetwork()
-        that_individual.genotype.BuildPhenotype(net)
-
-        output_vectors = []
-        for input_vector in self.neural_input_vectors:
-            net.Flush()
-            net.Input(input_vector)
-            net.Activate()
-            output = net.Output()
-            output_vectors.append(list(output))
-
-        that_individual.set_neural_output(zip(*output_vectors))
-
-        process, resulting_sound, csd_path = cross_adapt.CrossAdapter.cross_adapt(
-            input_sound=self.input_sound,
-            parameter_vectors=output_vectors,
-            effect=self.effect,
-            output_filename=output_filename
-        )
-
-        return process, resulting_sound, csd_path
 
     def evaluate_fitness(self, individuals):
         sound_files_to_analyze = [

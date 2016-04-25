@@ -32,10 +32,15 @@ class TestCrossAdapt(unittest.TestCase):
 
         self.start_time = time.time()
 
+        cross_adapter = cross_adapt.CrossAdapter(
+            input_sound=input_sound,
+            neural_input_vectors=[],
+            effect=that_effect
+        )
+
         output_filename = 'test_cross_adapt.wav'
 
-        process, output_sound_file, csd_path = cross_adapt.CrossAdapter.cross_adapt(
-            input_sound,
+        process, output_sound_file, csd_path = cross_adapter.cross_adapt(
             parameter_vectors,
             that_effect,
             output_filename
