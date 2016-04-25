@@ -39,7 +39,7 @@ class Analyzer(object):
     def analyze_rms(sound_file_to_analyze):
         # This method is unused and may be removed in the future
         """
-        template = template_handler.TemplateHandler('templates/rms_analyzer.csd.jinja2')
+        template = template_handler.TemplateHandler('effects/rms_analyzer.csd.jinja2')
         template.compile(
             input_file_path=os.path.abspath(sound_file_to_analyze.file_path),
             ksmps=settings.CSOUND_KSMPS,

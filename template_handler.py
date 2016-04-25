@@ -4,12 +4,12 @@ import json
 
 
 class TemplateHandler(object):
-    def __init__(self, template_filename):
+    def __init__(self, template_file_path):
         self.template = None
         self.result = None
         self.env = Environment()
         self.init_custom_filters()
-        with open(template_filename, 'r') as template_file:
+        with open(template_file_path, 'r') as template_file:
             template_string = template_file.read()
             self.template = self.env.from_string(template_string)
 

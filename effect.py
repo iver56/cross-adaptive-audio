@@ -1,62 +1,28 @@
+import settings
+import os
+import json
+
+
 class Effect(object):
-    def __init__(self, template_filename, parameters):
-        self.template_filename = template_filename
+    def __init__(self, template_file_path, parameters):
+        self.template_file_path = template_file_path
         self.parameters = parameters
         self.num_parameters = len(parameters)
         self.parameter_names = [p['name'] for p in parameters]
 
-effects = {
-    'dist_lpf': Effect(
-        template_filename='dist_lpf.csd.jinja2',
-        parameters=[
-            {
-                'name': 'drive',
-                'mapping': {
-                    'min_value': 1.0,
-                    'max_value': 12.0,
-                    'skew_factor': 1.0
-                }
-            },
-            {
-                'name': 'freq',
-                'mapping': {
-                    'min_value': 20.0,
-                    'max_value': 10000.0,
-                    'skew_factor': 0.3
-                }
-            },
-            {
-                'name': 'resonance',
-                'mapping': {
-                    'min_value': 0.001,
-                    'max_value': 0.95,
-                    'skew_factor': 1.0
-                }
-            },
-            {
-                'name': 'dist',
-                'mapping': {
-                    'min_value': 0.001,
-                    'max_value': 10,
-                    'skew_factor': 0.5
-                }
-            },
-            {
-                'name': 'mix',
-                'mapping': {
-                    'min_value': 0.0,
-                    'max_value': 1.0,
-                    'skew_factor': 1.0
-                }
-            },
-            {
-                'name': 'post_gain',
-                'mapping': {
-                    'min_value': 0.0,
-                    'max_value': 3.16227,
-                    'skew_factor': 0.3
-                }
-            }
-        ]
-    )
-}
+    @staticmethod
+    def get_effect_by_name(name):
+        template_file_path = os.path.join(settings.EFFECT_DIRECTORY, '{}.csd.jinja2'.format(name))
+        metadata_file_path = os.path.join(settings.EFFECT_DIRECTORY, '{}.json'.format(name))
+
+        try:
+            with open(metadata_file_path) as data_file:
+                metadata = json.load(data_file)
+                parameters = metadata['parameters']
+                return Effect(template_file_path, parameters)
+        except IOError:
+            raise Exception(
+                'Could not load {}. It doesn\'t exist. See effects/readme.txt for more info'.format(
+                    metadata_file_path
+                )
+            )

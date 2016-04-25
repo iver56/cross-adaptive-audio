@@ -138,6 +138,14 @@ class Neuroevolution(object):
             required=False,
             default="a"
         )
+        arg_parser.add_argument(
+            '--effect',
+            dest='effect_name',
+            type=str,
+            help='The name of the sound effect to use. See the effects folder for options.',
+            required=False,
+            default="dist_lpf"
+        )
         self.args = arg_parser.parse_args()
 
         project.Project.assert_project_exists()
@@ -182,7 +190,7 @@ class Neuroevolution(object):
         else:
             raise Exception('Two filenames must be specified')
 
-        self.effect = effect.effects['dist_lpf']  # TODO: let key be a part of the experiment spec
+        self.effect = effect.Effect.get_effect_by_name(self.args.effect_name)
         self.cross_adapter = cross_adapt.CrossAdapter(
             input_sound=self.input_sound,
             neural_input_vectors=self.neural_input_vectors,

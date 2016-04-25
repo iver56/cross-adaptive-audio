@@ -14,6 +14,7 @@ class TestCsoundPerformance(unittest.TestCase):
         self.num_sounds = 20
         self.drums = sound_file.SoundFile('drums.wav')
         self.files_to_delete = []
+        self.template_file_path = os.path.join(settings.EFFECT_DIRECTORY, 'test_effect.csd.jinja2')
 
     def tearDown(self):
         for file_path in self.files_to_delete:
@@ -23,7 +24,7 @@ class TestCsoundPerformance(unittest.TestCase):
         self.start_time = time.time()
 
         for i in range(self.num_sounds):
-            template = template_handler.TemplateHandler('templates/test_effect.csd.jinja2')
+            template = template_handler.TemplateHandler(self.template_file_path)
             duration = self.drums.get_duration()
             template.compile(
                 sound_filename=self.drums.filename,
@@ -50,7 +51,7 @@ class TestCsoundPerformance(unittest.TestCase):
         processes = []
 
         for i in range(self.num_sounds):
-            template = template_handler.TemplateHandler('templates/test_effect.csd.jinja2')
+            template = template_handler.TemplateHandler(self.template_file_path)
             duration = self.drums.get_duration()
             template.compile(
                 sound_filename=self.drums.filename,

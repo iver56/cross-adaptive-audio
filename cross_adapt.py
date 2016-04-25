@@ -85,7 +85,7 @@ class CrossAdapter(object):
             channel_csv = ','.join(map(str, channel))
             channels_csv.append(channel_csv)
 
-        template = template_handler.TemplateHandler('templates/dist_lpf.csd.jinja2')
+        template = template_handler.TemplateHandler(self.effect.template_file_path)
         template.compile(
             input_sound_filename=self.input_sound.filename,
             parameter_channels=channels_csv,
