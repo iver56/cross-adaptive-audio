@@ -32,11 +32,20 @@ class TestCrossAdapt(unittest.TestCase):
 
         self.start_time = time.time()
 
-        output_sound_file = cross_adapt.CrossAdapter.cross_adapt(
+        output_filename = 'test_cross_adapt.wav'
+
+        process, output_sound_file, csd_path = cross_adapt.CrossAdapter.cross_adapt(
             input_sound,
             parameter_vectors,
-            that_effect
+            that_effect,
+            output_filename
         )
+
+        print('process', process)
+        print('output file', output_sound_file)
+        print('csd path', csd_path)
+
+        process.wait()
 
         print("Execution time: {0} seconds".format(
             time.time() - self.start_time)

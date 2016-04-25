@@ -46,12 +46,12 @@ class CrossAdapter(object):
             duration=input_sound.get_duration()
         )
 
-        csd_path = os.path.join(settings.CSD_DIRECTORY, 'cross_adapt.csd')
+        csd_path = os.path.join(settings.CSD_DIRECTORY, output_filename + '.csd')
         template.write_result(csd_path)
         csound = csound_handler.CsoundHandler(csd_path)
-        csound.run(output_filename, async=False)
+        process = csound.run(output_filename, async=True)
         output_sound_file = sound_file.SoundFile(
             output_filename,
             is_input=False
         )
-        return output_sound_file
+        return process, output_sound_file, csd_path

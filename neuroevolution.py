@@ -286,13 +286,12 @@ class Neuroevolution(object):
             if settings.VERBOSE and len(duplicates):
                 print('duplicates', duplicates)
 
+            unique_individuals_list = [unique_individuals[ind_id] for ind_id in unique_individuals]
+
             # Produce sound files for each unique individual
-            for individual_id in unique_individuals:
-                output_sound = self.produce_output_sound(unique_individuals[individual_id])
-                unique_individuals[individual_id].set_output_sound(output_sound)
+            self.produce_output_sounds(unique_individuals_list)
 
             # Evaluate fitness of each unique individual
-            unique_individuals_list = [unique_individuals[ind_id] for ind_id in unique_individuals]
             self.evaluate_fitness(unique_individuals_list)
 
             # Set analysis and fitness on duplicates
@@ -352,6 +351,22 @@ class Neuroevolution(object):
                 time.time() - generation_start_time)
             )
 
+    def produce_output_sounds(self, individuals):
+        processes = []
+        csd_paths = []
+        for that_individual in individuals:
+            process, output_sound, csd_path = self.produce_output_sound(that_individual)
+            processes.append(process)
+            csd_paths.append(csd_path)
+            that_individual.set_output_sound(output_sound)
+
+        for i in range(len(processes)):
+            processes[i].wait()
+            try:
+                os.remove(csd_paths[i])
+            except OSError:
+                print('Warning: Failed to remove {}'.format(csd_paths[i]))
+
     def produce_output_sound(self, that_individual):
         output_filename = '{0}.cross_adapted.{1}.wav'.format(
             self.input_sound.filename,
@@ -372,14 +387,14 @@ class Neuroevolution(object):
 
         that_individual.set_neural_output(zip(*output_vectors))
 
-        resulting_sound = cross_adapt.CrossAdapter.cross_adapt(
+        process, resulting_sound, csd_path = cross_adapt.CrossAdapter.cross_adapt(
             input_sound=self.input_sound,
             parameter_vectors=output_vectors,
             effect=self.effect,
             output_filename=output_filename
         )
 
-        return resulting_sound
+        return process, resulting_sound, csd_path
 
     def evaluate_fitness(self, individuals):
         sound_files_to_analyze = [
