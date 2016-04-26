@@ -211,6 +211,9 @@ class Neuroevolution(object):
 
         self.individual_fitness = {}  # individual id => individual fitness
 
+        self.population = None
+        self.init_neat()
+
         run_start_time = time.time()
         self.run()
         print("Run execution time: {0:.2f} seconds".format(time.time() - run_start_time))
@@ -227,7 +230,7 @@ class Neuroevolution(object):
         elif generation - self.last_fitness_improvement >= self.args.patience:
             return True  # Patience has ended. Stop evolving.
 
-    def run(self):
+    def init_neat(self):
         params = NEAT.Parameters()
         params.PopulationSize = self.args.population_size
         params.AllowClones = self.args.allow_clones
@@ -249,7 +252,7 @@ class Neuroevolution(object):
             0,  # SeedType
             params  # Parameters
         )
-        pop = NEAT.Population(
+        self.population = NEAT.Population(
             genome,
             params,
             True,  # whether the population should be randomized
@@ -257,12 +260,13 @@ class Neuroevolution(object):
             settings.PRNG_SEED
         )
 
+    def run(self):
         for generation in range(1, self.args.num_generations + 1):
             generation_start_time = time.time()
             print('generation {}'.format(generation))
 
             # Retrieve a list of all genomes in the population
-            genotypes = NEAT.GetGenomeList(pop)
+            genotypes = NEAT.GetGenomeList(self.population)
 
             individuals = []
             all_individuals = []
@@ -357,7 +361,7 @@ class Neuroevolution(object):
                 break
 
             # advance to the next generation
-            pop.Epoch()
+            self.population.Epoch()
             print("Generation execution time: {0:.2f} seconds".format(
                 time.time() - generation_start_time)
             )
