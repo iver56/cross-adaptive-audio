@@ -20,7 +20,8 @@ class TestCrossAdapt(unittest.TestCase):
         target_sound = sound_file.SoundFile('drums.wav')
         input_sound = sound_file.SoundFile('noise.wav')
 
-        analyze.Analyzer.analyze_multiple([target_sound, input_sound], standardize=True)
+        analyzer = analyze.Analyzer()
+        analyzer.analyze_multiple([target_sound, input_sound])
 
         num_frames = min(
             target_sound.get_num_frames(),

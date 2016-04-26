@@ -6,7 +6,7 @@ import time
 from analyze import Analyzer
 
 
-class TestCrossAdapt(unittest.TestCase):
+class TestAnalyzer(unittest.TestCase):
     def setUp(self):
         settings.INPUT_DIRECTORY = 'test_audio'
         self.sounds = [
@@ -15,12 +15,13 @@ class TestCrossAdapt(unittest.TestCase):
             sound_file.SoundFile('synth.wav'),
             sound_file.SoundFile('vocal.wav')
         ]
+        self.analyzer = Analyzer()
 
     def test_serial_analysis(self):
         self.start_time = time.time()
 
         for sound in self.sounds:
-            Analyzer.analyze_mfcc_parallel([sound])
+            self.analyzer.analyze_multiple([sound])
 
         print("Serial execution time: {0} seconds".format(
             time.time() - self.start_time)
@@ -29,7 +30,7 @@ class TestCrossAdapt(unittest.TestCase):
     def test_parallel_analysis(self):
         self.start_time = time.time()
 
-        Analyzer.analyze_mfcc_parallel(self.sounds)
+        self.analyzer.analyze_multiple(self.sounds)
 
         print("Parallel execution time: {0} seconds".format(
             time.time() - self.start_time)

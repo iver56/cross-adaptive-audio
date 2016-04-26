@@ -81,7 +81,9 @@ class CreateProject(object):
         for filename in self.project_data['filenames']:
             sf = sound_file.SoundFile(filename)
             self.sound_files.append(sf)
-        analyze.Analyzer.analyze_mfcc_parallel(self.sound_files)
+
+        analyzer = analyze.Analyzer()
+        analyzer.analyze_multiple(self.sound_files, standardize=False)
 
     def standardize_analyses(self):
         print('Calculating standardization parameters...')

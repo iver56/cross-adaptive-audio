@@ -16,7 +16,8 @@ class TestFitnessEvaluator(unittest.TestCase):
         synth = sound_file.SoundFile('synth.wav')
         vocal = sound_file.SoundFile('vocal.wav')
 
-        analyze.Analyzer.analyze_multiple([drums, synth, vocal], standardize=True)
+        analyzer = analyze.Analyzer()
+        analyzer.analyze_multiple([drums, synth, vocal])
 
         fitness1 = fitness_evaluator.FitnessEvaluator.evaluate(drums, drums)
         fitness2 = fitness_evaluator.FitnessEvaluator.evaluate(drums, synth)

@@ -149,6 +149,7 @@ class Neuroevolution(object):
         self.args = arg_parser.parse_args()
 
         project.Project.assert_project_exists()
+        self.analyzer = analyze.Analyzer()
 
         if self.args.seed is not None:
             settings.PRNG_SEED = self.args.seed
@@ -157,10 +158,7 @@ class Neuroevolution(object):
             self.param_sound = sound_file.SoundFile(self.args.input_files[0])
             self.input_sound = sound_file.SoundFile(self.args.input_files[1])
 
-            analyze.Analyzer.analyze_multiple(
-                [self.param_sound, self.input_sound],
-                standardize=True
-            )
+            self.analyzer.analyze_multiple([self.param_sound, self.input_sound])
 
             self.num_frames = min(self.param_sound.get_num_frames(),
                                   self.input_sound.get_num_frames())
@@ -368,7 +366,7 @@ class Neuroevolution(object):
         sound_files_to_analyze = [
             that_individual.output_sound for that_individual in individuals
             ]
-        analyze.Analyzer.analyze_multiple(sound_files_to_analyze, standardize=True)
+        self.analyzer.analyze_multiple(sound_files_to_analyze)
 
         for that_individual in individuals:
             fitness = fitness_evaluator.FitnessEvaluator.evaluate(

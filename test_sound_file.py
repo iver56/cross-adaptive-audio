@@ -15,7 +15,8 @@ class TestSoundFile(unittest.TestCase):
         my_sound_file = sound_file.SoundFile('drums.wav')
         self.assertAlmostEqual(my_sound_file.get_duration(), 7.89278911565)
 
-        analyze.Analyzer.analyze_multiple([my_sound_file], standardize=True)
+        analyzer = analyze.Analyzer()
+        analyzer.analyze_multiple([my_sound_file])
 
         feature_vector_0 = my_sound_file.get_standardized_neural_input_vector(0)
         self.assertEqual(len(feature_vector_0), len(settings.NEURAL_INPUT_CHANNELS))

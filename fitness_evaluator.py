@@ -107,7 +107,8 @@ class CommandLineFitnessTool(object):
             sound_file_a = sound_file.SoundFile(args.input_files[0])
             sound_file_b = sound_file.SoundFile(args.input_files[1])
 
-            analyze.Analyzer.analyze_multiple([sound_file_a, sound_file_b], standardize=True)
+            analyzer = analyze.Analyzer()
+            analyzer.analyze_multiple([sound_file_a, sound_file_b])
 
             print(FitnessEvaluator.evaluate(sound_file_a, sound_file_b))
         else:
