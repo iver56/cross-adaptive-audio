@@ -14,7 +14,8 @@ all_paths = [
     settings.PROJECT_DATA_DIRECTORY,
     settings.STATS_DATA_DIRECTORY,
     settings.INDIVIDUAL_DATA_DIRECTORY,
-    settings.EFFECT_DIRECTORY
+    settings.EFFECT_DIRECTORY,
+    settings.TEMP_DIRECTORY
 ]
 
 input_dir_not_ramdisk = os.path.join('.', 'input')

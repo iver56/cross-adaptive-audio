@@ -12,7 +12,7 @@ class MfccAnalyzer(object):
         if len(sound_files) == 0:
             return
 
-        commands = [self.get_analyze_mfcc_command(sound) for sound in sound_files]
+        commands = [self.get_command(sound) for sound in sound_files]
 
         # run commands in parallel
         processes = [
@@ -31,10 +31,10 @@ class MfccAnalyzer(object):
 
         outputs = Pool(len(processes)).map(get_lines, processes)
         for i in range(len(sound_files)):
-            self.parse_mfcc_analysis(sound_files[i], outputs[i])
+            self.parse_output(sound_files[i], outputs[i])
 
     @staticmethod
-    def get_analyze_mfcc_command(sound_file_to_analyze):
+    def get_command(sound_file_to_analyze):
         return [
             "aubiomfcc",  # assumes that aubio is installed
 
@@ -51,7 +51,7 @@ class MfccAnalyzer(object):
             str(settings.AUBIO_HOP_SIZE)
         ]
 
-    def parse_mfcc_analysis(self, sound_file_to_analyze, lines):
+    def parse_output(self, sound_file_to_analyze, lines):
         for feature in self.features:
             sound_file_to_analyze.analysis['series'][feature] = []
 

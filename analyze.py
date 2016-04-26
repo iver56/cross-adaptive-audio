@@ -2,6 +2,7 @@ import settings
 import standardizer
 import project
 import mfcc_analyzer
+import essentia_analyzer
 
 
 class Analyzer(object):
@@ -14,8 +15,8 @@ class Analyzer(object):
 
     def __init__(self):
         self.project = project.Project.get_current_project()
-        self.mfcc_analyzer = mfcc_analyzer.MfccAnalyzer(self.FEATURES)
-        # self.essentia_analyzer = essentia_analyzer.EssentiaAnalyzer()
+        self.mfcc_analyzer = mfcc_analyzer.MfccAnalyzer({'mfcc_amp'})  # TODO: generalize
+        # self.essentia_analyzer = essentia_analyzer.EssentiaAnalyzer(['spectral_centroid'])
 
     def add_standardized_series(self, sound_files):
         std = standardizer.Standardizer(sound_files)
@@ -24,6 +25,7 @@ class Analyzer(object):
 
     def analyze_multiple(self, sound_files, standardize=True):
         self.mfcc_analyzer.analyze_multiple(sound_files)
+        # self.essentia_analyzer.analyze_multiple(sound_files)
 
         if standardize:
             self.add_standardized_series(sound_files)

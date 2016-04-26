@@ -1,0 +1,10 @@
+outputFormat: json
+outputFrames: 1
+analysisSampleRate: 44100.0
+
+lowlevel:
+    frameSize: 512
+    hopSize: 256
+    zeroPadding: 0
+    windowType: blackmanharris62
+    silentFrames: noise
