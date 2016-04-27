@@ -7,7 +7,7 @@ The project will investigate methods of evaluating the musical applicability of 
 * Install matplotlib dependencies: `sudo apt-get install libfreetype6-dev libpng-dev`
 * Install csound: `sudo apt-get install csound`
 * Install [aubio](http://aubio.org/download): `apt-get install aubio-tools libaubio-dev libaubio-doc`
-* Install essentia extractors:
+* Install essentia extractors (optional):
   * `wget http://essentia.upf.edu/documentation/extractors/essentia-extractors-v2.1_beta2-linux-x86_64.tar.gz`
   * `tar xzf essentia-extractors-v2.1_beta2-linux-x86_64.tar.gz`
   * `echo 'PATH=/data/essentia-extractors-v2.1_beta2/:$PATH' >> ~/.bashrc`
@@ -43,7 +43,7 @@ Building these dependencies from source can be difficult and time-consuming, so 
 * Download http://aubio.org/bin/0.4.2/aubio-0.4.2.win32_binary.zip
 * Extract and add to the PATH variable
 
-### Install Essentia Extractors
+### Install Essentia Extractors (optional)
 * Download tar for windows at http://essentia.upf.edu/documentation/extractors/
 * Extract and add to the PATH variable
 

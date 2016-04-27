@@ -6,6 +6,62 @@ import math
 
 
 class EssentiaAnalyzer(object):
+    AVAILABLE_FEATURES = {
+        'barkbands_crest',
+        'barkbands_flatness_db',
+        'barkbands_kurtosis',
+        'barkbands_skewness',
+        'barkbands_spread',
+        'dissonance',
+        'erbbands_crest',
+        'erbbands_flatness_db',
+        'erbbands_kurtosis',
+        'erbbands_skewness',
+        'erbbands_spread',
+        'melbands_crest',
+        'melbands_flatness_db',
+        'melbands_kurtosis',
+        'melbands_skewness',
+        'melbands_spread',
+        'pitch_salience',
+        'silence_rate_20dB',
+        'silence_rate_30dB',
+        'silence_rate_60dB',
+        'spectral_centroid',
+        'spectral_complexity',
+        'spectral_decrease',
+        'spectral_energy',
+        'spectral_energyband_high',
+        'spectral_energyband_low',
+        'spectral_energyband_middle_high',
+        'spectral_energyband_middle_low',
+        'spectral_entropy',
+        'spectral_flux',
+        'spectral_kurtosis',
+        'spectral_rms',
+        'spectral_rolloff',
+        'spectral_skewness',
+        'spectral_spread',
+        'spectral_strongpeak',
+        'zerocrossingrate',
+        'barkbands_spread',
+        'barkbands_skewness',
+        'barkbands_kurtosis',
+        'barkbands_flatness_db',
+
+        # TODO: proper parsing. These are lists within lists
+        # 'barkbands'
+        # 'erbbands'
+        # 'gfcc'
+        # 'melbands'
+        # 'mfcc'
+        # 'spectral_contrast_coeffs',
+        # 'spectral_contrast_valleys'
+
+        # TODO: proper parsing and handling. These are single numbers.
+        # 'average_loudness',
+        # 'dynamic_complexity'
+    }
     POST_PROCESSING = {
         'spectral_centroid': math.log
     }
@@ -19,7 +75,7 @@ class EssentiaAnalyzer(object):
 
         commands = [self.get_command(sound) for sound in sound_files]
 
-        # run commands in parallel
+        # run commands in parallel. TODO: limit the number of processes that run simultaneously
         processes = [
             Popen(
                 command,

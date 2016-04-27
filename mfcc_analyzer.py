@@ -5,6 +5,22 @@ import os
 
 
 class MfccAnalyzer(object):
+    AVAILABLE_FEATURES = {
+        'mfcc_amp',
+        'mfcc_1',
+        'mfcc_2',
+        'mfcc_3',
+        'mfcc_4',
+        'mfcc_5',
+        'mfcc_6',
+        'mfcc_7',
+        'mfcc_8',
+        'mfcc_9',
+        'mfcc_10',
+        'mfcc_11',
+        'mfcc_12',
+    }
+
     def __init__(self, features):
         self.features = features
 
