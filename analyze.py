@@ -27,13 +27,19 @@ class Analyzer(object):
         self.project = project.Project.get_current_project()
         self.analyzers = []
 
+        features = set(self.FEATURES_LIST)
+
         for analyzer_class in self.AVAILABLE_ANALYZERS:
-            relevant_features = analyzer_class.AVAILABLE_FEATURES.intersection(self.FEATURES_LIST)
+            relevant_features = analyzer_class.AVAILABLE_FEATURES.intersection(features)
             if len(relevant_features) > 0:
-                if settings.VERBOSE or True:
+                if settings.VERBOSE:
                     print('Initializing', analyzer_class)
                 analyzer_instance = analyzer_class(relevant_features)
                 self.analyzers.append(analyzer_instance)
+                features -= relevant_features
+
+        if len(features) > 0:
+            raise Exception('Cannot analyze feature(s) {0}'.format(features))
 
     def add_standardized_series(self, sound_files):
         std = standardizer.Standardizer(sound_files)
