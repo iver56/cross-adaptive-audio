@@ -39,7 +39,7 @@ VERBOSE = False  # Set this to True for debugging purposes
 SAMPLE_RATE = 44100
 
 """The number of samples between two consecutive analysis. AKA ksmps in csound terms."""
-AUBIO_HOP_SIZE = 256
+AUBIO_HOP_SIZE = 512
 
 """The number of samples in window used for spectral and temporal computations"""
 AUBIO_BUFFER_SIZE = AUBIO_HOP_SIZE * 2
