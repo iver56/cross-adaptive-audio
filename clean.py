@@ -31,8 +31,10 @@ class Cleaner(object):
             for root, dirs, files in os.walk(path):
                 for currentFile in files:
                     if any(currentFile.lower().endswith(ext) for ext in extensions):
-                        print("Removing file: " + currentFile)
+                        if settings.VERBOSE:
+                            print("Removing file: " + currentFile)
                         os.remove(os.path.join(root, currentFile))
+        print('Done cleaning')
 
 
 if __name__ == '__main__':
