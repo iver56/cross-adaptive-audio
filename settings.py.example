@@ -1,6 +1,5 @@
 import os
 import json
-import copy
 
 
 BASE_DIR = './'
@@ -39,7 +38,7 @@ VERBOSE = False  # Set this to True for debugging purposes
 SAMPLE_RATE = 44100
 
 """
-The number of samples between two consecutive analysis.
+The number of samples between two consecutive analyses.
 AKA ksmps (csound - number of samples per k)
 AKA step size (sonic annotator)
 """

@@ -1,4 +1,5 @@
 {
+  "parameter_lpf_cutoff": 20,
   "similarity_channels": [
     "mfcc_amp"
   ],

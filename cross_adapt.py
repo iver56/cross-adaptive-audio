@@ -11,10 +11,11 @@ import copy
 
 
 class CrossAdapter(object):
-    def __init__(self, input_sound, neural_input_vectors, effect):
+    def __init__(self, input_sound, neural_input_vectors, effect, parameter_lpf_cutoff=20):
         self.input_sound = input_sound
         self.neural_input_vectors = neural_input_vectors
         self.effect = effect
+        self.parameter_lpf_cutoff = parameter_lpf_cutoff
 
     def produce_output_sounds(self, individuals):
         processes = []
@@ -90,7 +91,8 @@ class CrossAdapter(object):
             input_sound_filename=self.input_sound.filename,
             parameter_channels=channels_csv,
             ksmps=settings.HOP_SIZE,
-            duration=self.input_sound.get_duration()
+            duration=self.input_sound.get_duration(),
+            parameter_lpf_cutoff=self.parameter_lpf_cutoff
         )
 
         csd_path = os.path.join(settings.CSD_DIRECTORY, output_filename + '.csd')

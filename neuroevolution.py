@@ -192,7 +192,8 @@ class Neuroevolution(object):
         self.cross_adapter = cross_adapt.CrossAdapter(
             input_sound=self.input_sound,
             neural_input_vectors=self.neural_input_vectors,
-            effect=self.effect
+            effect=self.effect,
+            parameter_lpf_cutoff=settings.PARAMETER_LPF_CUTOFF
         )
 
         self.stats_logger = logger.Logger(
