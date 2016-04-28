@@ -4,6 +4,7 @@ import pprint
 import settings
 import math
 import statistics
+import numpy
 
 
 class Standardizer(object):
@@ -92,3 +93,7 @@ class Standardizer(object):
         skewed_value = math.exp(math.log(normalized_value) / skew_factor)
         result = min_value + (max_value - min_value) * skewed_value
         return result
+
+    @staticmethod
+    def get_derivative_series(series):
+        return numpy.gradient(series).tolist()

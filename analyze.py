@@ -40,8 +40,23 @@ class Analyzer(object):
                 self.analyzers.append(analyzer_instance)
                 features -= relevant_features
 
+        self.derivative_features = set()
+
+        for feature in features:
+            if feature.endswith('__derivative'):
+                self.derivative_features.add(feature)
+        features -= self.derivative_features
+
         if len(features) > 0:
             raise Exception('Cannot analyze feature(s) {0}'.format(features))
+
+    def add_derivative_series(self, sound_files):
+        for derivative_feature in self.derivative_features:
+            feature = derivative_feature.replace('__derivative', '')
+            for sound in sound_files:
+                sound.analysis['series'][derivative_feature] = standardizer.Standardizer.get_derivative_series(
+                    sound.analysis['series'][feature]
+                )
 
     def add_standardized_series(self, sound_files):
         std = standardizer.Standardizer(sound_files)
@@ -51,6 +66,8 @@ class Analyzer(object):
     def analyze_multiple(self, sound_files, standardize=True):
         for analyzer in self.analyzers:
             analyzer.analyze_multiple(sound_files)
+
+        self.add_derivative_series(sound_files)
 
         if standardize:
             self.add_standardized_series(sound_files)
