@@ -18,7 +18,7 @@ class SoundFile(object):
         
         self.duration = None
         self.analysis = {
-            'ksmps': settings.CSOUND_KSMPS,
+            'ksmps': settings.HOP_SIZE,
             'series': {}
         }
 

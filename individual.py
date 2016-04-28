@@ -56,7 +56,7 @@ class Individual(object):
             series_standardized[parameter_key] = self.neural_output_channels[i]
         return {
             'series_standardized': series_standardized,
-            'ksmps': settings.CSOUND_KSMPS,
+            'ksmps': settings.HOP_SIZE,
             'order': self.effect.parameter_names
         }
 

@@ -38,14 +38,19 @@ VERBOSE = False  # Set this to True for debugging purposes
 """Sample rate. CD quality"""
 SAMPLE_RATE = 44100
 
-"""The number of samples between two consecutive analysis. AKA ksmps in csound terms."""
-AUBIO_HOP_SIZE = 512
+"""
+The number of samples between two consecutive analysis.
+AKA ksmps (csound - number of samples per k)
+AKA step size (sonic annotator)
+"""
+HOP_SIZE = 256
 
-"""The number of samples in window used for spectral and temporal computations"""
-AUBIO_BUFFER_SIZE = AUBIO_HOP_SIZE * 2
-
-"""ksmps (number of samples per k) for csound"""
-CSOUND_KSMPS = AUBIO_HOP_SIZE
+"""
+The number of samples in window used for spectral and temporal computations
+AKA buffer size (aubio)
+AKA block size (sonic annotator)
+"""
+FRAME_SIZE = HOP_SIZE * 2
 
 WHITELISTED_SOUND_FILE_EXTENSIONS = ['wav']
 

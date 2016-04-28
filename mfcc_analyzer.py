@@ -61,10 +61,10 @@ class MfccAnalyzer(object):
             str(settings.SAMPLE_RATE),
 
             '--bufsize',
-            str(settings.AUBIO_BUFFER_SIZE),
+            str(settings.FRAME_SIZE),
 
             '--hopsize',
-            str(settings.AUBIO_HOP_SIZE)
+            str(settings.HOP_SIZE)
         ]
 
     def parse_output(self, sound_file_to_analyze, lines):

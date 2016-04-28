@@ -89,7 +89,7 @@ class CrossAdapter(object):
         template.compile(
             input_sound_filename=self.input_sound.filename,
             parameter_channels=channels_csv,
-            ksmps=settings.CSOUND_KSMPS,
+            ksmps=settings.HOP_SIZE,
             duration=self.input_sound.get_duration()
         )
 

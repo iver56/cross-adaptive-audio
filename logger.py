@@ -13,7 +13,7 @@ class Logger(object):
             self.read_existing()
             if self.data is None:
                 self.data = {
-                    'ksmps': settings.CSOUND_KSMPS,
+                    'ksmps': settings.HOP_SIZE,
                     'series': {}
                 }
             if features_to_add is not None:

@@ -28,7 +28,7 @@ class TestCsoundPerformance(unittest.TestCase):
             duration = self.drums.get_duration()
             template.compile(
                 sound_filename=self.drums.filename,
-                ksmps=settings.CSOUND_KSMPS,
+                ksmps=settings.HOP_SIZE,
                 duration=duration
             )
 
@@ -55,7 +55,7 @@ class TestCsoundPerformance(unittest.TestCase):
             duration = self.drums.get_duration()
             template.compile(
                 sound_filename=self.drums.filename,
-                ksmps=settings.CSOUND_KSMPS,
+                ksmps=settings.HOP_SIZE,
                 duration=duration
             )
 
