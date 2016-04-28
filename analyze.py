@@ -1,6 +1,7 @@
 import settings
 import standardizer
 import project
+import sonic_annotator_analyzer
 import mfcc_analyzer
 import essentia_analyzer
 import copy
@@ -19,6 +20,7 @@ class Analyzer(object):
     NUM_FEATURES = len(FEATURES)
 
     AVAILABLE_ANALYZERS = [
+        sonic_annotator_analyzer.SonicAnnotatorAnalyzer,
         mfcc_analyzer.MfccAnalyzer,
         essentia_analyzer.EssentiaAnalyzer
     ]
