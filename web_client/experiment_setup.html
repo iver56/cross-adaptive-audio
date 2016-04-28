@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Cross-adaptive audio</title>
+
+  <!-- Libs -->
+  <script src="lib/jquery/jquery.min.js"></script>
+  <script src="lib/angular/angular.js"></script>
+  <script src="lib/angular/angular-animate.js"></script>
+  <script src="lib/angular/angular-aria.js"></script>
+  <script src="lib/d3/d3.min.js"></script>
+  <script src="lib/line-chart/LineChart.min.js"></script>
+  <link rel="stylesheet" href="lib/line-chart/LineChart.min.css">
+  <link rel="stylesheet" href="lib/angular-material/angular-material.css">
+  <script src="lib/angular-material/angular-material.js"></script>
+  <script src="lib/sigma/sigma.min.js"></script>
+  <script src="lib/sigma/sigma.plugins.tooltips.js"></script>
+  <script src="lib/wavesurfer/wavesurfer.min.js"></script>
+  <script src="lib/debounce/angular-debounce.min.js"></script>
+  <script src="lib/limit/limit.js"></script>
+  <script src="lib/cubism/cubism.v1.js"></script>
+  <script src="lib/colorbrewer/colorbrewer.js"></script>
+
+  <!-- App-specific files -->
+  <script src="src/app.js"></script>
+
+  <script src="src/controllers/mainCtrl.js"></script>
+  <script src="src/controllers/generationCtrl.js"></script>
+  <script src="src/controllers/individualCtrl.js"></script>
+
+  <script src="src/services/communicationService.js"></script>
+  <script src="src/services/statsService.js"></script>
+  <script src="src/services/colorService.js"></script>
+  <script src="src/services/cubismService.js"></script>
+
+  <script src="src/directives/statsChart.js"></script>
+  <link rel="stylesheet" href="css/stats-chart.css">
+
+  <script src="src/directives/histogramChart.js"></script>
+  <link rel="stylesheet" href="css/histogram-chart.css">
+
+  <script src="src/directives/neuralNetworkViz.js"></script>
+  <link rel="stylesheet" href="css/neural-network-viz.css">
+
+  <script src="src/directives/waveform.js"></script>
+  <link rel="stylesheet" href="css/waveform.css">
+
+  <script src="src/directives/cubism.js"></script>
+  <link rel="stylesheet" href="css/cubism.css">
+
+  <link rel="stylesheet" href="css/main.css">
+</head>
+
+<body ng-app="crossAdaptiveAudioApp" ng-controller="MainCtrl as main">
+
+<md-content ng-if="!statsService.data.generations">
+  <md-progress-linear md-mode="indeterminate"></md-progress-linear>
+  <h1>Waiting for data</h1>
+  <p>Things will start showing up here when the first generation is done.</p>
+  <p>If you haven't started your experiment yet, you may do that now from your command line. Example
+    command:</p>
+  <pre>python neuroevolution.py -i drums.wav noise.wav -g 30 -p 20</pre>
+</md-content>
+
+<md-content ng-if="statsService.data.generations">
+  <div layout="column" layout-gt-sm="row">
+    <md-card flex>
+      <md-card-title>
+        <md-card-title-text>
+          <span class="md-headline">
+            Fitness plot
+          </span>
+          <span class="md-subhead">
+            Interaction: Drag with the mouse to pan. Hold alt and drag to zoom. Double-click to
+            reset zoom/pan. Click series in the legend to toggle visibility.
+          </span>
+        </md-card-title-text>
+      </md-card-title>
+      <md-card-content>
+        <stats-chart></stats-chart>
+      </md-card-content>
+    </md-card>
+    <md-card flex>
+      <md-card-title>
+        <md-card-title-text>
+          <span class="md-headline">
+            Select generation for histogram fitness plot
+          </span>
+          <span class="md-subhead">
+            Interaction: While slider is focused, use the arrow keys to navigate
+          </span>
+        </md-card-title-text>
+      </md-card-title>
+      <md-card-content>
+        <div layout ng-controller="GenerationCtrl as generation">
+          <md-slider
+              ng-if="statsService.selectedGeneration"
+              flex
+              md-discrete
+              ng-model="statsService.selectedGeneration"
+              step="1"
+              min="1"
+              max="{{ statsService.numGenerations }}"
+              aria-label="Selected generation"
+          >
+          </md-slider>
+        </div>
+
+        <histogram-chart></histogram-chart>
+      </md-card-content>
+    </md-card>
+  </div>
+
+  <div ng-controller="IndividualCtrl as individual">
+
+    <div class="layout-padding">
+      <span class="md-headline">Select individual</span>
+      <span class="md-subhead">sorted by fitness (best to the right)</span>
+      <div layout>
+        <md-slider
+            ng-if="statsService.selectedGeneration"
+            flex
+            md-discrete
+            ng-model="statsService.selectedIndividualIndex"
+            step="1"
+            min="0"
+            max="{{ statsService.populationSize - 1 }}"
+            aria-label="Selected individual"
+            ng-change="individual.selectedIndividualChanged()"
+        >
+        </md-slider>
+      </div>
+    </div>
+
+    <md-card>
+      <md-card-title>
+        <md-card-title-text>
+          <span class="md-headline">
+            Individual
+            <span
+                title="{{ statsService.data.generations[statsService.selectedGeneration - 1].individuals[statsService.selectedIndividualIndex].id}}">
+            {{ statsService.data.generations[statsService.selectedGeneration - 1].individuals[statsService.selectedIndividualIndex].id | limitTo:8}}
+            </span>
+          </span>
+          <span class="md-subhead"
+                title="{{ statsService.data.generations[statsService.selectedGeneration - 1].individuals[statsService.selectedIndividualIndex].fitness }}">
+            Fitness: {{ statsService.data.generations[statsService.selectedGeneration - 1].individuals[statsService.selectedIndividualIndex].fitness | number:4 }}
+          </span>
+
+        </md-card-title-text>
+      </md-card-title>
+      <md-card-content>
+        <p ng-if="!individual.loading && individual.individualDetails === null">
+          Detailed data about this individual is not available. It might have been deleted.
+        </p>
+        <neural-network-viz
+            ng-if="individual.individualDetails.neural_network_representation"
+            graph="individual.individualDetails.neural_network_representation"
+        ></neural-network-viz>
+
+        <br>
+        <md-radio-group
+            ng-if="individual.individualDetails"
+            ng-model="individual.selectedSound"
+            layout="row"
+        >
+          <md-radio-button value="param_sound" title="{{statsService.data.param_sound.file_path}}">
+            Target (A)
+          </md-radio-button>
+          <md-radio-button value="input_sound" title="{{statsService.data.input_sound.file_path}}">
+            Input (B)
+          </md-radio-button>
+          <md-radio-button
+              value="output_sound"
+              title="The output sound is the processed input sound"
+          >
+            Output (C)
+          </md-radio-button>
+          <md-radio-button
+              value="diff_b_a"
+              title="How is the input sound different from the parameter sound"
+          >
+            Diff(B, A)
+          </md-radio-button>
+          <md-radio-button
+              value="diff_c_a"
+              title="How is the output sound different from the parameter sound"
+          >
+            Diff(C, A)
+          </md-radio-button>
+          <md-radio-button
+              value="diff_c_b"
+              title="How is the output sound different from the input sound"
+          >
+            Diff(C, B)
+          </md-radio-button>
+        </md-radio-group>
+
+        <div style="min-height: 200px;">
+          <waveform
+              ng-if="individual.selectedSound === 'param_sound' && statsService.data.param_sound"
+              sound="statsService.data.param_sound"
+          ></waveform>
+
+          <waveform
+              ng-if="individual.selectedSound === 'input_sound' && statsService.data.input_sound"
+              sound="statsService.data.input_sound"
+          ></waveform>
+
+          <waveform
+              ng-if="individual.selectedSound === 'output_sound' && individual.individualDetails.output_sound"
+              sound="individual.individualDetails.output_sound"
+          ></waveform>
+        </div>
+
+        <div style="min-height: 100px">
+          <cubism
+              ng-if="individual.selectedSound === 'param_sound' && statsService.data.param_sound"
+              series="statsService.data.param_sound.feature_data"
+          ></cubism>
+
+          <cubism
+              ng-if="individual.selectedSound === 'input_sound' && statsService.data.input_sound"
+              series="statsService.data.input_sound.feature_data"
+          ></cubism>
+
+          <cubism
+              ng-if="individual.selectedSound === 'output_sound' && individual.individualDetails.output_sound.feature_data"
+              series="individual.individualDetails.output_sound.feature_data"
+          ></cubism>
+
+          <cubism
+              ng-if="individual.selectedSound === 'diff_c_a' && individual.individualDetails.output_sound.feature_data"
+              series="individual.individualDetails.output_sound.feature_data"
+              subtract="statsService.data.param_sound.feature_data"
+          ></cubism>
+
+          <cubism
+              ng-if="individual.selectedSound === 'diff_b_a' && statsService.data.input_sound.feature_data"
+              series="statsService.data.input_sound.feature_data"
+              subtract="statsService.data.param_sound.feature_data"
+          ></cubism>
+
+          <cubism
+              ng-if="individual.selectedSound === 'diff_c_b' && individual.individualDetails.output_sound.feature_data"
+              series="individual.individualDetails.output_sound.feature_data"
+              subtract="statsService.data.input_sound.feature_data"
+          ></cubism>
+        </div>
+
+        <div style="min-height: 100px;">
+          <cubism
+              ng-if="individual.selectedSound === 'output_sound' && individual.individualDetails.neural_output"
+              series="individual.individualDetails.neural_output"
+              extent="[0, 1]"
+          ></cubism>
+        </div>
+      </md-card-content>
+    </md-card>
+
+  </div>
+
+</md-content>
+
+</body>
+</html>

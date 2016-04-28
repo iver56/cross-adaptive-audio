@@ -3,7 +3,7 @@
 
   angular
     .module('crossAdaptiveAudioApp')
-    .service('communicationService', function(statsService, $rootScope) {
+    .service('communicationService', function($rootScope) {
       var that = this;
 
       that.init = function() {
@@ -19,7 +19,7 @@
           var noOp = false;
 
           if (message.key === 'stats.json') {
-            statsService.setData(message.data);
+            $rootScope.$emit('stats.json', message.data);
           } else {
             // no operation
             noOp = true;

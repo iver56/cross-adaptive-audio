@@ -3,7 +3,7 @@
 
   angular
     .module('crossAdaptiveAudioApp')
-    .service('statsService', function() {
+    .service('statsService', function($rootScope) {
       var that = this;
 
       that.data = null;
@@ -59,6 +59,10 @@
           bins[binIndex].numOccurrences += 1;
         }
         return bins;
-      }
+      };
+
+      $rootScope.$on('stats.json', function(event, data) {
+        that.setData(data);
+      })
     });
 })();
