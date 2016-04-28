@@ -29,7 +29,7 @@ class SonicAnnotatorAnalyzer(object):
         return [
                    'sonic-annotator',
                    '-t',
-                   'sonic_extractor_settings.n3',
+                   'sonic_annotator_settings.n3',
                ] + \
                [
                    # this program assumes forward slashes on both unix and windows
