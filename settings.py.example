@@ -42,7 +42,7 @@ The number of samples between two consecutive analyses.
 AKA ksmps (csound - number of samples per k)
 AKA step size (sonic annotator)
 """
-HOP_SIZE = 256
+HOP_SIZE = 512
 
 """
 The number of samples in window used for spectral and temporal computations
