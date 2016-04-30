@@ -5,13 +5,13 @@ import os
 class SonicAnnotatorAnalyzer(object):
     AVAILABLE_FEATURES = {
         'noisiness',
-        # 'spectral_centroid'
+        'spectral_centroid'
         # TODO: add more features
     }
 
     FEATURE_SETTINGS = {
-        'noisiness': 'noisiness_settings.n3',
-        # 'spectral_centroid': 'spectral_centroid_settings.n3'
+        'noisiness': 'noisiness.n3',
+        'spectral_centroid': 'spectral_centroid.n3'
     }
 
     def __init__(self, features):
@@ -21,25 +21,20 @@ class SonicAnnotatorAnalyzer(object):
         if len(sounds) == 0:
             return
 
-        command = self.get_command(sounds)
-
-        output = check_output(
-            command,
-            stderr=PIPE
-        )
-
-        self.parse_output(sounds, output)
-
-    def get_command(self, sounds):
-        command = [
-            'sonic-annotator'
-        ]
-
         for feature in self.features:
-            command += [
-                '-t',
-                os.path.join('sonic_annotator', self.FEATURE_SETTINGS[feature])
-            ]
+            command = self.get_command(sounds, feature)
+            output = check_output(
+                command,
+                stderr=PIPE
+            )
+            self.parse_output(sounds, feature, output)
+
+    def get_command(self, sounds, feature):
+        command = [
+            'sonic-annotator',
+            '-t',
+            os.path.join('sonic_annotator', self.FEATURE_SETTINGS[feature])
+        ]
 
         command += [
             # this program assumes forward slashes on both unix and windows
@@ -52,10 +47,9 @@ class SonicAnnotatorAnalyzer(object):
         ]
         return command
 
-    def parse_output(self, sounds, output):
+    def parse_output(self, sounds, feature, output):
         for sound in sounds:
-            for feature in self.features:
-                sound.analysis['series'][feature] = []
+            sound.analysis['series'][feature] = []
 
         lines = output.splitlines()
         current_sound_index = -1
@@ -70,7 +64,5 @@ class SonicAnnotatorAnalyzer(object):
                 if current_sound.filename not in file_path:
                     raise Exception('Did not expect that file')
             # time = float(values[1])
-            for i in range(len(self.features)):
-                # TODO: This logic needs to be checked. See if it works with multiple features.
-                value = float(values[i + 2])
-                current_sound.analysis['series'][self.features[i]].append(value)
+            value = float(values[2])
+            current_sound.analysis['series'][feature].append(value)
