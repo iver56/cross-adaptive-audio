@@ -6,6 +6,10 @@ import math
 
 
 class EssentiaAnalyzer(object):
+    """
+    Using this analyzer is not recommended, because by default it analyzes a lot of features, and
+    one cannot easily disable features in the executable. This makes it computationally expensive.
+    """
     AVAILABLE_FEATURES = {
         'barkbands_crest',
         'barkbands_flatness_db',

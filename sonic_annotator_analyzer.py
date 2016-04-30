@@ -1,11 +1,17 @@
-from subprocess import Popen, PIPE, STDOUT, check_output
+from subprocess import PIPE, check_output
 import os
 
 
 class SonicAnnotatorAnalyzer(object):
     AVAILABLE_FEATURES = {
         'noisiness',
+        # 'spectral_centroid'
         # TODO: add more features
+    }
+
+    FEATURE_SETTINGS = {
+        'noisiness': 'noisiness_settings.n3',
+        # 'spectral_centroid': 'spectral_centroid_settings.n3'
     }
 
     def __init__(self, features):
@@ -24,22 +30,27 @@ class SonicAnnotatorAnalyzer(object):
 
         self.parse_output(sounds, output)
 
-    @staticmethod
-    def get_command(sounds):
-        return [
-                   'sonic-annotator',
-                   '-t',
-                   'sonic_annotator_settings.n3',
-               ] + \
-               [
-                   # this program assumes forward slashes on both unix and windows
-                   os.path.abspath(sound.file_path).replace('\\', '/') for sound in sounds
-                   ] + \
-               [
-                   '-w',
-                   'csv',
-                   '--csv-stdout',
-               ]
+    def get_command(self, sounds):
+        command = [
+            'sonic-annotator'
+        ]
+
+        for feature in self.features:
+            command += [
+                '-t',
+                os.path.join('sonic_annotator', self.FEATURE_SETTINGS[feature])
+            ]
+
+        command += [
+            # this program assumes forward slashes on both unix and windows
+            os.path.abspath(sound.file_path).replace('\\', '/') for sound in sounds
+            ]
+        command += [
+            '-w',
+            'csv',
+            '--csv-stdout',
+        ]
+        return command
 
     def parse_output(self, sounds, output):
         for sound in sounds:
@@ -49,9 +60,9 @@ class SonicAnnotatorAnalyzer(object):
         lines = output.splitlines()
         current_sound_index = -1
         current_sound = None
+
         for line in lines:
             values = line.split(',')
-
             if values[0].startswith('"'):
                 current_sound_index += 1
                 current_sound = sounds[current_sound_index]
