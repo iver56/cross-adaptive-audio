@@ -5,13 +5,9 @@ import os
 class SonicAnnotatorAnalyzer(object):
     AVAILABLE_FEATURES = {
         'noisiness',
-        'spectral_centroid'
+        'spectral_centroid',
+        'spectral_inharmonicity',
         # TODO: add more features
-    }
-
-    FEATURE_SETTINGS = {
-        'noisiness': 'noisiness.n3',
-        'spectral_centroid': 'spectral_centroid.n3'
     }
 
     def __init__(self, features):
@@ -33,7 +29,7 @@ class SonicAnnotatorAnalyzer(object):
         command = [
             'sonic-annotator',
             '-t',
-            os.path.join('sonic_annotator', self.FEATURE_SETTINGS[feature])
+            os.path.join('sonic_annotator', feature + '.n3')
         ]
 
         command += [
