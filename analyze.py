@@ -94,6 +94,13 @@ class Analyzer(object):
                     print('Slight series length mismatch. Will apply padding to fix this.')
                 self.right_pad_series(sound_files, max_series_length)
             else:
+                for feature in sound_files[0].analysis['series']:
+                    print(
+                        'len({0}) = {1}'.format(
+                            feature,
+                            len(sound_files[0].analysis['series'][feature])
+                        )
+                    )
                 raise Exception('Series length mismatch ({0} vs. {1})'.format(
                     min_series_length,
                     max_series_length
