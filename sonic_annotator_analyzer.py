@@ -7,6 +7,7 @@ class SonicAnnotatorAnalyzer(object):
         'noisiness',
         'spectral_centroid',
         'spectral_inharmonicity',
+        'spectral_variance',
         # TODO: add more features
     }
 
