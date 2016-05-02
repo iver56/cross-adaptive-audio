@@ -5,7 +5,6 @@ import math
 
 class SonicAnnotatorAnalyzer(object):
     AVAILABLE_FEATURES = {
-        'noisiness',
         'spectral_centroid',
         'spectral_inharmonicity',
         'bark_0',

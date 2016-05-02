@@ -6,14 +6,14 @@ import time
 import sonic_annotator_analyzer
 
 
-class TestEssentiaAnalyzer(unittest.TestCase):
+class TestSonicAnnotatorAnalyzer(unittest.TestCase):
     def setUp(self):
         settings.INPUT_DIRECTORY = 'test_audio'
         self.sounds = [
             sound_file.SoundFile('drums.wav'),
             sound_file.SoundFile('vocal.wav')
         ]
-        self.vamp_analyzer = sonic_annotator_analyzer.SonicAnnotatorAnalyzer(['noisiness'])
+        self.vamp_analyzer = sonic_annotator_analyzer.SonicAnnotatorAnalyzer(['spectral_centroid'])
 
     def test_analysis(self):
         self.start_time = time.time()
@@ -21,8 +21,8 @@ class TestEssentiaAnalyzer(unittest.TestCase):
         self.vamp_analyzer.analyze_multiple(self.sounds)
 
         for sound in self.sounds:
-            self.assertTrue('noisiness' in sound.analysis['series'])
-            self.assertGreater(len(sound.analysis['series']['noisiness']), 0)
+            self.assertTrue('spectral_centroid' in sound.analysis['series'])
+            self.assertGreater(len(sound.analysis['series']['spectral_centroid']), 0)
 
         print("Execution time: {0} seconds".format(
             time.time() - self.start_time)
