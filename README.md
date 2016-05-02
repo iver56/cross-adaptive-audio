@@ -19,9 +19,14 @@ The project will investigate methods of evaluating the musical applicability of 
   * `[sudo] python setup.py install`
 * Install NodeJS
   * `sudo apt-get install nodejs npm`
-* Install Sonic Annotator and the libXtract vamp plugin
-  * https://code.soundsoftware.ac.uk/projects/sonic-annotator/files
-  * http://www.vamp-plugins.org/download.html
+* Install Sonic Annotator
+  * `wget https://code.soundsoftware.ac.uk/attachments/download/1876/sonic-annotator_1.4cc1-1_amd64.deb`
+  * `sudo dpkg -i sonic-annotator_1.4cc1-1_amd64.deb`
+  * If installation fails due to missing dependencies don't worry: Just run `sudo apt-get -f install` and then try to install again.
+* Download the libXtract vamp plugin:
+  * `wget https://code.soundsoftware.ac.uk/attachments/download/620/vamp-libxtract-plugins-0.6.6.20121204-amd64-linux.tar.gz`
+  * `tar -xf vamp-libxtract-plugins-0.6.6.20121204-amd64-linux.tar.gz`
+  * `mv vamp-libxtract-plugins-0.6.6.20121204-amd64-linux/vamp-libxtract.* /usr/local/lib/vamp`
 
 ## Install dependencies (Windows)
 
