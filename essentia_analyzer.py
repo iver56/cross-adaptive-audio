@@ -48,10 +48,6 @@ class EssentiaAnalyzer(object):
         'spectral_spread',
         'spectral_strongpeak',
         'zerocrossingrate',
-        'barkbands_spread',
-        'barkbands_skewness',
-        'barkbands_kurtosis',
-        'barkbands_flatness_db',
 
         # TODO: proper parsing. These are lists within lists
         # 'barkbands'
