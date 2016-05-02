@@ -1,5 +1,6 @@
 from subprocess import PIPE, check_output
 import os
+import math
 
 
 class SonicAnnotatorAnalyzer(object):
@@ -70,6 +71,10 @@ class SonicAnnotatorAnalyzer(object):
         'bark_25': 'bark_coefficients'
     }
 
+    POST_PROCESSING = {
+        # 'spectral_centroid': math.log
+    }
+
     def __init__(self, features):
         self.features = list(features)
 
@@ -98,6 +103,9 @@ class SonicAnnotatorAnalyzer(object):
                     stderr=PIPE
                 )
                 self.parse_scalar_output(sounds, feature, output)
+
+        for sound in sounds:
+            self.post_process(sound)
 
     def get_command(self, sounds, transform_name):
         command = [
@@ -155,3 +163,11 @@ class SonicAnnotatorAnalyzer(object):
                 if feature_key in self.features:
                     value = float(values[i])
                     current_sound.analysis['series'][feature_key].append(value)
+
+    def post_process(self, that_sound_file):
+        for feature in self.features:
+            if feature in self.POST_PROCESSING and self.POST_PROCESSING[feature]:
+                that_sound_file.analysis['series'][feature] = map(
+                    self.POST_PROCESSING[feature],
+                    that_sound_file.analysis['series'][feature]
+                )
