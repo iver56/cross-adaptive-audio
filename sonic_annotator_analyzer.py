@@ -38,7 +38,7 @@ class SonicAnnotatorAnalyzer(object):
         'tristimulus_1',
         'tristimulus_2',
         'tristimulus_3',
-        # TODO: add more features
+        'spectral_flux'
     }
 
     # A mapping from individual vector entries to the name of the transform they belong two

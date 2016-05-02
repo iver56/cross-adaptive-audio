@@ -19,7 +19,7 @@ The project will investigate methods of evaluating the musical applicability of 
   * `[sudo] python setup.py install`
 * Install NodeJS
   * `sudo apt-get install nodejs npm`
-* Install Sonic Annotator and the libXtract vamp plugin
+* Install Sonic Annotator and vamp plugins: libXtract and Mazurka
   * https://code.soundsoftware.ac.uk/projects/sonic-annotator/files
   * http://www.vamp-plugins.org/download.html
 
@@ -50,7 +50,7 @@ Building these dependencies from source can be difficult and time-consuming, so 
 * Download tar for windows at http://essentia.upf.edu/documentation/extractors/
 * Extract and add to the PATH variable
 
-### Install Sonic Annotator and the libXtract vamp plugin
+### Install Sonic Annotator and vamp plugins: libXtract and Mazurka
 
 * https://code.soundsoftware.ac.uk/projects/sonic-annotator/files
 * http://www.vamp-plugins.org/download.html
