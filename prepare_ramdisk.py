@@ -11,7 +11,6 @@ all_paths = [
     settings.CSD_DIRECTORY,
     settings.INPUT_DIRECTORY,
     settings.OUTPUT_DIRECTORY,
-    settings.PROJECT_DATA_DIRECTORY,
     settings.STATS_DATA_DIRECTORY,
     settings.INDIVIDUAL_DATA_DIRECTORY,
     settings.EFFECT_DIRECTORY,

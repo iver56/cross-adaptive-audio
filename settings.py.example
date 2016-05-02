@@ -13,14 +13,12 @@ if USE_RAM_DISK:
 CSD_DIRECTORY = os.path.join(BASE_DIR, 'csd')
 INPUT_DIRECTORY = os.path.join(BASE_DIR, 'input')
 OUTPUT_DIRECTORY = os.path.join(BASE_DIR, 'output')
-PROJECT_DATA_DIRECTORY = os.path.join(BASE_DIR, 'projects')
 STATS_DATA_DIRECTORY = os.path.join(BASE_DIR, 'stats')
 INDIVIDUAL_DATA_DIRECTORY = os.path.join(BASE_DIR, 'individuals')
 EFFECT_DIRECTORY = os.path.join(BASE_DIR, 'effects')
 TEMP_DIRECTORY = os.path.join(BASE_DIR, 'tmp')
 TEST_AUDIO_DIRECTORY = 'test_audio'
 
-CURRENT_PROJECT_FILE = 'test.json'
 PRNG_SEED = 2
 
 USE_GZIP = False

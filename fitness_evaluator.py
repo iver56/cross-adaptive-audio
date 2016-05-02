@@ -2,7 +2,7 @@ from __future__ import print_function
 import math
 import standardizer
 import settings
-import analyze
+import project
 
 
 class FitnessEvaluator(object):
@@ -107,8 +107,9 @@ class CommandLineFitnessTool(object):
             sound_file_a = sound_file.SoundFile(args.input_files[0])
             sound_file_b = sound_file.SoundFile(args.input_files[1])
 
-            analyzer = analyze.Analyzer()
-            analyzer.analyze_multiple([sound_file_a, sound_file_b])
+            sounds = [sound_file_a, sound_file_b]
+
+            project.Project(sounds)
 
             print(FitnessEvaluator.evaluate(sound_file_a, sound_file_b))
         else:

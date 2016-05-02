@@ -2,30 +2,18 @@ from __future__ import absolute_import
 from __future__ import print_function
 import settings
 import os
-import argparse
 
 
 class Cleaner(object):
     @staticmethod
-    def clean(keep_project_data=True, keep_output_sounds=True):
-        """
-        Remove feature data and meta data cache
-        :param keep_project_data:
-        :param keep_output_sounds:
-        :return:
-        """
+    def clean():
         paths = [
             settings.CSD_DIRECTORY,
             settings.INDIVIDUAL_DATA_DIRECTORY,
-            settings.STATS_DATA_DIRECTORY
+            settings.STATS_DATA_DIRECTORY,
+            settings.OUTPUT_DIRECTORY
         ]
-        extensions = ['.json', '.csd']
-
-        if not keep_project_data:
-            paths.append(settings.PROJECT_DATA_DIRECTORY)
-        if not keep_output_sounds:
-            paths.append(settings.OUTPUT_DIRECTORY)
-            extensions.append('.wav')
+        extensions = ['.json', '.csd', '.wav']
 
         for path in paths:
             for root, dirs, files in os.walk(path):
@@ -38,28 +26,4 @@ class Cleaner(object):
 
 
 if __name__ == '__main__':
-    arg_parser = argparse.ArgumentParser()
-    arg_parser.add_argument(
-        '--keep-project-data',
-        dest='keep_project_data',
-        nargs='?',
-        const=True,
-        required=False,
-        default=False
-    )
-
-    arg_parser.add_argument(
-        '--keep-output-sounds',
-        dest='keep_output_sounds',
-        nargs='?',
-        const=True,
-        required=False,
-        default=False
-    )
-
-    args = arg_parser.parse_args()
-
-    Cleaner.clean(
-        args.keep_project_data,
-        args.keep_output_sounds
-    )
+    Cleaner.clean()

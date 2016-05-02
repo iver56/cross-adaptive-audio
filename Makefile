@@ -7,19 +7,11 @@ update:
 
 .PHONY: clean
 clean:
-	python clean.py --keep-project-data
-
-.PHONY: clean-all
-clean-all:
 	python clean.py
 
 .PHONY: prepare-ramdisk
 prepare-ramdisk:
 	python prepare_ramdisk.py
-
-.PHONY: project
-project:
-	python create_project.py
 
 .PHONY: test
 test:

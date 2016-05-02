@@ -7,21 +7,19 @@ import time
 import project
 import effect
 import copy
-import analyze
 
 
 class TestCrossAdapt(unittest.TestCase):
     def setUp(self):
         settings.INPUT_DIRECTORY = 'test_audio'
-        project.Project.assert_project_exists()
 
     def test_sound_file(self):
         that_effect = effect.Effect.get_effect_by_name('dist_lpf')
         target_sound = sound_file.SoundFile('drums.wav')
         input_sound = sound_file.SoundFile('noise.wav')
 
-        analyzer = analyze.Analyzer()
-        analyzer.analyze_multiple([target_sound, input_sound])
+        sounds = [target_sound, input_sound]
+        project.Project(sounds)
 
         num_frames = min(
             target_sound.get_num_frames(),

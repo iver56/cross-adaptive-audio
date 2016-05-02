@@ -1,36 +1,25 @@
 from __future__ import absolute_import
-import json
-import os
 import settings
+import analyze
+import standardizer
 
 
 class Project(object):
-    current_project = None
+    def __init__(self, sounds):
+        """
+        Analyze a set of sounds, aggregate features and standardize series based on this
+        """
+        self.data = {}
 
-    def __init__(self, filename):
-        self.filename = filename
+        if settings.VERBOSE:
+            print('Analyzing all sound files in project...')
 
-        self.data = None
-        self.fetch_project_data()
+        analyzer = analyze.Analyzer(project=None)
+        analyzer.analyze_multiple(sounds, standardize=False)
 
-    def fetch_project_data(self):
-        project_data_file_path = os.path.join(settings.PROJECT_DATA_DIRECTORY, self.filename)
-        if os.path.isfile(project_data_file_path):
-            with settings.FILE_HANDLER(project_data_file_path) as project_data_file_path:
-                self.data = json.load(project_data_file_path)
-
-    @staticmethod
-    def assert_project_exists():
-        if Project.get_current_project().data is None:
-            raise Exception(
-                'Could not find project "{}".'
-                ' You can create a project by running `make project`'.format(
-                    settings.CURRENT_PROJECT_FILE
-                )
-            )
-
-    @staticmethod
-    def get_current_project():
-        if Project.current_project is None:
-            Project.current_project = Project(settings.CURRENT_PROJECT_FILE)
-        return Project.current_project
+        if settings.VERBOSE:
+            print('Calculating standardization parameters...')
+        s = standardizer.Standardizer(sounds)
+        s.calculate_feature_statistics()
+        self.data['feature_statistics'] = s.feature_statistics
+        s.add_standardized_series()

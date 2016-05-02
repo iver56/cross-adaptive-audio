@@ -2,22 +2,20 @@ import unittest
 import settings
 import sound_file
 import fitness_evaluator
-import analyze
 import project
 
 
 class TestFitnessEvaluator(unittest.TestCase):
     def setUp(self):
         settings.INPUT_DIRECTORY = 'test_audio'
-        project.Project.assert_project_exists()
 
     def test_fitness_evaluator(self):
         drums = sound_file.SoundFile('drums.wav')
         synth = sound_file.SoundFile('synth.wav')
         vocal = sound_file.SoundFile('vocal.wav')
 
-        analyzer = analyze.Analyzer()
-        analyzer.analyze_multiple([drums, synth, vocal])
+        sounds = [drums, synth, vocal]
+        project.Project(sounds)
 
         fitness1 = fitness_evaluator.FitnessEvaluator.evaluate(drums, drums)
         fitness2 = fitness_evaluator.FitnessEvaluator.evaluate(drums, synth)

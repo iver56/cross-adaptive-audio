@@ -15,13 +15,13 @@ class TestAnalyzer(unittest.TestCase):
             sound_file.SoundFile('synth.wav'),
             sound_file.SoundFile('vocal.wav')
         ]
-        self.analyzer = Analyzer()
+        self.analyzer = Analyzer(project=None)
 
     def test_serial_analysis(self):
         self.start_time = time.time()
 
         for sound in self.sounds:
-            self.analyzer.analyze_multiple([sound])
+            self.analyzer.analyze_multiple([sound], standardize=False)
 
         print("Serial execution time: {0} seconds".format(
             time.time() - self.start_time)
@@ -30,7 +30,7 @@ class TestAnalyzer(unittest.TestCase):
     def test_parallel_analysis(self):
         self.start_time = time.time()
 
-        self.analyzer.analyze_multiple(self.sounds)
+        self.analyzer.analyze_multiple(self.sounds, standardize=False)
 
         print("Parallel execution time: {0} seconds".format(
             time.time() - self.start_time)

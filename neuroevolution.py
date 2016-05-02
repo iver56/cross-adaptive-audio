@@ -148,45 +148,45 @@ class Neuroevolution(object):
         )
         self.args = arg_parser.parse_args()
 
-        project.Project.assert_project_exists()
-        self.analyzer = analyze.Analyzer()
-
         if self.args.seed is not None:
             settings.PRNG_SEED = self.args.seed
 
-        if len(self.args.input_files) == 2:
-            self.param_sound = sound_file.SoundFile(self.args.input_files[0])
-            self.input_sound = sound_file.SoundFile(self.args.input_files[1])
-
-            self.analyzer.analyze_multiple([self.param_sound, self.input_sound])
-
-            self.num_frames = min(self.param_sound.get_num_frames(),
-                                  self.input_sound.get_num_frames())
-
-            self.neural_input_vectors = []
-            if self.args.neural_input_mode == 'a':
-                for k in range(self.num_frames):
-                    vector = self.param_sound.get_standardized_neural_input_vector(k)
-                    vector.append(1.0)  # bias input
-                    self.neural_input_vectors.append(vector)
-            elif self.args.neural_input_mode == 'ab':
-                for k in range(self.num_frames):
-                    vector = self.param_sound.get_standardized_neural_input_vector(k)
-                    vector += self.input_sound.get_standardized_neural_input_vector(k)
-                    vector.append(1.0)  # bias input
-                    self.neural_input_vectors.append(vector)
-            elif self.args.neural_input_mode == 'b':
-                for k in range(self.num_frames):
-                    vector = self.input_sound.get_standardized_neural_input_vector(k)
-                    vector.append(1.0)  # bias input
-                    self.neural_input_vectors.append(vector)
-            elif self.args.neural_input_mode == 's':
-                self.args.add_neuron_probability = 0.0
-                for k in range(self.num_frames):
-                    vector = [1.0]  # bias input
-                    self.neural_input_vectors.append(vector)
-        else:
+        if len(self.args.input_files) != 2:
             raise Exception('Two filenames must be specified')
+
+        self.param_sound = sound_file.SoundFile(self.args.input_files[0])
+        self.input_sound = sound_file.SoundFile(self.args.input_files[1])
+
+        self.project = project.Project([self.param_sound, self.input_sound])
+        self.analyzer = analyze.Analyzer(self.project)
+
+        self.num_frames = min(
+            self.param_sound.get_num_frames(),
+            self.input_sound.get_num_frames()
+        )
+
+        self.neural_input_vectors = []
+        if self.args.neural_input_mode == 'a':
+            for k in range(self.num_frames):
+                vector = self.param_sound.get_standardized_neural_input_vector(k)
+                vector.append(1.0)  # bias input
+                self.neural_input_vectors.append(vector)
+        elif self.args.neural_input_mode == 'ab':
+            for k in range(self.num_frames):
+                vector = self.param_sound.get_standardized_neural_input_vector(k)
+                vector += self.input_sound.get_standardized_neural_input_vector(k)
+                vector.append(1.0)  # bias input
+                self.neural_input_vectors.append(vector)
+        elif self.args.neural_input_mode == 'b':
+            for k in range(self.num_frames):
+                vector = self.input_sound.get_standardized_neural_input_vector(k)
+                vector.append(1.0)  # bias input
+                self.neural_input_vectors.append(vector)
+        elif self.args.neural_input_mode == 's':
+            self.args.add_neuron_probability = 0.0
+            for k in range(self.num_frames):
+                vector = [1.0]  # bias input
+                self.neural_input_vectors.append(vector)
 
         self.effect = effect.Effect.get_effect_by_name(self.args.effect_name)
         self.cross_adapter = cross_adapt.CrossAdapter(
@@ -345,7 +345,8 @@ class Neuroevolution(object):
                 # delete all but best fit results from this generation
                 for i in range(len(unique_individuals_list) - 1):
                     if unique_individuals_list[i].get_id() not in self.best_individual_ids:
-                        unique_individuals_list[i].delete(try_delete_serialized_representation=False)
+                        unique_individuals_list[i].delete(
+                            try_delete_serialized_representation=False)
             else:
                 # keep all individuals
                 for that_individual in unique_individuals_list:

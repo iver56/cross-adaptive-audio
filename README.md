@@ -77,11 +77,9 @@ http://www.equation.com/servlet/equation.cmd?fa=make
 ## Example commands
 
 * `make test` (run all tests)
-* `make project` (find and analyze a collection of sound files in the input folder)
+* `python neuroevolution.py -i drums.wav synth.wav -g 15 -p 20` (run the evolutionary algorithm for 15 generations with a population of 20)
 * `python fitness_evaluator.py -i drums.wav synth.wav` (print a number that represents the similarity between drums.wav and synth.wav)
-* `python neuroevolution.py -i drums.wav synth.wav -g 20 -p 30` (run the genetic algorithm for 20 generations with a population of 30)
-* `make clean` (remove data written during an experiment, but keep project and analysis of input files)
-* `make clean-all` (remove all calculated data)
+* `make clean` (remove data written during an experiment)
 * `make prepare-ramdisk` (ensure that directories are present in the RAM disk. Copy audio input files and the web-based visualization system)
 * `make serve` (start a server for a web client that can interactively visualize the experiment data)
     * Go to localhost:8080 in your favorite browser and you'll see a GUI that looks somewhat like this:

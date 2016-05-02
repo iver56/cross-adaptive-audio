@@ -1,6 +1,5 @@
 import settings
 import standardizer
-import project
 import sonic_annotator_analyzer
 import mfcc_analyzer
 import essentia_analyzer
@@ -25,8 +24,8 @@ class Analyzer(object):
         essentia_analyzer.EssentiaAnalyzer
     ]
 
-    def __init__(self):
-        self.project = project.Project.get_current_project()
+    def __init__(self, project):
+        self.project = project
         self.analyzers = []
 
         features = set(self.FEATURES_LIST)

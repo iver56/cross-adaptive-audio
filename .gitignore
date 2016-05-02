@@ -66,6 +66,7 @@ settings.py
 binaries
 results
 experiment_settings.json
+experiment_settings.json.full_example
 tmp/*
 
 # NodeJS
