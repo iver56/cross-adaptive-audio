@@ -8,7 +8,6 @@ class SonicAnnotatorAnalyzer(object):
         'noisiness',
         'spectral_centroid',
         'spectral_inharmonicity',
-        'spectral_variance',
         'bark_0',
         'bark_1',
         'bark_2',
