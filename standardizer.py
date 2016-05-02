@@ -8,6 +8,8 @@ import numpy
 
 
 class Standardizer(object):
+    DEVIATION_LIMIT = 4.0
+
     def __init__(self, sound_files):
         """
         :param sound_files: SoundFile instances with series to be analyzed and/or standardized
@@ -47,7 +49,8 @@ class Standardizer(object):
 
     def set_feature_statistics(self, project):
         """
-        If features statistics have been calculated for a project previously, use this method to set feature statistics
+        If features statistics have been calculated for a project previously, use this method to set
+        feature statistics
         :param project:
         :return:
         """
@@ -70,14 +73,18 @@ class Standardizer(object):
         """
         :param feature:
         :param value:
-        :return: A value that makes the series have zero mean and unit variance. Good for machine learning.
+        :return: A value that makes the series have zero mean and unit variance. Good for machine
+        learning.
         """
         if self.feature_statistics[feature]['standard_deviation'] == 0.0:
             standardized_value = (value - self.feature_statistics[feature]['mean'])
         else:
             standardized_value = (value - self.feature_statistics[feature]['mean']) / \
                                  self.feature_statistics[feature]['standard_deviation']
-            standardized_value = max(min(standardized_value, 3), -3)  # clip extreme values
+            standardized_value = max(
+                min(standardized_value, self.DEVIATION_LIMIT),
+                -self.DEVIATION_LIMIT
+            )  # clip extreme values
         return standardized_value
 
     @staticmethod
