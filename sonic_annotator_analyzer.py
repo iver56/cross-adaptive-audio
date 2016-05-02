@@ -33,10 +33,14 @@ class SonicAnnotatorAnalyzer(object):
         'bark_22',
         'bark_23',
         'bark_24',
-        'bark_25'
+        'bark_25',
+        'tristimulus_1',
+        'tristimulus_2',
+        'tristimulus_3',
         # TODO: add more features
     }
 
+    # A mapping from individual vector entries to the name of the transform they belong two
     VECTOR_FEATURES = {
         'bark_0': 'bark_coefficients',
         'bark_1': 'bark_coefficients',
