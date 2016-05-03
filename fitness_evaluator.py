@@ -65,7 +65,20 @@ class FitnessEvaluator(object):
             sum_of_squared_differences = 0
             for feature in settings.SIMILARITY_CHANNELS:
                 param_value = param_sound.analysis['series_standardized'][feature][k]
-                output_value = output_sound.analysis['series_standardized'][feature][k]
+                try:
+                    output_value = output_sound.analysis['series_standardized'][feature][k]
+                except IndexError:
+                    print('Tried to get feature {0} of output sound at k index {1}'.format(
+                        feature,
+                        k
+                    ))
+                    print('Feature series lengths:')
+                    for that_feature in output_sound.analysis['series_standardized']:
+                        print(
+                            that_feature,
+                            len(output_sound.analysis['series_standardized'][that_feature])
+                        )
+                    raise
 
                 sum_of_squared_differences += (param_value - output_value) ** 2
             euclidean_distance = math.sqrt(sum_of_squared_differences)
