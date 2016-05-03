@@ -1,6 +1,7 @@
 from subprocess import PIPE, check_output
 import os
 import math
+import sys
 
 
 class SonicAnnotatorAnalyzer(object):
@@ -69,7 +70,7 @@ class SonicAnnotatorAnalyzer(object):
     }
 
     POST_PROCESSING = {
-        'spectral_centroid': lambda x: math.log(max(x, 1))  # avoid passing zero to math.log
+        'spectral_centroid': lambda x: math.log(max(x, sys.float_info.min))  # avoid math.log(0.0)
     }
 
     def __init__(self, features):
