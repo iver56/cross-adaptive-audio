@@ -34,7 +34,8 @@ class SonicAnnotatorAnalyzer(object):
         'bark_25',
         'tristimulus_1',
         'tristimulus_2',
-        'tristimulus_3'
+        'tristimulus_3',
+        'kurtosis'
     }
 
     # A mapping from individual vector entries to the name of the transform they belong two
@@ -107,18 +108,15 @@ class SonicAnnotatorAnalyzer(object):
         command = [
             'sonic-annotator',
             '-t',
-            os.path.join('sonic_annotator', transform_name + '.n3')
-        ]
-
-        command += [
-            # this program assumes forward slashes on both unix and windows
-            os.path.abspath(sound.file_path).replace('\\', '/') for sound in sounds
-            ]
-        command += [
+            os.path.join('sonic_annotator', transform_name + '.n3'),
             '-w',
             'csv',
             '--csv-stdout',
         ]
+        command += [
+            # this program assumes forward slashes on both unix and windows
+            os.path.abspath(sound.file_path).replace('\\', '/') for sound in sounds
+            ]
         return command
 
     def parse_scalar_output(self, sounds, feature, output):
