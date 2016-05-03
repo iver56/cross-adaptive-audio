@@ -68,7 +68,7 @@ class SonicAnnotatorAnalyzer(object):
     }
 
     POST_PROCESSING = {
-        # 'spectral_centroid': math.log
+        'spectral_centroid': lambda x: math.log(max(x, 1))  # avoid passing zero to math.log
     }
 
     def __init__(self, features):
