@@ -64,48 +64,51 @@ class Analyzer(object):
         std.set_feature_statistics(self.project)
         std.add_standardized_series()
 
-    def right_pad_series(self, sounds, max_series_length):
-        for sound in sounds:
-            for feature in sound.analysis['series']:
-                num_missing = max_series_length - len(sound.analysis['series'][feature])
-                if num_missing > 0:
-                    for _ in range(num_missing):
-                        sound.analysis['series'][feature].append(
-                            sound.analysis['series'][feature][-1]
-                        )
-
     def analyze_multiple(self, sound_files, standardize=True):
         for analyzer in self.analyzers:
             analyzer.analyze_multiple(sound_files)
 
-        # Check if series length is equal for all series
-        series_lengths = [
-            len(sound_files[0].analysis['series'][feature])
-            for feature in sound_files[0].analysis['series']
-            ]
-
-        min_series_length = min(series_lengths)
-        max_series_length = max(series_lengths)
-
-        if min_series_length != max_series_length:
-            if max_series_length - min_series_length <= 2:
-                if settings.VERBOSE:
-                    print('Slight series length mismatch. Will apply padding to fix this.')
-                self.right_pad_series(sound_files, max_series_length)
-            else:
-                for feature in sound_files[0].analysis['series']:
-                    print(
-                        'len({0}) = {1}'.format(
-                            feature,
-                            len(sound_files[0].analysis['series'][feature])
-                        )
-                    )
-                raise Exception('Series length mismatch ({0} vs. {1})'.format(
-                    min_series_length,
-                    max_series_length
-                ))
+        self.ensure_equal_lengths(sound_files, series_key='series')
 
         self.add_derivative_series(sound_files)
 
         if standardize:
             self.add_standardized_series(sound_files)
+
+    def ensure_equal_lengths(self, sounds, series_key='series'):
+        # Check if series length is equal for all series, and if not, try to fix it with padding
+        for sound in sounds:
+            series_lengths = [
+                len(sound.analysis[series_key][feature])
+                for feature in sound.analysis[series_key]
+                ]
+
+            min_series_length = min(series_lengths)
+            max_series_length = max(series_lengths)
+
+            if min_series_length != max_series_length:
+                if max_series_length - min_series_length <= 2:
+                    if settings.VERBOSE:
+                        print('Slight series length mismatch. Will apply padding to fix this.')
+                    self.right_pad_series(sound, max_series_length)
+                else:
+                    for feature in sound.analysis[series_key]:
+                        print(
+                            'len({0}) = {1}'.format(
+                                feature,
+                                len(sound.analysis[series_key][feature])
+                            )
+                        )
+                    raise Exception('Series length mismatch ({0} vs. {1})'.format(
+                        min_series_length,
+                        max_series_length
+                    ))
+
+    def right_pad_series(self, sound, max_series_length):
+        for feature in sound.analysis['series']:
+            num_missing = max_series_length - len(sound.analysis['series'][feature])
+            if num_missing > 0:
+                for _ in range(num_missing):
+                    sound.analysis['series'][feature].append(
+                        sound.analysis['series'][feature][-1]
+                    )
