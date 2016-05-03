@@ -87,7 +87,7 @@ class Analyzer(object):
             max_series_length = max(series_lengths)
 
             if min_series_length != max_series_length:
-                if max_series_length - min_series_length <= 2:
+                if max_series_length - min_series_length <= 16:
                     if settings.VERBOSE:
                         print('Slight series length mismatch. Will apply padding to fix this.')
                     self.right_pad_series(sound, max_series_length)
