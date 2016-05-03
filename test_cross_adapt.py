@@ -7,11 +7,17 @@ import time
 import project
 import effect
 import copy
+import os
 
 
 class TestCrossAdapt(unittest.TestCase):
     def setUp(self):
         settings.INPUT_DIRECTORY = 'test_audio'
+        self.files_to_delete = []
+
+    def tearDown(self):
+        for file_path in self.files_to_delete:
+            os.remove(file_path)
 
     def test_sound_file(self):
         that_effect = effect.Effect.get_effect_by_name('dist_lpf')
@@ -27,7 +33,7 @@ class TestCrossAdapt(unittest.TestCase):
         )
         print('num_frames', num_frames)
         constant_parameter_vector = [0.5] * that_effect.num_parameters
-        parameter_vectors = [copy.deepcopy(constant_parameter_vector) for i in range(num_frames)]
+        parameter_vectors = [copy.deepcopy(constant_parameter_vector) for _ in range(num_frames)]
 
         self.start_time = time.time()
 
@@ -44,6 +50,8 @@ class TestCrossAdapt(unittest.TestCase):
             that_effect,
             output_filename
         )
+
+        self.files_to_delete.append(csd_path)
 
         print('process', process)
         print('output file', output_sound_file)
