@@ -6,7 +6,9 @@ import sys
 
 class SonicAnnotatorAnalyzer(object):
     AVAILABLE_FEATURES = {
-        'spectral_centroid',  # Warning: may produce wrong/suspect results on windows
+        # Warning: may produce odd results on windows
+        # See https://github.com/jamiebullock/LibXtract/issues/65
+        'spectral_centroid',
         'bark_0',
         'bark_1',
         'bark_2',
@@ -33,11 +35,15 @@ class SonicAnnotatorAnalyzer(object):
         'bark_23',
         'bark_24',
         'bark_25',
+
+        # Warning: May not be useful
         'tristimulus_1',
         'tristimulus_2',
         'tristimulus_3',
-        'kurtosis',  # Warning: may produce slightly shorter series
-        'spectral_variance',  # Warning: may produce slightly shorter series
+
+        # Warning: may produce slightly shorter series that need to be padded
+        'kurtosis',
+        'spectral_variance',
     }
 
     # A mapping from individual vector entries to the name of the transform they belong two
