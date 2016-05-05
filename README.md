@@ -78,6 +78,7 @@ http://www.equation.com/servlet/equation.cmd?fa=make
 
 * `make test` (run all tests)
 * `python neuroevolution.py -i drums.wav synth.wav -g 15 -p 20` (run the evolutionary algorithm for 15 generations with a population of 20)
+* `python list_all_features.py` (list all analyzers and the features they offer)
 * `python fitness_evaluator.py -i drums.wav synth.wav` (print a number that represents the similarity between drums.wav and synth.wav)
 * `make clean` (remove data written during an experiment)
 * `make prepare-ramdisk` (ensure that directories are present in the RAM disk. Copy audio input files and the web-based visualization system)
