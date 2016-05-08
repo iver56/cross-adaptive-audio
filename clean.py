@@ -11,9 +11,10 @@ class Cleaner(object):
             settings.CSD_DIRECTORY,
             settings.INDIVIDUAL_DATA_DIRECTORY,
             settings.STATS_DATA_DIRECTORY,
-            settings.OUTPUT_DIRECTORY
+            settings.OUTPUT_DIRECTORY,
+            settings.TEMP_DIRECTORY
         ]
-        extensions = ['.json', '.csd', '.wav']
+        extensions = ['.json', '.csd', '.wav', '.json_frames']
 
         for path in paths:
             for root, dirs, files in os.walk(path):
