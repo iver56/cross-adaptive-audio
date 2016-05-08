@@ -61,13 +61,13 @@ class Neuroevolution(object):
             default=None
         )
         arg_parser.add_argument(
-            '--keep-only-best',
+            '--keep-k-best',
             nargs='?',
-            dest='keep_only_best',
-            help='Store only fittest individual in each generation. Improves perf and saves storage',
-            const=True,
+            dest='keep_k_best',
+            help='Store only the k fittest individual in each generation. Improves perf and saves storage',
+            type=int,
             required=False,
-            default=False
+            default=-1  # -1 means keep all
         )
         arg_parser.add_argument(
             '--allow-clones',
@@ -159,6 +159,9 @@ class Neuroevolution(object):
         )
         self.args = arg_parser.parse_args()
 
+        if self.args.keep_k_best == 0 or self.args.keep_k_best > self.args.population_size:
+            raise Exception('keep-k-best must be positive and not greater than the population size')
+
         if self.args.seed is not None:
             settings.PRNG_SEED = self.args.seed
 
@@ -223,7 +226,7 @@ class Neuroevolution(object):
         }
         self.max_fitness = None
         self.last_fitness_improvement = 0  # generation number
-        if self.args.keep_only_best:
+        if self.args.keep_k_best != -1:
             self.best_individual_ids = set()
 
         self.individual_fitness = {}  # individual id => individual fitness
@@ -338,7 +341,8 @@ class Neuroevolution(object):
                         )
                     else:
                         ind.set_fitness(unique_individuals[individual_id].genotype.GetFitness())
-# Calculate and write stats
+
+            # Calculate and write stats
             all_individuals.sort(key=lambda i: i.genotype.GetFitness())
             flat_fitness_list = [i.genotype.GetFitness() for i in all_individuals]
             max_fitness = flat_fitness_list[-1]
@@ -359,13 +363,14 @@ class Neuroevolution(object):
             self.stats_logger.write()
 
             # Store individual(s)
-            if self.args.keep_only_best:
-                unique_individuals_list.sort(key=lambda i: i.genotype.GetFitness())
-                self.best_individual_ids.add(unique_individuals_list[-1].get_id())
-                unique_individuals_list[-1].save()
+            if self.args.keep_k_best != -1:
+                unique_individuals_list.sort(key=lambda i: i.genotype.GetFitness(), reverse=True)
+                for i in range(self.args.keep_k_best):
+                    self.best_individual_ids.add(unique_individuals_list[i].get_id())
+                    unique_individuals_list[i].save()
 
                 # delete all but best fit results from this generation
-                for i in range(len(unique_individuals_list) - 1):
+                for i in range(self.args.keep_k_best, len(unique_individuals_list)):
                     if unique_individuals_list[i].get_id() not in self.best_individual_ids:
                         unique_individuals_list[i].delete(
                             try_delete_serialized_representation=False)
