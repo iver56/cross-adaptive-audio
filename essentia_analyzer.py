@@ -75,22 +75,25 @@ class EssentiaAnalyzer(object):
 
         commands = [self.get_command(sound) for sound in sound_files]
 
-        # run commands in parallel. TODO: limit the number of processes that run simultaneously
-        processes = [
-            Popen(
-                command,
-                stdin=PIPE,
-                stdout=PIPE,
-                stderr=STDOUT
-            )
-            for command in commands
-            ]
+        for i in range(0, len(commands), settings.NUM_SIMULTANEOUS_PROCESSES):
+            commands_batch = commands[i:i + settings.NUM_SIMULTANEOUS_PROCESSES]
 
-        for i in range(len(sound_files)):
-            processes[i].wait()
-            self.parse_output(sound_files[i])
-            self.post_process(sound_files[i])
-            self.clean_up(sound_files[i])
+            # run commands batch in parallel
+            processes = [
+                Popen(
+                    command,
+                    stdin=PIPE,
+                    stdout=PIPE,
+                    stderr=STDOUT
+                )
+                for command in commands_batch
+                ]
+
+            for j in range(len(processes)):
+                processes[j].wait()
+                self.parse_output(sound_files[i + j])
+                self.post_process(sound_files[i + j])
+                self.clean_up(sound_files[i + j])
 
     @staticmethod
     def get_output_analysis_file_path(that_sound_file):

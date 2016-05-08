@@ -21,6 +21,8 @@ TEST_AUDIO_DIRECTORY = 'test_audio'
 
 PRNG_SEED = 2
 
+NUM_SIMULTANEOUS_PROCESSES = 4
+
 USE_GZIP = False
 if USE_GZIP:
     import gzip
