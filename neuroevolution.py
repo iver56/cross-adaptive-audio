@@ -331,9 +331,14 @@ class Neuroevolution(object):
             for individual_id in duplicates:
                 for ind in duplicates[individual_id]:
                     ind.set_output_sound(unique_individuals[individual_id].output_sound)
-                    ind.set_fitness(unique_individuals[individual_id].genotype.GetFitness())
-
-            # Calculate and write stats
+                    if self.args.fitness == 'mo':
+                        # Discourage clusters of duplicates
+                        ind.set_fitness(
+                            0.5 * unique_individuals[individual_id].genotype.GetFitness()
+                        )
+                    else:
+                        ind.set_fitness(unique_individuals[individual_id].genotype.GetFitness())
+# Calculate and write stats
             all_individuals.sort(key=lambda i: i.genotype.GetFitness())
             flat_fitness_list = [i.genotype.GetFitness() for i in all_individuals]
             max_fitness = flat_fitness_list[-1]
