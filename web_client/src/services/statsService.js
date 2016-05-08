@@ -23,15 +23,26 @@
         if (data) {
           that.numGenerations = data.generations.length;
           that.data = data;
-          that.populationSize = data.generations[that.numGenerations - 1].individuals.length;
           if (null === that.selectedGeneration) {
             that.selectedGeneration = that.numGenerations;
           }
-          if (null === that.selectedIndividualIndex || that.selectedIndividualIndex > that.populationSize - 1) {
-            that.selectedIndividualIndex = that.populationSize - 1;
+          if (null === that.selectedIndividualIndex) {
+            that.selectedIndividualIndex = that.getPopulationSize() - 1;
           }
         }
       };
+      
+      that.getPopulationSize = function() {
+        return that.data.generations[that.selectedGeneration - 1].individuals.length;
+      };
+
+      $rootScope.$watch(function() {
+        return that.selectedGeneration;
+      }, function() {
+        if (that.data && that.selectedIndividualIndex > that.getPopulationSize() - 1) {
+          that.selectedIndividualIndex = that.getPopulationSize() - 1;
+        }
+      });
 
       that.getHistogramData = function() {
         var bins = [];

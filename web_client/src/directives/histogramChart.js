@@ -30,7 +30,7 @@
         ],
         axes: {
           x: {key: "minValue"},
-          y: {max: statsService.populationSize}
+          y: {max: statsService.getPopulationSize()}
         },
         margin: {
           top: 10,
@@ -73,7 +73,7 @@
       }, function() {
         if (statsService.data && statsService.data.generations) {
           vm.data.bins = statsService.getHistogramData();
-          vm.options.axes.y.max = statsService.populationSize;
+          vm.options.axes.y.max = statsService.getPopulationSize();
         }
       });
     }

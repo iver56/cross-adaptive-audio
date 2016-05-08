@@ -125,7 +125,7 @@
             ng-model="statsService.selectedIndividualIndex"
             step="1"
             min="0"
-            max="{{ statsService.populationSize - 1 }}"
+            max="{{ statsService.getPopulationSize() - 1 }}"
             aria-label="Selected individual"
             ng-change="individual.selectedIndividualChanged()"
         >
