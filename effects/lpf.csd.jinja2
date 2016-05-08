@@ -1,0 +1,58 @@
+;    Copyright 2015 Oeyvind Brandtsegg
+;
+;    Parts of this file originates from the Signal Interaction Toolkit
+;
+;    The Signal Interaction Toolkit is free software: you can redistribute it and/or modify
+;    it under the terms of the GNU General Public License version 3
+;    as published by the Free Software Foundation.
+;
+;    The Signal Interaction Toolkit is distributed in the hope that it will be useful,
+;    but WITHOUT ANY WARRANTY; without even the implied warranty of
+;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;    GNU General Public License for more details.
+;
+;    You should have received a copy of the GNU General Public License
+;    along with The Signal Interaction Toolkit.
+;    If not, see <http://www.gnu.org/licenses/>.
+
+<CsoundSynthesizer>
+    <CsOptions>
+        -i input/{{ input_sound_filename }}
+    </CsOptions>
+    <CsInstruments>
+        sr = 44100
+        ksmps = {{ ksmps }}
+        nchnls = 1
+        0dbfs = 1
+
+        instr 1
+
+        kTime timek
+
+        {% for channel in parameter_channels %}
+        kChannel{{ loop.index0 }}[] fillarray {{ channel }}
+        {% endfor %}
+
+        ;****************************************************************
+        ; LPF18 Filter
+        ;****************************************************************
+        aIn		in
+
+        kFreq		tonek kChannel0[kTime - 1], {{ parameter_lpf_cutoff }}
+        kResonance	tonek kChannel1[kTime - 1], {{ parameter_lpf_cutoff }}
+        kDist		= 0.001
+        kPostGain	tonek kChannel2[kTime - 1], {{ parameter_lpf_cutoff }}
+
+        afilt		lpf18 aIn, kFreq, kResonance, kDist
+
+        aOut		= afilt * kPostGain
+
+        out aOut
+
+        endin
+    </CsInstruments>
+    <CsScore>
+        i1 0 {{ duration }}
+        e
+    </CsScore>
+</CsoundSynthesizer>
