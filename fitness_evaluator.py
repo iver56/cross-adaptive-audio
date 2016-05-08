@@ -184,16 +184,17 @@ class MultiObjectiveFitnessEvaluator(object):
 
         for feature in settings.SIMILARITY_CHANNELS:
             front = sorted(front, key=lambda x: x.objectives[feature])
-            front[0].crowding_distance = float('inf')
-            front[-1].crowding_distance = float('inf')
 
             min_dist = float(front[0].objectives[feature])
             max_dist = float(front[-1].objectives[feature])
 
             if max_dist == min_dist:
-                for i in range(1, len(front) - 1):
-                    front[i].crowding_distance = float('inf')
+                for i in range(len(front) - 1):
+                    front[i].crowding_distance = 0
+                front[-1].crowding_distance = float('inf')
             else:
+                front[0].crowding_distance = float('inf')
+                front[-1].crowding_distance = float('inf')
                 for i in range(1, len(front) - 1):
                     front[i].crowding_distance += \
                         (front[i + 1].objectives[feature] - front[i - 1].objectives[feature]) / \
