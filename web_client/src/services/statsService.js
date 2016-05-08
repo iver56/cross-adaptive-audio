@@ -23,7 +23,7 @@
         if (data) {
           that.numGenerations = data.generations.length;
           that.data = data;
-          if (null === that.selectedGeneration) {
+          if (null === that.selectedGeneration || that.selectedGeneration > that.numGenerations) {
             that.selectedGeneration = that.numGenerations;
           }
           if (null === that.selectedIndividualIndex) {
