@@ -62,9 +62,9 @@ class Neuroevolution(object):
         )
         arg_parser.add_argument(
             '--keep-k-best',
-            nargs='?',
             dest='keep_k_best',
-            help='Store only the k fittest individual in each generation. Improves perf and saves storage',
+            help='Store only the k fittest individual in each generation. Improves perf and'
+                 ' saves storage',
             type=int,
             required=False,
             default=-1  # -1 means keep all
