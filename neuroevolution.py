@@ -139,11 +139,13 @@ class Neuroevolution(object):
             default="a"
         )
         arg_parser.add_argument(
-            '--fitness-method',
-            dest='fitness_method',
+            '--fitness',
+            dest='fitness',
             type=str,
-            help='multi-objective is experimental',
-            choices=['default', 'multi-objective'],
+            help='Multi-Objective (mo) fitness optimizes for a diverse'
+                 ' population that consists of various non-dominated trade-offs between similarity'
+                 ' in different features',
+            choices=['default', 'mo'],
             required=False,
             default="default"
         )
@@ -169,9 +171,9 @@ class Neuroevolution(object):
         self.project = project.Project([self.target_sound, self.input_sound])
         self.analyzer = analyze.Analyzer(self.project)
         self.fitness_evaluator_class = None
-        if self.args.fitness_method == 'default':
+        if self.args.fitness == 'default':
             self.fitness_evaluator_class = fitness_evaluator.FitnessEvaluator
-        elif self.args.fitness_method == 'multi-objective':
+        elif self.args.fitness == 'mo':
             self.fitness_evaluator_class = fitness_evaluator.MultiObjectiveFitnessEvaluator
 
         self.num_frames = min(
@@ -370,12 +372,14 @@ class Neuroevolution(object):
                         that_individual.save()
                     self.individual_fitness[individual_id] = that_individual.genotype.GetFitness()
 
-            if self.has_patience_ended(max_fitness, generation):
+            if (not self.fitness_evaluator_class.IS_FITNESS_RELATIVE) and \
+                    self.has_patience_ended(max_fitness, generation):
                 print(
                     'Patience has ended because max fitness has not improved for {} generations.'
                     ' Stopping.'.format(self.args.patience)
                 )
                 break
+                # TODO: implement patience for multi-objective fitness
 
             # advance to the next generation
             self.population.Epoch()
