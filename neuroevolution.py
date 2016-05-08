@@ -144,8 +144,8 @@ class Neuroevolution(object):
             type=str,
             help='Multi-Objective (mo) fitness optimizes for a diverse'
                  ' population that consists of various non-dominated trade-offs between similarity'
-                 ' in different features',
-            choices=['default', 'mo'],
+                 ' in different features. Hybrid fitness is the sum of default and mo.',
+            choices=['default', 'mo', 'hybrid'],
             required=False,
             default="default"
         )
@@ -178,6 +178,8 @@ class Neuroevolution(object):
             self.fitness_evaluator_class = fitness_evaluator.FitnessEvaluator
         elif self.args.fitness == 'mo':
             self.fitness_evaluator_class = fitness_evaluator.MultiObjectiveFitnessEvaluator
+        elif self.args.fitness == 'hybrid':
+            self.fitness_evaluator_class = fitness_evaluator.HybridFitnessEvaluator
 
         self.num_frames = min(
             self.target_sound.get_num_frames(),
@@ -334,7 +336,7 @@ class Neuroevolution(object):
             for individual_id in duplicates:
                 for ind in duplicates[individual_id]:
                     ind.set_output_sound(unique_individuals[individual_id].output_sound)
-                    if self.args.fitness == 'mo':
+                    if self.fitness_evaluator_class.IS_FITNESS_RELATIVE:
                         # Discourage clusters of duplicates
                         ind.set_fitness(
                             0.5 * unique_individuals[individual_id].genotype.GetFitness()

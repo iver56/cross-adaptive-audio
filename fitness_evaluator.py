@@ -211,3 +211,18 @@ class MultiObjectiveFitnessEvaluator(object):
             for ind in fronts[rank]:
                 fitness = 1.0 / (rank + (0.5 / (1.0 + ind.crowding_distance)))
                 ind.set_fitness(fitness)
+
+
+class HybridFitnessEvaluator(object):
+    # Fitness is relative, i.e. it depends on the fitness of other individuals and may
+    # change from generation to generation
+    IS_FITNESS_RELATIVE = True
+
+    @staticmethod
+    def evaluate_multiple(individuals, target_sound):
+        MultiObjectiveFitnessEvaluator.evaluate_multiple(individuals, target_sound)
+        for ind in individuals:
+            fitness = FitnessEvaluator.evaluate(target_sound, ind.output_sound)
+            ind.set_fitness(
+                (ind.genotype.GetFitness() + fitness) / 2
+            )
