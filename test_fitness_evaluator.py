@@ -3,6 +3,7 @@ import settings
 import sound_file
 import fitness_evaluator
 import project
+import individual
 
 
 class TestFitnessEvaluator(unittest.TestCase):
@@ -12,18 +13,30 @@ class TestFitnessEvaluator(unittest.TestCase):
     def test_fitness_evaluator(self):
         drums = sound_file.SoundFile('drums.wav')
         synth = sound_file.SoundFile('synth.wav')
-        vocal = sound_file.SoundFile('vocal.wav')
 
-        sounds = [drums, synth, vocal]
-        project.Project(sounds)
+        ind1 = individual.Individual(
+            genotype=None,
+            generation=None,
+            neural_input_mode=None,
+            effect=None
+        )
+        ind1.set_output_sound(drums)
+        ind2 = individual.Individual(
+            genotype=None,
+            generation=None,
+            neural_input_mode=None,
+            effect=None
+        )
+        ind2.set_output_sound(synth)
 
-        fitness1 = fitness_evaluator.FitnessEvaluator.evaluate(drums, drums)
-        fitness2 = fitness_evaluator.FitnessEvaluator.evaluate(drums, synth)
-        fitness3 = fitness_evaluator.FitnessEvaluator.evaluate(drums, vocal)
-        print('fitness1', fitness1)
-        print('fitness2', fitness2)
-        print('fitness3', fitness3)
-        self.assertAlmostEqual(fitness1, 1.0)
+        # make sure sound files are analyzed
+        project.Project([ind1.output_sound, ind2.output_sound])
+
+        # mock
+        ind1.set_fitness = lambda x: None
+        ind2.set_fitness = lambda x: None
+
+        fitness_evaluator.FitnessEvaluator.evaluate_multiple([ind1, ind2], drums)
 
 if __name__ == '__main__':
     unittest.main()

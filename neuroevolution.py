@@ -139,6 +139,15 @@ class Neuroevolution(object):
             default="a"
         )
         arg_parser.add_argument(
+            '--fitness-method',
+            dest='fitness_method',
+            type=str,
+            help='multi-objective is experimental',
+            choices=['default', 'multi-objective'],
+            required=False,
+            default="default"
+        )
+        arg_parser.add_argument(
             '--effect',
             dest='effect_name',
             type=str,
@@ -154,26 +163,31 @@ class Neuroevolution(object):
         if len(self.args.input_files) != 2:
             raise Exception('Two filenames must be specified')
 
-        self.param_sound = sound_file.SoundFile(self.args.input_files[0])
+        self.target_sound = sound_file.SoundFile(self.args.input_files[0])
         self.input_sound = sound_file.SoundFile(self.args.input_files[1])
 
-        self.project = project.Project([self.param_sound, self.input_sound])
+        self.project = project.Project([self.target_sound, self.input_sound])
         self.analyzer = analyze.Analyzer(self.project)
+        self.fitness_evaluator = None
+        if self.args.fitness_method == 'default':
+            self.fitness_evaluator = fitness_evaluator.FitnessEvaluator
+        elif self.args.fitness_method == 'multi-objective':
+            self.fitness_evaluator = fitness_evaluator.MultiObjectiveFitnessEvaluator
 
         self.num_frames = min(
-            self.param_sound.get_num_frames(),
+            self.target_sound.get_num_frames(),
             self.input_sound.get_num_frames()
         )
 
         self.neural_input_vectors = []
         if self.args.neural_input_mode == 'a':
             for k in range(self.num_frames):
-                vector = self.param_sound.get_standardized_neural_input_vector(k)
+                vector = self.target_sound.get_standardized_neural_input_vector(k)
                 vector.append(1.0)  # bias input
                 self.neural_input_vectors.append(vector)
         elif self.args.neural_input_mode == 'ab':
             for k in range(self.num_frames):
-                vector = self.param_sound.get_standardized_neural_input_vector(k)
+                vector = self.target_sound.get_standardized_neural_input_vector(k)
                 vector += self.input_sound.get_standardized_neural_input_vector(k)
                 vector.append(1.0)  # bias input
                 self.neural_input_vectors.append(vector)
@@ -201,7 +215,7 @@ class Neuroevolution(object):
             suppress_initialization=True
         )
         self.stats_logger.data = {
-            'param_sound': self.param_sound.get_serialized_representation(),
+            'param_sound': self.target_sound.get_serialized_representation(),
             'input_sound': self.input_sound.get_serialized_representation(),
             'generations': []
         }
@@ -374,12 +388,10 @@ class Neuroevolution(object):
             ]
         self.analyzer.analyze_multiple(sound_files_to_analyze)
 
-        for that_individual in individuals:
-            fitness = fitness_evaluator.FitnessEvaluator.evaluate(
-                self.param_sound,
-                that_individual.output_sound
-            )
-            that_individual.set_fitness(fitness)
+        self.fitness_evaluator.evaluate_multiple(
+            individuals,
+            self.target_sound
+        )
 
 
 if __name__ == '__main__':

@@ -2,12 +2,17 @@ from __future__ import print_function
 import math
 import standardizer
 import settings
-import project
 
 
 class FitnessEvaluator(object):
     GLOBAL_SIMILARITY_WEIGHT = 1.0
     LOCAL_SIMILARITY_WEIGHT = 1.0
+
+    @staticmethod
+    def evaluate_multiple(individuals, target_sound):
+        for ind in individuals:
+            fitness = FitnessEvaluator.evaluate(target_sound, ind.output_sound)
+            ind.set_fitness(fitness)
 
     @staticmethod
     def evaluate(param_sound, output_sound):
@@ -100,34 +105,100 @@ class FitnessEvaluator(object):
         return math.sqrt(sum_of_squared_differences)
 
 
-class CommandLineFitnessTool(object):
-    def __init__(self):
-        import argparse
-        import sound_file
-        arg_parser = argparse.ArgumentParser()
-        arg_parser.add_argument(
-            '-i',
-            '--input',
-            dest='input_files',
-            nargs='+',
-            type=str,
-            help='The names of the two sound files to be compared',
-            required=True,
-            default=[]
-        )
-        args = arg_parser.parse_args()
-        if len(args.input_files) == 2:
-            sound_file_a = sound_file.SoundFile(args.input_files[0])
-            sound_file_b = sound_file.SoundFile(args.input_files[1])
+class MultiObjectiveFitnessEvaluator(object):
+    @staticmethod
+    def calculate_objectives(that_individual, target_sound):
+        that_individual.objectives = {}
+        for feature in settings.SIMILARITY_CHANNELS:
+            sum_of_squared_differences = 0
+            for k in range(target_sound.get_num_frames()):
+                param_value = target_sound.analysis['series_standardized'][feature][k]
+                output_value = \
+                    that_individual.output_sound.analysis['series_standardized'][feature][k]
+                sum_of_squared_differences += (param_value - output_value) ** 2
+            euclidean_distance = math.sqrt(sum_of_squared_differences)
+            that_individual.objectives[feature] = euclidean_distance
 
-            sounds = [sound_file_a, sound_file_b]
+    @staticmethod
+    def individual_dominates(first_individual, other_individual):
+        for feature in first_individual.objectives:
+            if other_individual.objectives[feature] < first_individual.objectives[feature]:
+                return False
 
-            project.Project(sounds)
+        for feature in first_individual.objectives:
+            if first_individual.objectives[feature] < other_individual.objectives[feature]:
+                return True
+        return False
 
-            print(FitnessEvaluator.evaluate(sound_file_a, sound_file_b))
-        else:
-            raise Exception('Two file names must be specified')
+    @staticmethod
+    def fast_non_dominated_sort(individuals):
+        """
+        After having run this, each individual is assigned a rank (1 is best, higher is worse)
+        The function returns a "fronts" dictionary which contains a set of individuals for each rank
+        """
+        fronts = {
+            1: set()
+        }
+        for p in individuals:
+            p.individuals_dominated = set()
+            p.domination_counter = 0
+            for q in individuals:
+                if MultiObjectiveFitnessEvaluator.individual_dominates(p, q):
+                    p.individuals_dominated.add(q)
+                elif MultiObjectiveFitnessEvaluator.individual_dominates(q, p):
+                    p.domination_counter += 1
+            if p.domination_counter == 0:
+                p.rank = 1
+                fronts[1].add(p)
+        i = 1
+        while len(fronts[i]) != 0:
+            new_front = set()
+            for p in fronts[i]:
+                for q in p.individuals_dominated:
+                    q.domination_counter -= 1
+                    if q.domination_counter == 0:
+                        q.rank = i + 1
+                        new_front.add(q)
+            i += 1
+            fronts[i] = new_front
+        return fronts
 
+    @staticmethod
+    def calculate_crowding_distances(front):
+        """
+        front is a list of individuals
+        """
+        if len(front) == 0:
+            return
 
-if __name__ == '__main__':
-    CommandLineFitnessTool()
+        for ind in front:
+            ind.crowding_distance = 0.0
+
+        for feature in settings.SIMILARITY_CHANNELS:
+            front = sorted(front, key=lambda x: x.objectives[feature])
+            front[0].crowding_distance = float('inf')
+            front[-1].crowding_distance = float('inf')
+
+            min_dist = float(front[0].objectives[feature])
+            max_dist = float(front[-1].objectives[feature])
+
+            if max_dist == min_dist:
+                for i in range(1, len(front) - 1):
+                    front[i].crowding_distance = float('inf')
+            else:
+                for i in range(1, len(front) - 1):
+                    front[i].crowding_distance += \
+                        (front[i + 1].objectives[feature] - front[i - 1].objectives[feature]) / \
+                        (max_dist - min_dist)
+
+    @staticmethod
+    def evaluate_multiple(individuals, target_sound):
+        for ind in individuals:
+            MultiObjectiveFitnessEvaluator.calculate_objectives(ind, target_sound)
+
+        fronts = MultiObjectiveFitnessEvaluator.fast_non_dominated_sort(individuals)
+        for rank in fronts:
+            MultiObjectiveFitnessEvaluator.calculate_crowding_distances(fronts[rank])
+            for ind in fronts[rank]:
+                fitness = 1.0 / (rank + (0.5 / (1.0 + ind.crowding_distance)))
+                ind.set_fitness(fitness)
