@@ -44,7 +44,7 @@
       "name": "post_gain",
       "mapping": {
         "min_value": 0.0,
-        "max_value": 10,
+        "max_value": 3.16227,
         "skew_factor": 0.3
       }
     }

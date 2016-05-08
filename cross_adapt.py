@@ -79,7 +79,7 @@ class CrossAdapter(object):
                     skew_factor=skew_factor
                 )
 
-        channels = zip(*parameter_vectors)
+        channels = zip(*vectors)
 
         channels_csv = []
         for channel in channels:
