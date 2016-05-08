@@ -34,7 +34,6 @@ class MfccAnalyzer(object):
         processes = [
             Popen(
                 command,
-                stdin=PIPE,
                 stdout=PIPE,
                 stderr=STDOUT
             )

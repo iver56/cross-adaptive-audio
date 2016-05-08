@@ -2,7 +2,6 @@ import os
 import settings
 import json
 import neural_network_representation
-import pickle
 import hashlib
 
 
