@@ -168,11 +168,11 @@ class Neuroevolution(object):
 
         self.project = project.Project([self.target_sound, self.input_sound])
         self.analyzer = analyze.Analyzer(self.project)
-        self.fitness_evaluator = None
+        self.fitness_evaluator_class = None
         if self.args.fitness_method == 'default':
-            self.fitness_evaluator = fitness_evaluator.FitnessEvaluator
+            self.fitness_evaluator_class = fitness_evaluator.FitnessEvaluator
         elif self.args.fitness_method == 'multi-objective':
-            self.fitness_evaluator = fitness_evaluator.MultiObjectiveFitnessEvaluator
+            self.fitness_evaluator_class = fitness_evaluator.MultiObjectiveFitnessEvaluator
 
         self.num_frames = min(
             self.target_sound.get_num_frames(),
@@ -293,7 +293,8 @@ class Neuroevolution(object):
                     effect=self.effect
                 )
 
-                if that_individual.get_id() in self.individual_fitness:
+                if (not self.fitness_evaluator_class.IS_FITNESS_RELATIVE) and \
+                                that_individual.get_id() in self.individual_fitness:
                     if settings.VERBOSE:
                         print(that_individual.get_id() + ' already exists. Will not evaluate again')
 
@@ -388,7 +389,7 @@ class Neuroevolution(object):
             ]
         self.analyzer.analyze_multiple(sound_files_to_analyze)
 
-        self.fitness_evaluator.evaluate_multiple(
+        self.fitness_evaluator_class.evaluate_multiple(
             individuals,
             self.target_sound
         )

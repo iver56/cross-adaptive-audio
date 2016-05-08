@@ -8,6 +8,10 @@ class FitnessEvaluator(object):
     GLOBAL_SIMILARITY_WEIGHT = 1.0
     LOCAL_SIMILARITY_WEIGHT = 1.0
 
+    # fitness is not relative, i.e. it doesn't change from generation to generation and doesn't
+    # depend on the fitness of other individuals
+    IS_FITNESS_RELATIVE = False
+
     @staticmethod
     def evaluate_multiple(individuals, target_sound):
         for ind in individuals:
@@ -106,6 +110,10 @@ class FitnessEvaluator(object):
 
 
 class MultiObjectiveFitnessEvaluator(object):
+    # Fitness is relative, i.e. it depends on the fitness of other individuals and may
+    # change from generation to generation
+    IS_FITNESS_RELATIVE = True
+
     @staticmethod
     def calculate_objectives(that_individual, target_sound):
         that_individual.objectives = {}
