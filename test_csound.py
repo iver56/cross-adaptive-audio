@@ -8,7 +8,7 @@ import os
 import time
 
 
-class TestCsoundPerformance(unittest.TestCase):
+class TestCsound(unittest.TestCase):
     def setUp(self):
         settings.INPUT_DIRECTORY = 'test_audio'
         self.num_sounds = 20
