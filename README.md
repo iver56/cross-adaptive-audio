@@ -6,27 +6,28 @@ The project will investigate methods of evaluating the musical applicability of 
 
 * Install matplotlib dependencies: `sudo apt-get install libfreetype6-dev libpng-dev`
 * Install csound: `sudo apt-get install csound`
-* Install [aubio](http://aubio.org/download): `apt-get install aubio-tools libaubio-dev libaubio-doc`
+* Install [aubio](http://aubio.org/download): `sudo apt-get install aubio-tools libaubio-dev libaubio-doc`
 * Install essentia extractors (optional):
-  * `wget http://essentia.upf.edu/documentation/extractors/essentia-extractors-v2.1_beta2-linux-x86_64.tar.gz`
+  * `cd ~/ && wget http://essentia.upf.edu/documentation/extractors/essentia-extractors-v2.1_beta2-linux-x86_64.tar.gz`
   * `tar xzf essentia-extractors-v2.1_beta2-linux-x86_64.tar.gz`
-  * `echo 'PATH=/data/essentia-extractors-v2.1_beta2/:$PATH' >> ~/.bashrc`
+  * `echo 'PATH=~/essentia-extractors-v2.1_beta2/:$PATH' >> ~/.bashrc`
   * `source ~/.bashrc`
 * Install MultiNEAT:
-  * Install boost c++ libraries: `[sudo] apt-get install libboost-all-dev`
-  * `git clone https://github.com/peter-ch/MultiNEAT.git`
+  * Install boost c++ libraries: `sudo apt-get install libboost-all-dev`
+  * `cd ~/ && git clone https://github.com/peter-ch/MultiNEAT.git`
   * `cd MultiNEAT`
-  * `[sudo] python setup.py install`
+  * `sudo python setup.py install`
 * Install NodeJS
   * `sudo apt-get install nodejs npm`
 * Install Sonic Annotator
-  * `wget https://code.soundsoftware.ac.uk/attachments/download/1876/sonic-annotator_1.4cc1-1_amd64.deb`
+  * `cd ~/ && wget https://code.soundsoftware.ac.uk/attachments/download/1876/sonic-annotator_1.4cc1-1_amd64.deb`
   * `sudo dpkg -i sonic-annotator_1.4cc1-1_amd64.deb`
   * If installation fails due to missing dependencies don't worry: Just run `sudo apt-get -f install` and then try to install again.
 * Download the libXtract vamp plugin:
-  * `wget https://code.soundsoftware.ac.uk/attachments/download/620/vamp-libxtract-plugins-0.6.6.20121204-amd64-linux.tar.gz`
+  * `cd ~/ && wget https://code.soundsoftware.ac.uk/attachments/download/620/vamp-libxtract-plugins-0.6.6.20121204-amd64-linux.tar.gz`
   * `tar -xf vamp-libxtract-plugins-0.6.6.20121204-amd64-linux.tar.gz`
-  * `mv vamp-libxtract-plugins-0.6.6.20121204-amd64-linux/vamp-libxtract.* /usr/local/lib/vamp`
+  * `sudo mkdir -p /usr/local/lib/vamp`
+  * `sudo mv vamp-libxtract-plugins-0.6.6.20121204-amd64-linux/vamp-libxtract.* /usr/local/lib/vamp`
 
 ## Install dependencies (Windows)
 
@@ -68,18 +69,17 @@ http://www.equation.com/servlet/equation.cmd?fa=make
 
 ## Setup of this project
 
-* Clone this repository
+* Clone this repository: `git clone https://github.com/iver56/cross-adaptive-audio.git && cd cross-adaptive-audio`
 * Get a local settings file: `cp settings.py.example settings.py`
 * Create a settings file for your experiment(s): `cp experiment_settings.json.example experiment_settings.json`
-* Make sure that all dependencies are installed: `[sudo] pip install -r requirements.txt`
-* Navigate to the node_server folder and run `npm install`
+* Make sure that all dependencies are installed: `sudo pip install -r requirements.txt`
+* Install Node.js dependencies: `cd node_server && npm install && cd -`
 
 ## Example commands
 
 * `make test` (run all tests)
 * `python neuroevolution.py -i drums.wav synth.wav -g 15 -p 20` (run the evolutionary algorithm for 15 generations with a population of 20)
 * `python list_all_features.py` (list all analyzers and the features they offer)
-* `python fitness_evaluator.py -i drums.wav synth.wav` (print a number that represents the similarity between drums.wav and synth.wav)
 * `make clean` (remove data written during an experiment)
 * `make prepare-ramdisk` (ensure that directories are present in the RAM disk. Copy audio input files and the web-based visualization system)
 * `make serve` (start a server for a web client that can interactively visualize the experiment data)
