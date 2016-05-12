@@ -75,23 +75,71 @@ http://www.equation.com/servlet/equation.cmd?fa=make
 * Install Node.js dependencies: `cd node_server && npm install && cd -`
     * If npm fails to properly install the websocket package, go to https://www.npmjs.com/package/websocket#installation for more information
 
-## Example commands
+## Usage
 
-* `make test` (run all tests)
-* `python neuroevolution.py -i drums.wav synth.wav -g 15 -p 20` (run the evolutionary algorithm for 15 generations with a population of 20)
-    * This command assumes that drums.wav and synth.wav are present in the input folder. The sounds should be of equal length, and they should be mono, not stereo. And please use sampling rate 44100 and bit depth 16.
-* `python list_all_features.py` (list all analyzers and the features they offer)
-* `make clean` (remove data written during an experiment)
-* `make prepare-ramdisk` (ensure that directories are present in the RAM disk. Copy audio input files and the web-based visualization system)
-* `make serve` (start a server for a web client that can interactively visualize the experiment data)
-    * Go to localhost:8080 in your favorite browser and you'll see a GUI that looks somewhat like this:
-    ![Screenshot of visualization](visualization-screenshot.png)
+First, run `make test` to check if things are running smoothly.
+
+### Running an experiment
+
+Input audio files that you use in experiments should reside in the input folder. When you run an experiment with two input files, the two audio clips should be of equal length. Furthermore, the format should be:
+* Number of channels: 1 (mono)
+* Sampling rate: 44100 Hz
+* Bit depth: 16
+
+There are some example files in the test_audio folder. For example, copy drums.wav and noise.wav from the test_audio folder to the input folder
+
+You can then run `python neuroevolution.py -i drums.wav synth.wav -g 15 -p 20`
+
+This will run the evolutionary algorithm for 15 generations with a population of 20. While this is running, open another command line instance and run `make serve`. This will run a server for a web client that interactively visualizes the results of the experiment as they become available. Websockets are used to keep the web client synchronized with whatever neuroevolution.py has finished doing. You can also listen to the output sounds there. Just visit http://localhost:8080 in your favorite browser. The web client looks somewhat like this:
+
+![Screenshot of visualization](visualization-screenshot.png)
+
+To get information about all the parameters that neuroevolution.py understands, run `python neuroevolution.py --help`
+
+For convenience, I'll highlight some of the most important parameters here:
+```
+  --fitness {default,mo,hybrid}
+                        Multi-Objective (mo) fitness optimizes for a diverse
+                        population that consists of various non-dominated
+                        trade-offs between similarity in different features.
+                        Hybrid fitness is the sum of default and mo, and gives
+                        you the best of both worlds
+  --neural-input-mode {a,ab,b,s}
+                        What to use as neural input. Mode a: target sound.
+                        Mode ab: target sound and input sound. Mode b: input
+                        sound. Mode s: static input, i.e. only bias.
+  --effect EFFECT_NAME  The name of the sound effect to use. See the effects
+                        folder for options.
+```
+
+But wait, there's more! In experiment_settings.json you can specify which audio features to use for a) similarity calculations and b) neural input. Here's one possible configuration, as in experiment_settings.json.example:
+```
+{
+  "parameter_lpf_cutoff": 50,
+  "similarity_channels": [
+    "mfcc_amp"
+  ],
+  "neural_input_channels": [
+    "mfcc_amp",
+    "mfcc_amp__derivative"
+  ]
+}
+```
+In this example we are just using mfcc_amp for similarity calculations. Neural input is mfcc_amp and the derivative (gradient) of mfcc_amp. You can add the derivative of any feature by writing "{feature_name}__derivative", (replace {feature_name} with the name of the feature)
+
+To see all the available audio features you can add in experiment_settings.json, run `python list_all_features.py`
+
+When you are done with an experiment, run `make clean`. This will delete all files written during the previous experiment, so you're ready for a new experiment.
 
 ## Use RAM disk
 
 Experiments can run ~10% faster if you use a RAM disk to reduce I/O overhead. When you have a
 RAM disk running, set `BASE_DIR` in settings.py to the path of the RAM disk
-(f.ex. `'/mnt/ramdisk'` for Ubuntu or `'R:\\'` for Windows) and run `make prepare-ramdisk`
+(f.ex. `'/mnt/ramdisk'` for Ubuntu or `'R:\\'` for Windows) and run `make prepare-ramdisk`.
+The latter command will ensure that directories are present in the RAM disk and copy audio input
+files and the web-based visualization system. If you want to experiment with new audio input files
+after you ran `make prepare-ramdisk`, you can put the new audio files directly in the input folder
+on the RAM disk.
 
 ### RAM disk setup (Ubuntu)
 

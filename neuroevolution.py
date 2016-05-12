@@ -144,7 +144,8 @@ class Neuroevolution(object):
             type=str,
             help='Multi-Objective (mo) fitness optimizes for a diverse'
                  ' population that consists of various non-dominated trade-offs between similarity'
-                 ' in different features. Hybrid fitness is the sum of default and mo.',
+                 ' in different features. Hybrid fitness is the sum of default and mo, and gives'
+                 ' you the best of both worlds',
             choices=['default', 'mo', 'hybrid'],
             required=False,
             default="default"
