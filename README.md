@@ -56,7 +56,9 @@ Building these dependencies from source can be difficult and time-consuming, so 
 ### Install Sonic Annotator and the libXtract vamp plugin
 
 * https://code.soundsoftware.ac.uk/projects/sonic-annotator/files
-* http://www.vamp-plugins.org/download.html
+    * Download and extract sonic-annotator-1.4-win32.zip (or a newer version, if applicable) to for example C:\sonic-annotator and add that directory to the PATH variable
+* https://code.soundsoftware.ac.uk/projects/vamp-libxtract-plugins/files
+    * Download vamp-libxtract-plugins-0.6.6.20121204-win32.zip and extract vamp-libxtract.cat, vamp-libxtract.dll and vamp-libxtract.n3 to C:\Program Files (x86)\Vamp Plugins ([more info about installing vamp plugins here](http://www.vamp-plugins.org/download.html#install))
 
 ### Install NodeJS
 https://nodejs.org/en/download/
