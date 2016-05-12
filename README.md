@@ -73,6 +73,7 @@ http://www.equation.com/servlet/equation.cmd?fa=make
 * Create a settings file for your experiment(s): `cp experiment_settings.json.example experiment_settings.json`
 * Make sure that all dependencies are installed: `[sudo] pip install -r requirements.txt`
 * Install Node.js dependencies: `cd node_server && npm install && cd -`
+    * If npm fails to properly install the websocket package, go to https://www.npmjs.com/package/websocket#installation for more information
 
 ## Example commands
 
