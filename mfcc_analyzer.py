@@ -66,9 +66,9 @@ class MfccAnalyzer(object):
             str(settings.HOP_SIZE)
         ]
 
-    def parse_output(self, sound_file_to_analyze, lines):
+    def parse_output(self, sound_files, lines):
         for feature in self.features:
-            sound_file_to_analyze.analysis['series'][feature] = []
+            sound_files.analysis['series'][feature] = []
 
         for line in lines:
             values = line.split()
@@ -77,9 +77,9 @@ class MfccAnalyzer(object):
             # mfcc_time = float(values[0])
             if 'mfcc_amp' in self.features:
                 mfcc_amp = float(values[1])
-                sound_file_to_analyze.analysis['series']['mfcc_amp'].append(mfcc_amp)
+                sound_files.analysis['series']['mfcc_amp'].append(mfcc_amp)
             for i in range(len(values) - 2):
                 feature_key = 'mfcc_{}'.format(i + 1)
                 if feature_key in self.features:
                     mfcc_band = float(values[i + 2])
-                    sound_file_to_analyze.analysis['series'][feature_key].append(mfcc_band)
+                    sound_files.analysis['series'][feature_key].append(mfcc_band)

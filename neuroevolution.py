@@ -417,10 +417,10 @@ class Neuroevolution(object):
             )
 
     def evaluate_fitness(self, individuals):
-        sound_files_to_analyze = [
+        sound_files = [
             that_individual.output_sound for that_individual in individuals
             ]
-        self.analyzer.analyze_multiple(sound_files_to_analyze)
+        self.analyzer.analyze_multiple(sound_files)
 
         self.fitness_evaluator_class.evaluate_multiple(
             individuals,
