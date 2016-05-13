@@ -113,7 +113,7 @@ For convenience, I'll highlight some of the most important parameters here:
 ```
 
 But wait, there's more! In experiment_settings.json you can specify which audio features to use for a) similarity calculations and b) neural input. Here's one possible configuration, as in experiment_settings.json.example:
-```
+```json
 {
   "parameter_lpf_cutoff": 50,
   "similarity_channels": [
