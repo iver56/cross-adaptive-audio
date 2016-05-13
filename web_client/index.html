@@ -146,6 +146,8 @@
           <span class="md-subhead"
                 title="{{ statsService.data.generations[statsService.selectedGeneration - 1].individuals[statsService.selectedIndividualIndex].fitness }}">
             Fitness: {{ statsService.data.generations[statsService.selectedGeneration - 1].individuals[statsService.selectedIndividualIndex].fitness | number:4 }}
+            <br>
+            Born in generation {{ individual.individualDetails.born }}
           </span>
 
         </md-card-title-text>

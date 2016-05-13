@@ -15,6 +15,7 @@ class Individual(object):
         self.effect = effect
         self.nn_representation = None
         self.id = None
+        self.born = None  # In which generation was this individual first discovered
 
     def get_id(self):
         """individuals with the same neural network have the same id"""
@@ -69,7 +70,8 @@ class Individual(object):
             'fitness': self.genotype.GetFitness(),
             'neural_output': self.get_neural_output_representation(),
             'output_sound': self.output_sound.get_serialized_representation(),
-            'neural_network_representation': self.get_neural_network_representation()
+            'neural_network_representation': self.get_neural_network_representation(),
+            'born': self.born
         }
 
     def get_short_serialized_representation(self):

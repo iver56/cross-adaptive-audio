@@ -243,6 +243,7 @@ class Neuroevolution(object):
             self.best_individual_ids = set()
 
         self.individual_fitness = {}  # individual id => individual fitness
+        self.individual_born = {}  # individual id => generation when it was first found
 
         self.population = None
         self.init_neat()
@@ -354,6 +355,12 @@ class Neuroevolution(object):
                         )
                     else:
                         ind.set_fitness(unique_individuals[individual_id].genotype.GetFitness())
+
+            for ind_id in unique_individuals:
+                if ind_id not in self.individual_born:
+                    self.individual_born[ind_id] = generation
+            for ind in all_individuals:
+                ind.born = self.individual_born[ind.get_id()]
 
             # Calculate and write stats
             all_individuals.sort(key=lambda i: i.genotype.GetFitness())
