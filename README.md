@@ -36,7 +36,7 @@ https://www.python.org/downloads/
 ### Install Csound
 http://csound.github.io/download.html
 
-### Install HyperNEAT and dependencies (numpy, matplotlib)
+### Install MultiNEAT and numpy
 Building these dependencies from source can be difficult and time-consuming, so let's download wheel binaries instead
 
 * Go to http://www.lfd.uci.edu/~gohlke/pythonlibs/#multineat
@@ -164,3 +164,6 @@ but if you want to try, you can install a program like this:
 https://www.softperfect.com/products/ramdisk/
 
 Use at your own risk
+
+## Known issues
+* libXtract may produce [wrong results on Windows](https://github.com/jamiebullock/LibXtract/issues/65). Use a different analyzer or use Linux.
