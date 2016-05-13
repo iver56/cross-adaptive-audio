@@ -131,9 +131,9 @@ But wait, there's more! In experiment_settings.json you can specify which audio 
 ```
 In this example we are just using mfcc_amp for similarity calculations. Neural input is mfcc_amp and the derivative (gradient) of mfcc_amp. You can add the derivative of any feature by writing "{feature_name}__derivative", (replace {feature_name} with the name of the feature)
 
-To see all the available audio features you can add in experiment_settings.json, run `python list_all_features.py`
+To see all the available audio features you can add in experiment_settings.json, run `make features`
 
-When you are done with an experiment, run `make clean`. This will delete all files written during the previous experiment, so you're ready for a new experiment.
+When you are done with an experiment, run `make clean`. This will delete all files written during the experiment, so you're ready for a new experiment.
 
 ## Use RAM disk
 

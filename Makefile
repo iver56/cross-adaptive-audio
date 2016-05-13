@@ -20,3 +20,7 @@ test:
 .PHONY: serve
 serve:
 	python serve.py
+
+.PHONY: features
+features:
+	python list_all_features.py
