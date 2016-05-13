@@ -24,7 +24,8 @@ class Neuroevolution(object):
             dest='input_files',
             nargs='+',
             type=str,
-            help='The filename of the parameter sound and the filename of the input sound, respectively',
+            help='The filename of the target sound and'
+                 ' the filename of the input sound, respectively',
             required=True,
             default=[]
         )
@@ -47,7 +48,8 @@ class Neuroevolution(object):
         arg_parser.add_argument(
             '--patience',
             dest='patience',
-            help='Number of generations with no improvement before stopping',
+            help='Number of generations with no improvement before stopping. This is only used if'
+                 ' fitness is set to default',
             type=int,
             required=False,
             default=5

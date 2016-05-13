@@ -90,8 +90,6 @@ There are some example files in the test_audio folder. For example, copy drums.w
 
 Our goal in the following example experiment is to make noise.wav sound like drums.wav by running noise.wav through the "dist_lpf" audio effect. The audio effect has a parameters that are controlled by the output of a neural network. The experiment is all about evolving one or more neural networks that behave such that the processed version of noise.wav sounds like drums.wav
 
-In the following command, the order of the audio files matters. The first audio file (drums.wav) is the _target_ sound, while the second (noise.wav) is the _input_ sound.
-
 Run the command `python neuroevolution.py -i drums.wav noise.wav -g 10 -p 20`
 
 This will run the evolutionary algorithm for 10 generations with a population of 20. While this is running, you might want to open another command line instance and run `make serve`. This will start a server for a web client that interactively visualizes the results of the experiment as they become available. Websockets are used to keep the web client synchronized with whatever neuroevolution.py has finished doing. Just visit http://localhost:8080 in your favorite browser. The web client looks somewhat like this:
@@ -100,8 +98,13 @@ This will run the evolutionary algorithm for 10 generations with a population of
 
 To get information about all the parameters that neuroevolution.py understands, run `python neuroevolution.py --help`
 
-For convenience, I'll highlight some of the most important parameters here:
+The _most important_ parameters:
 ```
+  -i INPUT_FILES [INPUT_FILES ...], --input INPUT_FILES [INPUT_FILES ...]
+                        The filename of the target sound and the filename of
+                        the input sound, respectively
+  -g NUM_GENERATIONS, --num-generations NUM_GENERATIONS
+  -p POPULATION_SIZE, --population_size POPULATION_SIZE
   --fitness {default,mo,hybrid}
                         Multi-Objective (mo) fitness optimizes for a diverse
                         population that consists of various non-dominated
