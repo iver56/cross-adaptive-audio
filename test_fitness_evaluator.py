@@ -16,14 +16,12 @@ class TestFitnessEvaluator(unittest.TestCase):
 
         ind1 = individual.Individual(
             genotype=None,
-            generation=None,
             neural_input_mode=None,
             effect=None
         )
         ind1.set_output_sound(drums)
         ind2 = individual.Individual(
             genotype=None,
-            generation=None,
             neural_input_mode=None,
             effect=None
         )

@@ -6,9 +6,8 @@ import hashlib
 
 
 class Individual(object):
-    def __init__(self, genotype, generation, neural_input_mode, effect):
+    def __init__(self, genotype, neural_input_mode, effect):
         self.genotype = genotype
-        self.generation = generation
         self.output_sound = None
         self.neural_output_channels = None
         self.neural_input_mode = neural_input_mode

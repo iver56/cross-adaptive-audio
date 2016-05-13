@@ -307,7 +307,6 @@ class Neuroevolution(object):
             for genotype in genotypes:
                 that_individual = individual.Individual(
                     genotype=genotype,
-                    generation=generation,
                     neural_input_mode=self.args.neural_input_mode,
                     effect=self.effect
                 )
