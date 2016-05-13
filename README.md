@@ -63,9 +63,6 @@ Building these dependencies from source can be difficult and time-consuming, so 
 ### Install NodeJS
 https://nodejs.org/en/download/
 
-### Install GNU make for Windows (optional)
-http://www.equation.com/servlet/equation.cmd?fa=make
-
 ## Setup of this project
 
 * Clone this repository: `git clone https://github.com/iver56/cross-adaptive-audio.git && cd cross-adaptive-audio`
@@ -77,7 +74,7 @@ http://www.equation.com/servlet/equation.cmd?fa=make
 
 ## Usage
 
-First, run `make test` to check if things are running smoothly.
+First, run `nosetests` to check if things are running smoothly.
 
 ### Running an experiment
 
@@ -92,7 +89,7 @@ Our goal in the following example experiment is to make noise.wav sound like dru
 
 Run the command `python neuroevolution.py -i drums.wav noise.wav -g 10 -p 20`
 
-This will run the evolutionary algorithm for 10 generations with a population of 20. While this is running, you might want to open another command line instance and run `make serve`. This will start a server for a web client that interactively visualizes the results of the experiment as they become available. Websockets are used to keep the web client synchronized with whatever neuroevolution.py has finished doing. Just visit http://localhost:8080 in your favorite browser. The web client looks somewhat like this:
+This will run the evolutionary algorithm for 10 generations with a population of 20. While this is running, you might want to open another command line instance and run `python serve.py`. This will start a server for a web client that interactively visualizes the results of the experiment as they become available. Websockets are used to keep the web client synchronized with whatever neuroevolution.py has finished doing. Just visit http://localhost:8080 in your favorite browser. The web client looks somewhat like this:
 
 ![Screenshot of visualization](visualization-screenshot.png)
 
@@ -134,18 +131,18 @@ But wait, there's more! In experiment_settings.json you can specify which audio 
 ```
 In this example we are just using mfcc_amp for similarity calculations. Neural input is mfcc_amp and the derivative (gradient) of mfcc_amp. You can add the derivative of any feature by writing "{feature_name}__derivative", (replace {feature_name} with the name of the feature)
 
-To see all the available audio features you can add in experiment_settings.json, run `make features`
+To see all the available audio features you can add in experiment_settings.json, run `python list_all_features.py`
 
-When you are done with an experiment, run `make clean`. This will delete all files written during the experiment, so you're ready for a new experiment.
+When you are done with an experiment, run `python clean.py`. This will delete all files written during the experiment, so you're ready for a new experiment.
 
 ## Use RAM disk
 
 Experiments can run ~10% faster if you use a RAM disk to reduce I/O overhead. When you have a
 RAM disk running, set `BASE_DIR` in settings.py to the path of the RAM disk
-(f.ex. `'/mnt/ramdisk'` for Ubuntu or `'R:\\'` for Windows) and run `make prepare-ramdisk`.
+(f.ex. `'/mnt/ramdisk'` for Ubuntu or `'R:\\'` for Windows) and run `python prepare_ramdisk.py`.
 The latter command will ensure that directories are present in the RAM disk and copy audio input
 files and the web-based visualization system. If you want to experiment with new audio input files
-after you ran `make prepare-ramdisk`, you can put the new audio files directly in the input folder
+after you ran `python prepare_ramdisk.py`, you can put the new audio files directly in the input folder
 on the RAM disk.
 
 ### RAM disk setup (Ubuntu)
