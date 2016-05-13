@@ -169,8 +169,16 @@ class Neuroevolution(object):
         if len(self.args.input_files) != 2:
             raise Exception('Two filenames must be specified')
 
-        self.target_sound = sound_file.SoundFile(self.args.input_files[0])
-        self.input_sound = sound_file.SoundFile(self.args.input_files[1])
+        self.target_sound = sound_file.SoundFile(
+            self.args.input_files[0],
+            is_input=True,
+            check_if_file_exists=True
+        )
+        self.input_sound = sound_file.SoundFile(
+            self.args.input_files[1],
+            is_input=True,
+            check_if_file_exists=True
+        )
 
         self.project = project.Project([self.target_sound, self.input_sound])
         self.analyzer = analyze.Analyzer(self.project)

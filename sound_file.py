@@ -8,13 +8,19 @@ import six
 
 
 class SoundFile(object):
-    def __init__(self, filename, is_input=True):
+    def __init__(self, filename, is_input=True, check_if_file_exists=False):
         self.is_input = is_input
         self.filename = filename
         if self.is_input:
             self.file_path = os.path.join(settings.INPUT_DIRECTORY, self.filename)
         else:
             self.file_path = os.path.join(settings.OUTPUT_DIRECTORY, self.filename)
+
+        if check_if_file_exists:
+            if not os.path.exists(self.file_path):
+                raise Exception(
+                    'Could not find "{}". Make sure it exists and try again.'.format(self.file_path)
+                )
         
         self.duration = None
         self.analysis = {
