@@ -51,12 +51,18 @@ class FitnessEvaluator(object):
         global_param_feature_vector = []
         for feature_stats in experiment.SIMILARITY_CHANNELS:
             for stat in param_sound_stats[feature_stats]:
-                global_param_feature_vector.append(param_sound_stats[feature_stats][stat])
+                global_param_feature_vector.append(
+                    experiment.SIMILARITY_WEIGHTS[feature_stats] *
+                    param_sound_stats[feature_stats][stat]
+                )
 
         global_output_feature_vector = []
         for feature_stats in experiment.SIMILARITY_CHANNELS:
             for stat in output_sound_stats[feature_stats]:
-                global_output_feature_vector.append(output_sound_stats[feature_stats][stat])
+                global_output_feature_vector.append(
+                    experiment.SIMILARITY_WEIGHTS[feature_stats] *
+                    output_sound_stats[feature_stats][stat]
+                )
 
         global_stats_distance = FitnessEvaluator.get_euclidean_distance(
             global_output_feature_vector,
@@ -90,7 +96,8 @@ class FitnessEvaluator(object):
                         )
                     raise
 
-                sum_of_squared_differences += (param_value - output_value) ** 2
+                sum_of_squared_differences += experiment.SIMILARITY_WEIGHTS[feature] * \
+                                              (param_value - output_value) ** 2
             euclidean_distance = math.sqrt(sum_of_squared_differences)
             euclidean_distance_sum += euclidean_distance
 
