@@ -193,6 +193,15 @@ class Neuroevolution(object):
         elif self.args.fitness == 'hybrid':
             self.fitness_evaluator_class = fitness_evaluator.HybridFitnessEvaluator
 
+        if self.args.fitness in ['mo', 'hybrid'] and \
+                        self.args.population_size < 2 * len(experiment.SIMILARITY_CHANNELS):
+            print(
+                'Warning: Population size is small. The current experiment has {0}'
+                ' similarity channels. \nThe population size should be at least twice that'.format(
+                    len(experiment.SIMILARITY_CHANNELS)
+                )
+            )
+
         self.num_frames = min(
             self.target_sound.get_num_frames(),
             self.input_sound.get_num_frames()
