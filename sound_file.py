@@ -5,6 +5,7 @@ import os
 import settings
 import analyze
 import six
+import experiment
 
 
 class SoundFile(object):
@@ -53,7 +54,7 @@ class SoundFile(object):
         :return: list
         """
         feature_vector = []
-        for feature in settings.NEURAL_INPUT_CHANNELS:
+        for feature in experiment.NEURAL_INPUT_CHANNELS:
             feature_vector.append(self.analysis['series_standardized'][feature][k])
         return feature_vector
 

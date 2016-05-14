@@ -2,6 +2,7 @@ from __future__ import print_function
 import math
 import standardizer
 import settings
+import experiment
 
 
 class FitnessEvaluator(object):
@@ -48,12 +49,12 @@ class FitnessEvaluator(object):
         )
 
         global_param_feature_vector = []
-        for feature_stats in settings.SIMILARITY_CHANNELS:
+        for feature_stats in experiment.SIMILARITY_CHANNELS:
             for stat in param_sound_stats[feature_stats]:
                 global_param_feature_vector.append(param_sound_stats[feature_stats][stat])
 
         global_output_feature_vector = []
-        for feature_stats in settings.SIMILARITY_CHANNELS:
+        for feature_stats in experiment.SIMILARITY_CHANNELS:
             for stat in output_sound_stats[feature_stats]:
                 global_output_feature_vector.append(output_sound_stats[feature_stats][stat])
 
@@ -72,7 +73,7 @@ class FitnessEvaluator(object):
         euclidean_distance_sum = 0
         for k in range(param_sound.get_num_frames()):
             sum_of_squared_differences = 0
-            for feature in settings.SIMILARITY_CHANNELS:
+            for feature in experiment.SIMILARITY_CHANNELS:
                 param_value = param_sound.analysis['series_standardized'][feature][k]
                 try:
                     output_value = output_sound.analysis['series_standardized'][feature][k]
@@ -117,7 +118,7 @@ class MultiObjectiveFitnessEvaluator(object):
     @staticmethod
     def calculate_objectives(that_individual, target_sound):
         that_individual.objectives = {}
-        for feature in settings.SIMILARITY_CHANNELS:
+        for feature in experiment.SIMILARITY_CHANNELS:
             sum_of_squared_differences = 0
             for k in range(target_sound.get_num_frames()):
                 param_value = target_sound.analysis['series_standardized'][feature][k]
@@ -182,7 +183,7 @@ class MultiObjectiveFitnessEvaluator(object):
         for ind in front:
             ind.crowding_distance = 0.0
 
-        for feature in settings.SIMILARITY_CHANNELS:
+        for feature in experiment.SIMILARITY_CHANNELS:
             front = sorted(front, key=lambda x: x.objectives[feature])
 
             min_dist = float(front[0].objectives[feature])

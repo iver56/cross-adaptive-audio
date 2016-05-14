@@ -4,11 +4,12 @@ import sonic_annotator_analyzer
 import mfcc_analyzer
 import essentia_analyzer
 import copy
+import experiment
 
 
 class Analyzer(object):
-    FEATURES_LIST = copy.deepcopy(settings.NEURAL_INPUT_CHANNELS)
-    for feature in settings.SIMILARITY_CHANNELS:
+    FEATURES_LIST = copy.deepcopy(experiment.NEURAL_INPUT_CHANNELS)
+    for feature in experiment.SIMILARITY_CHANNELS:
         if feature not in FEATURES_LIST:
             FEATURES_LIST.append(feature)
 

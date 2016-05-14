@@ -90,7 +90,7 @@ class Individual(object):
                 print('individual {} already exists'.format(self.get_id()))
             return
         data = self.get_serialized_representation()
-        with settings.FILE_HANDLER(file_path, 'w') as outfile:
+        with open(file_path, 'w') as outfile:
             json.dump(data, outfile)
 
     def delete(self, try_delete_serialized_representation=True):

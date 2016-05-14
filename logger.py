@@ -22,7 +22,7 @@ class Logger(object):
 
     def read_existing(self):
         if os.path.isfile(self.feature_data_file_path):
-            with settings.FILE_HANDLER(self.feature_data_file_path) as data_file:
+            with open(self.feature_data_file_path) as data_file:
                 self.data = json.load(data_file)
 
     def log_buffer(self, feature):
@@ -33,5 +33,5 @@ class Logger(object):
         self.data['series'][feature].append(value)
 
     def write(self):
-        with settings.FILE_HANDLER(self.feature_data_file_path, 'w') as outfile:
+        with open(self.feature_data_file_path, 'w') as outfile:
             json.dump(self.data, outfile)

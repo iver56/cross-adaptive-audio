@@ -1,6 +1,4 @@
 import os
-import json
-
 
 BASE_DIR = './'
 RAM_DISK_DIR = '/mnt/ramdisk'  # Example for Ubuntu
@@ -23,15 +21,6 @@ PRNG_SEED = 2
 
 NUM_SIMULTANEOUS_PROCESSES = 4
 
-USE_GZIP = False
-if USE_GZIP:
-    import gzip
-    FILE_HANDLER = gzip.GzipFile
-    DATA_FILE_EXTENSION = '.json.gz'
-else:
-    FILE_HANDLER = open
-    DATA_FILE_EXTENSION = '.json'
-
 VERBOSE = False  # Set this to True for debugging purposes
 
 """Sample rate. CD quality"""
@@ -52,9 +41,3 @@ AKA block size (sonic annotator)
 FRAME_SIZE = HOP_SIZE * 2
 
 WHITELISTED_SOUND_FILE_EXTENSIONS = ['wav']
-
-with FILE_HANDLER('experiment_settings.json') as data_file:
-    experiment_settings = json.load(data_file)
-    SIMILARITY_CHANNELS = experiment_settings['similarity_channels']
-    NEURAL_INPUT_CHANNELS = experiment_settings['neural_input_channels']
-    PARAMETER_LPF_CUTOFF = experiment_settings['parameter_lpf_cutoff']

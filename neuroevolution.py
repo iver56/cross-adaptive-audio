@@ -13,6 +13,7 @@ import os
 import individual
 import project
 import effect
+import experiment
 
 
 class Neuroevolution(object):
@@ -225,7 +226,7 @@ class Neuroevolution(object):
             input_sound=self.input_sound,
             neural_input_vectors=self.neural_input_vectors,
             effect=self.effect,
-            parameter_lpf_cutoff=settings.PARAMETER_LPF_CUTOFF
+            parameter_lpf_cutoff=experiment.PARAMETER_LPF_CUTOFF
         )
 
         self.stats_logger = logger.Logger(
