@@ -91,6 +91,15 @@ class EssentiaAnalyzer(object):
 
             for j in range(len(processes)):
                 processes[j].wait()
+                stdout = processes[j].communicate()[0]
+                if settings.VERBOSE:
+                    print(stdout)
+                if 'completely silent file' in stdout:
+                    if settings.VERBOSE:
+                        print('Discarding completely silent file')
+                    sound_files[i + j].is_silent = True
+                    continue
+
                 self.parse_output(sound_files[i + j])
                 self.post_process(sound_files[i + j])
                 self.clean_up(sound_files[i + j])

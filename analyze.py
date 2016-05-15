@@ -74,7 +74,7 @@ class Analyzer(object):
         self.add_derivative_series(sound_files)
 
         if standardize:
-            self.add_standardized_series(sound_files)
+            self.add_standardized_series([sf for sf in sound_files if not sf.is_silent])
 
     def ensure_equal_lengths(self, sounds, series_key='series'):
         # Check if series length is equal for all series, and if not, try to fix it with padding

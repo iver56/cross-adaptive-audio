@@ -432,8 +432,12 @@ class Neuroevolution(object):
             ]
         self.analyzer.analyze_multiple(sound_files)
 
+        for ind in individuals:
+            if ind.output_sound.is_silent:
+                ind.set_fitness(0.0)
+
         self.fitness_evaluator_class.evaluate_multiple(
-            individuals,
+            [ind for ind in individuals if not ind.output_sound.is_silent],
             self.target_sound
         )
 

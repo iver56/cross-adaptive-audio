@@ -28,6 +28,7 @@ class SoundFile(object):
             'ksmps': settings.HOP_SIZE,
             'series': {}
         }
+        self.is_silent = False
 
     def compute_duration(self):
         with contextlib.closing(wave.open(self.file_path, 'r')) as f:
