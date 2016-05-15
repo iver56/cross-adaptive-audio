@@ -175,12 +175,12 @@ class Neuroevolution(object):
         self.target_sound = sound_file.SoundFile(
             self.args.input_files[0],
             is_input=True,
-            check_if_file_exists=True
+            verify_file=True
         )
         self.input_sound = sound_file.SoundFile(
             self.args.input_files[1],
             is_input=True,
-            check_if_file_exists=True
+            verify_file=True
         )
 
         self.project = project.Project([self.target_sound, self.input_sound])
