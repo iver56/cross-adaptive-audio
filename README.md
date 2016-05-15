@@ -85,7 +85,7 @@ Input audio files that you use in experiments should reside in the input folder.
 
 There are some example files in the test_audio folder. For example, copy drums.wav and noise.wav from the test_audio folder to the input folder.
 
-Our goal in the following example experiment is to make noise.wav sound like drums.wav by running noise.wav through the "dist_lpf" audio effect. The audio effect has a parameters that are controlled by the output of a neural network. The experiment is all about evolving one or more neural networks that behave such that the processed version of noise.wav sounds like drums.wav
+Our goal in the following example experiment is to make noise.wav sound like drums.wav by running noise.wav through the "dist_lpf" audio effect. The audio effect has a set of parameters that are controlled by the output of a neural network. The experiment is all about evolving one or more neural networks that behave such that the processed version of noise.wav sounds like drums.wav
 
 Run the command `python neuroevolution.py -i drums.wav noise.wav -g 10 -p 20`
 
@@ -114,6 +114,7 @@ The _most important_ parameters:
                         sound. Mode s: static input, i.e. only bias.
   --effect EFFECT_NAME  The name of the sound effect to use. See the effects
                         folder for options.
+  --fs-neat [FS_NEAT]   Use FS-NEAT (automatic feature selection)
 ```
 
 But wait, there's more! In experiment_settings.json you can specify which audio features to use for a) similarity calculations and b) neural input. Here's one possible configuration, as in experiment_settings.json.example:

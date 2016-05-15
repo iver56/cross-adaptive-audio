@@ -126,7 +126,7 @@ class Neuroevolution(object):
             '--fs-neat',
             nargs='?',
             dest='fs_neat',
-            help='Use FS-NEAT',
+            help='Use FS-NEAT (automatic feature selection)',
             const=True,
             required=False,
             default=False
