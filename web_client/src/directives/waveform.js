@@ -7,7 +7,7 @@
 
   function Waveform() {
 
-    function WaveformCtrl($scope, debounce, sampleRate, $rootScope, $element) {
+    function WaveformCtrl($scope, debounce, sampleRate, $rootScope, $element, statsService) {
       var vm = this;
 
       vm.container = $($element[0]).find('.waveform-container')[0];
@@ -32,7 +32,9 @@
       });
 
       vm.getFilePath = function() {
-        return '/' + (vm.sound.is_input ? 'input' : 'output') + '/' + vm.sound.filename;
+        return '/' + (
+            vm.sound.is_input ? 'input' : 'output/' + statsService.selectedExperimentFolder
+          ) + '/' + vm.sound.filename;
       };
 
       vm.wavesurfer.on('ready', function() {

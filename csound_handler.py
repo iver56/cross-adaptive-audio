@@ -3,6 +3,7 @@ from __future__ import print_function
 import subprocess
 import os
 import settings
+import experiment
 
 
 class CsoundHandler(object):
@@ -15,7 +16,12 @@ class CsoundHandler(object):
             self.csd_filename
         ]
         if output_filename is not None:
-            command.append('-o' + os.path.join(settings.OUTPUT_DIRECTORY, output_filename))
+            output_file_path = os.path.join(
+                settings.OUTPUT_DIRECTORY,
+                experiment.Experiment.folder_name,
+                output_filename
+            )
+            command.append('-o' + output_file_path)
 
         if settings.VERBOSE:
             p = subprocess.Popen(command)

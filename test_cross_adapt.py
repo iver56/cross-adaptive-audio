@@ -8,12 +8,15 @@ import project
 import effect
 import copy
 import os
+import experiment
 
 
 class TestCrossAdapt(unittest.TestCase):
     def setUp(self):
         settings.INPUT_DIRECTORY = 'test_audio'
         self.files_to_delete = []
+        experiment.Experiment.folder_name = 'test'
+        experiment.Experiment.ensure_folders()
 
     def tearDown(self):
         for file_path in self.files_to_delete:

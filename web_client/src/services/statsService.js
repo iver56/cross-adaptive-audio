@@ -3,9 +3,11 @@
 
   angular
     .module('crossAdaptiveAudioApp')
-    .service('statsService', function($rootScope) {
+    .service('statsService', function($rootScope, $http) {
       var that = this;
 
+      that.experimentFolders = null;
+      that.selectedExperimentFolder = null;
       that.data = null;
       that.selectedGeneration = null;
       that.selectedIndividualIndex = null;
@@ -71,9 +73,29 @@
         }
         return bins;
       };
+      
+      that.setExperimentFolder = function(experimentFolder) {
+        that.selectedExperimentFolder = experimentFolder;
+        that.fetchStats(experimentFolder).then(function(response) {
+          that.setData(response.data);
+        }, function(response) {
+          
+        });
+      };
 
-      $rootScope.$on('stats.json', function(event, data) {
-        that.setData(data);
+      that.fetchStats = function(experimentFolder) {
+        return $http.get('/stats/' + experimentFolder + '/stats.json');
+      };
+
+      $rootScope.$on('stats.json', function(event, message) {
+        if (message.filePath.indexOf(that.selectedExperimentFolder) !== -1) {
+          that.setData(message.data);
+        }
+      });
+
+      $rootScope.$on('experimentFolders', function(event, data) {
+        that.experimentFolders = data;
+        console.log('experiment folders', data);
       })
     });
 })();

@@ -15,7 +15,11 @@ class SoundFile(object):
         if self.is_input:
             self.file_path = os.path.join(settings.INPUT_DIRECTORY, self.filename)
         else:
-            self.file_path = os.path.join(settings.OUTPUT_DIRECTORY, self.filename)
+            self.file_path = os.path.join(
+                settings.OUTPUT_DIRECTORY,
+                experiment.Experiment.folder_name,
+                self.filename
+            )
 
         if verify_file:
             self.verify_file()

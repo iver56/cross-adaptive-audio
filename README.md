@@ -142,7 +142,7 @@ In this example we are using mfcc_amp and mfcc_1 for similarity calculations, an
 
 To see all the available audio features you can add in experiment_settings.json, run `python list_all_features.py`
 
-When you are done with an experiment, run `python clean.py`. This will delete all files written during the experiment, so you're ready for a new experiment.
+When you are done with your experiment(s), run `python clean.py`. This will delete all files written during the experiment(s).
 
 ## Use RAM disk
 

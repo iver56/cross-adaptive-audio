@@ -2,9 +2,10 @@ var http = require('http');
 var chokidar = require('chokidar');
 var util = require('util');
 require('console-stamp')(console, '[HH:MM:ss]');
-var p = require('path');
-var jsonfile = require('jsonfile');
+var path = require('path');
+var jsonFile = require('jsonfile');
 var express = require('express');
+var fs = require('fs');
 
 
 process.on('uncaughtException', function(err) {
@@ -12,7 +13,7 @@ process.on('uncaughtException', function(err) {
 });
 
 var staticServer = express();
-staticServer.use(express.static(p.join(__dirname, '..')));
+staticServer.use(express.static(path.join(__dirname, '..')));
 var staticServerPort = 8080;
 staticServer.listen(staticServerPort, function() {
   console.log('File server is listening on port ' + staticServerPort);
@@ -33,9 +34,7 @@ wsServer = new WebSocketServer({
 var count = 0;
 var clients = {};
 
-// TODO: don't hard code paths, but read them from the settings file
-var statsDir = p.join(__dirname, '..', 'stats');
-var statsFilePath = p.join(statsDir, 'stats.json');
+var statsDir = path.join(__dirname, '..', 'stats');
 
 function sendObject(objectToSend, client) {
   var objectAsJson = JSON.stringify(objectToSend);
@@ -51,12 +50,13 @@ function sendObject(objectToSend, client) {
 }
 
 function sendFile(filePath, key, client) {
-  jsonfile.readFile(filePath, function(err, obj) {
+  jsonFile.readFile(filePath, function(err, obj) {
     if (err) {
       console.error(err);
     } else {
       var objectToSend = {
         key: key,
+        filePath: filePath,
         data: obj
       };
       sendObject(objectToSend, client);
@@ -64,15 +64,18 @@ function sendFile(filePath, key, client) {
   })
 }
 
-function sendStatsFile(client) {
-  sendFile(statsFilePath, 'stats.json', client)
+function getExperimentFolders() {
+  return fs.readdirSync(statsDir).filter(function(file) {
+    return fs.statSync(path.join(statsDir, file)).isDirectory() && file.indexOf('test') === -1;
+  });
 }
 
 chokidar.watch(statsDir, {ignored: /[\/\\]\./}).on('change', function(path, stats) {
   if (path.endsWith('stats.json')) {
     console.log('stats.json changed');
     setTimeout(function() {
-      sendStatsFile(); // broadcast to all clients
+      // TODO: only broadcast file to clients that are looking at this specific experiment
+      sendFile(path, 'stats.json'); // broadcast to all clients
     }, 500);
   }
 });
@@ -89,11 +92,16 @@ wsServer.on('request', function(r) {
 
   console.log('Connection accepted [' + id + ']');
 
-  sendStatsFile(connection);
+  var experimentFoldersObj = {
+    key: 'experimentFolders',
+    data: getExperimentFolders()
+  };
+  sendObject(experimentFoldersObj, connection);
 
   // Create event listener
   connection.on('message', function(message) {
     var msgObject = JSON.parse(message.utf8Data);
+    console.log(msgObject);
   });
 
   connection.on('close', function(reasonCode, description) {

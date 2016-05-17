@@ -6,6 +6,7 @@ import template_handler
 import csound_handler
 import os
 import time
+import experiment
 
 
 class TestCsound(unittest.TestCase):
@@ -15,6 +16,7 @@ class TestCsound(unittest.TestCase):
         self.drums = sound_file.SoundFile('drums.wav')
         self.files_to_delete = []
         self.template_file_path = os.path.join(settings.EFFECT_DIRECTORY, 'test_effect.csd.jinja2')
+        experiment.Experiment.folder_name = 'test'
 
     def tearDown(self):
         for file_path in self.files_to_delete:
@@ -32,13 +34,23 @@ class TestCsound(unittest.TestCase):
                 duration=duration
             )
 
-            csd_path = os.path.join(settings.CSD_DIRECTORY, 'test_effect_{}.csd'.format(i))
+            csd_path = os.path.join(
+                settings.CSD_DIRECTORY,
+                experiment.Experiment.folder_name,
+                'test_effect_{}.csd'.format(i)
+            )
             template.write_result(csd_path)
             csound = csound_handler.CsoundHandler(csd_path)
             output_filename = self.drums.filename + '.test_processed_serial_{}.wav'.format(i)
             csound.run(output_filename, async=False)
             self.files_to_delete.append(csd_path)
-            self.files_to_delete.append(os.path.join(settings.OUTPUT_DIRECTORY, output_filename))
+            self.files_to_delete.append(
+                os.path.join(
+                    settings.OUTPUT_DIRECTORY,
+                    experiment.Experiment.folder_name,
+                    output_filename
+                )
+            )
 
         print("Serial execution time for {0} sounds: {1} seconds".format(
             self.num_sounds,
@@ -59,14 +71,24 @@ class TestCsound(unittest.TestCase):
                 duration=duration
             )
 
-            csd_path = os.path.join(settings.CSD_DIRECTORY, 'test_effect_{}.csd'.format(i))
+            csd_path = os.path.join(
+                settings.CSD_DIRECTORY,
+                experiment.Experiment.folder_name,
+                'test_effect_{}.csd'.format(i)
+            )
             template.write_result(csd_path)
             csound = csound_handler.CsoundHandler(csd_path)
             output_filename = self.drums.filename + '.test_processed_parallel_{}.wav'.format(i)
             p = csound.run(output_filename, async=True)
             processes.append(p)
             self.files_to_delete.append(csd_path)
-            self.files_to_delete.append(os.path.join(settings.OUTPUT_DIRECTORY, output_filename))
+            self.files_to_delete.append(
+                os.path.join(
+                    settings.OUTPUT_DIRECTORY,
+                    experiment.Experiment.folder_name,
+                    output_filename
+                )
+            )
 
         for p in processes:
             p.wait()

@@ -3,6 +3,7 @@ import settings
 import json
 import neural_network_representation
 import hashlib
+import experiment
 
 
 class Individual(object):
@@ -26,6 +27,7 @@ class Individual(object):
     def get_individual_data_file_path(self):
         return os.path.join(
             settings.INDIVIDUAL_DATA_DIRECTORY,
+            experiment.Experiment.folder_name,
             'individual_{}.json'.format(self.get_id())
         )
 

@@ -238,17 +238,25 @@ class Neuroevolution(object):
             parameter_lpf_cutoff=experiment.PARAMETER_LPF_CUTOFF
         )
 
-        self.stats_logger = logger.Logger(
-            os.path.join(settings.STATS_DATA_DIRECTORY, 'stats.json'),
-            suppress_initialization=True
-        )
-        self.stats_logger.data = {
+        experiment_data = {
             'param_sound': self.target_sound.get_serialized_representation(),
             'input_sound': self.input_sound.get_serialized_representation(),
             'args': vars(self.args),
             'experiment_settings': experiment.experiment_settings,
             'generations': []
         }
+        experiment.Experiment.calculate_current_experiment_id(experiment_data)
+
+        self.stats_logger = logger.Logger(
+            os.path.join(
+                settings.STATS_DATA_DIRECTORY,
+                experiment.Experiment.folder_name,
+                'stats.json'
+            ),
+            suppress_initialization=True
+        )
+        self.stats_logger.data = experiment_data
+
         self.max_fitness = None
         self.last_fitness_improvement = 0  # generation number
         if self.args.keep_k_best != -1:
@@ -442,12 +450,6 @@ class Neuroevolution(object):
             [ind for ind in individuals if not ind.output_sound.is_silent],
             self.target_sound
         )
-
-    def get_serialized_args(self):
-        # TODO
-        return {
-            'seed': self.args.seed
-        }
 
 
 if __name__ == '__main__':

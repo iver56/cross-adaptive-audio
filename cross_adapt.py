@@ -8,6 +8,7 @@ import sound_file
 import MultiNEAT as NEAT
 import standardizer
 import copy
+import experiment
 
 
 class CrossAdapter(object):
@@ -95,7 +96,11 @@ class CrossAdapter(object):
             parameter_lpf_cutoff=self.parameter_lpf_cutoff
         )
 
-        csd_path = os.path.join(settings.CSD_DIRECTORY, output_filename + '.csd')
+        csd_path = os.path.join(
+            settings.CSD_DIRECTORY,
+            experiment.Experiment.folder_name,
+            output_filename + '.csd'
+        )
         template.write_result(csd_path)
         csound = csound_handler.CsoundHandler(csd_path)
         process = csound.run(output_filename, async=True)

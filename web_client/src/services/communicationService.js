@@ -19,7 +19,9 @@
           var noOp = false;
 
           if (message.key === 'stats.json') {
-            $rootScope.$emit('stats.json', message.data);
+            $rootScope.$emit('stats.json', message);
+          } else if (message.key === 'experimentFolders') {
+            $rootScope.$emit('experimentFolders', message.data);
           } else {
             // no operation
             noOp = true;

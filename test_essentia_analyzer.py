@@ -4,6 +4,7 @@ import settings
 import sound_file
 import time
 import essentia_analyzer
+import experiment
 
 
 class TestEssentiaAnalyzer(unittest.TestCase):
@@ -14,6 +15,7 @@ class TestEssentiaAnalyzer(unittest.TestCase):
             sound_file.SoundFile('vocal.wav')
         ]
         self.essentia_analyzer = essentia_analyzer.EssentiaAnalyzer(['spectral_centroid'])
+        experiment.Experiment.folder_name = 'test'
 
     def test_analysis(self):
         self.start_time = time.time()

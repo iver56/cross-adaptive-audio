@@ -26,7 +26,9 @@ angular.module('crossAdaptiveAudioApp')
 
     vm.fetchWholeIndividualRepresentation = function() {
       vm.loading = true;
-      $http.get('/individuals/individual_' + vm.individual.id + '.json').then(function(response) {
+      var url = '/individuals/' + statsService.selectedExperimentFolder +
+        '/individual_' + vm.individual.id + '.json';
+      $http.get(url).then(function(response) {
         vm.individualDetails = response.data;
         vm.loading = false;
       }, function(response) {

@@ -3,6 +3,7 @@ from subprocess import Popen, PIPE, STDOUT
 import os
 import json
 import math
+import experiment
 
 
 class EssentiaAnalyzer(object):
@@ -106,7 +107,11 @@ class EssentiaAnalyzer(object):
 
     @staticmethod
     def get_output_analysis_file_path(that_sound_file):
-        return os.path.join(settings.TEMP_DIRECTORY, that_sound_file.filename + '.json')
+        return os.path.join(
+            settings.TEMP_DIRECTORY,
+            experiment.Experiment.folder_name,
+            that_sound_file.filename + '.json'
+        )
 
     @staticmethod
     def get_command(that_sound_file):
