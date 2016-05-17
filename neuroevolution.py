@@ -245,6 +245,8 @@ class Neuroevolution(object):
         self.stats_logger.data = {
             'param_sound': self.target_sound.get_serialized_representation(),
             'input_sound': self.input_sound.get_serialized_representation(),
+            'args': vars(self.args),
+            'experiment_settings': experiment.experiment_settings,
             'generations': []
         }
         self.max_fitness = None
@@ -440,6 +442,12 @@ class Neuroevolution(object):
             [ind for ind in individuals if not ind.output_sound.is_silent],
             self.target_sound
         )
+
+    def get_serialized_args(self):
+        # TODO
+        return {
+            'seed': self.args.seed
+        }
 
 
 if __name__ == '__main__':
