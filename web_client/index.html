@@ -34,6 +34,9 @@
   <script src="src/services/colorService.js"></script>
   <script src="src/services/cubismService.js"></script>
 
+  <script src="src/directives/experimentCard.js"></script>
+  <link rel="stylesheet" href="css/experiment-card.css">
+
   <script src="src/directives/statsChart.js"></script>
   <link rel="stylesheet" href="css/stats-chart.css">
 
@@ -56,24 +59,19 @@
 
 <md-content ng-if="!statsService.selectedExperimentFolder">
   <h1>Select experiment</h1>
-  <md-card
-      class="card-select-experiment"
-      ng-repeat="experimentFolder in statsService.experimentFolders | orderBy:'-'"
-      ng-click="statsService.setExperimentFolder(experimentFolder)"
-  >
-    <md-card-title>
-      <md-card-title-text>
-          <span class="md-headline">
-            {{ experimentFolder }}
-          </span>
-          <span class="md-subhead">
-            <!-- TODO: show experiment description here -->
-          </span>
-      </md-card-title-text>
-    </md-card-title>
-    <md-card-content>
-    </md-card-content>
-  </md-card>
+
+  <div ng-if="statsService.experimentFolders !== null && statsService.experimentFolders.length === 0">
+    <p>If you haven't started an experiment yet, you may do that now from your command line. Example
+      command:</p>
+    <pre>python neuroevolution.py -i drums.wav noise.wav -g 20 -p 20</pre>
+    <p>Reload this page when an experiment is running</p>
+  </div>
+  <div layout="column" layout-gt-sm="row" class="experiment-card-container">
+    <experiment-card
+        ng-repeat="experimentFolder in statsService.experimentFolders | orderBy:'-'"
+        experiment-folder="experimentFolder"
+    ></experiment-card>
+  </div>
 
 </md-content>
 
@@ -81,9 +79,6 @@
   <md-progress-linear md-mode="indeterminate"></md-progress-linear>
   <h1>Waiting for data</h1>
   <p>Things will start showing up here when the first generation is done.</p>
-  <p>If you haven't started your experiment yet, you may do that now from your command line. Example
-    command:</p>
-  <pre>python neuroevolution.py -i drums.wav noise.wav -g 30 -p 20</pre>
 </md-content>
 
 <md-content ng-if="statsService.data.generations">

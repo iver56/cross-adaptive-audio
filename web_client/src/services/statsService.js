@@ -95,7 +95,6 @@
 
       $rootScope.$on('experimentFolders', function(event, data) {
         that.experimentFolders = data;
-        console.log('experiment folders', data);
       })
     });
 })();

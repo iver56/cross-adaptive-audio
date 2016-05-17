@@ -5,7 +5,3 @@ md-content {
 .chart-legend {
   position: static !important;
 }
-
-.card-select-experiment {
-  cursor: pointer;
-}
