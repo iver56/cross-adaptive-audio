@@ -41,7 +41,7 @@ with open('experiment_settings.json', 'r') as data_file:
 class Experiment(object):
     current_experiment_id = None
     start_time = None
-    folder_name = None
+    folder_name = './'
 
     @staticmethod
     def calculate_current_experiment_id(experiment_representation):
