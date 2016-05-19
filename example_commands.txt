@@ -1,0 +1,2 @@
+python neuroevolution.py -i drums.wav noise.wav -g 10 -p 10
+python neuroevolution.py -i drums.wav noise.wav -g 10 -p 10 --output-activation-function sigmoid

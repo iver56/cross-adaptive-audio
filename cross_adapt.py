@@ -50,7 +50,8 @@ class CrossAdapter(object):
             net.Input(input_vector)
             net.Activate()
             output = net.Output()
-            output_vectors.append(list(output))
+            output = [min(1.0, max(0.0, x)) for x in output]
+            output_vectors.append(output)
 
         that_individual.set_neural_output(zip(*output_vectors))
 
