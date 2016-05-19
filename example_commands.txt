@@ -3,3 +3,6 @@ python neuroevolution.py -i drums.wav noise.wav -g 40 -p 40 --patience 40 --seed
 
 # compare NEAT and FS-NEAT
 python neuroevolution.py -i sine_sweep.wav noise.wav -p 150 --keep-k-best 75 --fitness hybrid --effect lpf && python neuroevolution.py -i sine_sweep.wav noise.wav -p 150 --keep-k-best 75 --fitness hybrid --effect lpf --fs-neat
+
+# compare fitness modes
+python neuroevolution.py -i drums.wav noise.wav --patience 20 --fitness default && python neuroevolution.py -i drums.wav noise.wav --patience 20 --fitness mo && python neuroevolution.py -i drums.wav noise.wav --patience 20 --fitness hybrid

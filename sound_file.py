@@ -21,6 +21,11 @@ class SoundFile(object):
                 self.filename
             )
 
+        self.num_frames = None
+        self.sample_rate = None
+        self.duration = None
+        self.num_channels = None
+
         if verify_file:
             self.verify_file()
         
@@ -36,42 +41,35 @@ class SoundFile(object):
             raise Exception(
                 'Could not find "{}". Make sure it exists and try again.'.format(self.file_path)
             )
-        wav_properties = self.get_wav_properties()
-        if wav_properties['num_frames'] < settings.FRAME_SIZE:
+        self.calculate_wav_properties()
+        if self.num_frames < settings.FRAME_SIZE:
             raise Exception('The sound {} is too short'.format(self.file_path))
-        if wav_properties['sample_rate'] != settings.SAMPLE_RATE:
+        if self.sample_rate != settings.SAMPLE_RATE:
             raise Exception(
                 'Sample rate mismatch: The sample rate of {0} is {1} but should be {2}'.format(
                     self.file_path,
-                    wav_properties['sample_rate'],
+                    self.sample_rate,
                     settings.SAMPLE_RATE
                 )
             )
-        if wav_properties['num_channels'] != 1:
+        if self.num_channels != 1:
             raise Exception(
                 '{0} has {1} channels, but should have 1 (mono)'.format(
                     self.file_path,
-                    wav_properties['num_channels']
+                    self.num_channels
                 )
             )
 
-    def get_wav_properties(self):
+    def calculate_wav_properties(self):
         with contextlib.closing(wave.open(self.file_path, 'r')) as f:
-            num_frames = f.getnframes()
-            sample_rate = f.getframerate()
-            duration = num_frames / float(sample_rate)
-            num_channels = f.getnchannels()
-
-            return {
-                'num_frames': num_frames,
-                'sample_rate': sample_rate,
-                'duration': duration,
-                'num_channels': num_channels
-            }
+            self.num_frames = f.getnframes()
+            self.sample_rate = f.getframerate()
+            self.duration = self.num_frames / float(self.sample_rate)
+            self.num_channels = f.getnchannels()
 
     def get_duration(self):
         if self.duration is None:
-            self.duration = self.get_wav_properties()['duration']
+            self.calculate_wav_properties()
         return self.duration
 
     def get_num_frames(self):

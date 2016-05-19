@@ -201,6 +201,8 @@ class Neuroevolution(object):
             is_input=True,
             verify_file=True
         )
+        if self.target_sound.num_frames != self.input_sound.num_frames:
+            raise Exception('The target sound and the input sound must have the same duration')
 
         self.project = project.Project([self.target_sound, self.input_sound])
         self.analyzer = analyze.Analyzer(self.project)
