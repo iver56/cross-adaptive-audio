@@ -67,7 +67,7 @@ class Neuroevolution(object):
             '--keep-k-best',
             dest='keep_k_best',
             help='Store only the k fittest individual in each generation. Improves perf and'
-                 ' saves storage',
+                 ' saves storage. If set to 0, no individuals will be stored.',
             type=int,
             required=False,
             default=-1  # -1 means keep all
@@ -182,8 +182,8 @@ class Neuroevolution(object):
         )
         self.args = arg_parser.parse_args()
 
-        if self.args.keep_k_best == 0 or self.args.keep_k_best > self.args.population_size:
-            raise Exception('keep-k-best must be positive and not greater than the population size')
+        if self.args.keep_k_best > self.args.population_size:
+            self.args.keep_k_best = self.args.population_size
 
         if self.args.seed is not None:
             settings.PRNG_SEED = self.args.seed
@@ -278,7 +278,7 @@ class Neuroevolution(object):
 
         self.max_fitness = None
         self.last_fitness_improvement = 0  # generation number
-        if self.args.keep_k_best != -1:
+        if self.args.keep_k_best > -1:
             self.best_individual_ids = set()
 
         self.individual_fitness = {}  # individual id => individual fitness
@@ -432,7 +432,7 @@ class Neuroevolution(object):
             is_last_generation = patience_has_ended or generation == self.args.num_generations
 
             # Store individual(s)
-            if self.args.keep_k_best == -1 or (self.args.keep_all_last and is_last_generation):
+            if self.args.keep_k_best < 0 or (self.args.keep_all_last and is_last_generation):
                 # keep all individuals
                 for that_individual in unique_individuals_list:
                     individual_id = that_individual.get_id()
@@ -440,7 +440,7 @@ class Neuroevolution(object):
                         that_individual.save()
                     self.individual_fitness[individual_id] = that_individual.genotype.GetFitness()
             else:
-                # keep only k best
+                # keep only k best individuals
                 unique_individuals_list.sort(key=lambda i: i.genotype.GetFitness(), reverse=True)
                 for i in range(self.args.keep_k_best):
                     self.best_individual_ids.add(unique_individuals_list[i].get_id())
