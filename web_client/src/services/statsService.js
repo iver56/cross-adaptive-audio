@@ -62,7 +62,7 @@
             Math.min(
               parseInt(
                 that.histogramOptions.numBins
-                * (individuals[i].fitness - that.histogramOptions.minValue)
+                * (individuals[i].similarity - that.histogramOptions.minValue)
                 / that.histogramOptions.difference
               ),
               that.histogramOptions.numBins - 1

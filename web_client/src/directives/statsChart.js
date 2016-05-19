@@ -21,38 +21,38 @@
           {
             axis: "y",
             dataset: "stats",
-            key: "fitness_max",
-            label: "Max fitness",
+            key: "similarity_max",
+            label: "Max similarity",
             color: "#FF8F54",
             type: ['line', 'dot'],
-            id: 'fitness_max'
+            id: 'similarity_max'
           },
           {
             axis: "y",
             dataset: "stats",
-            key: "fitness_avg",
-            label: "Average fitness",
+            key: "similarity_avg",
+            label: "Average similarity",
             color: "#1f77b4",
             type: ['line', 'dot'],
-            id: 'fitness_avg'
+            id: 'similarity_avg'
           },
           {
             axis: "y",
             dataset: "stats",
-            key: "fitness_min",
-            label: "Min fitness",
+            key: "similarity_min",
+            label: "Min similarity",
             color: "#FF4F86",
             type: ['line', 'dot'],
-            id: 'fitness_min'
+            id: 'similarity_min'
           },
           {
             axis: "y",
             dataset: "stats",
-            key: "fitness_std_dev",
+            key: "similarity_std_dev",
             label: "Standard deviation",
             color: "#60E246",
             type: ['line', 'dot'],
-            id: 'fitness_std_dev',
+            id: 'similarity_std_dev',
             visible: false
           }
         ],

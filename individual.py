@@ -16,6 +16,7 @@ class Individual(object):
         self.nn_representation = None
         self.id = None
         self.born = None  # In which generation was this individual first discovered
+        self.similarity = None  # may be different from the fitness value
 
     def get_id(self):
         """individuals with the same neural network have the same id"""
@@ -69,6 +70,7 @@ class Individual(object):
         return {
             'id': self.get_id(),
             'fitness': self.genotype.GetFitness(),
+            'similarity': self.similarity,
             'neural_output': self.get_neural_output_representation(),
             'output_sound': self.output_sound.get_serialized_representation(),
             'neural_network_representation': self.get_neural_network_representation(),
@@ -82,7 +84,7 @@ class Individual(object):
         """
         return {
             'id': self.get_id(),
-            'fitness': self.genotype.GetFitness()
+            'similarity': self.similarity
         }
 
     def save(self):

@@ -15,9 +15,11 @@ class FitnessEvaluator(object):
 
     @staticmethod
     def evaluate_multiple(individuals, target_sound):
+        fitness_values = []
         for ind in individuals:
             fitness = FitnessEvaluator.evaluate(target_sound, ind.output_sound)
-            ind.set_fitness(fitness)
+            fitness_values.append(fitness)
+        return fitness_values
 
     @staticmethod
     def evaluate(param_sound, output_sound):
@@ -38,6 +40,8 @@ class FitnessEvaluator(object):
 
     @staticmethod
     def get_global_similarity(param_sound, output_sound):
+        # Warning: This function is not maintained
+
         # Compare global stats:
         param_standardizer = standardizer.Standardizer([param_sound])
         output_standardizer = standardizer.Standardizer([output_sound])
@@ -210,6 +214,7 @@ class MultiObjectiveFitnessEvaluator(object):
 
     @staticmethod
     def evaluate_multiple(individuals, target_sound):
+        fitness_values = []
         for ind in individuals:
             MultiObjectiveFitnessEvaluator.calculate_objectives(ind, target_sound)
 
@@ -218,7 +223,8 @@ class MultiObjectiveFitnessEvaluator(object):
             MultiObjectiveFitnessEvaluator.calculate_crowding_distances(fronts[rank])
             for ind in fronts[rank]:
                 fitness = 1.0 / (rank + (0.5 / (1.0 + ind.crowding_distance)))
-                ind.set_fitness(fitness)
+                fitness_values.append(fitness)
+        return fitness_values
 
 
 class HybridFitnessEvaluator(object):
@@ -228,9 +234,8 @@ class HybridFitnessEvaluator(object):
 
     @staticmethod
     def evaluate_multiple(individuals, target_sound):
-        MultiObjectiveFitnessEvaluator.evaluate_multiple(individuals, target_sound)
-        for ind in individuals:
+        fitness_values = MultiObjectiveFitnessEvaluator.evaluate_multiple(individuals, target_sound)
+        for i, ind in enumerate(individuals):
             fitness = FitnessEvaluator.evaluate(target_sound, ind.output_sound)
-            ind.set_fitness(
-                (ind.genotype.GetFitness() + fitness) / 2
-            )
+            fitness_values[i] = (fitness_values[i] + fitness) / 2
+        return fitness_values

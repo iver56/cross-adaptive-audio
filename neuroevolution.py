@@ -53,7 +53,7 @@ class Neuroevolution(object):
                  ' fitness is set to default',
             type=int,
             required=False,
-            default=5
+            default=10
         )
         arg_parser.add_argument(
             '-s',
@@ -212,6 +212,8 @@ class Neuroevolution(object):
         elif self.args.fitness == 'hybrid':
             self.fitness_evaluator_class = fitness_evaluator.HybridFitnessEvaluator
 
+        self.similarity_evaluator_class = fitness_evaluator.FitnessEvaluator
+
         if self.args.fitness in ['mo', 'hybrid'] and \
                         self.args.population_size < 2 * len(experiment.SIMILARITY_CHANNELS):
             print(
@@ -276,7 +278,7 @@ class Neuroevolution(object):
         )
         self.stats_logger.data = experiment_data
 
-        self.max_fitness = None
+        self.max_similarity = None
         self.last_fitness_improvement = 0  # generation number
         if self.args.keep_k_best > -1:
             self.best_individual_ids = set()
@@ -291,13 +293,13 @@ class Neuroevolution(object):
         self.run()
         print("Run execution time: {0:.2f} seconds".format(time.time() - run_start_time))
 
-    def has_patience_ended(self, max_fitness, generation):
+    def has_patience_ended(self, max_similarity, generation):
         """
         Return True if patience has ended, i.e. too many generations have passed without
-        improving max fitness
+        improving max similarity
         """
-        if self.max_fitness is None or max_fitness > self.max_fitness:
-            self.max_fitness = max_fitness
+        if self.max_similarity is None or max_similarity > self.max_similarity:
+            self.max_similarity = max_similarity
             self.last_fitness_improvement = generation
             return False  # There is progress. Keep going.
         elif generation - self.last_fitness_improvement >= self.args.patience:
@@ -362,6 +364,7 @@ class Neuroevolution(object):
                         print(that_individual.get_id() + ' already exists. Will not evaluate again')
 
                     that_individual.set_fitness(self.individual_fitness[that_individual.get_id()])
+                    that_individual.similarity = self.individual_fitness[that_individual.get_id()]
                 else:
                     individuals.append(that_individual)
                 all_individuals.append(that_individual)
@@ -392,6 +395,8 @@ class Neuroevolution(object):
             for individual_id in duplicates:
                 for ind in duplicates[individual_id]:
                     ind.set_output_sound(unique_individuals[individual_id].output_sound)
+                    ind.similarity = unique_individuals[individual_id].similarity
+
                     if self.fitness_evaluator_class.IS_FITNESS_RELATIVE:
                         # Discourage clusters of duplicates
                         ind.set_fitness(
@@ -407,28 +412,35 @@ class Neuroevolution(object):
                 ind.born = self.individual_born[ind.get_id()]
 
             # Calculate and write stats
-            all_individuals.sort(key=lambda i: i.genotype.GetFitness())
-            flat_fitness_list = [i.genotype.GetFitness() for i in all_individuals]
+            all_individuals.sort(key=lambda ind: ind.similarity)
+            flat_fitness_list = sorted([ind.genotype.GetFitness() for ind in all_individuals])
+            flat_similarity_list = [ind.similarity for ind in all_individuals]
             max_fitness = flat_fitness_list[-1]
             min_fitness = flat_fitness_list[0]
-            print('max fitness: {0:.5f}'.format(max_fitness))
             avg_fitness = statistics.mean(flat_fitness_list)
+            max_similarity = flat_similarity_list[-1]
+            min_similarity = flat_similarity_list[0]
+            avg_similarity = statistics.mean(flat_similarity_list)
             fitness_std_dev = statistics.pstdev(flat_fitness_list)
-            print('avg fitness: {0:.5f}'.format(avg_fitness))
+            similarity_std_dev = statistics.pstdev(flat_fitness_list)
+            print('max similarity: {0:.5f}'.format(max_similarity))
+            print('avg similarity: {0:.5f}'.format(avg_similarity))
             stats_item = {
                 'generation': generation,
                 'fitness_min': min_fitness,
                 'fitness_max': max_fitness,
                 'fitness_avg': avg_fitness,
                 'fitness_std_dev': fitness_std_dev,
+                'similarity_min': min_similarity,
+                'similarity_max': max_similarity,
+                'similarity_avg': avg_similarity,
+                'similarity_std_dev': similarity_std_dev,
                 'individuals': [i.get_short_serialized_representation() for i in all_individuals]
             }
             self.stats_logger.data['generations'].append(stats_item)
             self.stats_logger.write()
 
-            # TODO: implement patience for multi-objective fitness
-            patience_has_ended = (not self.fitness_evaluator_class.IS_FITNESS_RELATIVE) and \
-                                 self.has_patience_ended(max_fitness, generation)
+            patience_has_ended = self.has_patience_ended(max_similarity, generation)
             is_last_generation = patience_has_ended or generation == self.args.num_generations
 
             # Store individual(s)
@@ -473,11 +485,26 @@ class Neuroevolution(object):
         for ind in individuals:
             if ind.output_sound.is_silent:
                 ind.set_fitness(0.0)
+                ind.similarity = 0.0
 
-        self.fitness_evaluator_class.evaluate_multiple(
-            [ind for ind in individuals if not ind.output_sound.is_silent],
+        non_silent_individuals = [ind for ind in individuals if not ind.output_sound.is_silent]
+        fitness_values = self.fitness_evaluator_class.evaluate_multiple(
+            non_silent_individuals,
             self.target_sound
         )
+        for i, ind in enumerate(non_silent_individuals):
+            ind.set_fitness(fitness_values[i])
+
+        if self.args.fitness == 'default':
+            for ind in non_silent_individuals:
+                ind.similarity = ind.genotype.GetFitness()
+        else:
+            similarity_values = self.similarity_evaluator_class.evaluate_multiple(
+                non_silent_individuals,
+                self.target_sound
+            )
+            for i, ind in enumerate(non_silent_individuals):
+                ind.similarity = similarity_values[i]
 
 
 if __name__ == '__main__':

@@ -87,7 +87,7 @@
       <md-card-title>
         <md-card-title-text>
           <span class="md-headline">
-            Fitness plot
+            Similarity plot
           </span>
           <span class="md-subhead">
             Interaction: Drag with the mouse to pan. Hold alt and drag to zoom. Double-click to
@@ -103,7 +103,7 @@
       <md-card-title>
         <md-card-title-text>
           <span class="md-headline">
-            Select generation for histogram fitness plot
+            Select generation for histogram
           </span>
           <span class="md-subhead">
             Interaction: While slider is focused, use the arrow keys to navigate
@@ -134,7 +134,7 @@
 
     <div class="layout-padding">
       <span class="md-headline">Select individual</span>
-      <span class="md-subhead">sorted by fitness (best to the right)</span>
+      <span class="md-subhead">sorted by similarity (best to the right)</span>
       <div layout>
         <md-slider
             ng-if="statsService.selectedGeneration"
@@ -161,9 +161,10 @@
             {{ statsService.data.generations[statsService.selectedGeneration - 1].individuals[statsService.selectedIndividualIndex].id | limitTo:8}}
             </span>
           </span>
-          <span class="md-subhead"
-                title="{{ statsService.data.generations[statsService.selectedGeneration - 1].individuals[statsService.selectedIndividualIndex].fitness }}">
-            Fitness: {{ statsService.data.generations[statsService.selectedGeneration - 1].individuals[statsService.selectedIndividualIndex].fitness | number:4 }}
+          <span class="md-subhead">
+            Similarity: {{ statsService.data.generations[statsService.selectedGeneration - 1].individuals[statsService.selectedIndividualIndex].similarity | number:4 }}
+            <br>
+            Fitness: {{ individual.individualDetails.fitness | number:4 }}
             <br>
             Born in generation {{ individual.individualDetails.born }}
           </span>
