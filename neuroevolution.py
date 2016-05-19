@@ -73,6 +73,16 @@ class Neuroevolution(object):
             default=-1  # -1 means keep all
         )
         arg_parser.add_argument(
+            '--keep-all-last',
+            nargs='?',
+            dest='keep_all_last',
+            help='Store all individuals in the last generation, disregarding --keep-k-best in'
+                 ' that generation',
+            const=True,
+            required=False,
+            default=False
+        )
+        arg_parser.add_argument(
             '--allow-clones',
             nargs='?',
             dest='allow_clones',
@@ -416,34 +426,37 @@ class Neuroevolution(object):
             self.stats_logger.data['generations'].append(stats_item)
             self.stats_logger.write()
 
-            # Store individual(s)
-            if self.args.keep_k_best != -1:
-                unique_individuals_list.sort(key=lambda i: i.genotype.GetFitness(), reverse=True)
-                for i in range(self.args.keep_k_best):
-                    self.best_individual_ids.add(unique_individuals_list[i].get_id())
-                    unique_individuals_list[i].save()
+            # TODO: implement patience for multi-objective fitness
+            patience_has_ended = (not self.fitness_evaluator_class.IS_FITNESS_RELATIVE) and \
+                                 self.has_patience_ended(max_fitness, generation)
+            is_last_generation = patience_has_ended or generation == self.args.num_generations
 
-                # delete all but best fit results from this generation
-                for i in range(self.args.keep_k_best, len(unique_individuals_list)):
-                    if unique_individuals_list[i].get_id() not in self.best_individual_ids:
-                        unique_individuals_list[i].delete(
-                            try_delete_serialized_representation=False)
-            else:
+            # Store individual(s)
+            if self.args.keep_k_best == -1 or (self.args.keep_all_last and is_last_generation):
                 # keep all individuals
                 for that_individual in unique_individuals_list:
                     individual_id = that_individual.get_id()
                     if individual_id not in self.individual_fitness:
                         that_individual.save()
                     self.individual_fitness[individual_id] = that_individual.genotype.GetFitness()
+            else:
+                # keep only k best
+                unique_individuals_list.sort(key=lambda i: i.genotype.GetFitness(), reverse=True)
+                for i in range(self.args.keep_k_best):
+                    self.best_individual_ids.add(unique_individuals_list[i].get_id())
+                    unique_individuals_list[i].save()
 
-            if (not self.fitness_evaluator_class.IS_FITNESS_RELATIVE) and \
-                    self.has_patience_ended(max_fitness, generation):
+                for i in range(self.args.keep_k_best, len(unique_individuals_list)):
+                    if unique_individuals_list[i].get_id() not in self.best_individual_ids:
+                        unique_individuals_list[i].delete(
+                            try_delete_serialized_representation=False)
+
+            if patience_has_ended:
                 print(
                     'Patience has ended because max fitness has not improved for {} generations.'
                     ' Stopping.'.format(self.args.patience)
                 )
                 break
-                # TODO: implement patience for multi-objective fitness
 
             # advance to the next generation
             self.population.Epoch()
