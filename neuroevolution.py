@@ -145,10 +145,10 @@ class Neuroevolution(object):
             '--output-activation-function',
             dest='output_activation_function',
             type=str,
-            choices=['linear', 'sigmoid'],
+            choices=['sigmoid', 'linear', 'sine'],
             help='Activation function of output nodes in the neural networks',
             required=False,
-            default="linear"
+            default="sigmoid"
         )
         arg_parser.add_argument(
             '--fitness',
@@ -304,9 +304,12 @@ class Neuroevolution(object):
         num_inputs = len(self.neural_input_vectors[0])
         num_hidden_nodes = 0
         num_outputs = self.effect.num_parameters
-        output_activation_function = NEAT.ActivationFunction.LINEAR
-        if self.args.output_activation_function == 'sigmoid':
-            output_activation_function = NEAT.ActivationFunction.UNSIGNED_SIGMOID
+        output_activation_function = NEAT.ActivationFunction.UNSIGNED_SIGMOID
+        if self.args.output_activation_function == 'linear':
+            output_activation_function = NEAT.ActivationFunction.LINEAR
+        elif self.args.output_activation_function == 'sine':
+            output_activation_function = NEAT.ActivationFunction.UNSIGNED_SINE
+
         genome = NEAT.Genome(
             0,  # ID
             num_inputs,

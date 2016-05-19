@@ -1,2 +1,5 @@
-python neuroevolution.py -i drums.wav noise.wav -g 10 -p 10
-python neuroevolution.py -i drums.wav noise.wav -g 10 -p 10 --output-activation-function sigmoid
+# compare output activation functions
+python neuroevolution.py -i drums.wav noise.wav -g 40 -p 40 --patience 40 --seed 234 --keep-k-best 1 --output-activation-function linear && python neuroevolution.py -i drums.wav noise.wav -g 40 -p 40 --patience 40 --seed 234 --keep-k-best 1 --output-activation-function sigmoid
+
+# compare NEAT and FS-NEAT
+python neuroevolution.py -i sine_sweep.wav noise.wav -p 150 --keep-k-best 75 --fitness hybrid --effect lpf && python neuroevolution.py -i sine_sweep.wav noise.wav -p 150 --keep-k-best 75 --fitness hybrid --effect lpf --fs-neat
