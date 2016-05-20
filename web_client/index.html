@@ -60,7 +60,8 @@
 <md-content ng-if="!statsService.selectedExperimentFolder">
   <h1>Select experiment</h1>
 
-  <div ng-if="statsService.experimentFolders !== null && statsService.experimentFolders.length === 0">
+  <div
+      ng-if="statsService.experimentFolders !== null && statsService.experimentFolders.length === 0">
     <p>If you haven't started an experiment yet, you may do that now from your command line. Example
       command:</p>
     <pre>python neuroevolution.py -i drums.wav noise.wav -g 20 -p 20</pre>
@@ -72,7 +73,6 @@
         experiment-folder="experimentFolder"
     ></experiment-card>
   </div>
-
 </md-content>
 
 <md-content ng-if="statsService.selectedExperimentFolder && !statsService.data.generations">
@@ -86,9 +86,26 @@
     <md-card flex>
       <md-card-title>
         <md-card-title-text>
-          <span class="md-headline">
-            Similarity plot
-          </span>
+          <div layout="row">
+            <span class="md-headline">
+              {{ statsService.individualEvaluationMeasure | capitalize }} plot
+            </span>
+            <span flex></span>
+            <md-radio-group
+                ng-if="statsService.data.args.fitness !== 'default'"
+                ng-model="statsService.individualEvaluationMeasure"
+                layout="row"
+                layout-align="start center"
+            >
+              <md-radio-button value="fitness">
+                fitness
+              </md-radio-button>
+              <md-radio-button value="similarity">
+                similarity
+              </md-radio-button>
+            </md-radio-group>
+          </div>
+
           <span class="md-subhead">
             Interaction: Drag with the mouse to pan. Hold alt and drag to zoom. Double-click to
             reset zoom/pan. Click series in the legend to toggle visibility.
@@ -134,7 +151,9 @@
 
     <div class="layout-padding">
       <span class="md-headline">Select individual</span>
-      <span class="md-subhead">sorted by similarity (best to the right)</span>
+      <span class="md-subhead">
+        sorted by {{ statsService.individualEvaluationMeasure }} (best to the right)
+      </span>
       <div layout>
         <md-slider
             ng-if="statsService.selectedGeneration"
@@ -145,7 +164,6 @@
             min="0"
             max="{{ statsService.getPopulationSize() - 1 }}"
             aria-label="Selected individual"
-            ng-change="individual.selectedIndividualChanged()"
         >
         </md-slider>
       </div>
@@ -164,7 +182,7 @@
           <span class="md-subhead">
             Similarity: {{ statsService.data.generations[statsService.selectedGeneration - 1].individuals[statsService.selectedIndividualIndex].similarity | number:4 }}
             <br>
-            Fitness: {{ individual.individualDetails.fitness | number:4 }}
+            Fitness: {{ statsService.data.generations[statsService.selectedGeneration - 1].individuals[statsService.selectedIndividualIndex].fitness | number:4 }}
             <br>
             Born in generation {{ individual.individualDetails.born }}
           </span>

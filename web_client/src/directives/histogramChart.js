@@ -68,9 +68,11 @@
         }
       };
 
-      $scope.$watch(function() {
+      $scope.$watchGroup([function() {
         return statsService.selectedGeneration
       }, function() {
+        return statsService.individualEvaluationMeasure
+      }], function() {
         if (statsService.data && statsService.data.generations) {
           vm.data.bins = statsService.getHistogramData();
           vm.options.axes.y.max = parseInt(statsService.getPopulationSize() / 2);

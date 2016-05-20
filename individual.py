@@ -69,7 +69,6 @@ class Individual(object):
         """
         return {
             'id': self.get_id(),
-            'fitness': self.genotype.GetFitness(),
             'similarity': self.similarity,
             'neural_output': self.get_neural_output_representation(),
             'output_sound': self.output_sound.get_serialized_representation(),
@@ -84,7 +83,8 @@ class Individual(object):
         """
         return {
             'id': self.get_id(),
-            'similarity': self.similarity
+            'similarity': self.similarity,
+            'fitness': self.genotype.GetFitness()
         }
 
     def save(self):

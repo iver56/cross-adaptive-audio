@@ -21,38 +21,38 @@
           {
             axis: "y",
             dataset: "stats",
-            key: "similarity_max",
+            key: statsService.individualEvaluationMeasure + "_max",
             label: "Max similarity",
             color: "#FF8F54",
             type: ['line', 'dot'],
-            id: 'similarity_max'
+            id: 'series_max'
           },
           {
             axis: "y",
             dataset: "stats",
-            key: "similarity_avg",
+            key: statsService.individualEvaluationMeasure + "_avg",
             label: "Average similarity",
             color: "#1f77b4",
             type: ['line', 'dot'],
-            id: 'similarity_avg'
+            id: 'series_avg'
           },
           {
             axis: "y",
             dataset: "stats",
-            key: "similarity_min",
+            key: statsService.individualEvaluationMeasure + "_min",
             label: "Min similarity",
             color: "#FF4F86",
             type: ['line', 'dot'],
-            id: 'similarity_min'
+            id: 'series_min'
           },
           {
             axis: "y",
             dataset: "stats",
-            key: "similarity_std_dev",
+            key: statsService.individualEvaluationMeasure + "_std_dev",
             label: "Standard deviation",
             color: "#60E246",
             type: ['line', 'dot'],
-            id: 'similarity_std_dev',
+            id: 'series_std_dev',
             visible: false
           }
         ],
@@ -94,6 +94,15 @@
         return statsService.data && statsService.data.generations;
       }, function() {
         vm.data.stats = statsService.data.generations;
+      });
+
+      $scope.$watch(function() {
+        return statsService.individualEvaluationMeasure;
+      }, function() {
+        vm.options.series[0].key = statsService.individualEvaluationMeasure + '_max';
+        vm.options.series[1].key = statsService.individualEvaluationMeasure + '_avg';
+        vm.options.series[2].key = statsService.individualEvaluationMeasure + '_min';
+        vm.options.series[3].key = statsService.individualEvaluationMeasure + '_std_dev';
       });
     }
 

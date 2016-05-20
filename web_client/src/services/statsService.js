@@ -9,6 +9,7 @@
       that.experimentFolders = null;
       that.selectedExperimentFolder = null;
       that.data = null;
+      that.individualEvaluationMeasure = 'fitness';
       that.selectedGeneration = null;
       that.selectedIndividualIndex = null;
       that.numGenerations = 1;
@@ -46,6 +47,18 @@
         }
       });
 
+      $rootScope.$watchGroup([function() {
+        return that.selectedGeneration
+      }, function() {
+        return that.individualEvaluationMeasure
+      }], function() {
+        if (that.data && that.data.generations[that.selectedGeneration - 1]) {
+          that.data.generations[that.selectedGeneration - 1].individuals.sort(function(a, b) {
+            return a[that.individualEvaluationMeasure] - b[that.individualEvaluationMeasure];
+          });
+        }
+      });
+
       that.getHistogramData = function() {
         var bins = [];
         var individuals = that.data.generations[that.selectedGeneration - 1].individuals;
@@ -62,7 +75,7 @@
             Math.min(
               parseInt(
                 that.histogramOptions.numBins
-                * (individuals[i].similarity - that.histogramOptions.minValue)
+                * (individuals[i][that.individualEvaluationMeasure] - that.histogramOptions.minValue)
                 / that.histogramOptions.difference
               ),
               that.histogramOptions.numBins - 1
