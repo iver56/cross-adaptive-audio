@@ -133,6 +133,14 @@ class Neuroevolution(object):
             default=0.03
         )
         arg_parser.add_argument(
+            '--elitism',
+            dest='elitism',
+            type=float,
+            help='Fraction of population to carry on to the next generation unaltered',
+            required=False,
+            default=0.1
+        )
+        arg_parser.add_argument(
             '--fs-neat',
             nargs='?',
             dest='fs_neat',
@@ -184,6 +192,10 @@ class Neuroevolution(object):
 
         if self.args.keep_k_best > self.args.population_size:
             self.args.keep_k_best = self.args.population_size
+
+        if self.args.elitism < 0.0 or self.args.elitism > 0.4:
+            # MultiNEAT (?) may crash with elitism = 0.5, for some unknown reason
+            raise Exception('elitism should be in the range [0.0, 0.4]')
 
         if self.args.seed is not None:
             settings.PRNG_SEED = self.args.seed
@@ -315,6 +327,7 @@ class Neuroevolution(object):
         params.MutateAddLinkProb = self.args.add_link_probability
         params.MutateRemLinkProb = self.args.remove_link_probability
         params.MutateRemSimpleNeuronProb = self.args.remove_simple_neuron_probability
+        params.Elitism = self.args.elitism
         num_inputs = len(self.neural_input_vectors[0])
         num_hidden_nodes = 0
         num_outputs = self.effect.num_parameters
