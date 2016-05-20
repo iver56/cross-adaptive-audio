@@ -100,8 +100,11 @@
         return statsService.individualEvaluationMeasure;
       }, function() {
         vm.options.series[0].key = statsService.individualEvaluationMeasure + '_max';
+        vm.options.series[0].label = 'Max ' + statsService.individualEvaluationMeasure;
         vm.options.series[1].key = statsService.individualEvaluationMeasure + '_avg';
+        vm.options.series[1].label = 'Avg ' + statsService.individualEvaluationMeasure;
         vm.options.series[2].key = statsService.individualEvaluationMeasure + '_min';
+        vm.options.series[2].label = 'Min ' + statsService.individualEvaluationMeasure;
         vm.options.series[3].key = statsService.individualEvaluationMeasure + '_std_dev';
       });
     }

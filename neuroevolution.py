@@ -175,8 +175,9 @@ class Neuroevolution(object):
             help='Multi-Objective (mo) fitness optimizes for a diverse'
                  ' population that consists of various non-dominated trade-offs between similarity'
                  ' in different features. Hybrid fitness is the sum of default and mo, and gives'
-                 ' you the best of both worlds',
-            choices=['default', 'mo', 'hybrid'],
+                 ' you the best of both worlds. Novelty fitness ignores the objective and optimizes'
+                 ' for novelty',
+            choices=['default', 'mo', 'hybrid', 'novelty'],
             required=False,
             default="default"
         )
@@ -196,6 +197,9 @@ class Neuroevolution(object):
         if self.args.elitism < 0.0 or self.args.elitism > 0.4:
             # MultiNEAT (?) may crash with elitism = 0.5, for some unknown reason
             raise Exception('elitism should be in the range [0.0, 0.4]')
+
+        if self.args.population_size < 3:
+            raise Exception('population size should be at least 3')
 
         if self.args.seed is not None:
             settings.PRNG_SEED = self.args.seed
@@ -225,6 +229,8 @@ class Neuroevolution(object):
             self.fitness_evaluator_class = fitness_evaluator.MultiObjectiveFitnessEvaluator
         elif self.args.fitness == 'hybrid':
             self.fitness_evaluator_class = fitness_evaluator.HybridFitnessEvaluator
+        elif self.args.fitness == 'novelty':
+            self.fitness_evaluator_class = fitness_evaluator.NoveltyFitness
 
         self.similarity_evaluator_class = fitness_evaluator.FitnessEvaluator
 
@@ -480,7 +486,7 @@ class Neuroevolution(object):
 
             if patience_has_ended:
                 print(
-                    'Patience has ended because max fitness has not improved for {} generations.'
+                    'Patience has ended because max similarity has not improved for {} generations.'
                     ' Stopping.'.format(self.args.patience)
                 )
                 break

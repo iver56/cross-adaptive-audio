@@ -3,6 +3,8 @@ import math
 import standardizer
 import settings
 import experiment
+import random
+import numpy as np
 
 
 class FitnessEvaluator(object):
@@ -239,3 +241,43 @@ class HybridFitnessEvaluator(object):
             fitness = FitnessEvaluator.evaluate(target_sound, ind.output_sound)
             fitness_values[i] = (fitness_values[i] + fitness) / 2
         return fitness_values
+
+
+class NoveltyFitness(object):
+    # Fitness is relative, i.e. it depends on the fitness of other individuals and may
+    # change from generation to generation
+    IS_FITNESS_RELATIVE = True
+    analysis_vectors = []
+
+    @staticmethod
+    def get_analysis_vector(ind):
+        return np.concatenate(
+            tuple(
+                ind.output_sound.analysis['series_standardized'][feature]
+                for feature in ind.output_sound.analysis['series_standardized']
+            ),
+            axis=0
+        )
+
+    @staticmethod
+    def evaluate_multiple(individuals, target_sound):
+        if len(NoveltyFitness.analysis_vectors) == 0:
+            for ind in individuals:
+                analysis_vector = NoveltyFitness.get_analysis_vector(ind)
+                NoveltyFitness.analysis_vectors.append(analysis_vector)
+            return [random.random() for _ in individuals]
+        else:
+            fitness_values = []
+            for ind in individuals:
+                distances = []
+                analysis_vector = NoveltyFitness.get_analysis_vector(ind)
+                for other_analysis_vector in NoveltyFitness.analysis_vectors:
+                    distance = np.linalg.norm(analysis_vector - other_analysis_vector)
+                    distances.append(distance)
+                distances.sort()
+                k_min_distances = sum(distances[0:3])
+                fitness_values.append(k_min_distances)
+                NoveltyFitness.analysis_vectors.append(analysis_vector)
+            max_fitness = max(fitness_values)
+            fitness_values = map(lambda x: x / (1.0 + max_fitness), fitness_values)
+            return fitness_values
