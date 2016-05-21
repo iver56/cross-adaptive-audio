@@ -473,8 +473,8 @@ class Neuroevolution(object):
                         that_individual.save()
                     self.individual_fitness[individual_id] = that_individual.genotype.GetFitness()
             else:
-                # keep only k best individuals
-                unique_individuals_list.sort(key=lambda i: i.genotype.GetFitness(), reverse=True)
+                # keep only k best individuals, where "best" is defined as highest similarity
+                unique_individuals_list.sort(key=lambda ind: ind.similarity, reverse=True)
                 for i in range(self.args.keep_k_best):
                     self.best_individual_ids.add(unique_individuals_list[i].get_id())
                     unique_individuals_list[i].save()
