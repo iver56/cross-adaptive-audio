@@ -102,12 +102,13 @@ The _most important_ parameters:
                         the input sound, respectively
   -g NUM_GENERATIONS, --num-generations NUM_GENERATIONS
   -p POPULATION_SIZE, --population_size POPULATION_SIZE
-  --fitness {default,mo,hybrid}
+  --fitness {default,mo,hybrid,novelty}
                         Multi-Objective (mo) fitness optimizes for a diverse
                         population that consists of various non-dominated
                         trade-offs between similarity in different features.
                         Hybrid fitness is the sum of default and mo, and gives
-                        you the best of both worlds
+                        you the best of both worlds. Novelty fitness ignores
+                        the objective and optimizes for novelty
   --neural-input-mode {a,ab,b,s}
                         What to use as neural input. Mode a: target sound.
                         Mode ab: target sound and input sound. Mode b: input
