@@ -177,3 +177,4 @@ Use at your own risk
 
 ## Known issues
 * libXtract may produce [wrong results on Windows](https://github.com/jamiebullock/LibXtract/issues/65). Use a different analyzer or use Linux.
+* If you stop neuroevolution.py while it's running, csound may fail to terminate correctly. If that happens, kill the csound process(es) manually.

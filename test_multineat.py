@@ -43,12 +43,13 @@ class TestMultiNeat(unittest.TestCase):
             0,  # SeedType
             params  # Parameters
         )
+        seed = 42
         pop = NEAT.Population(
             genome,
             params,
             True,  # whether the population should be randomized
             1.0,  # how much the population should be randomized,
-            settings.PRNG_SEED
+            seed
         )
 
         for generation in range(3):

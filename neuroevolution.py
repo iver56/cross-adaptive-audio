@@ -14,6 +14,7 @@ import individual
 import project
 import effect
 import experiment
+import random
 
 
 class Neuroevolution(object):
@@ -53,15 +54,16 @@ class Neuroevolution(object):
                  ' fitness is set to default',
             type=int,
             required=False,
-            default=10
+            default=20
         )
         arg_parser.add_argument(
             '-s',
             '--seed',
             dest='seed',
+            help='PRNG seed. Will be set to a random value if not specified.',
             type=int,
             required=False,
-            default=None
+            default=-1  # -1 means the seed will be random for each run
         )
         arg_parser.add_argument(
             '--keep-k-best',
@@ -201,8 +203,7 @@ class Neuroevolution(object):
         if self.args.population_size < 3:
             raise Exception('population size should be at least 3')
 
-        if self.args.seed is not None:
-            settings.PRNG_SEED = self.args.seed
+        self.seed = random.randint(1, 999999) if self.args.seed == -1 else self.args.seed
 
         if len(self.args.input_files) != 2:
             raise Exception('Two filenames must be specified')
@@ -359,7 +360,7 @@ class Neuroevolution(object):
             params,
             True,  # whether the population should be randomized
             2.0,  # how much the population should be randomized,
-            settings.PRNG_SEED
+            self.seed
         )
 
     def run(self):
