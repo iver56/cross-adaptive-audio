@@ -6,7 +6,7 @@ import os
 
 class MfccAnalyzer(object):
     AVAILABLE_FEATURES = {
-        'mfcc_amp',
+        'mfcc_0',
         'mfcc_1',
         'mfcc_2',
         'mfcc_3',
@@ -75,11 +75,8 @@ class MfccAnalyzer(object):
             if not values:
                 continue
             # mfcc_time = float(values[0])
-            if 'mfcc_amp' in self.features:
-                mfcc_amp = float(values[1])
-                sound_files.analysis['series']['mfcc_amp'].append(mfcc_amp)
-            for i in range(len(values) - 2):
-                feature_key = 'mfcc_{}'.format(i + 1)
+            for i in range(len(values) - 1):
+                feature_key = 'mfcc_{}'.format(i)
                 if feature_key in self.features:
-                    mfcc_band = float(values[i + 2])
-                    sound_files.analysis['series'][feature_key].append(mfcc_band)
+                    mfcc_coefficient = float(values[i + 1])
+                    sound_files.analysis['series'][feature_key].append(mfcc_coefficient)

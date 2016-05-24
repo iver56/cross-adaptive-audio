@@ -124,7 +124,7 @@ But wait, there's more! In experiment_settings.json you can specify which audio 
   "parameter_lpf_cutoff": 50,
   "similarity_channels": [
     {
-      "name": "mfcc_amp",
+      "name": "mfcc_0",
       "weight": 1.0
     },
     {
@@ -133,13 +133,13 @@ But wait, there's more! In experiment_settings.json you can specify which audio 
     }
   ],
   "neural_input_channels": [
-    "mfcc_amp",
-    "mfcc_amp__derivative",
+    "mfcc_0",
+    "mfcc_0__derivative",
     "mfcc_1"
   ]
 }
 ```
-In this example we are using mfcc_amp and mfcc_1 for similarity calculations, and mfcc_1 is given less weight than mfcc_amp. In other words, mfcc_1 errors matter less than mfcc_amp errors. Neural input is mfcc_1, mfcc_amp and the derivative (gradient) of mfcc_amp, which is written as "mfcc_amp__derivative" in the config file. You can add the derivative of any feature by writing "{feature_name}__derivative", (replace {feature_name} with the name of the feature)
+In this example we are using mfcc_0 and mfcc_1 for similarity calculations, and mfcc_1 is given less weight than mfcc_amp. In other words, mfcc_1 errors matter less than mfcc_amp errors. Neural input is mfcc_1, mfcc_amp and the derivative (gradient) of mfcc_amp, which is written as "mfcc_amp__derivative" in the config file. You can add the derivative of any feature by writing "{feature_name}__derivative", (replace {feature_name} with the name of the feature)
 
 To see all the available audio features you can add in experiment_settings.json, run `python list_all_features.py`
 
