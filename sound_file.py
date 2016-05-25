@@ -1,4 +1,5 @@
 from __future__ import absolute_import
+from __future__ import division
 import wave
 import contextlib
 import os
@@ -64,7 +65,7 @@ class SoundFile(object):
         with contextlib.closing(wave.open(self.file_path, 'r')) as f:
             self.num_frames = f.getnframes()
             self.sample_rate = f.getframerate()
-            self.duration = self.num_frames / float(self.sample_rate)
+            self.duration = self.num_frames / self.sample_rate
             self.num_channels = f.getnchannels()
 
     def get_duration(self):
