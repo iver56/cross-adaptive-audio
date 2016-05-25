@@ -4,6 +4,7 @@ The project will investigate methods of evaluating the musical applicability of 
 
 ## Install dependencies (Ubuntu)
 
+* Install matplotlib dependencies: `sudo apt-get install libfreetype6-dev libpng-dev`
 * Install csound: `sudo apt-get install csound`
 * Install [aubio](http://aubio.org/download): `sudo apt-get install aubio-tools libaubio-dev libaubio-doc`
 * Install essentia extractors (optional):
@@ -36,13 +37,15 @@ https://www.python.org/downloads/
 ### Install Csound
 http://csound.github.io/download.html
 
-### Install MultiNEAT and numpy
+### Install MultiNEAT, matplotlib and numpy
 Building these dependencies from source can be difficult and time-consuming, so let's download wheel binaries instead
 
 * Go to http://www.lfd.uci.edu/~gohlke/pythonlibs/#multineat
     * Download numpy-1.10.4+mkl-cp27-none-win32.whl
+    * Download matplotlib-1.5.1-cp27-none-win32.whl
     * Download MultiNEAT-0.3-cp27-none-win32.whl
 * `pip install numpy-1.10.4+mkl-cp27-none-win32.whl`
+* `pip install matplotlib-1.5.1-cp27-none-win32.whl`
 * `pip install MultiNEAT-0.3-cp27-none-win32.whl`
 
 ### Install Aubio
