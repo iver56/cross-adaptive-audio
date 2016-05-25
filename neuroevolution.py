@@ -50,11 +50,10 @@ class Neuroevolution(object):
         arg_parser.add_argument(
             '--patience',
             dest='patience',
-            help='Number of generations with no improvement before stopping. This is only used if'
-                 ' fitness is set to default',
+            help='Number of generations with no improvement in similarity before stopping',
             type=int,
             required=False,
-            default=20
+            default=100
         )
         arg_parser.add_argument(
             '-s',
@@ -174,14 +173,15 @@ class Neuroevolution(object):
             '--fitness',
             dest='fitness',
             type=str,
-            help='Multi-Objective (mo) fitness optimizes for a diverse'
+            help='similarity: Average local similarity, calculated with euclidean distance between'
+                 ' feature vectors for each frame. Multi-Objective (mo) optimizes for a diverse'
                  ' population that consists of various non-dominated trade-offs between similarity'
-                 ' in different features. Hybrid fitness is the sum of default and mo, and gives'
+                 ' in different features. Hybrid fitness is the sum of similarity and mo, and gives'
                  ' you the best of both worlds. Novelty fitness ignores the objective and optimizes'
                  ' for novelty',
-            choices=['default', 'mo', 'hybrid', 'novelty'],
+            choices=['similarity', 'mo', 'hybrid', 'novelty'],
             required=False,
-            default="default"
+            default="similarity"
         )
         arg_parser.add_argument(
             '--effect',
@@ -224,7 +224,7 @@ class Neuroevolution(object):
         self.project = project.Project([self.target_sound, self.input_sound])
         self.analyzer = analyze.Analyzer(self.project)
         self.fitness_evaluator_class = None
-        if self.args.fitness == 'default':
+        if self.args.fitness == 'similarity':
             self.fitness_evaluator_class = fitness_evaluator.FitnessEvaluator
         elif self.args.fitness == 'mo':
             self.fitness_evaluator_class = fitness_evaluator.MultiObjectiveFitnessEvaluator
@@ -517,7 +517,7 @@ class Neuroevolution(object):
         for i, ind in enumerate(non_silent_individuals):
             ind.set_fitness(fitness_values[i])
 
-        if self.args.fitness == 'default':
+        if self.args.fitness == 'similarity':
             for ind in non_silent_individuals:
                 ind.similarity = ind.genotype.GetFitness()
         else:
