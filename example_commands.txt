@@ -1,9 +1,9 @@
 # compare output activation functions
-python neuroevolution.py -i drums.wav noise.wav -g 40 -p 40 --patience 40 --seed 234 --keep-k-best 1 --output-activation-function linear && python neuroevolution.py -i drums.wav noise.wav -g 40 -p 40 --patience 40 --seed 234 --keep-k-best 1 --output-activation-function sigmoid
+python main.py -i drums.wav noise.wav -g 40 -p 40 --patience 40 --seed 234 --keep-k-best 1 --output-activation-function linear && python main.py -i drums.wav noise.wav -g 40 -p 40 --patience 40 --seed 234 --keep-k-best 1 --output-activation-function sigmoid
 
 # compare NEAT and FS-NEAT
-python neuroevolution.py -i sine_sweep.wav noise.wav -p 150 --keep-k-best 75 --fitness hybrid --effect lpf && python neuroevolution.py -i sine_sweep.wav noise.wav -p 150 --keep-k-best 75 --fitness hybrid --effect lpf --fs-neat
+python main.py -i sine_sweep.wav noise.wav -p 150 --keep-k-best 75 --fitness hybrid --effect lpf && python main.py -i sine_sweep.wav noise.wav -p 150 --keep-k-best 75 --fitness hybrid --effect lpf --fs-neat
 
 # compare fitness modes
-python neuroevolution.py -i drums.wav noise.wav --fitness similarity --keep-k-best 0 --keep-all-last && python neuroevolution.py -i drums.wav noise.wav --fitness mo --keep-k-best 0 --keep-all-last && python neuroevolution.py -i drums.wav noise.wav --fitness hybrid --keep-k-best 0 --keep-all-last && python neuroevolution.py -i drums.wav noise.wav --fitness novelty --keep-k-best 0 --patience 150 -g 150
-python plot.py --label fitness
+python main.py -i drums.wav noise.wav --fitness similarity --keep-k-best 0 --keep-all-last && python main.py -i drums.wav noise.wav --fitness mo --keep-k-best 0 --keep-all-last && python main.py -i drums.wav noise.wav --fitness hybrid --keep-k-best 0 --keep-all-last && python main.py -i drums.wav noise.wav --fitness novelty --keep-k-best 0
+python plot.py --label fitness --output plot.png

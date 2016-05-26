@@ -90,13 +90,13 @@ There are some example files in the test_audio folder. For example, copy drums.w
 
 Our goal in the following example experiment is to make noise.wav sound like drums.wav by running noise.wav through the "dist_lpf" audio effect. The audio effect has a set of parameters that are controlled by the output of a neural network. The experiment is all about evolving one or more neural networks that behave such that the processed version of noise.wav sounds like drums.wav
 
-Run the command `python neuroevolution.py -i drums.wav noise.wav -g 10 -p 20`
+Run the command `python main.py -i drums.wav noise.wav -g 10 -p 20`
 
-This will run the evolutionary algorithm for 10 generations with a population of 20. While this is running, you might want to open another command line instance and run `python serve.py`. This will start a server for a web client that interactively visualizes the results of the experiment as they become available. Websockets are used to keep the web client synchronized with whatever neuroevolution.py has finished doing. Just visit http://localhost:8080 in your favorite browser. The web client looks somewhat like this:
+This will run the evolutionary algorithm for 10 generations with a population of 20. While this is running, you might want to open another command line instance and run `python serve.py`. This will start a server for a web client that interactively visualizes the results of the experiment as they become available. Websockets are used to keep the web client synchronized with whatever main.py has finished doing. Just visit http://localhost:8080 in your favorite browser. The web client looks somewhat like this:
 
 ![Screenshot of visualization](visualization-screenshot.png)
 
-To get information about all the parameters that neuroevolution.py understands, run `python neuroevolution.py --help`
+To get information about all the parameters that main.py understands, run `python main.py --help`
 
 The _most important_ parameters:
 ```
@@ -182,4 +182,4 @@ Use at your own risk
 
 ## Known issues
 * libXtract may produce [wrong results on Windows](https://github.com/jamiebullock/LibXtract/issues/65). Use a different analyzer or use Linux.
-* If you stop neuroevolution.py while it's running, csound may fail to terminate correctly. If that happens, kill the csound process(es) manually.
+* If you stop main.py while it's running, csound may fail to terminate correctly. If that happens, kill the csound process(es) manually.

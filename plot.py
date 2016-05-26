@@ -50,7 +50,6 @@ class Plot(object):
 
         for root, dirs, files in os.walk(settings.STATS_DATA_DIRECTORY):
             if dirs:
-                print(dirs)
                 for experiment_dir in dirs:
                     if 'test' in experiment_dir:
                         continue
