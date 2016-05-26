@@ -108,10 +108,9 @@ class Plot(object):
         ax.set_title('Average cumulative maximum similarity')
 
         handles = []
-        max_series_length = max(len(series) for series in all_series)
-        x = np.array(range(max_series_length))
 
         for i, series in enumerate(all_series):
+            x = np.array(range(len(series)))
             series_plot, = plt.plot(x, np.array(series), label=all_series_labels[i])
             handles.append(series_plot)
 
