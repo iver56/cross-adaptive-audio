@@ -1,16 +1,16 @@
 import unittest
 import settings
 import sound_file
-import fitness_evaluator
+import fitness
 import project
 import individual
 
 
-class TestFitnessEvaluator(unittest.TestCase):
+class TestFitness(unittest.TestCase):
     def setUp(self):
         settings.INPUT_DIRECTORY = 'test_audio'
 
-    def test_fitness_evaluator(self):
+    def test_fitness(self):
         drums = sound_file.SoundFile('drums.wav')
         synth = sound_file.SoundFile('synth.wav')
 
@@ -34,7 +34,8 @@ class TestFitnessEvaluator(unittest.TestCase):
         ind1.set_fitness = lambda x: None
         ind2.set_fitness = lambda x: None
 
-        fitness_evaluator.FitnessEvaluator.evaluate_multiple([ind1, ind2], drums)
+        fitness_evaluator = fitness.LocalSimilarityFitness(target_sound=drums)
+        fitness_evaluator.evaluate_multiple([ind1, ind2])
 
 if __name__ == '__main__':
     unittest.main()

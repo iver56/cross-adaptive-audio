@@ -4,7 +4,7 @@ import settings
 import analyze
 import cross_adapt
 import sound_file
-import fitness_evaluator
+import fitness
 import statistics
 import time
 import logger
@@ -50,18 +50,17 @@ class Neuroevolution(object):
 
         self.project = project.Project([self.target_sound, self.input_sound])
         self.analyzer = analyze.Analyzer(self.project)
-        self.fitness_evaluator_class = None
+        self.fitness_evaluator = None
         if self.args.fitness == 'similarity':
-            self.fitness_evaluator_class = fitness_evaluator.FitnessEvaluator
+            self.fitness_evaluator = fitness.LocalSimilarityFitness(self.target_sound)
         elif self.args.fitness == 'multi-objective':
-            self.fitness_evaluator_class = fitness_evaluator.MultiObjectiveFitnessEvaluator
+            self.fitness_evaluator = fitness.MultiObjectiveFitness(self.target_sound)
         elif self.args.fitness == 'hybrid':
-            self.fitness_evaluator_class = fitness_evaluator.HybridFitnessEvaluator
+            self.fitness_evaluator = fitness.HybridFitness(self.target_sound)
         elif self.args.fitness == 'novelty':
-            self.fitness_evaluator_class = fitness_evaluator.NoveltyFitness
-            fitness_evaluator.NoveltyFitness.reset()
+            self.fitness_evaluator = fitness.NoveltyFitness(self.target_sound)
 
-        self.similarity_evaluator_class = fitness_evaluator.FitnessEvaluator
+        self.similarity_evaluator = fitness.LocalSimilarityFitness(self.target_sound)
 
         if self.args.fitness in ['multi-objective', 'hybrid'] and \
                         self.args.population_size < 2 * len(experiment.SIMILARITY_CHANNELS):
@@ -208,7 +207,7 @@ class Neuroevolution(object):
                     effect=self.effect
                 )
 
-                if (not self.fitness_evaluator_class.IS_FITNESS_RELATIVE) and \
+                if (not self.fitness_evaluator.IS_FITNESS_RELATIVE) and \
                                 that_individual.get_id() in self.individual_fitness:
                     if settings.VERBOSE:
                         print(that_individual.get_id() + ' already exists. Will not evaluate again')
@@ -247,7 +246,7 @@ class Neuroevolution(object):
                     ind.set_output_sound(unique_individuals[individual_id].output_sound)
                     ind.similarity = unique_individuals[individual_id].similarity
 
-                    if self.fitness_evaluator_class.IS_FITNESS_RELATIVE:
+                    if self.fitness_evaluator.IS_FITNESS_RELATIVE:
                         # Discourage clusters of duplicates
                         ind.set_fitness(
                             0.5 * unique_individuals[individual_id].genotype.GetFitness()
@@ -338,10 +337,7 @@ class Neuroevolution(object):
                 ind.similarity = 0.0
 
         non_silent_individuals = [ind for ind in individuals if not ind.output_sound.is_silent]
-        fitness_values = self.fitness_evaluator_class.evaluate_multiple(
-            non_silent_individuals,
-            self.target_sound
-        )
+        fitness_values = self.fitness_evaluator.evaluate_multiple(non_silent_individuals)
         for i, ind in enumerate(non_silent_individuals):
             ind.set_fitness(fitness_values[i])
 
@@ -349,9 +345,6 @@ class Neuroevolution(object):
             for ind in non_silent_individuals:
                 ind.similarity = ind.genotype.GetFitness()
         else:
-            similarity_values = self.similarity_evaluator_class.evaluate_multiple(
-                non_silent_individuals,
-                self.target_sound
-            )
+            similarity_values = self.similarity_evaluator.evaluate_multiple(non_silent_individuals)
             for i, ind in enumerate(non_silent_individuals):
                 ind.similarity = similarity_values[i]

@@ -6,16 +6,28 @@ import random
 import numpy as np
 
 
-class FitnessEvaluator(object):
-    # fitness is not relative, i.e. it doesn't change from generation to generation and doesn't
-    # depend on the fitness of other individuals
+class AbstractFitness(object):
+    # Whether or not fitness is relative, i.e. it changes from generation to generation
+    # and/or depends on (the fitness of) other individuals
     IS_FITNESS_RELATIVE = False
 
-    @staticmethod
-    def evaluate_multiple(individuals, target_sound):
+    def __init__(self, target_sound):
+        self.target_sound = target_sound
+
+    def evaluate_multiple(self, individuals):
+        raise Exception('evaluate_multiple must be implemented by the subclass')
+
+
+class LocalSimilarityFitness(AbstractFitness):
+    IS_FITNESS_RELATIVE = False
+
+    def evaluate_multiple(self, individuals):
         fitness_values = []
         for ind in individuals:
-            fitness = FitnessEvaluator.get_local_similarity(target_sound, ind.output_sound)
+            fitness = LocalSimilarityFitness.get_local_similarity(
+                self.target_sound,
+                ind.output_sound
+            )
             fitness_values.append(fitness)
         return fitness_values
 
@@ -68,9 +80,7 @@ class FitnessEvaluator(object):
         return math.sqrt(sum_of_squared_differences)
 
 
-class MultiObjectiveFitnessEvaluator(object):
-    # Fitness is relative, i.e. it depends on the fitness of other individuals and may
-    # change from generation to generation
+class MultiObjectiveFitness(AbstractFitness):
     IS_FITNESS_RELATIVE = True
 
     @staticmethod
@@ -110,9 +120,9 @@ class MultiObjectiveFitnessEvaluator(object):
             p.individuals_dominated = set()
             p.domination_counter = 0
             for q in individuals:
-                if MultiObjectiveFitnessEvaluator.individual_dominates(p, q):
+                if MultiObjectiveFitness.individual_dominates(p, q):
                     p.individuals_dominated.add(q)
-                elif MultiObjectiveFitnessEvaluator.individual_dominates(q, p):
+                elif MultiObjectiveFitness.individual_dominates(q, p):
                     p.domination_counter += 1
             if p.domination_counter == 0:
                 p.rank = 1
@@ -159,44 +169,45 @@ class MultiObjectiveFitnessEvaluator(object):
                         (front[i + 1].objectives[feature] - front[i - 1].objectives[feature]) / \
                         (max_dist - min_dist)
 
-    @staticmethod
-    def evaluate_multiple(individuals, target_sound):
+    def evaluate_multiple(self, individuals):
         fitness_values = []
         for ind in individuals:
-            MultiObjectiveFitnessEvaluator.calculate_objectives(ind, target_sound)
+            MultiObjectiveFitness.calculate_objectives(ind, self.target_sound)
 
-        fronts = MultiObjectiveFitnessEvaluator.fast_non_dominated_sort(individuals)
+        fronts = MultiObjectiveFitness.fast_non_dominated_sort(individuals)
         for rank in fronts:
-            MultiObjectiveFitnessEvaluator.calculate_crowding_distances(fronts[rank])
+            MultiObjectiveFitness.calculate_crowding_distances(fronts[rank])
             for ind in fronts[rank]:
                 fitness = 1.0 / (rank + (0.5 / (1.0 + ind.crowding_distance)))
                 fitness_values.append(fitness)
         return fitness_values
 
 
-class HybridFitnessEvaluator(object):
-    # Fitness is relative, i.e. it depends on the fitness of other individuals and may
-    # change from generation to generation
+class HybridFitness(AbstractFitness):
     IS_FITNESS_RELATIVE = True
 
-    @staticmethod
-    def evaluate_multiple(individuals, target_sound):
-        fitness_values = MultiObjectiveFitnessEvaluator.evaluate_multiple(individuals, target_sound)
+    def __init__(self, target_sound):
+        super(HybridFitness, self).__init__(target_sound)
+        self.similarity_fitness = LocalSimilarityFitness(target_sound)
+        self.multi_objective_fitness = MultiObjectiveFitness(target_sound)
+
+    def evaluate_multiple(self, individuals):
+        fitness_values = self.multi_objective_fitness.evaluate_multiple(individuals)
         for i, ind in enumerate(individuals):
-            fitness = FitnessEvaluator.get_local_similarity(target_sound, ind.output_sound)
+            fitness = self.similarity_fitness.get_local_similarity(
+                self.target_sound,
+                ind.output_sound
+            )
             fitness_values[i] = (fitness_values[i] + fitness) / 2
         return fitness_values
 
 
-class NoveltyFitness(object):
-    # Fitness is relative, i.e. it depends on the fitness of other individuals and may
-    # change from generation to generation
+class NoveltyFitness(AbstractFitness):
     IS_FITNESS_RELATIVE = True
-    analysis_vectors = []
 
-    @staticmethod
-    def reset():
-        NoveltyFitness.analysis_vectors = []
+    def __init__(self, target_sound):
+        super(NoveltyFitness, self).__init__(target_sound)
+        self.analysis_vectors = []
 
     @staticmethod
     def get_analysis_vector(ind):
@@ -208,25 +219,24 @@ class NoveltyFitness(object):
             axis=0
         )
 
-    @staticmethod
-    def evaluate_multiple(individuals, target_sound):
-        if len(NoveltyFitness.analysis_vectors) == 0:
+    def evaluate_multiple(self, individuals):
+        if len(self.analysis_vectors) == 0:
             for ind in individuals:
                 analysis_vector = NoveltyFitness.get_analysis_vector(ind)
-                NoveltyFitness.analysis_vectors.append(analysis_vector)
+                self.analysis_vectors.append(analysis_vector)
             return [random.random() for _ in individuals]
         else:
             fitness_values = []
             for ind in individuals:
                 distances = []
                 analysis_vector = NoveltyFitness.get_analysis_vector(ind)
-                for other_analysis_vector in NoveltyFitness.analysis_vectors:
+                for other_analysis_vector in self.analysis_vectors:
                     distance = np.linalg.norm(analysis_vector - other_analysis_vector)
                     distances.append(distance)
                 distances.sort()
                 k_min_distances = sum(distances[0:3])
                 fitness_values.append(k_min_distances)
-                NoveltyFitness.analysis_vectors.append(analysis_vector)
+                self.analysis_vectors.append(analysis_vector)
             max_fitness = max(fitness_values)
             fitness_values = map(lambda x: x / (1.0 + max_fitness), fitness_values)
             return fitness_values
