@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 from matplotlib.font_manager import FontProperties
 import os
 import settings
+from itertools import cycle
 
 
 class Plot(object):
@@ -86,14 +87,15 @@ class Plot(object):
                 experiment_series.append(similarity_series)
 
             # take the average of experiment series
-            avg_similarity = []
+            avg_similarity_values = []
             for k in range(len(experiment_series[0])):
-                avg = 0.0
-                for series in experiment_series:
-                    avg += series[k]
-                avg /= len(experiment_series)
-                avg_similarity.append(avg)
-            all_series.append(avg_similarity)
+                max_similarity = max(series[k] for series in experiment_series)
+                avg_similarity = sum(series[k] for series in experiment_series) / len(experiment_series)
+                avg_similarity_values.append({
+                    'max': max_similarity,
+                    'avg': avg_similarity
+                })
+            all_series.append(avg_similarity_values)
 
             if args.label is None:
                 print(stats_data_objects[0]['args'])
@@ -107,12 +109,27 @@ class Plot(object):
         ax.set_title('Best individual')
         ax.set_ylabel('similarity measure')
 
+        color_cycle = cycle('bgrcmyk').next
+
         handles = []
 
         for i, series in enumerate(all_series):
+            color = color_cycle()
             x = np.array(range(len(series)))
-            series_plot, = plt.plot(x, np.array(series), label=all_series_labels[i])
-            handles.append(series_plot)
+            max_series_plot, = plt.plot(
+                x,
+                np.array([y['max'] for y in series]),
+                label=all_series_labels[i] + ' (max)',
+                color=color,
+                linestyle='-.'
+            )
+            avg_series_plot, = plt.plot(
+                x,
+                np.array([y['avg'] for y in series]),
+                label=all_series_labels[i] + ' (avg)',
+                color=color
+            )
+            handles += [max_series_plot, avg_series_plot]
 
         font_p = FontProperties()
         if args.small_font:
