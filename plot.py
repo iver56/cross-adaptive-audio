@@ -32,6 +32,24 @@ class Plot(object):
             default=False
         )
         arg_parser.add_argument(
+            '--max',
+            nargs='?',
+            dest='max',
+            help='Show max series',
+            const=True,
+            required=False,
+            default=False
+        )
+        arg_parser.add_argument(
+            '--avg',
+            nargs='?',
+            dest='avg',
+            help='Show avg series',
+            const=True,
+            required=False,
+            default=False
+        )
+        arg_parser.add_argument(
             '--label',
             dest='label',
             help='Which arg to use as label',
@@ -116,20 +134,23 @@ class Plot(object):
         for i, series in enumerate(all_series):
             color = color_cycle()
             x = np.array(range(len(series)))
-            max_series_plot, = plt.plot(
-                x,
-                np.array([y['max'] for y in series]),
-                label=all_series_labels[i] + ' (max)',
-                color=color,
-                linestyle='-.'
-            )
-            avg_series_plot, = plt.plot(
-                x,
-                np.array([y['avg'] for y in series]),
-                label=all_series_labels[i] + ' (avg)',
-                color=color
-            )
-            handles += [max_series_plot, avg_series_plot]
+            if args.max:
+                max_series_plot, = plt.plot(
+                    x,
+                    np.array([y['max'] for y in series]),
+                    label=all_series_labels[i] + ' (max)',
+                    color=color,
+                    linestyle='-.'
+                )
+                handles.append(max_series_plot)
+            if args.avg:
+                avg_series_plot, = plt.plot(
+                    x,
+                    np.array([y['avg'] for y in series]),
+                    label=all_series_labels[i] + ' (avg)',
+                    color=color
+                )
+                handles.append(avg_series_plot)
 
         font_p = FontProperties()
         if args.small_font:
