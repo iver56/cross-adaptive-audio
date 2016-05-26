@@ -104,7 +104,8 @@ class Plot(object):
 
         fig = plt.figure()
         ax = fig.add_subplot(111)
-        ax.set_title('Average cumulative maximum similarity')
+        ax.set_title('Best individual')
+        ax.set_ylabel('similarity measure')
 
         handles = []
 
