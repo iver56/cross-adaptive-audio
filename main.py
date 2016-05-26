@@ -162,8 +162,9 @@ if __name__ == '__main__':
              ' population that consists of various non-dominated trade-offs between similarity'
              ' in different features. Hybrid fitness is the sum of similarity and multi-objective,'
              ' and gives you the best of both worlds. Novelty fitness ignores the objective and'
-             ' optimizes for novelty',
-        choices=['similarity', 'multi-objective', 'hybrid', 'novelty'],
+             ' optimizes for novelty. Mixed fitness chooses a random fitness evaluator for each'
+             ' generation.',
+        choices=['similarity', 'multi-objective', 'hybrid', 'novelty', 'mixed'],
         required=False,
         default="similarity"
     )

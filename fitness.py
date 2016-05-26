@@ -7,8 +7,13 @@ import numpy as np
 
 
 class AbstractFitness(object):
-    # Whether or not fitness is relative, i.e. it changes from generation to generation
-    # and/or depends on (the fitness of) other individuals
+    """
+    AbstractFitness: Base class
+
+    IS_FITNESS_RELATIVE:
+    Whether or not fitness is relative, i.e. it changes from generation to generation
+    and/or depends on (the fitness of) other individuals
+    """
     IS_FITNESS_RELATIVE = False
 
     def __init__(self, target_sound):
@@ -19,6 +24,11 @@ class AbstractFitness(object):
 
 
 class LocalSimilarityFitness(AbstractFitness):
+    """
+    Average euclidean distance between individual feature vector and target feature vector for
+    each frame
+    """
+
     IS_FITNESS_RELATIVE = False
 
     def evaluate_multiple(self, individuals):
@@ -81,6 +91,10 @@ class LocalSimilarityFitness(AbstractFitness):
 
 
 class MultiObjectiveFitness(AbstractFitness):
+    """
+    Multi-objective optimization, inspired by NSGA-II
+    """
+
     IS_FITNESS_RELATIVE = True
 
     @staticmethod
@@ -184,6 +198,11 @@ class MultiObjectiveFitness(AbstractFitness):
 
 
 class HybridFitness(AbstractFitness):
+    """
+    The average of local similarity and multi-objective optimization. Gives more weight to
+    good trade-offs than pure multi-objective optimization.
+    """
+
     IS_FITNESS_RELATIVE = True
 
     def __init__(self, target_sound):
@@ -192,17 +211,19 @@ class HybridFitness(AbstractFitness):
         self.multi_objective_fitness = MultiObjectiveFitness(target_sound)
 
     def evaluate_multiple(self, individuals):
-        fitness_values = self.multi_objective_fitness.evaluate_multiple(individuals)
-        for i, ind in enumerate(individuals):
-            fitness = self.similarity_fitness.get_local_similarity(
-                self.target_sound,
-                ind.output_sound
-            )
-            fitness_values[i] = (fitness_values[i] + fitness) / 2
-        return fitness_values
+        similarity_fitness_values = self.similarity_fitness.evaluate_multiple(individuals)
+        mo_fitness_values = self.multi_objective_fitness.evaluate_multiple(individuals)
+        return [
+            (similarity_fitness_values[i] + mo_fitness_values[i]) / 2
+            for i in range(len(similarity_fitness_values))
+            ]
 
 
 class NoveltyFitness(AbstractFitness):
+    """
+    This fitness evaluator optimizes for novelty
+    """
+
     IS_FITNESS_RELATIVE = True
 
     def __init__(self, target_sound):
@@ -240,3 +261,24 @@ class NoveltyFitness(AbstractFitness):
             max_fitness = max(fitness_values)
             fitness_values = map(lambda x: x / (1.0 + max_fitness), fitness_values)
             return fitness_values
+
+
+class MixedFitness(AbstractFitness):
+    """
+    For each fitness evaluation, a random fitness evaluator is used
+    """
+
+    IS_FITNESS_RELATIVE = True
+
+    def __init__(self, target_sound):
+        super(MixedFitness, self).__init__(target_sound)
+        self.fitness_evaluators = [
+            LocalSimilarityFitness(target_sound),
+            MultiObjectiveFitness(target_sound),
+            HybridFitness(target_sound),
+            NoveltyFitness(target_sound)
+        ]
+
+    def evaluate_multiple(self, individuals):
+        fitness_evaluator = random.choice(self.fitness_evaluators)
+        return fitness_evaluator.evaluate_multiple(individuals)

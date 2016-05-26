@@ -105,7 +105,7 @@ The _most important_ parameters:
                         the input sound, respectively
   -g NUM_GENERATIONS, --num-generations NUM_GENERATIONS
   -p POPULATION_SIZE, --population_size POPULATION_SIZE
-  --fitness {similarity,multi-objective,hybrid,novelty}
+  --fitness {similarity,multi-objective,hybrid,novelty,mixed}
                         similarity: Average local similarity, calculated with
                         euclidean distance between feature vectors for each
                         frame. multi-objective optimizes for a diverse
@@ -114,7 +114,8 @@ The _most important_ parameters:
                         Hybrid fitness is the sum of similarity and multi-
                         objective, and gives you the best of both worlds.
                         Novelty fitness ignores the objective and optimizes
-                        for novelty
+                        for novelty. Mixed fitness chooses a random fitness
+                        evaluator for each generation.
   --neural-input-mode {a,ab,b,s}
                         What to use as neural input. Mode a: target sound.
                         Mode ab: target sound and input sound. Mode b: input

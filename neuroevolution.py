@@ -59,6 +59,8 @@ class Neuroevolution(object):
             self.fitness_evaluator = fitness.HybridFitness(self.target_sound)
         elif self.args.fitness == 'novelty':
             self.fitness_evaluator = fitness.NoveltyFitness(self.target_sound)
+        elif self.args.fitness == 'mixed':
+            self.fitness_evaluator = fitness.MixedFitness(self.target_sound)
 
         self.similarity_evaluator = fitness.LocalSimilarityFitness(self.target_sound)
 
