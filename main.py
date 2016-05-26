@@ -158,12 +158,12 @@ if __name__ == '__main__':
         dest='fitness',
         type=str,
         help='similarity: Average local similarity, calculated with euclidean distance between'
-             ' feature vectors for each frame. Multi-Objective (mo) optimizes for a diverse'
+             ' feature vectors for each frame. multi-objective optimizes for a diverse'
              ' population that consists of various non-dominated trade-offs between similarity'
-             ' in different features. Hybrid fitness is the sum of similarity and mo, and gives'
-             ' you the best of both worlds. Novelty fitness ignores the objective and optimizes'
-             ' for novelty',
-        choices=['similarity', 'mo', 'hybrid', 'novelty'],
+             ' in different features. Hybrid fitness is the sum of similarity and multi-objective,'
+             ' and gives you the best of both worlds. Novelty fitness ignores the objective and'
+             ' optimizes for novelty',
+        choices=['similarity', 'multi-objective', 'hybrid', 'novelty'],
         required=False,
         default="similarity"
     )

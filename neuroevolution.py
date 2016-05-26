@@ -53,16 +53,17 @@ class Neuroevolution(object):
         self.fitness_evaluator_class = None
         if self.args.fitness == 'similarity':
             self.fitness_evaluator_class = fitness_evaluator.FitnessEvaluator
-        elif self.args.fitness == 'mo':
+        elif self.args.fitness == 'multi-objective':
             self.fitness_evaluator_class = fitness_evaluator.MultiObjectiveFitnessEvaluator
         elif self.args.fitness == 'hybrid':
             self.fitness_evaluator_class = fitness_evaluator.HybridFitnessEvaluator
         elif self.args.fitness == 'novelty':
             self.fitness_evaluator_class = fitness_evaluator.NoveltyFitness
+            fitness_evaluator.NoveltyFitness.reset()
 
         self.similarity_evaluator_class = fitness_evaluator.FitnessEvaluator
 
-        if self.args.fitness in ['mo', 'hybrid'] and \
+        if self.args.fitness in ['multi-objective', 'hybrid'] and \
                         self.args.population_size < 2 * len(experiment.SIMILARITY_CHANNELS):
             print(
                 'Warning: Population size is small. The current experiment has {0}'

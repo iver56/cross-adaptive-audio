@@ -11,7 +11,8 @@ class TestMultiNeat(unittest.TestCase):
         genome.BuildPhenotype(net)
 
         # let's input just one pattern to the net, activate it once and get the output
-        # The last input is always used as bias and also when you activate the network always set the last input to 1.0
+        # The last input is always used as bias and also when you activate the network always set
+        # the last input to 1.0
         net.Input([1.0, 0.0, 1.0])
         net.Activate()
         output = net.Output()
@@ -23,8 +24,8 @@ class TestMultiNeat(unittest.TestCase):
             print(s)
 
         # the output can be used as any other Python iterable. For the purposes of the tutorial,
-        # we will consider the fitness of the individual to be the neural network that outputs constantly
-        # 0.0 from the first output (the second output is ignored)
+        # we will consider the fitness of the individual to be the neural network that outputs
+        # constantly 0.0 from the first output (the second output is ignored)
 
         fitness = 1.0 - output[0]
         return fitness
@@ -34,10 +35,10 @@ class TestMultiNeat(unittest.TestCase):
         params.PopulationSize = 100
         genome = NEAT.Genome(
             0,  # ID
-            3,  # number of inputs. Note: always add one extra input, according to http://multineat.com/docs.html
+            3,  # number of inputs. Note: always add one extra input, for bias
             0,  # number of hidden nodes
             2,  # number of outputs
-            False,  # FS_NEAT; automatically determine an appropriate set of inputs for the evolved networks
+            False,  # FS_NEAT; auto-determine an appropriate set of inputs for the evolved networks
             NEAT.ActivationFunction.UNSIGNED_SIGMOID,  # OutputActType
             NEAT.ActivationFunction.UNSIGNED_SIGMOID,  # HiddenActType
             0,  # SeedType
@@ -60,10 +61,6 @@ class TestMultiNeat(unittest.TestCase):
             for genome in genome_list:
                 fitness = self.evaluate(genome)
                 genome.SetFitness(fitness)
-
-            # at this point we may output some information regarding the progress of evolution, best fitness, etc.
-            # it's also the place to put any code that tracks the progress and saves the best genome or the entire
-            # population. We skip all of this in the tutorial.
 
             # advance to the next generation
             pop.Epoch()
