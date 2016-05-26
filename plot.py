@@ -76,7 +76,7 @@ class Plot(object):
 
             experiment_series = []  # series for this experiment
             for stats_data_object in stats_data_objects:
-                # compute cumulative maximum
+                # compute cumulative maximum similarity
                 max_similarity = stats_data_object['generations'][0]['similarity_max']
                 similarity_series = []
                 for generation in stats_data_object['generations']:
@@ -105,6 +105,7 @@ class Plot(object):
 
         fig = plt.figure()
         ax = fig.add_subplot(111)
+        ax.set_title('Average cumulative maximum similarity')
 
         handles = []
         max_series_length = max(len(series) for series in all_series)
@@ -124,7 +125,7 @@ class Plot(object):
         if args.output is None:
             plt.show()
         else:
-            plt.savefig(args.output, dpi=96)
+            plt.savefig(args.output, dpi=300)
 
 
 if __name__ == "__main__":

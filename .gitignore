@@ -68,6 +68,7 @@ results
 experiment_settings.json
 experiment_settings.json.*_example
 tmp/*
+*.png
 
 # NodeJS
 node_modules
