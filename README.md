@@ -4,7 +4,7 @@ The project will investigate methods of evaluating the musical applicability of 
 
 ## Install dependencies (Ubuntu)
 
-* Install matplotlib dependencies: `sudo apt-get install libfreetype6-dev libpng-dev`
+* Install matplotlib dependencies: `sudo apt-get install libfreetype6-dev libpng-dev blt-dev`
 * Install csound: `sudo apt-get install csound`
 * Install [aubio](http://aubio.org/download): `sudo apt-get install aubio-tools libaubio-dev libaubio-doc`
 * Install essentia extractors (optional):
@@ -16,7 +16,7 @@ The project will investigate methods of evaluating the musical applicability of 
   * Install boost c++ libraries: `sudo apt-get install libboost-all-dev`
   * `cd ~/ && git clone https://github.com/peter-ch/MultiNEAT.git`
   * `cd MultiNEAT`
-  * `sudo python setup.py install`
+  * `sudo python setup.py install` (needs at least 2 GB RAM)
 * Install NodeJS
   * `sudo apt-get install nodejs npm`
 * Install Sonic Annotator
