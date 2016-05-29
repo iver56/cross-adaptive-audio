@@ -8,22 +8,28 @@ import experiment
 
 
 class Analyzer(object):
-    FEATURES_LIST = copy.deepcopy(experiment.NEURAL_INPUT_CHANNELS)
-    for feature in experiment.SIMILARITY_CHANNELS:
-        if feature not in FEATURES_LIST:
-            FEATURES_LIST.append(feature)
-
-    FEATURES = {}
-    for i in range(len(FEATURES_LIST)):
-        label = FEATURES_LIST[i]
-        FEATURES[label] = i
-    NUM_FEATURES = len(FEATURES)
+    FEATURES_LIST = None
+    FEATURES = None
+    NUM_FEATURES = None
 
     AVAILABLE_ANALYZERS = [
         sonic_annotator_analyzer.SonicAnnotatorAnalyzer,
         mfcc_analyzer.MfccAnalyzer,
         essentia_analyzer.EssentiaAnalyzer
     ]
+
+    @staticmethod
+    def init_features_list():
+        Analyzer.FEATURES_LIST = copy.deepcopy(experiment.Experiment.NEURAL_INPUT_CHANNELS)
+        for feature in experiment.Experiment.SIMILARITY_CHANNELS:
+            if feature not in Analyzer.FEATURES_LIST:
+                Analyzer.FEATURES_LIST.append(feature)
+
+        Analyzer.FEATURES = {}
+        for i in range(len(Analyzer.FEATURES_LIST)):
+            label = Analyzer.FEATURES_LIST[i]
+            Analyzer.FEATURES[label] = i
+        Analyzer.NUM_FEATURES = len(Analyzer.FEATURES)
 
     def __init__(self, project):
         self.project = project

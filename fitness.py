@@ -52,7 +52,7 @@ class LocalSimilarityFitness(AbstractFitness):
         euclidean_distance_sum = 0
         for k in range(param_sound.get_num_frames()):
             sum_of_squared_differences = 0
-            for feature in experiment.SIMILARITY_CHANNELS:
+            for feature in experiment.Experiment.SIMILARITY_CHANNELS:
                 param_value = param_sound.analysis['series_standardized'][feature][k]
                 try:
                     output_value = output_sound.analysis['series_standardized'][feature][k]
@@ -69,7 +69,7 @@ class LocalSimilarityFitness(AbstractFitness):
                         )
                     raise
 
-                sum_of_squared_differences += experiment.SIMILARITY_WEIGHTS[feature] * \
+                sum_of_squared_differences += experiment.Experiment.SIMILARITY_WEIGHTS[feature] * \
                                               (param_value - output_value) ** 2
             euclidean_distance = math.sqrt(sum_of_squared_differences)
             euclidean_distance_sum += euclidean_distance
@@ -100,7 +100,7 @@ class MultiObjectiveFitness(AbstractFitness):
     @staticmethod
     def calculate_objectives(that_individual, target_sound):
         that_individual.objectives = {}
-        for feature in experiment.SIMILARITY_CHANNELS:
+        for feature in experiment.Experiment.SIMILARITY_CHANNELS:
             sum_of_squared_differences = 0
             for k in range(target_sound.get_num_frames()):
                 param_value = target_sound.analysis['series_standardized'][feature][k]
@@ -165,7 +165,7 @@ class MultiObjectiveFitness(AbstractFitness):
         for ind in front:
             ind.crowding_distance = 0.0
 
-        for feature in experiment.SIMILARITY_CHANNELS:
+        for feature in experiment.Experiment.SIMILARITY_CHANNELS:
             front = sorted(front, key=lambda x: x.objectives[feature])
 
             min_dist = float(front[0].objectives[feature])

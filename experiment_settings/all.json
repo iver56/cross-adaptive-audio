@@ -1,0 +1,347 @@
+{
+  "parameter_lpf_cutoff": 50,
+  "similarity_channels": [
+    {
+      "name": "mfcc_0",
+      "weight": 0.1
+    },
+    {
+      "name": "mfcc_1",
+      "weight": 0.02
+    },
+    {
+      "name": "spectral_centroid",
+      "weight": 4.0
+    },
+    {
+      "name": "bark_0",
+      "weight": 0.02
+    },
+    {
+      "name": "bark_1",
+      "weight": 0.02
+    },
+    {
+      "name": "bark_2",
+      "weight": 0.02
+    },
+    {
+      "name": "bark_3",
+      "weight": 0.02
+    },
+    {
+      "name": "bark_4",
+      "weight": 0.02
+    },
+    {
+      "name": "bark_5",
+      "weight": 0.02
+    },
+    {
+      "name": "bark_6",
+      "weight": 0.02
+    },
+    {
+      "name": "bark_7",
+      "weight": 1.0
+    },
+    {
+      "name": "bark_8",
+      "weight": 0.02
+    },
+    {
+      "name": "bark_9",
+      "weight": 0.02
+    },
+    {
+      "name": "bark_10",
+      "weight": 0.02
+    },
+    {
+      "name": "bark_11",
+      "weight": 0.02
+    },
+    {
+      "name": "bark_12",
+      "weight": 0.02
+    },
+    {
+      "name": "bark_13",
+      "weight": 0.02
+    },
+    {
+      "name": "bark_14",
+      "weight": 0.02
+    },
+    {
+      "name": "bark_15",
+      "weight": 0.02
+    },
+    {
+      "name": "bark_16",
+      "weight": 0.02
+    },
+    {
+      "name": "bark_17",
+      "weight": 0.02
+    },
+    {
+      "name": "bark_18",
+      "weight": 0.02
+    },
+    {
+      "name": "bark_19",
+      "weight": 0.02
+    },
+    {
+      "name": "bark_20",
+      "weight": 0.02
+    },
+    {
+      "name": "bark_21",
+      "weight": 0.02
+    },
+    {
+      "name": "bark_22",
+      "weight": 0.02
+    },
+    {
+      "name": "bark_23",
+      "weight": 0.02
+    },
+    {
+      "name": "bark_24",
+      "weight": 0.02
+    },
+    {
+      "name": "bark_25",
+      "weight": 0.02
+    },
+    {
+      "name": "tristimulus_1",
+      "weight": 0.02
+    },
+    {
+      "name": "tristimulus_2",
+      "weight": 0.02
+    },
+    {
+      "name": "tristimulus_3",
+      "weight": 0.02
+    },
+    {
+      "name": "spectral_flux",
+      "weight": 0.02
+    },
+    {
+      "name": "barkbands_crest",
+      "weight": 0.02
+    },
+    {
+      "name": "barkbands_flatness_db",
+      "weight": 0.02
+    },
+    {
+      "name": "barkbands_kurtosis",
+      "weight": 0.02
+    },
+    {
+      "name": "barkbands_skewness",
+      "weight": 0.02
+    },
+    {
+      "name": "barkbands_spread",
+      "weight": 0.02
+    },
+    {
+      "name": "dissonance",
+      "weight": 0.02
+    },
+    {
+      "name": "erbbands_crest",
+      "weight": 0.02
+    },
+    {
+      "name": "erbbands_flatness_db",
+      "weight": 0.02
+    },
+    {
+      "name": "erbbands_kurtosis",
+      "weight": 0.02
+    },
+    {
+      "name": "erbbands_skewness",
+      "weight": 0.02
+    },
+    {
+      "name": "erbbands_spread",
+      "weight": 0.02
+    },
+    {
+      "name": "melbands_crest",
+      "weight": 0.02
+    },
+    {
+      "name": "melbands_flatness_db",
+      "weight": 0.02
+    },
+    {
+      "name": "melbands_kurtosis",
+      "weight": 0.02
+    },
+    {
+      "name": "melbands_skewness",
+      "weight": 0.02
+    },
+    {
+      "name": "melbands_spread",
+      "weight": 0.02
+    },
+    {
+      "name": "pitch_salience",
+      "weight": 0.02
+    },
+    {
+      "name": "silence_rate_20dB",
+      "weight": 0.02
+    },
+    {
+      "name": "silence_rate_30dB",
+      "weight": 0.02
+    },
+    {
+      "name": "silence_rate_60dB",
+      "weight": 0.02
+    },
+    {
+      "name": "spectral_complexity",
+      "weight": 0.02
+    },
+    {
+      "name": "spectral_decrease",
+      "weight": 0.02
+    },
+    {
+      "name": "spectral_energy",
+      "weight": 0.02
+    },
+    {
+      "name": "spectral_energyband_high",
+      "weight": 0.02
+    },
+    {
+      "name": "spectral_energyband_low",
+      "weight": 0.02
+    },
+    {
+      "name": "spectral_energyband_middle_high",
+      "weight": 0.02
+    },
+    {
+      "name": "spectral_energyband_middle_low",
+      "weight": 0.02
+    },
+    {
+      "name": "spectral_entropy",
+      "weight": 0.02
+    },
+    {
+      "name": "spectral_kurtosis",
+      "weight": 0.02
+    },
+    {
+      "name": "spectral_rms",
+      "weight": 0.02
+    },
+    {
+      "name": "spectral_rolloff",
+      "weight": 0.02
+    },
+    {
+      "name": "spectral_skewness",
+      "weight": 0.02
+    },
+    {
+      "name": "spectral_spread",
+      "weight": 0.02
+    },
+    {
+      "name": "spectral_strongpeak",
+      "weight": 0.02
+    },
+    {
+      "name": "zerocrossingrate",
+      "weight": 0.2
+    }
+  ],
+  "neural_input_channels": [
+    "mfcc_0",
+    "mfcc_1",
+    "spectral_centroid",
+    "bark_0",
+    "bark_1",
+    "bark_2",
+    "bark_3",
+    "bark_4",
+    "bark_5",
+    "bark_6",
+    "bark_7",
+    "bark_8",
+    "bark_9",
+    "bark_10",
+    "bark_11",
+    "bark_12",
+    "bark_13",
+    "bark_14",
+    "bark_15",
+    "bark_16",
+    "bark_17",
+    "bark_18",
+    "bark_19",
+    "bark_20",
+    "bark_21",
+    "bark_22",
+    "bark_23",
+    "bark_24",
+    "bark_25",
+    "tristimulus_1",
+    "tristimulus_2",
+    "tristimulus_3",
+    "spectral_flux",
+    "barkbands_crest",
+    "barkbands_flatness_db",
+    "barkbands_kurtosis",
+    "barkbands_skewness",
+    "barkbands_spread",
+    "dissonance",
+    "erbbands_crest",
+    "erbbands_flatness_db",
+    "erbbands_kurtosis",
+    "erbbands_skewness",
+    "erbbands_spread",
+    "melbands_crest",
+    "melbands_flatness_db",
+    "melbands_kurtosis",
+    "melbands_skewness",
+    "melbands_spread",
+    "pitch_salience",
+    "silence_rate_20dB",
+    "silence_rate_30dB",
+    "silence_rate_60dB",
+    "spectral_complexity",
+    "spectral_decrease",
+    "spectral_energy",
+    "spectral_energyband_high",
+    "spectral_energyband_low",
+    "spectral_energyband_middle_high",
+    "spectral_energyband_middle_low",
+    "spectral_entropy",
+    "spectral_kurtosis",
+    "spectral_rms",
+    "spectral_rolloff",
+    "spectral_skewness",
+    "spectral_spread",
+    "spectral_strongpeak",
+    "zerocrossingrate"
+  ]
+}

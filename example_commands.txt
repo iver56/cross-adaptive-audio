@@ -3,13 +3,21 @@ python main.py -i drums.wav noise.wav -g 40 -p 40 --patience 40 --seed 234 --kee
 python plot.py --label output_activation_function --output plot.png --avg
 
 # Compare fitness modes
-python main.py -i drums.wav noise.wav --fitness similarity --keep-k-best 0 --num-runs 10 && python main.py -i drums.wav noise.wav --fitness multi-objective --keep-k-best 0 --num-runs 10 && python main.py -i drums.wav noise.wav --fitness hybrid --keep-k-best 0 --num-runs 10 && python main.py -i drums.wav noise.wav --fitness novelty --keep-k-best 0 --num-runs 10 && python main.py -i drums.wav noise.wav --fitness mixed --keep-k-best 0 --num-runs 10
+python main.py -i drums.wav noise.wav --fitness similarity --experiment-settings spectral_basic.json --keep-k-best 0 --num-runs 10 && python main.py -i drums.wav noise.wav --fitness multi-objective --experiment-settings spectral_basic.json --keep-k-best 0 --survival-rate 0.33 --elitism 0.2 --num-runs 10 && python main.py -i drums.wav noise.wav --fitness hybrid --experiment-settings spectral_basic.json --keep-k-best 0 --survival-rate 0.33 --elitism 0.2 --num-runs 10 && python main.py -i drums.wav noise.wav --fitness novelty --experiment-settings spectral_basic.json --keep-k-best 0 --num-runs 10 && python main.py -i drums.wav noise.wav --fitness mixed --experiment-settings spectral_basic.json --survival-rate 0.33 --elitism 0.2 --keep-k-best 0 --num-runs 10
 python plot.py --label fitness --output plot.png --avg
 
 # Compare NEAT and FS-NEAT
-python main.py -i sine_sweep.wav noise.wav -p 150 --keep-k-best 75 --fitness hybrid --effect lpf && python main.py -i sine_sweep.wav noise.wav -p 150 --keep-k-best 75 --fitness hybrid --effect lpf --fs-neat
+python main.py -i sine_sweep.wav noise.wav -p 150 --keep-k-best 75 --fitness hybrid --experiment-settings all.json --effect lpf && python main.py -i sine_sweep.wav noise.wav -p 150 --keep-k-best 75 --fitness hybrid --experiment-settings all.json --effect lpf --fs-neat
 python plot.py --output plot.png --avg
 
 # Compare survival rates
-python main.py -i drums.wav noise.wav --keep-k-best 0 --num-runs 10 --fitness multi-objective --survival-rate 0.25 && python main.py -i drums.wav noise.wav --keep-k-best 0 --num-runs 10 --survival-rate 0.33 && python main.py -i drums.wav noise.wav --keep-k-best 0 --num-runs 10 --survival-rate 0.5
+python main.py -i drums.wav noise.wav --keep-k-best 0 --num-runs 10 --fitness multi-objective --experiment-settings spectral_basic.json --survival-rate 0.25 && python main.py -i drums.wav noise.wav --keep-k-best 0 --fitness multi-objective --experiment-settings spectral_basic.json --num-runs 10 --survival-rate 0.35 && python main.py -i drums.wav noise.wav --fitness multi-objective --experiment-settings spectral_basic.json --keep-k-best 0 --num-runs 10 --survival-rate 0.45
 python plot.py --label survival_rate --output plot_survival_rate.png --avg
+
+# Compare elitism rates
+python main.py -i drums.wav noise.wav --keep-k-best 0 --num-runs 10 --fitness multi-objective --experiment-settings spectral_basic.json --survival-rate 0.33 --elitism 0.1 && python main.py -i drums.wav noise.wav --keep-k-best 0 --num-runs 10 --fitness multi-objective --experiment-settings spectral_basic.json --survival-rate 0.33 --elitism 0.2 && python main.py -i drums.wav noise.wav --keep-k-best 0 --num-runs 10 --fitness multi-objective --experiment-settings spectral_basic.json --survival-rate 0.33 --elitism 0.3
+python plot.py --label elitism --output plot_elitism.png --avg
+
+# Compare increased survival rate & elitism rate with default settings in similarity fitness experiment
+python main.py -i drums.wav noise.wav --fitness similarity --experiment-settings spectral_basic.json --keep-k-best 0 --num-runs 10 && python main.py -i drums.wav noise.wav --fitness similarity --experiment-settings spectral_basic.json --keep-k-best 0 --num-runs 10 --survival-rate 0.33 --elitism 0.2
+python plot.py --output plot_survival_rate_elitism.png --avg

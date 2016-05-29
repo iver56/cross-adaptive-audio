@@ -1,5 +1,7 @@
 import argparse
 import neuroevolution
+import experiment
+import analyze
 
 
 if __name__ == '__main__':
@@ -129,7 +131,7 @@ if __name__ == '__main__':
         '--survival-rate',
         dest='survival_rate',
         type=float,
-        help='Fraction of best individuals that are allowed to reproduce. 1.0 = 100%',
+        help='Fraction of best individuals that are allowed to reproduce',
         required=False,
         default=0.25
     )
@@ -185,6 +187,15 @@ if __name__ == '__main__':
         default="dist_lpf"
     )
     arg_parser.add_argument(
+        '--experiment-settings',
+        dest='experiment_settings',
+        type=str,
+        help='Filename of json file in the experiment_settings folder. This file specifies which'
+             ' features to use as neural input and for similarity calculations.',
+        required=False,
+        default="mfcc_basic.json"
+    )
+    arg_parser.add_argument(
         '--num-runs',
         dest='num_runs',
         help='Number of times to run the experiment (makes sense if seed is not specified)',
@@ -193,6 +204,9 @@ if __name__ == '__main__':
         default=1
     )
     args = arg_parser.parse_args()
+
+    experiment.Experiment.load_experiment_settings(args.experiment_settings)
+    analyze.Analyzer.init_features_list()
 
     num_runs = args.num_runs
     del args.num_runs

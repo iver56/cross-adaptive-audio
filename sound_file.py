@@ -86,7 +86,7 @@ class SoundFile(object):
         :return: list
         """
         feature_vector = []
-        for feature in experiment.NEURAL_INPUT_CHANNELS:
+        for feature in experiment.Experiment.NEURAL_INPUT_CHANNELS:
             feature_vector.append(self.analysis['series_standardized'][feature][k])
         return feature_vector
 

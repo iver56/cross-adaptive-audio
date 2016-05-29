@@ -65,12 +65,12 @@ class Neuroevolution(object):
         self.similarity_evaluator = fitness.LocalSimilarityFitness(self.target_sound)
 
         if self.args.fitness in ['multi-objective', 'hybrid'] and \
-                        self.args.population_size < 2 * len(experiment.SIMILARITY_CHANNELS):
+                        self.args.population_size < 2 * len(experiment.Experiment.SIMILARITY_CHANNELS):
             print(
                 'Warning: Population size is small. The current experiment has {0}'
                 ' similarity channels. \nThe population size should be 2-4 times the number of'
                 ' similarity channels in experiments with multi-objective optimization'.format(
-                    len(experiment.SIMILARITY_CHANNELS)
+                    len(experiment.Experiment.SIMILARITY_CHANNELS)
                 )
             )
 
@@ -107,14 +107,14 @@ class Neuroevolution(object):
             input_sound=self.input_sound,
             neural_input_vectors=self.neural_input_vectors,
             effect=self.effect,
-            parameter_lpf_cutoff=experiment.PARAMETER_LPF_CUTOFF
+            parameter_lpf_cutoff=experiment.Experiment.PARAMETER_LPF_CUTOFF
         )
 
         experiment_data = {
             'param_sound': self.target_sound.get_serialized_representation(),
             'input_sound': self.input_sound.get_serialized_representation(),
             'args': vars(self.args),
-            'experiment_settings': experiment.experiment_settings,
+            'experiment_settings': experiment.Experiment.experiment_settings,
             'generations': []
         }
         experiment.Experiment.calculate_current_experiment_id(experiment_data)

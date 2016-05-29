@@ -65,8 +65,6 @@ venv3
 settings.py
 binaries
 results
-experiment_settings.json
-experiment_settings.json.*_example
 tmp/*
 *.png
 

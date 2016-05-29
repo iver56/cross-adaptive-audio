@@ -70,7 +70,6 @@ https://nodejs.org/en/download/
 
 * Clone this repository: `git clone https://github.com/iver56/cross-adaptive-audio.git && cd cross-adaptive-audio`
 * Get a local settings file: `cp settings.py.example settings.py`
-* Create a settings file for your experiment(s): `cp experiment_settings.json.example experiment_settings.json`
 * Make sure that all dependencies are installed: `[sudo] pip install -r requirements.txt`
 * Install Node.js dependencies: `cd node_server && npm install && cd -`
     * If npm fails to properly install the websocket package, go to https://www.npmjs.com/package/websocket#installation for more information
@@ -123,9 +122,13 @@ The _most important_ parameters:
   --effect EFFECT_NAME  The name of the sound effect to use. See the effects
                         folder for options.
   --fs-neat [FS_NEAT]   Use FS-NEAT (automatic feature selection)
+  --experiment-settings EXPERIMENT_SETTINGS
+                        Filename of json file in the experiment_settings
+                        folder. This file specifies which features to use as
+                        neural input and for similarity calculations.
 ```
 
-But wait, there's more! In experiment_settings.json you can specify which audio features to use for a) similarity calculations and b) neural input. Here's one possible configuration, as in experiment_settings.json.example:
+In the experiment_settings folder you can add your own json file where you specify which audio features to use for a) similarity calculations and b) neural input. Here's one possible configuration, as in mfcc_basic.json:
 ```json
 {
   "parameter_lpf_cutoff": 50,
