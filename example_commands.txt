@@ -2,10 +2,14 @@
 python main.py -i drums.wav noise.wav -g 40 -p 40 --patience 40 --seed 234 --keep-k-best 1 --output-activation-function linear && python main.py -i drums.wav noise.wav -g 40 -p 40 --patience 40 --seed 234 --keep-k-best 1 --output-activation-function sigmoid
 python plot.py --label output_activation_function --output plot.png --avg
 
+# Compare fitness modes
+python main.py -i drums.wav noise.wav --fitness similarity --keep-k-best 0 --num-runs 10 && python main.py -i drums.wav noise.wav --fitness multi-objective --keep-k-best 0 --num-runs 10 && python main.py -i drums.wav noise.wav --fitness hybrid --keep-k-best 0 --num-runs 10 && python main.py -i drums.wav noise.wav --fitness novelty --keep-k-best 0 --num-runs 10 && python main.py -i drums.wav noise.wav --fitness mixed --keep-k-best 0 --num-runs 10
+python plot.py --label fitness --output plot.png --avg
+
 # Compare NEAT and FS-NEAT
 python main.py -i sine_sweep.wav noise.wav -p 150 --keep-k-best 75 --fitness hybrid --effect lpf && python main.py -i sine_sweep.wav noise.wav -p 150 --keep-k-best 75 --fitness hybrid --effect lpf --fs-neat
 python plot.py --output plot.png --avg
 
-# Compare fitness modes
-python main.py -i drums.wav noise.wav --fitness similarity --keep-k-best 0 --num-runs 10 && python main.py -i drums.wav noise.wav --fitness multi-objective --keep-k-best 0 --num-runs 10 && python main.py -i drums.wav noise.wav --fitness hybrid --keep-k-best 0 --num-runs 10 && python main.py -i drums.wav noise.wav --fitness novelty --keep-k-best 0 --num-runs 10 && python main.py -i drums.wav noise.wav --fitness mixed --keep-k-best 0 --num-runs 10
-python plot.py --label fitness --output plot.png --avg
+# Compare survival rates
+python main.py -i drums.wav noise.wav --keep-k-best 0 --num-runs 10 --fitness multi-objective --survival-rate 0.25 && python main.py -i drums.wav noise.wav --keep-k-best 0 --num-runs 10 --survival-rate 0.33 && python main.py -i drums.wav noise.wav --keep-k-best 0 --num-runs 10 --survival-rate 0.5
+python plot.py --label survival_rate --output plot.png --avg

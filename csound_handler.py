@@ -10,7 +10,7 @@ class CsoundHandler(object):
     def __init__(self, csd_filename):
         self.csd_filename = csd_filename
 
-    def run(self, output_filename=None, async=False):
+    def run(self, input_filename=None, output_filename=None, async=False):
         command = [
             "csound",
             self.csd_filename
@@ -22,6 +22,11 @@ class CsoundHandler(object):
                 output_filename
             )
             command.append('-o' + output_file_path)
+        input_file_path = os.path.join(
+            settings.INPUT_DIRECTORY,
+            input_filename
+        )
+        command.append('-i' + input_file_path)
 
         if settings.VERBOSE:
             p = subprocess.Popen(command)

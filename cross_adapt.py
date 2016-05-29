@@ -90,7 +90,6 @@ class CrossAdapter(object):
 
         template = template_handler.TemplateHandler(self.effect.template_file_path)
         template.compile(
-            input_sound_filename=self.input_sound.filename,
             parameter_channels=channels_csv,
             ksmps=settings.HOP_SIZE,
             duration=self.input_sound.get_duration(),
@@ -104,7 +103,11 @@ class CrossAdapter(object):
         )
         template.write_result(csd_path)
         csound = csound_handler.CsoundHandler(csd_path)
-        process = csound.run(output_filename, async=True)
+        process = csound.run(
+            input_filename=self.input_sound.filename,
+            output_filename=output_filename,
+            async=True
+        )
         output_sound_file = sound_file.SoundFile(
             output_filename,
             is_input=False

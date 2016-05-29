@@ -29,7 +29,6 @@ class TestCsound(unittest.TestCase):
             template = template_handler.TemplateHandler(self.template_file_path)
             duration = self.drums.get_duration()
             template.compile(
-                sound_filename=self.drums.filename,
                 ksmps=settings.HOP_SIZE,
                 duration=duration
             )
@@ -42,7 +41,11 @@ class TestCsound(unittest.TestCase):
             template.write_result(csd_path)
             csound = csound_handler.CsoundHandler(csd_path)
             output_filename = self.drums.filename + '.test_processed_serial_{}.wav'.format(i)
-            csound.run(output_filename, async=False)
+            csound.run(
+                input_filename=self.drums.filename,
+                output_filename=output_filename,
+                async=False
+            )
             self.files_to_delete.append(csd_path)
             self.files_to_delete.append(
                 os.path.join(
@@ -66,7 +69,6 @@ class TestCsound(unittest.TestCase):
             template = template_handler.TemplateHandler(self.template_file_path)
             duration = self.drums.get_duration()
             template.compile(
-                sound_filename=self.drums.filename,
                 ksmps=settings.HOP_SIZE,
                 duration=duration
             )
@@ -79,7 +81,11 @@ class TestCsound(unittest.TestCase):
             template.write_result(csd_path)
             csound = csound_handler.CsoundHandler(csd_path)
             output_filename = self.drums.filename + '.test_processed_parallel_{}.wav'.format(i)
-            p = csound.run(output_filename, async=True)
+            p = csound.run(
+                input_filename=self.drums.filename,
+                output_filename=output_filename,
+                async=False
+            )
             processes.append(p)
             self.files_to_delete.append(csd_path)
             self.files_to_delete.append(
