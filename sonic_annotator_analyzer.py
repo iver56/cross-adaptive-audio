@@ -6,7 +6,7 @@ import sys
 
 class SonicAnnotatorAnalyzer(object):
     AVAILABLE_FEATURES = {
-        # Warning: may produce odd results on windows
+        # Warning: may produce odd results on Windows
         # See https://github.com/jamiebullock/LibXtract/issues/65
         'spectral_centroid',
         'bark_0',

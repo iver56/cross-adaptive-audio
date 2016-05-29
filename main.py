@@ -126,6 +126,14 @@ if __name__ == '__main__':
         default=0.1
     )
     arg_parser.add_argument(
+        '--survival-rate',
+        dest='survival_rate',
+        type=float,
+        help='Fraction of best individuals that are allowed to reproduce. 1.0 = 100%',
+        required=False,
+        default=0.25
+    )
+    arg_parser.add_argument(
         '--fs-neat',
         nargs='?',
         dest='fs_neat',

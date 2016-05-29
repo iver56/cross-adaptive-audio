@@ -68,7 +68,8 @@ class Neuroevolution(object):
                         self.args.population_size < 2 * len(experiment.SIMILARITY_CHANNELS):
             print(
                 'Warning: Population size is small. The current experiment has {0}'
-                ' similarity channels. \nThe population size should be at least twice that'.format(
+                ' similarity channels. \nThe population size should be 2-4 times the number of'
+                ' similarity channels in experiments with multi-objective optimization'.format(
                     len(experiment.SIMILARITY_CHANNELS)
                 )
             )
@@ -164,6 +165,7 @@ class Neuroevolution(object):
         params.MutateRemLinkProb = self.args.remove_link_probability
         params.MutateRemSimpleNeuronProb = self.args.remove_simple_neuron_probability
         params.Elitism = self.args.elitism
+        params.SurvivalRate = self.args.survival_rate
         num_inputs = len(self.neural_input_vectors[0])
         num_hidden_nodes = 0
         num_outputs = self.effect.num_parameters
