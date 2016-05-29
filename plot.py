@@ -138,7 +138,7 @@ class Plot(object):
                 max_series_plot, = plt.plot(
                     x,
                     np.array([y['max'] for y in series]),
-                    label=all_series_labels[i] + ' (max)',
+                    label=str(all_series_labels[i]) + ' (max)',
                     color=color,
                     linestyle='-.'
                 )
@@ -147,7 +147,7 @@ class Plot(object):
                 avg_series_plot, = plt.plot(
                     x,
                     np.array([y['avg'] for y in series]),
-                    label=all_series_labels[i] + ' (avg)',
+                    label=str(all_series_labels[i]) + ' (avg)',
                     color=color
                 )
                 handles.append(avg_series_plot)

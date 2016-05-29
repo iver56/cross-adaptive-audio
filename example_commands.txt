@@ -12,4 +12,4 @@ python plot.py --output plot.png --avg
 
 # Compare survival rates
 python main.py -i drums.wav noise.wav --keep-k-best 0 --num-runs 10 --fitness multi-objective --survival-rate 0.25 && python main.py -i drums.wav noise.wav --keep-k-best 0 --num-runs 10 --survival-rate 0.33 && python main.py -i drums.wav noise.wav --keep-k-best 0 --num-runs 10 --survival-rate 0.5
-python plot.py --label survival_rate --output plot.png --avg
+python plot.py --label survival_rate --output plot_survival_rate.png --avg
