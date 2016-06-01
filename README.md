@@ -66,9 +66,11 @@ Building these dependencies from source can be difficult and time-consuming, so 
 ### Install NodeJS
 https://nodejs.org/en/download/
 
-## Setup of this project
+## Setup of this project (same for Windows and Ubuntu)
 
-* Clone this repository: `git clone https://github.com/iver56/cross-adaptive-audio.git && cd cross-adaptive-audio`
+If you're on Windows, you might want to run the following commands in Git Bash
+
+* Clone the cross-adaptive-audio repository: `git clone https://github.com/iver56/cross-adaptive-audio.git && cd cross-adaptive-audio`
 * Get a local settings file: `cp settings.py.example settings.py`
 * Make sure that all dependencies are installed: `[sudo] pip install -r requirements.txt`
 * Install Node.js dependencies: `cd node_server && npm install && cd -`
