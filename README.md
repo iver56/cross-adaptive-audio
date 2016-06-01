@@ -72,7 +72,7 @@ If you're on Windows, you might want to run the following commands in Git Bash
 
 * Clone the cross-adaptive-audio repository: `git clone https://github.com/iver56/cross-adaptive-audio.git && cd cross-adaptive-audio`
 * Get a local settings file: `cp settings.py.example settings.py`
-* Make sure that all dependencies are installed: `[sudo] pip install -r requirements.txt`
+* Make sure that all dependencies are installed: `[sudo] pip install -r requirements.txt` (run without sudo on Windows)
 * Install Node.js dependencies: `cd node_server && npm install && cd -`
     * If npm fails to properly install the websocket package, go to https://www.npmjs.com/package/websocket#installation for more information
 
