@@ -9,14 +9,17 @@ import effect
 import copy
 import os
 import experiment
+import analyze
 
 
 class TestCrossAdapt(unittest.TestCase):
     def setUp(self):
         settings.INPUT_DIRECTORY = 'test_audio'
         self.files_to_delete = []
+        experiment.Experiment.load_experiment_settings('mfcc_basic.json')
         experiment.Experiment.folder_name = 'test'
         experiment.Experiment.ensure_folders()
+        analyze.Analyzer.init_features_list()
 
     def tearDown(self):
         for file_path in self.files_to_delete:

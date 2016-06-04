@@ -7,7 +7,7 @@ python main.py -i drums.wav noise.wav --fitness similarity --experiment-settings
 python plot.py --label fitness --output plot.png --avg
 
 # Compare NEAT and FS-NEAT
-python main.py -i sine_sweep.wav noise.wav -p 150 --keep-k-best 75 --fitness hybrid --experiment-settings all.json --effect lpf && python main.py -i sine_sweep.wav noise.wav -p 150 --keep-k-best 75 --fitness hybrid --experiment-settings all.json --effect lpf --fs-neat
+python main.py -i sine_sweep.wav noise.wav -p 200 --keep-k-best 20 --keep-all-last --fitness hybrid --experiment-settings all.json --effect lpf && python main.py -i sine_sweep.wav noise.wav -p 200 --keep-k-best 20 --keep-all-last --fitness hybrid --experiment-settings all.json --effect lpf --fs-neat
 python plot.py --output plot.png --avg
 
 # Compare survival rates

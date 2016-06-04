@@ -4,11 +4,15 @@ import sound_file
 import fitness
 import project
 import individual
+import experiment
+import analyze
 
 
 class TestFitness(unittest.TestCase):
     def setUp(self):
         settings.INPUT_DIRECTORY = 'test_audio'
+        experiment.Experiment.load_experiment_settings('mfcc_basic.json')
+        analyze.Analyzer.init_features_list()
 
     def test_fitness(self):
         drums = sound_file.SoundFile('drums.wav')

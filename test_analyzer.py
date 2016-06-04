@@ -3,7 +3,8 @@ import unittest
 import settings
 import sound_file
 import time
-from analyze import Analyzer
+import analyze
+import experiment
 
 
 class TestAnalyzer(unittest.TestCase):
@@ -15,7 +16,9 @@ class TestAnalyzer(unittest.TestCase):
             sound_file.SoundFile('synth.wav'),
             sound_file.SoundFile('vocal.wav')
         ]
-        self.analyzer = Analyzer(project=None)
+        experiment.Experiment.load_experiment_settings('mfcc_basic.json')
+        analyze.Analyzer.init_features_list()
+        self.analyzer = analyze.Analyzer(project=None)
 
     def test_serial_analysis(self):
         self.start_time = time.time()

@@ -4,11 +4,14 @@ import settings
 import sound_file
 import project
 import experiment
+import analyze
 
 
 class TestSoundFile(unittest.TestCase):
     def setUp(self):
         settings.INPUT_DIRECTORY = 'test_audio'
+        experiment.Experiment.load_experiment_settings('mfcc_basic.json')
+        analyze.Analyzer.init_features_list()
 
     def test_sound_file(self):
         my_sound_file = sound_file.SoundFile('drums.wav')
