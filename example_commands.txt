@@ -5,11 +5,11 @@ python main.py -i drums.wav noise.wav -g 10 -p 20 --keep-k-best 1 --num-runs 20 
 python plot.py --label output_activation_function --output plot_output_activation_functions_avg.png --avg
 
 # Compare fitness modes
-python main.py -i drums.wav noise.wav --experiment-settings spectral_basic.json --keep-k-best 0 --fitness similarity
-python main.py -i drums.wav noise.wav --experiment-settings spectral_basic.json --keep-k-best 0 --fitness multi-objective
-python main.py -i drums.wav noise.wav --experiment-settings spectral_basic.json --keep-k-best 0 --fitness hybrid
-python main.py -i drums.wav noise.wav --experiment-settings spectral_basic.json --keep-k-best 0 --fitness novelty
-python main.py -i drums.wav noise.wav --experiment-settings spectral_basic.json --keep-k-best 0 --fitness mixed
+python main.py -i drums.wav noise.wav --experiment-settings spectral_basic.json --keep-k-best 0 --keep-all-last --num-runs 20 --fitness similarity
+python main.py -i drums.wav noise.wav --experiment-settings spectral_basic.json --keep-k-best 0 --keep-all-last --num-runs 20 --fitness multi-objective
+python main.py -i drums.wav noise.wav --experiment-settings spectral_basic.json --keep-k-best 0 --keep-all-last --num-runs 20 --fitness hybrid
+python main.py -i drums.wav noise.wav --experiment-settings spectral_basic.json --keep-k-best 0 --keep-all-last --num-runs 20 --fitness novelty
+python main.py -i drums.wav noise.wav --experiment-settings spectral_basic.json --keep-k-best 0 --keep-all-last --num-runs 20 --fitness mixed
 python plot.py --label fitness --output plot.png --avg
 
 # Compare NEAT and FS-NEAT
