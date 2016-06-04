@@ -44,7 +44,9 @@ class MfccAnalyzer(object):
         def get_lines(process):
             return process.communicate()[0].splitlines()
 
-        outputs = Pool(len(processes)).map(get_lines, processes)
+        pool = Pool(len(processes))
+        outputs = pool.map(get_lines, processes)
+        pool.close()
         for i in range(len(sound_files)):
             self.parse_output(sound_files[i], outputs[i])
 

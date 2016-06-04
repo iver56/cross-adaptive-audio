@@ -20,6 +20,7 @@ python plot.py --output plot.png --avg
 # Compare add/remove link rates in FS-NEAT
 python main.py -i sine_sweep.wav noise.wav -p 200 --keep-k-best 20 --keep-all-last --fitness hybrid --experiment-settings all.json --effect lpf --fs-neat --add-link-prob 0.03 --rem-link-prob 0.03
 python main.py -i sine_sweep.wav noise.wav -p 200 --keep-k-best 20 --keep-all-last --fitness hybrid --experiment-settings all.json --effect lpf --fs-neat --add-link-prob 0.1 --rem-link-prob 0.1
+python main.py -i sine_sweep.wav noise.wav -p 200 --keep-k-best 20 --keep-all-last --fitness hybrid --experiment-settings all.json --effect lpf --fs-neat --add-link-prob 0.2 --rem-link-prob 0.2
 python main.py -i sine_sweep.wav noise.wav -p 200 --keep-k-best 20 --keep-all-last --fitness hybrid --experiment-settings all.json --effect lpf --fs-neat --add-link-prob 0.3 --rem-link-prob 0.3
 
 # Compare survival rates

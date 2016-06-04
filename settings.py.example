@@ -17,6 +17,7 @@ EFFECT_DIRECTORY = os.path.join(BASE_DIR, 'effects')
 TEMP_DIRECTORY = os.path.join(BASE_DIR, 'tmp')
 TEST_AUDIO_DIRECTORY = 'test_audio'
 
+# Set this to the number of CPU cores your computer has
 NUM_SIMULTANEOUS_PROCESSES = 4
 
 VERBOSE = False  # Set this to True for debugging purposes
