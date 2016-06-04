@@ -3,7 +3,6 @@ import neuroevolution
 import experiment
 import analyze
 
-
 if __name__ == '__main__':
     arg_parser = argparse.ArgumentParser()
     arg_parser.add_argument(
@@ -205,8 +204,28 @@ if __name__ == '__main__':
     )
     args = arg_parser.parse_args()
 
+    if args.keep_k_best > args.population_size:
+        args.keep_k_best = args.population_size
+
+    if args.elitism < 0.0 or args.elitism > 0.4:
+        # MultiNEAT (?) may crash with elitism = 0.5, for some unknown reason
+        raise Exception('elitism should be in the range [0.0, 0.4]')
+
+    if args.population_size < 3:
+        raise Exception('population size should be at least 3')
+
     experiment.Experiment.load_experiment_settings(args.experiment_settings)
     analyze.Analyzer.init_features_list()
+
+    if args.fitness in ['multi-objective', 'hybrid'] and \
+                    args.population_size < 2 * len(experiment.Experiment.SIMILARITY_CHANNELS):
+        print(
+            'Warning: Population size is small. The current experiment has {0}'
+            ' similarity channels. \nThe population size should be 2-4 times the number of'
+            ' similarity channels in experiments with multi-objective optimization'.format(
+                len(experiment.Experiment.SIMILARITY_CHANNELS)
+            )
+        )
 
     num_runs = args.num_runs
     del args.num_runs

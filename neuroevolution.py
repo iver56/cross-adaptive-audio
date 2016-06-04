@@ -20,16 +20,6 @@ class Neuroevolution(object):
     def __init__(self, args):
         self.args = args
 
-        if self.args.keep_k_best > self.args.population_size:
-            self.args.keep_k_best = self.args.population_size
-
-        if self.args.elitism < 0.0 or self.args.elitism > 0.4:
-            # MultiNEAT (?) may crash with elitism = 0.5, for some unknown reason
-            raise Exception('elitism should be in the range [0.0, 0.4]')
-
-        if self.args.population_size < 3:
-            raise Exception('population size should be at least 3')
-
         self.seed = random.randint(1, 999999) if self.args.seed == -1 else self.args.seed
 
         if len(self.args.input_files) != 2:
@@ -63,16 +53,6 @@ class Neuroevolution(object):
             self.fitness_evaluator = fitness.MixedFitness(self.target_sound)
 
         self.similarity_evaluator = fitness.LocalSimilarityFitness(self.target_sound)
-
-        if self.args.fitness in ['multi-objective', 'hybrid'] and \
-                        self.args.population_size < 2 * len(experiment.Experiment.SIMILARITY_CHANNELS):
-            print(
-                'Warning: Population size is small. The current experiment has {0}'
-                ' similarity channels. \nThe population size should be 2-4 times the number of'
-                ' similarity channels in experiments with multi-objective optimization'.format(
-                    len(experiment.Experiment.SIMILARITY_CHANNELS)
-                )
-            )
 
         self.num_frames = min(
             self.target_sound.get_num_frames(),
