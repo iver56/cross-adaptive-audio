@@ -1,5 +1,5 @@
 # Compare output activation functions
-python main.py -i drums.wav noise.wav -g 40 -p 40 --patience 40 --seed 234 --keep-k-best 1 --output-activation-function linear && python main.py -i drums.wav noise.wav -g 40 -p 40 --patience 40 --seed 234 --keep-k-best 1 --output-activation-function sigmoid
+python main.py -i drums.wav noise.wav -g 10 -p 20 --keep-k-best 1 --num-runs 20 --output-activation-function linear && python main.py -i drums.wav noise.wav -g 10 -p 20 --keep-k-best 1 --num-runs 20 --output-activation-function sigmoid && python main.py -i drums.wav noise.wav -g 10 -p 20 --keep-k-best 1 --num-runs 20 --output-activation-function sine
 python plot.py --label output_activation_function --output plot.png --avg
 
 # Compare fitness modes

@@ -4,25 +4,30 @@ The project will investigate methods of evaluating the musical applicability of 
 
 ## Install dependencies (Ubuntu)
 
-* Install matplotlib dependencies: `sudo apt-get install libfreetype6-dev libpng-dev blt-dev`
-* Install csound: `sudo apt-get install csound`
-* Install [aubio](http://aubio.org/download): `sudo apt-get install aubio-tools libaubio-dev libaubio-doc`
+Assuming you have a clean Ubuntu 14.04, here's what needs to be installed:
+
+* Update package index files: `sudo apt-get update`
+* Install git: `sudo apt-get -y install git`
+* Install pip: `sudo apt-get -y install python-pip`
+* Install matplotlib dependencies: `sudo apt-get -y install libfreetype6-dev libpng-dev blt-dev`
+* Install csound: `sudo apt-get -y install csound`
+* Install [aubio](http://aubio.org/download): `sudo apt-get -y install aubio-tools libaubio-dev libaubio-doc`
 * Install essentia extractors (optional):
   * `cd ~/ && wget http://essentia.upf.edu/documentation/extractors/essentia-extractors-v2.1_beta2-linux-x86_64.tar.gz`
   * `tar xzf essentia-extractors-v2.1_beta2-linux-x86_64.tar.gz`
   * `echo 'PATH=~/essentia-extractors-v2.1_beta2/:$PATH' >> ~/.bashrc`
   * `source ~/.bashrc`
 * Install MultiNEAT:
-  * Install boost c++ libraries: `sudo apt-get install libboost-all-dev`
+  * Install boost c++ libraries: `sudo apt-get -y install libboost-all-dev`
   * `cd ~/ && git clone https://github.com/peter-ch/MultiNEAT.git`
   * `cd MultiNEAT`
   * `sudo python setup.py install` (needs at least 2 GB RAM)
 * Install NodeJS
-  * `sudo apt-get install nodejs npm`
+  * `sudo apt-get -y install nodejs npm`
 * Install Sonic Annotator
   * `cd ~/ && wget https://code.soundsoftware.ac.uk/attachments/download/1876/sonic-annotator_1.4cc1-1_amd64.deb`
   * `sudo dpkg -i sonic-annotator_1.4cc1-1_amd64.deb`
-  * If installation fails due to missing dependencies don't worry: Just run `sudo apt-get -f install` and then try to install again.
+  * If installation fails due to missing dependencies don't worry: Just run `sudo apt-get -y -f install` and then try to install again.
 * Download the libXtract vamp plugin:
   * `cd ~/ && wget https://code.soundsoftware.ac.uk/attachments/download/620/vamp-libxtract-plugins-0.6.6.20121204-amd64-linux.tar.gz`
   * `tar -xf vamp-libxtract-plugins-0.6.6.20121204-amd64-linux.tar.gz`
@@ -70,7 +75,7 @@ https://nodejs.org/en/download/
 
 If you're on Windows, you might want to run the following commands in Git Bash
 
-* Clone the cross-adaptive-audio repository: `git clone https://github.com/iver56/cross-adaptive-audio.git && cd cross-adaptive-audio`
+* Clone the cross-adaptive-audio repository: `cd ~/ && git clone https://github.com/iver56/cross-adaptive-audio.git && cd cross-adaptive-audio`
 * Get a local settings file: `cp settings.py.example settings.py`
 * Make sure that all dependencies are installed: `[sudo] pip install -r requirements.txt` (run without sudo on Windows)
 * Install Node.js dependencies: `cd node_server && npm install && cd -`
