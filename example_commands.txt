@@ -1,14 +1,23 @@
 # Compare output activation functions
 python main.py -i drums.wav noise.wav -g 10 -p 20 --keep-k-best 1 --num-runs 20 --output-activation-function linear && python main.py -i drums.wav noise.wav -g 10 -p 20 --keep-k-best 1 --num-runs 20 --output-activation-function sigmoid && python main.py -i drums.wav noise.wav -g 10 -p 20 --keep-k-best 1 --num-runs 20 --output-activation-function sine
-python plot.py --label output_activation_function --output plot.png --avg
+python plot.py --label output_activation_function --output plot_output_activation_functions_avg.png --avg
 
 # Compare fitness modes
-python main.py -i drums.wav noise.wav --fitness similarity --experiment-settings spectral_basic.json --keep-k-best 0 --num-runs 10 && python main.py -i drums.wav noise.wav --fitness multi-objective --experiment-settings spectral_basic.json --keep-k-best 0 --survival-rate 0.33 --elitism 0.2 --num-runs 10 && python main.py -i drums.wav noise.wav --fitness hybrid --experiment-settings spectral_basic.json --keep-k-best 0 --survival-rate 0.33 --elitism 0.2 --num-runs 10 && python main.py -i drums.wav noise.wav --fitness novelty --experiment-settings spectral_basic.json --keep-k-best 0 --num-runs 10 && python main.py -i drums.wav noise.wav --fitness mixed --experiment-settings spectral_basic.json --survival-rate 0.33 --elitism 0.2 --keep-k-best 0 --num-runs 10
+python main.py -i drums.wav noise.wav --fitness similarity --experiment-settings spectral_basic.json --keep-k-best 0
+python main.py -i drums.wav noise.wav --fitness multi-objective --experiment-settings spectral_basic.json --keep-k-best 0
+python main.py -i drums.wav noise.wav --fitness hybrid --experiment-settings spectral_basic.json --keep-k-best 0
+python main.py -i drums.wav noise.wav --fitness novelty --experiment-settings spectral_basic.json --keep-k-best 0
+python main.py -i drums.wav noise.wav --fitness mixed --experiment-settings spectral_basic.json --keep-k-best 0
 python plot.py --label fitness --output plot.png --avg
 
 # Compare NEAT and FS-NEAT
 python main.py -i sine_sweep.wav noise.wav -p 200 --keep-k-best 20 --keep-all-last --fitness hybrid --experiment-settings all.json --effect lpf && python main.py -i sine_sweep.wav noise.wav -p 200 --keep-k-best 20 --keep-all-last --fitness hybrid --experiment-settings all.json --effect lpf --fs-neat
 python plot.py --output plot.png --avg
+
+# Compare add/remove link rates in FS-NEAT
+python main.py -i sine_sweep.wav noise.wav -p 200 --keep-k-best 20 --keep-all-last --fitness hybrid --experiment-settings all.json --effect lpf --fs-neat --add-link-prob 0.03 --rem-link-prob 0.03
+python main.py -i sine_sweep.wav noise.wav -p 200 --keep-k-best 20 --keep-all-last --fitness hybrid --experiment-settings all.json --effect lpf --fs-neat --add-link-prob 0.1 --rem-link-prob 0.1
+python main.py -i sine_sweep.wav noise.wav -p 200 --keep-k-best 20 --keep-all-last --fitness hybrid --experiment-settings all.json --effect lpf --fs-neat --add-link-prob 0.3 --rem-link-prob 0.3
 
 # Compare survival rates
 python main.py -i drums.wav noise.wav --keep-k-best 0 --fitness multi-objective --experiment-settings spectral_basic.json --num-runs 10 --survival-rate 0.25 && python main.py -i drums.wav noise.wav --keep-k-best 0 --fitness multi-objective --experiment-settings spectral_basic.json --num-runs 10 --survival-rate 0.35 && python main.py -i drums.wav noise.wav --keep-k-best 0 --fitness multi-objective --experiment-settings spectral_basic.json --num-runs 10 --survival-rate 0.4 && python main.py -i drums.wav noise.wav --keep-k-best 0 --fitness multi-objective --experiment-settings spectral_basic.json --num-runs 10 --survival-rate 0.45 && python main.py -i drums.wav noise.wav --keep-k-best 0 --fitness multi-objective --experiment-settings spectral_basic.json --num-runs 10 --survival-rate 0.5 && python main.py -i drums.wav noise.wav --keep-k-best 0 --fitness multi-objective --experiment-settings spectral_basic.json --num-runs 10 --survival-rate 0.55
