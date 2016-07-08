@@ -1,0 +1,17 @@
+{
+  "parameter_lpf_cutoff": 50,
+  "similarity_channels": [
+    "spectral_energy",
+    "spectral_energyband_high",
+    "spectral_energyband_low",
+    "spectral_energyband_middle_high",
+    "spectral_energyband_middle_low"
+  ],
+  "neural_input_channels": [
+    "spectral_energy",
+    "spectral_energyband_high",
+    "spectral_energyband_low",
+    "spectral_energyband_middle_high",
+    "spectral_energyband_middle_low"
+  ]
+}
