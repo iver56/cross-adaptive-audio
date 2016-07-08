@@ -18,10 +18,10 @@ python main.py -i sine_sweep.wav noise.wav -p 24 -g 40 --keep-k-best 1 --num-run
 python plot.py --output plot_neat_vs_fs_neat_avg.png --avg
 
 # Compare add/remove link rates in FS-NEAT
-python main.py -i sine_sweep.wav noise.wav -p 24 --keep-k-best 1 --num-runs 10 --fitness hybrid --experiment-settings all.json --effect lpf --fs-neat --add-link-prob 0.03 --rem-link-prob 0.03
-python main.py -i sine_sweep.wav noise.wav -p 24 --keep-k-best 1 --num-runs 10 --fitness hybrid --experiment-settings all.json --effect lpf --fs-neat --add-link-prob 0.1 --rem-link-prob 0.1
-python main.py -i sine_sweep.wav noise.wav -p 24 --keep-k-best 1 --num-runs 10 --fitness hybrid --experiment-settings all.json --effect lpf --fs-neat --add-link-prob 0.2 --rem-link-prob 0.2
-python main.py -i sine_sweep.wav noise.wav -p 24 --keep-k-best 1 --num-runs 10 --fitness hybrid --experiment-settings all.json --effect lpf --fs-neat --add-link-prob 0.3 --rem-link-prob 0.3
+python main.py -i sine_sweep.wav noise.wav -p 24 --keep-k-best 0 --num-runs 10 --fitness hybrid --experiment-settings all.json --effect lpf --fs-neat --add-link-prob 0.03 --rem-link-prob 0.03
+python main.py -i sine_sweep.wav noise.wav -p 24 --keep-k-best 0 --num-runs 10 --fitness hybrid --experiment-settings all.json --effect lpf --fs-neat --add-link-prob 0.1 --rem-link-prob 0.1
+python main.py -i sine_sweep.wav noise.wav -p 24 --keep-k-best 0 --num-runs 10 --fitness hybrid --experiment-settings all.json --effect lpf --fs-neat --add-link-prob 0.2 --rem-link-prob 0.2
+python main.py -i sine_sweep.wav noise.wav -p 24 --keep-k-best 0 --num-runs 10 --fitness hybrid --experiment-settings all.json --effect lpf --fs-neat --add-link-prob 0.3 --rem-link-prob 0.3
 python main.py -i sine_sweep.wav noise.wav -p 24 --keep-k-best 0 --num-runs 10 --fitness hybrid --experiment-settings all.json --effect lpf --fs-neat --add-link-prob 0.4 --rem-link-prob 0.4
 python main.py -i sine_sweep.wav noise.wav -p 24 --keep-k-best 0 --num-runs 10 --fitness hybrid --experiment-settings all.json --effect lpf --fs-neat --add-link-prob 0.5 --rem-link-prob 0.5
 python plot.py --label add_link_probability --output plot_add_remove_link_prob.png --avg
