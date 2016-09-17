@@ -6,8 +6,12 @@
       "weight": 1.0
     },
     {
-      "name": "mfcc_1",
+      "name": "mfcc_0__derivative",
       "weight": 0.2
+    },
+    {
+      "name": "mfcc_1",
+      "weight": 0.5
     }
   ],
   "neural_input_channels": [
