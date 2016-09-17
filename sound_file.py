@@ -22,7 +22,7 @@ class SoundFile(object):
                 self.filename
             )
 
-        self.num_frames = None
+        self.num_samples = None
         self.sample_rate = None
         self.duration = None
         self.num_channels = None
@@ -43,7 +43,7 @@ class SoundFile(object):
                 'Could not find "{}". Make sure it exists and try again.'.format(self.file_path)
             )
         self.calculate_wav_properties()
-        if self.num_frames < settings.FRAME_SIZE:
+        if self.num_samples < settings.FRAME_SIZE:
             raise Exception('The sound {} is too short'.format(self.file_path))
         if self.sample_rate != settings.SAMPLE_RATE:
             raise Exception(
@@ -63,9 +63,9 @@ class SoundFile(object):
 
     def calculate_wav_properties(self):
         with contextlib.closing(wave.open(self.file_path, 'r')) as f:
-            self.num_frames = f.getnframes()
+            self.num_samples = f.getnframes()  # number of raw samples
             self.sample_rate = f.getframerate()
-            self.duration = self.num_frames / self.sample_rate
+            self.duration = self.num_samples / self.sample_rate
             self.num_channels = f.getnchannels()
 
     def get_duration(self):
@@ -74,6 +74,7 @@ class SoundFile(object):
         return self.duration
 
     def get_num_frames(self):
+        # number of time steps (k rate)
         arbitrary_series = six.next(six.itervalues(self.analysis['series']))
         return len(arbitrary_series)
 
