@@ -1,0 +1,20 @@
+{
+  "parameters": [
+    {
+      "name": "cutoff_freq",
+      "mapping": {
+        "min_value": 50.0,
+        "max_value": 5000.0,
+        "skew_factor": 0.3
+      }
+    },
+    {
+      "name": "bandwidth",
+      "mapping": {
+        "min_value": 0.01,
+        "max_value": 1.0,
+        "skew_factor": 1.0
+      }
+    }
+  ]
+}

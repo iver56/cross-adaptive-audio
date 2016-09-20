@@ -1,0 +1,36 @@
+<CsoundSynthesizer>
+    <CsOptions>
+    </CsOptions>
+    <CsInstruments>
+        sr = 44100
+        ksmps = {{ ksmps }}
+        nchnls = 1
+        0dbfs = 1
+
+        instr 1
+
+        kTime timek
+
+        {% for channel in parameter_channels %}
+        kChannel{{ loop.index0 }}[] fillarray {{ channel }}
+        {% endfor %}
+
+        ;****************************************************************
+        ; Band-pass filter
+        ;****************************************************************
+        aIn		in
+
+        kBandwidth		tonek kChannel0[kTime - 1], {{ parameter_lpf_cutoff }}
+        kCutoffFreq		tonek kChannel1[kTime - 1], {{ parameter_lpf_cutoff }}
+
+        aOut butterbp aIn, kCutoffFreq, kBandwidth * kCutoffFreq
+
+        out aOut
+
+        endin
+    </CsInstruments>
+    <CsScore>
+        i1 0 {{ duration }}
+        e
+    </CsScore>
+</CsoundSynthesizer>
