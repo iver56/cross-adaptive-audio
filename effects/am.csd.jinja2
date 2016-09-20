@@ -1,0 +1,39 @@
+<CsoundSynthesizer>
+    <CsOptions>
+    </CsOptions>
+    <CsInstruments>
+        sr = 44100
+        ksmps = {{ ksmps }}
+        nchnls = 1
+        0dbfs = 1
+
+        giSine	ftgen 0, 0, 65536, 10, 1
+
+        instr 1
+
+        kTime timek
+
+        {% for channel in parameter_channels %}
+        kChannel{{ loop.index0 }}[] fillarray {{ channel }}
+        {% endfor %}
+
+        ;****************************************************************
+        ; Amplitude modulation
+        ;****************************************************************
+        aIn		in
+
+        kModFreq		tonek kChannel0[kTime - 1], {{ parameter_lpf_cutoff }}
+
+        aMod		oscili	0.5, kModFreq, giSine
+        aMod		= aMod + 0.5
+        aOut = aIn * aMod
+
+        out aOut
+
+        endin
+    </CsInstruments>
+    <CsScore>
+        i1 0 {{ duration }}
+        e
+    </CsScore>
+</CsoundSynthesizer>
