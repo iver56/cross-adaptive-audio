@@ -1,0 +1,36 @@
+<CsoundSynthesizer>
+    <CsOptions>
+    </CsOptions>
+    <CsInstruments>
+        sr = 44100
+        ksmps = {{ ksmps }}
+        nchnls = 1
+        0dbfs = 1
+
+        instr 1
+
+        kTime timek
+
+        {% for channel in parameter_channels %}
+        kChannel{{ loop.index0 }}[] fillarray {{ channel }}
+        {% endfor %}
+
+        ;****************************************************************
+        ; Bit reduction
+        ;****************************************************************
+        aIn		in
+
+        kBits		tonek kChannel0[kTime - 1], {{ parameter_lpf_cutoff }}
+
+        kQuantize	= (powoftwo(int(kBits)) / 2) + 1  ; find number of discrete steps for this bit depth
+        aOut = round(aIn * kQuantize) / kQuantize	  ; quantize audio signal (bit reduce)
+
+        out aOut
+
+        endin
+    </CsInstruments>
+    <CsScore>
+        i1 0 {{ duration }}
+        e
+    </CsScore>
+</CsoundSynthesizer>
