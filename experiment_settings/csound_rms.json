@@ -1,0 +1,9 @@
+{
+  "parameter_lpf_cutoff": 50,
+  "similarity_channels": [
+    "csound_rms"
+  ],
+  "neural_input_channels": [
+    "csound_rms"
+  ]
+}

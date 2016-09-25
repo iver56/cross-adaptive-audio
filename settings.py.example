@@ -1,6 +1,6 @@
 import os
 
-BASE_DIR = './'
+BASE_DIR = '.'
 RAM_DISK_DIR = '/mnt/ramdisk'  # Example for Ubuntu
 # RAM_DISK_DIR = 'R:\\'  # Example for Windows
 USE_RAM_DISK = False

@@ -41,19 +41,18 @@ class TestCsound(unittest.TestCase):
             template.write_result(csd_path)
             csound = csound_handler.CsoundHandler(csd_path)
             output_filename = self.drums.filename + '.test_processed_serial_{}.wav'.format(i)
+            output_file_path = os.path.join(
+                settings.OUTPUT_DIRECTORY,
+                experiment.Experiment.folder_name,
+                output_filename
+            )
             csound.run(
-                input_filename=self.drums.filename,
-                output_filename=output_filename,
+                input_file_path=self.drums.file_path,
+                output_file_path=output_file_path,
                 async=False
             )
             self.files_to_delete.append(csd_path)
-            self.files_to_delete.append(
-                os.path.join(
-                    settings.OUTPUT_DIRECTORY,
-                    experiment.Experiment.folder_name,
-                    output_filename
-                )
-            )
+            self.files_to_delete.append(output_file_path)
 
         print("Serial execution time for {0} sounds: {1} seconds".format(
             self.num_sounds,
@@ -81,20 +80,19 @@ class TestCsound(unittest.TestCase):
             template.write_result(csd_path)
             csound = csound_handler.CsoundHandler(csd_path)
             output_filename = self.drums.filename + '.test_processed_parallel_{}.wav'.format(i)
+            output_file_path = os.path.join(
+                settings.OUTPUT_DIRECTORY,
+                experiment.Experiment.folder_name,
+                output_filename
+            )
             p = csound.run(
-                input_filename=self.drums.filename,
-                output_filename=output_filename,
+                input_file_path=self.drums.file_path,
+                output_file_path=output_file_path,
                 async=False
             )
             processes.append(p)
             self.files_to_delete.append(csd_path)
-            self.files_to_delete.append(
-                os.path.join(
-                    settings.OUTPUT_DIRECTORY,
-                    experiment.Experiment.folder_name,
-                    output_filename
-                )
-            )
+            self.files_to_delete.append(output_file_path)
 
         for p in processes:
             p.wait()

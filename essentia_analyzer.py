@@ -110,7 +110,7 @@ class EssentiaAnalyzer(object):
         return os.path.join(
             settings.TEMP_DIRECTORY,
             experiment.Experiment.folder_name,
-            that_sound_file.filename + '.json'
+            that_sound_file.filename + '.essentia.json'
         )
 
     @staticmethod

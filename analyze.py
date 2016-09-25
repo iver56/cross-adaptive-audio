@@ -3,6 +3,7 @@ import standardizer
 import sonic_annotator_analyzer
 import mfcc_analyzer
 import essentia_analyzer
+import csound_analyzer
 import copy
 import experiment
 
@@ -15,7 +16,8 @@ class Analyzer(object):
     AVAILABLE_ANALYZERS = [
         sonic_annotator_analyzer.SonicAnnotatorAnalyzer,
         mfcc_analyzer.MfccAnalyzer,
-        essentia_analyzer.EssentiaAnalyzer
+        essentia_analyzer.EssentiaAnalyzer,
+        csound_analyzer.CsoundAnalyzer
     ]
 
     @staticmethod

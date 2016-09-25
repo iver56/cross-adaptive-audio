@@ -103,9 +103,14 @@ class CrossAdapter(object):
         )
         template.write_result(csd_path)
         csound = csound_handler.CsoundHandler(csd_path)
+        output_file_path = os.path.join(
+            settings.OUTPUT_DIRECTORY,
+            experiment.Experiment.folder_name,
+            output_filename
+        )
         process = csound.run(
-            input_filename=self.input_sound.filename,
-            output_filename=output_filename,
+            input_file_path=self.input_sound.file_path,
+            output_file_path=output_file_path,
             async=True
         )
         output_sound_file = sound_file.SoundFile(
