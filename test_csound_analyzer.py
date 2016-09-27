@@ -30,6 +30,19 @@ class TestCsoundAnalyzer(unittest.TestCase):
             time.time() - self.start_time)
         )
 
+    def test_unpack_numbers(self):
+        numbers = tuple(range(16))
+        unpacked_numbers = csound_analyzer.CsoundAnalyzer.unpack_numbers(numbers, num_series=4)
+        self.assertEqual(
+            unpacked_numbers,
+            [
+                (0, 4, 8, 12),
+                (1, 5, 9, 13),
+                (2, 6, 10, 14),
+                (3, 7, 11, 15)
+            ]
+        )
+
 
 if __name__ == '__main__':
     unittest.main()

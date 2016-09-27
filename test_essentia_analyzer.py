@@ -24,6 +24,10 @@ class TestEssentiaAnalyzer(unittest.TestCase):
 
         for sound in self.sounds:
             self.assertTrue('spectral_centroid' in sound.analysis['series'])
+            self.assertGreaterEqual(
+                len(sound.analysis['series']['spectral_centroid']),
+                100
+            )
 
         print("Execution time: {0} seconds".format(
             time.time() - self.start_time)

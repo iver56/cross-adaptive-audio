@@ -36,6 +36,7 @@ HOP_SIZE = 512
 The number of samples in window used for spectral and temporal computations
 AKA buffer size (aubio)
 AKA block size (sonic annotator)
+AKA gifftsize (csound)
 """
 FRAME_SIZE = HOP_SIZE * 2
 

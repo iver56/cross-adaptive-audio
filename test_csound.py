@@ -12,7 +12,7 @@ import experiment
 class TestCsound(unittest.TestCase):
     def setUp(self):
         settings.INPUT_DIRECTORY = 'test_audio'
-        self.num_sounds = 20
+        self.num_sounds = 10
         self.drums = sound_file.SoundFile('drums.wav')
         self.files_to_delete = []
         self.template_file_path = os.path.join(settings.EFFECT_DIRECTORY, 'test_effect.csd.jinja2')
