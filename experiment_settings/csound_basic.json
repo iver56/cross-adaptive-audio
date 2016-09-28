@@ -1,8 +1,18 @@
 {
   "parameter_lpf_cutoff": 50,
   "similarity_channels": [
-    "csound_rms",
-    "csound_spectral_centroid"
+    {
+      "name": "mfcc_0",
+      "weight": 1.0
+    },
+    {
+      "name": "mfcc_1",
+      "weight": 1.0
+    },
+    {
+      "name": "csound_spectral_centroid",
+      "weight": 1.0
+    }
   ],
   "neural_input_channels": [
     "csound_rms",

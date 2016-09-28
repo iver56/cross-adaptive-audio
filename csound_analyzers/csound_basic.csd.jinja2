@@ -33,15 +33,13 @@
 
         kRms rms a1
 
-{#
         iwtype = 1  ; window type
-        fsin pvsanal a1, gifftsize, gifftsize/4, gifftsize, iwtype
+        fsin pvsanal a1, gifftsize, gifftsize/2, gifftsize, iwtype
         kCentroid pvscent fsin
-        kCps EpochCps a1
-#}
+        ;kCps EpochCps a1
 
-        kTrig = 1
-        kCentroid centroid a1, kTrig, gifftsize
+        ;kTrig = 1
+        ;kCentroid centroid a1, kTrig, gifftsize
 
         dumpk2  kRms, kCentroid, {{ output_analysis_file_path | tojson }}, 6, 0
 

@@ -96,7 +96,7 @@ class CsoundAnalyzer(object):
                 '{0}f'.format(n),
                 f.read(num_bytes)
             )
-        return floats
+        return list(floats)
 
     def parse_output(self, that_sound_file):
         for feature in self.features:
