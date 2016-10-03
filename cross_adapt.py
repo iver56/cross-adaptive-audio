@@ -18,7 +18,7 @@ class CrossAdapter(object):
         self.effect = effect
         self.parameter_lpf_cutoff = parameter_lpf_cutoff
 
-    def produce_output_sounds(self, individuals):
+    def produce_output_sounds(self, individuals, keep_csd=False):
         processes = []
         csd_paths = []
         for that_individual in individuals:
@@ -29,10 +29,11 @@ class CrossAdapter(object):
 
         for i in range(len(processes)):
             processes[i].wait()
-            try:
-                os.remove(csd_paths[i])
-            except OSError:
-                print('Warning: Failed to remove {}'.format(csd_paths[i]))
+            if not keep_csd:
+                try:
+                    os.remove(csd_paths[i])
+                except OSError:
+                    print('Warning: Failed to remove {}'.format(csd_paths[i]))
 
     def produce_output_sound(self, that_individual):
         output_filename = '{0}.cross_adapted.{1}.wav'.format(

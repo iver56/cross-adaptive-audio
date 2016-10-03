@@ -219,7 +219,7 @@ class Neuroevolution(object):
             unique_individuals_list = [unique_individuals[ind_id] for ind_id in unique_individuals]
 
             # Produce sound files for each unique individual
-            self.cross_adapter.produce_output_sounds(unique_individuals_list)
+            self.cross_adapter.produce_output_sounds(unique_individuals_list, self.args.keep_csd)
 
             # Evaluate fitness of each unique individual
             self.evaluate_fitness(unique_individuals_list)

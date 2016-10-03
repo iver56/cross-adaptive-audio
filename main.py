@@ -69,6 +69,16 @@ if __name__ == '__main__':
         default=False
     )
     arg_parser.add_argument(
+        '--keep-csd',
+        nargs='?',
+        dest='keep_csd',
+        help='Keep all csd files that were used to generate the individuals. This will allow you to'
+             ' run them with other input sounds',
+        const=True,
+        required=False,
+        default=False
+    )
+    arg_parser.add_argument(
         '--allow-clones',
         nargs='?',
         dest='allow_clones',
