@@ -95,7 +95,8 @@ class Neuroevolution(object):
             'input_sound': self.input_sound.get_serialized_representation(),
             'args': vars(self.args),
             'experiment_settings': experiment.Experiment.experiment_settings,
-            'generations': []
+            'generations': [],
+            'feature_statistics': self.project.data['feature_statistics']
         }
         experiment.Experiment.calculate_current_experiment_id(experiment_data)
 
