@@ -4,6 +4,7 @@ import json
 import neural_network_representation
 import hashlib
 import experiment
+import pickle  # TODO: try cPickle. it might be faster.
 
 
 class Individual(object):
@@ -73,7 +74,8 @@ class Individual(object):
             'neural_output': self.get_neural_output_representation(),
             'output_sound': self.output_sound.get_serialized_representation(),
             'neural_network_representation': self.get_neural_network_representation(),
-            'born': self.born
+            'born': self.born,
+            'genotype_pickled': pickle.dumps(self.genotype)
         }
 
     def get_short_serialized_representation(self):
