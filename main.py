@@ -2,6 +2,8 @@ import argparse
 import neuroevolution
 import experiment
 import analyze
+import settings
+
 
 if __name__ == '__main__':
     arg_parser = argparse.ArgumentParser()
@@ -74,6 +76,15 @@ if __name__ == '__main__':
         dest='keep_csd',
         help='Keep all csd files that were used to generate the individuals. This will allow you to'
              ' run them with other input sounds',
+        const=True,
+        required=False,
+        default=False
+    )
+    arg_parser.add_argument(
+        '--verbose',
+        nargs='?',
+        dest='verbose',
+        help='Activate more verbose output. Useful for debugging.',
         const=True,
         required=False,
         default=False
@@ -213,6 +224,8 @@ if __name__ == '__main__':
         default=1
     )
     args = arg_parser.parse_args()
+
+    settings.VERBOSE = args.verbose
 
     if args.keep_k_best > args.population_size:
         args.keep_k_best = args.population_size
