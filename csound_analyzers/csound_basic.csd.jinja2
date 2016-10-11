@@ -1,52 +1,38 @@
-;    Copyright 2016 Oeyvind Brandtsegg
-;
-;    This file is part of the Feature-Extract-Modulator package
-;
-;    The Feature-Extract-Modulator is free software: you can redistribute it and/or modify
-;    it under the terms of the GNU General Public License version 3
-;    as published by the Free Software Foundation.
-;
-;    The Feature-Extract-Modulator is distributed in the hope that it will be useful,
-;    but WITHOUT ANY WARRANTY; without even the implied warranty of
-;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-;    GNU General Public License for more details.
-;
-;    You should have received a copy of the GNU General Public License
-;    along with The Feature-Extract-Modulator package.
-;    If not, see <http://www.gnu.org/licenses/>.
+{% extends "analyzer_base_template.csd.jinja2" %}
 
-<CsoundSynthesizer>
-    <CsOptions>
-    --nosound
-    </CsOptions>
-    <CsInstruments>
-        sr = 44100
-        ksmps = {{ ksmps }}
-        nchnls = 1
-        0dbfs = 1
+{#
+  Copyright 2016 Oeyvind Brandtsegg
 
-        gifftsize = {{ frame_size }}
+  This file is part of the Feature-Extract-Modulator package
 
-        instr 1
+  The Feature-Extract-Modulator is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License version 3
+  as published by the Free Software Foundation.
 
-        a1 in
+  The Feature-Extract-Modulator is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
 
-        kRms rms a1
+  You should have received a copy of the GNU General Public License
+  along with The Feature-Extract-Modulator package.
+  If not, see <http://www.gnu.org/licenses/>.
+#}
 
-        iwtype = 1  ; window type
-        fsin pvsanal a1, gifftsize, gifftsize/2, gifftsize, iwtype
-        kCentroid pvscent fsin
-        ;kCps EpochCps a1
+{% block globals %}
+  gifftsize = {{ frame_size }}
+{% endblock %}
+{% block analysis %}
+  kRms rms a1
 
-        ;kTrig = 1
-        ;kCentroid centroid a1, kTrig, gifftsize
+  iwtype = 1  ; window type
+  fsin pvsanal a1, gifftsize, gifftsize/2, gifftsize, iwtype
+  kCentroid pvscent fsin
+  ;kCps EpochCps a1
 
-        dumpk2  kRms, kCentroid, {{ output_analysis_file_path | tojson }}, 6, 0
-
-        endin
-    </CsInstruments>
-    <CsScore>
-        i1 0 {{ duration }}
-        e
-    </CsScore>
-</CsoundSynthesizer>
+  ;kTrig = 1
+  ;kCentroid centroid a1, kTrig, gifftsize
+{% endblock %}
+{% block dump %}
+dumpk2  kRms, kCentroid, {{ output_analysis_file_path | tojson }}, 6, 0
+{% endblock %}

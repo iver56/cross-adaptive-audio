@@ -1,0 +1,26 @@
+<CsoundSynthesizer>
+    <CsOptions>
+    --nosound
+    </CsOptions>
+    <CsInstruments>
+        sr = 44100
+        ksmps = {{ ksmps }}
+        nchnls = 1
+        0dbfs = 1
+
+        {% block globals %}{% endblock %}
+
+        instr 1
+
+        a1 in
+
+        {% block analysis %}{% endblock %}
+        {% block dump %}{% endblock %}
+
+        endin
+    </CsInstruments>
+    <CsScore>
+        i1 0 {{ duration }}
+        e
+    </CsScore>
+</CsoundSynthesizer>
