@@ -21,6 +21,8 @@ class Neuroevolution(object):
         self.args = args
 
         self.seed = random.randint(1, 999999) if self.args.seed == -1 else self.args.seed
+        if self.args.seed == -1:
+            print('Seed: {}'.format(self.seed))
 
         if len(self.args.input_files) != 2:
             raise Exception('Two filenames must be specified')
