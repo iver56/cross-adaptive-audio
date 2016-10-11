@@ -1,0 +1,30 @@
+<CsoundSynthesizer>
+  <CsOptions>
+  </CsOptions>
+  <CsInstruments>
+    sr = 44100
+    ksmps = {{ ksmps }}
+    nchnls = 1
+    0dbfs = 1
+
+    instr 1
+
+    kTime timek
+
+    {% for channel in parameter_channels %}
+      kChannel{{ loop.index0 }}[] fillarray {{ channel }}
+    {% endfor %}
+
+    aIn		in
+
+    {% block effect %}{% endblock %}
+
+    out aOut
+
+    endin
+  </CsInstruments>
+  <CsScore>
+    i1 0 {{ duration }}
+    e
+  </CsScore>
+</CsoundSynthesizer>

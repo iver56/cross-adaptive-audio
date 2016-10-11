@@ -1,13 +1,16 @@
 from __future__ import absolute_import
-from jinja2 import Environment
+from jinja2 import Environment, FileSystemLoader
 import json
+import settings
 
 
 class TemplateHandler(object):
     def __init__(self, template_file_path):
         self.template = None
         self.result = None
-        self.env = Environment()
+        self.env = Environment(
+            loader=FileSystemLoader(searchpath=settings.EFFECT_DIRECTORY)
+        )
         self.init_custom_filters()
         with open(template_file_path, 'r') as template_file:
             template_string = template_file.read()
