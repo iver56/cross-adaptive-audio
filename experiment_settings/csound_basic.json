@@ -7,11 +7,11 @@
     },
     {
       "name": "mfcc_1",
-      "weight": 1.0
+      "weight": 0.5
     },
     {
-      "name": "csound_spectral_centroid",
-      "weight": 1.0
+      "name": "mfcc_0__derivative",
+      "weight": 0.2
     }
   ],
   "neural_input_channels": [
