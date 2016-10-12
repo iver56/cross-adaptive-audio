@@ -1,7 +1,5 @@
 {% extends "base_template.csd.jinja2" %}
 {% block effect %}
-  kBits		tonek kChannel0[kTime - 1], {{ parameter_lpf_cutoff }}
-
-  kQuantize	= (powoftwo(int(kBits)) / 2) + 1  ; find number of discrete steps for this bit depth
+  kQuantize	= (powoftwo(int(k_bits)) / 2) + 1  ; find number of discrete steps for this bit depth
   aOut = round(aIn * kQuantize) / kQuantize	  ; quantize audio signal (bit reduce)
 {% endblock %}

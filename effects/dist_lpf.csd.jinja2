@@ -20,16 +20,10 @@
 #}
 
 {% block effect %}
-  kDrive		tonek kChannel0[kTime - 1], {{ parameter_lpf_cutoff }}
-  kFreq		tonek kChannel1[kTime - 1], {{ parameter_lpf_cutoff }}
-  kResonance	tonek kChannel2[kTime - 1], {{ parameter_lpf_cutoff }}
-  kDist		tonek kChannel3[kTime - 1], {{ parameter_lpf_cutoff }}
   kAutoLevel	= 0.9
-  kMix		tonek kChannel4[kTime - 1], {{ parameter_lpf_cutoff }}
-  kPostGain	tonek kChannel5[kTime - 1], {{ parameter_lpf_cutoff }}
 
   ; stage 1, distortion
-  kpregain	= kDrive				; dist amount
+  kpregain	= k_drive				; dist amount
   ishape		= 0.8					; dist shaping
   kpostgain	= (0.5 / kpregain) * (kpregain * 0.5)	; auto set output gain corresponding to input drive
   ishape1 	= ishape * 1.6
@@ -38,9 +32,9 @@
 
   ; stage 2, lpf18 filter
   denorm adist
-  afilt		lpf18 adist, kFreq, kResonance, kDist
-  kleveladjust	= 1 / (sqrt(kDrive) + (kDist * 2))				; attempt automatic level adjustment according to distortion drive
+  afilt		lpf18 adist, k_freq, k_resonance, k_dist
+  kleveladjust	= 1 / (sqrt(k_drive) + (k_dist * 2))				; attempt automatic level adjustment according to distortion drive
   afilt		= (afilt * (1 - kAutoLevel)) + (afilt * kleveladjust * kAutoLevel)	; and select balance between autogained and straight dist signal
 
-  aOut		= ((afilt * kMix) + (aIn * (1 - kMix))) * kPostGain
+  aOut		= ((afilt * k_mix) + (aIn * (1 - k_mix))) * k_post_gain
 {% endblock %}

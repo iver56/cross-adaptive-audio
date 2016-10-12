@@ -7,3 +7,5 @@ named like this, respectively:
 Replace {name} with the actual name of the effect. For example:
 dist_lpf.json
 dist_lpf.csd.jinja2
+
+Parameter names specified in a json file are prefixed with "k_" in the corresponding csd file

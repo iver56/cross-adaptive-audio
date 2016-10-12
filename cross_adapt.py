@@ -91,6 +91,7 @@ class CrossAdapter(object):
 
         template = template_handler.TemplateHandler(self.effect.template_file_path)
         template.compile(
+            parameter_names=effect.parameter_names,
             parameter_channels=channels_csv,
             ksmps=settings.HOP_SIZE,
             duration=self.input_sound.get_duration(),

@@ -17,6 +17,10 @@
       kChannel{{ loop.index0 }}[] fillarray {{ channel }}
     {% endfor %}
 
+    {% for name in parameter_names %}
+      k_{{ name }} tonek kChannel{{ loop.index0 }}[kTime - 1], {{ parameter_lpf_cutoff }}
+    {% endfor %}
+
     aIn		in
 
     {% block effect %}{% endblock %}
