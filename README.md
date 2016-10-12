@@ -49,10 +49,10 @@ Note: The following instructions assume that you are using a 32-bit version of P
 
 * Go to http://www.lfd.uci.edu/~gohlke/pythonlibs/#multineat
     * Download numpy-1.11.2+mkl-cp27-cp27m-win32.whl
-    * Download matplotlib-1.5.1-cp27-none-win32.whl
+    * Download matplotlib-1.5.3-cp27-cp27m-win32.whl
     * Download MultiNEAT-0.3-cp27-none-win32.whl
-* `pip install numpy-1.10.4+mkl-cp27-none-win32.whl`
-* `pip install matplotlib-1.5.1-cp27-none-win32.whl`
+* `pip install numpy-1.11.2+mkl-cp27-cp27m-win32.whl`
+* `pip install matplotlib-1.5.3-cp27-cp27m-win32.whl`
 * `pip install MultiNEAT-0.3-cp27-none-win32.whl`
 
 ### Install Aubio
