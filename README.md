@@ -45,8 +45,10 @@ http://csound.github.io/download.html
 ### Install MultiNEAT, matplotlib and numpy
 Building these dependencies from source can be difficult and time-consuming, so let's download wheel binaries instead
 
+Note: The following instructions assume that you are using a 32-bit version of Python 2.7
+
 * Go to http://www.lfd.uci.edu/~gohlke/pythonlibs/#multineat
-    * Download numpy-1.10.4+mkl-cp27-none-win32.whl
+    * Download numpy-1.11.2+mkl-cp27-cp27m-win32.whl
     * Download matplotlib-1.5.1-cp27-none-win32.whl
     * Download MultiNEAT-0.3-cp27-none-win32.whl
 * `pip install numpy-1.10.4+mkl-cp27-none-win32.whl`
