@@ -39,13 +39,13 @@ Assuming you have a clean Ubuntu 14.04, here's what needs to be installed:
 ### Install Python 2.7
 https://www.python.org/downloads/
 
+Note: You need the 32-bit version, as the 64-bit version might fail to interoperate with Csound
+
 ### Install Csound
 http://csound.github.io/download.html
 
 ### Install MultiNEAT, matplotlib and numpy
 Building these dependencies from source can be difficult and time-consuming, so let's download wheel binaries instead
-
-Note: The following instructions assume that you are using a 32-bit version of Python 2.7
 
 * Go to http://www.lfd.uci.edu/~gohlke/pythonlibs/#multineat
     * Download numpy-1.11.2+mkl-cp27-cp27m-win32.whl
