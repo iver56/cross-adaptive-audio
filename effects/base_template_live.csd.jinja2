@@ -1,0 +1,57 @@
+<CsoundSynthesizer>
+  <CsOptions>
+  </CsOptions>
+  <CsInstruments>
+    sr = 44100
+    ksmps = {{ ksmps }}
+    nchnls = 2
+    0dbfs = 1
+
+    pyinit
+
+    {% block globals %}
+      gifftsize = 1024 ; {{ frame_size }} {# TODO #}
+    {% endblock %}
+
+    instr 1
+
+    pyruni "import live_mapper"
+    pyruni {{ '{{' }}
+that_live_mapper = live_mapper.LiveMapper("{{ individual_id }}")
+    {{ '}}' }}
+
+    aParam, aIn		ins
+
+    {% block analysis %}
+      {# Proof of concept analysis #}
+      kRms rms aParam
+
+      iwtype = 1  ; window type
+      fsin pvsanal aParam, gifftsize, gifftsize/2, gifftsize, iwtype
+      kCentroid pvscent fsin
+
+      kAnalysis0 = kRms
+      kAnalysis1 = kCentroid
+
+      pycall   "that_live_mapper.activate", kAnalysis0, kAnalysis1
+
+      {% for name in parameter_names %}
+        kChannel{{ loop.index0 }} pycall1 "that_live_mapper.get_effect_parameter_value", {{ loop.index0 }}
+      {% endfor %}
+    {% endblock %}
+
+    {% for name in parameter_names %}
+      k_{{ name }} tonek kChannel{{ loop.index0 }}, {{ parameter_lpf_cutoff }}
+    {% endfor %}
+
+    {% block effect %}{% endblock %}
+
+    outs aOut, aOut
+
+    endin
+  </CsInstruments>
+  <CsScore>
+    i1 0 {{ duration }}
+    e
+  </CsScore>
+</CsoundSynthesizer>

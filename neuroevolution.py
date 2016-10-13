@@ -102,6 +102,8 @@ class Neuroevolution(object):
         }
         experiment.Experiment.calculate_current_experiment_id(experiment_data)
 
+        experiment_data['seed'] = self.seed
+
         self.stats_logger = logger.Logger(
             os.path.join(
                 settings.STATS_DATA_DIRECTORY,

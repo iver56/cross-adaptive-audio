@@ -10,7 +10,7 @@ import numpy
 class Standardizer(object):
     DEVIATION_LIMIT = 4.0
 
-    def __init__(self, sound_files):
+    def __init__(self, sound_files=None):
         """
         :param sound_files: SoundFile instances with series to be analyzed and/or standardized
         :return:
