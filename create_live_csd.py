@@ -51,7 +51,7 @@ def create_live_csd():
         default=8.0
     )
     # TODO: add ksmps argument
-    # TODO: add argument for which inputs to use
+    # TODO: add argument for which input sounds to use
     # TODO: include all necessary python code inside the csd file
     args = arg_parser.parse_args()
 
