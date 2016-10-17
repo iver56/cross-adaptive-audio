@@ -67,6 +67,7 @@ binaries
 results
 tmp/*
 *.png
+live_csd/*.csd
 
 # NodeJS
 node_modules

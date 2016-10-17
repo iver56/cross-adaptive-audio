@@ -6,6 +6,7 @@ import argparse
 import json
 import template_handler
 import effect
+import sys
 
 
 def resolve_paths(individual_id):
@@ -48,6 +49,9 @@ def create_live_csd():
         required=False,
         default=8.0
     )
+    # TODO: add ksmps argument
+    # TODO: add argument for which inputs to use
+    # TODO: include all necessary python code inside the csd file
     args = arg_parser.parse_args()
 
     experiment_folder_name, stats_file_path, individual_data_file_path = resolve_paths(args.individual_id)
@@ -76,12 +80,12 @@ def create_live_csd():
         ksmps=settings.HOP_SIZE,
         duration=args.duration,
         parameter_lpf_cutoff=project_data['experiment_settings']['parameter_lpf_cutoff'],
-        individual_id=args.individual_id
+        individual_id=args.individual_id,
+        sys_paths=sys.path
     )
 
     csd_path = os.path.join(
-        settings.CSD_DIRECTORY,
-        experiment_folder_name,
+        settings.LIVE_CSD_DIRECTORY,
         args.individual_id + '.live.csd'
     )
     template.write_result(csd_path)

@@ -9,6 +9,7 @@ if USE_RAM_DISK:
     BASE_DIR = RAM_DISK_DIR
 
 CSD_DIRECTORY = os.path.join(BASE_DIR, 'csd')
+LIVE_CSD_DIRECTORY = os.path.join(BASE_DIR, 'live_csd')
 INPUT_DIRECTORY = os.path.join(BASE_DIR, 'input')
 OUTPUT_DIRECTORY = os.path.join(BASE_DIR, 'output')
 STATS_DATA_DIRECTORY = os.path.join(BASE_DIR, 'stats')

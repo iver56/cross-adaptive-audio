@@ -9,6 +9,13 @@
 
     pyinit
 
+    pyrun {{ '{{' }}
+import sys, os
+{% for path in sys_paths %}
+sys.path.append('{{ path }}')
+{% endfor %}
+    {{ '}}' }}
+
     {% block globals %}
       gifftsize = 1024 ; {{ frame_size }} {# TODO #}
     {% endblock %}
