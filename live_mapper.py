@@ -1,29 +1,21 @@
 import standardizer
 import MultiNEAT as NEAT
-import json
 import pickle
 import effect
-import create_live_csd
 
 
 class LiveMapper(object):
-    def __init__(self, individual_id):
-        _, stats_file_path, individual_data_file_path = create_live_csd.resolve_paths(individual_id)
-        with open(stats_file_path, 'r') as data_file:
-            self.project_data = json.load(data_file)
-
-        with open(individual_data_file_path, 'r') as data_file:
-            individual_data = json.load(data_file)
-
-        genotype = pickle.loads(individual_data['genotype_pickled'])
+    def __init__(self, parameter_data):
+        self.parameter_data = parameter_data
+        genotype = pickle.loads(self.parameter_data['genotype_pickled'])
 
         self.net = NEAT.NeuralNetwork()
         genotype.BuildPhenotype(self.net)
 
         self.standardizer = standardizer.Standardizer([])
-        self.standardizer.feature_statistics = self.project_data['feature_statistics']
+        self.standardizer.feature_statistics = self.parameter_data['feature_statistics']
 
-        self.effect = effect.Effect.get_effect_by_name(self.project_data['args']['effect_name'])
+        self.effect = effect.Effect.get_effect_by_name(self.parameter_data['args']['effect_name'])
 
         self.effect_parameters = None
 
@@ -40,7 +32,7 @@ class LiveMapper(object):
 
     def standardize(self, analysis_vector):
         neural_input = []
-        for i, feature in enumerate(self.project_data['experiment_settings']['neural_input_channels']):
+        for i, feature in enumerate(self.parameter_data['experiment_settings']['neural_input_channels']):
             neural_input.append(
                 self.standardizer.get_standardized_value(feature, analysis_vector[i])
             )

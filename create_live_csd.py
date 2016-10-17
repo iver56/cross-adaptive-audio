@@ -7,6 +7,7 @@ import json
 import template_handler
 import effect
 import sys
+import base64
 
 
 def resolve_paths(individual_id):
@@ -56,11 +57,27 @@ def create_live_csd():
 
     experiment_folder_name, stats_file_path, individual_data_file_path = resolve_paths(args.individual_id)
 
-    print('stats_file_path', stats_file_path)
+    # print('stats_file_path', stats_file_path)
     with open(stats_file_path, 'r') as data_file:
         project_data = json.load(data_file)
 
-    print('individual data file path', individual_data_file_path)
+    # print('individual data file path', individual_data_file_path)
+
+    with open(individual_data_file_path, 'r') as data_file:
+        individual_data = json.load(data_file)
+
+    parameter_data = {
+        'feature_statistics': project_data['feature_statistics'],
+        'experiment_settings': {
+            'neural_input_channels': project_data['experiment_settings']['neural_input_channels']
+        },
+        'genotype_pickled': individual_data['genotype_pickled'],
+        'args': {
+            'effect_name': project_data['args']['effect_name']
+        }
+    }
+    parameter_data_json = json.dumps(parameter_data)
+    parameter_data_base64 = base64.b64encode(parameter_data_json)
 
     that_effect = effect.Effect.get_effect_by_name(project_data['args']['effect_name'])
 
@@ -80,7 +97,7 @@ def create_live_csd():
         ksmps=settings.HOP_SIZE,
         duration=args.duration,
         parameter_lpf_cutoff=project_data['experiment_settings']['parameter_lpf_cutoff'],
-        individual_id=args.individual_id,
+        parameter_data_base64=parameter_data_base64,
         sys_paths=sys.path
     )
 

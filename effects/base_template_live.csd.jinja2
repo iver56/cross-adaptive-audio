@@ -16,11 +16,14 @@
     instr 1
 
     pyruni {{ '{{' }}
-import sys, os
+import sys
 {% for path in sys_paths %}sys.path.append('{{ path }}')
 {% endfor %}
 import live_mapper
-that_live_mapper = live_mapper.LiveMapper("{{ individual_id }}")
+import json
+import base64
+that_live_mapper = live_mapper.LiveMapper(parameter_data=json.loads(base64.b64decode("{{ parameter_data_base64 }}")))
+
     {{ '}}' }}
 
     aParam, aIn		ins
