@@ -16,7 +16,7 @@ def resolve_paths(individual_id):
     for root, dirs, filenames in os.walk(settings.INDIVIDUAL_DATA_DIRECTORY):
         for filename in filenames:
             if individual_id in filename and filename.endswith('.json'):
-                experiment_folder_name = root.split('\\')[-1]
+                experiment_folder_name = os.path.basename(os.path.normpath(root))
                 path = os.path.join(root, filename)
                 individual_data_file_paths.append(path)
     if len(individual_data_file_paths) > 1:
