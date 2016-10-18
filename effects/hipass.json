@@ -1,0 +1,12 @@
+{
+  "parameters": [
+    {
+      "name": "cutoff",
+      "mapping": {
+        "min_value": 150.0,
+        "max_value": 7000.0,
+        "skew_factor": 0.3
+      }
+    }
+  ]
+}
