@@ -1,0 +1,12 @@
+{
+  "parameters": [
+    {
+      "name": "sample_rate",
+      "mapping": {
+        "min_value": 1000.0,
+        "max_value": 15000.0,
+        "skew_factor": 0.3
+      }
+    }
+  ]
+}
