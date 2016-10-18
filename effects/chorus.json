@@ -1,0 +1,28 @@
+{
+  "parameters": [
+    {
+      "name": "depth",
+      "mapping": {
+        "min_value": 5.0,
+        "max_value": 25.0,
+        "skew_factor": 0.3
+      }
+    },
+    {
+      "name": "rate",
+      "mapping": {
+        "min_value": 0.1,
+        "max_value": 1.0,
+        "skew_factor": 1.0
+      }
+    },
+    {
+      "name": "offset",
+      "mapping": {
+        "min_value": 10.0,
+        "max_value": 25.0,
+        "skew_factor": 0.3
+      }
+    }
+  ]
+}
