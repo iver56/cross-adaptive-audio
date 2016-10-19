@@ -1,0 +1,8 @@
+{% extends "base_template.csd.jinja2" %}
+{% block globals %}
+  giSine	ftgen 0, 0, 65536, 10, 1
+{% endblock %}
+{% block effect %}
+  aMod		oscili	1, k_mod_freq, giSine
+  aOut = aIn * aMod
+{% endblock %}
