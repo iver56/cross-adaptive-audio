@@ -17,7 +17,15 @@ class Effect(object):
 
         try:
             with open(metadata_file_path) as data_file:
-                metadata = json.load(data_file)
+                try:
+                    metadata = json.load(data_file)
+                except ValueError:
+                    raise Exception(
+                        'Could not parse JSON file "{}".'
+                        ' Please check that the JSON format/syntax is correct.'.format(
+                            metadata_file_path
+                        )
+                    )
                 parameters = metadata['parameters']
                 return Effect(template_file_path, parameters)
         except IOError:
