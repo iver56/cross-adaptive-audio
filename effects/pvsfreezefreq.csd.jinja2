@@ -1,0 +1,16 @@
+{% extends "base_template.csd.jinja2" %}
+
+{% block globals %}
+  giSquarePosWide ftgen 0, 0, 1024, 7, 1, 1000, 1, 0, 0, 24, 0	; square, positive only
+{% endblock %}
+
+{% block effect %}
+  ifftsize 	= 1024
+  ioverlap	= ifftsize/2
+  iwinsize	= ifftsize
+  iwintype 	= 0
+  fsig1 		pvsanal aIn, ifftsize, ioverlap, iwinsize, iwintype
+  kfreez		oscil	1, k_rate, giSquarePosWide, 0.99
+  freeze		pvsfreeze fsig1, 0, kfreez
+  aOut pvsynth freeze
+{% endblock %}
