@@ -1,0 +1,36 @@
+{
+  "parameters": [
+    {
+      "name": "drive",
+      "mapping": {
+        "min_value": 0.01,
+        "max_value": 10.0,
+        "skew_factor": 0.3
+      }
+    },
+    {
+      "name": "slope",
+      "mapping": {
+        "min_value": 0.0,
+        "max_value": 0.1,
+        "skew_factor": 1.0
+      }
+    },
+    {
+      "name": "duty",
+      "mapping": {
+        "min_value": 0.0,
+        "max_value": 0.02,
+        "skew_factor": 1.0
+      }
+    },
+    {
+      "name": "cutoff",
+      "mapping": {
+        "min_value": 1000.0,
+        "max_value": 9000.0,
+        "skew_factor": 0.3
+      }
+    }
+  ]
+}
