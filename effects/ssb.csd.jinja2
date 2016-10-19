@@ -1,0 +1,17 @@
+{% extends "base_template.csd.jinja2" %}
+{% block globals %}
+  giSine	ftgen 0, 0, 65536, 10, 1
+{% endblock %}
+{% block effect %}
+  ; single sideband modulation
+  aSin, aCos	hilbert	aIn
+  aModSin		oscili	1, k_mod_freq, giSine, 0.0
+  aModCos		oscili	1, k_mod_freq, giSine, 0.25
+  aMod1		= aSin * aModCos
+  aMod2		= aCos * aModSin
+  aSum		= aMod1 + aMod2
+  aDiff		= aMod1 - aMod2
+  kUp		= (k_side > 0 ? 1 : 0)
+  kDown		= (kUp == 0 ? 1 : 0)
+  aOut = ((aDiff*kUp) + (aSum*kDown)) * 0.5
+{% endblock %}
