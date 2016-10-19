@@ -1,0 +1,28 @@
+{
+  "parameters": [
+    {
+      "name": "feedback_level",
+      "mapping": {
+        "min_value": 0.6,
+        "max_value": 0.99,
+        "skew_factor": 1.3
+      }
+    },
+    {
+      "name": "cutoff_frequency",
+      "mapping": {
+        "min_value": 1000.0,
+        "max_value": 12000.0,
+        "skew_factor": 0.3
+      }
+    },
+    {
+      "name": "mix",
+      "mapping": {
+        "min_value": 0.3,
+        "max_value": 1.0,
+        "skew_factor": 1.0
+      }
+    }
+  ]
+}
