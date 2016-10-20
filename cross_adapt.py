@@ -17,6 +17,7 @@ class CrossAdapter(object):
         self.neural_input_vectors = neural_input_vectors
         self.effect = effect
         self.parameter_lpf_cutoff = parameter_lpf_cutoff
+        self.template = template_handler.TemplateHandler(self.effect.template_file_path)
 
     def produce_output_sounds(self, individuals, keep_csd=False):
         processes = []
@@ -89,8 +90,7 @@ class CrossAdapter(object):
             channel_csv = ','.join(map(str, channel))
             channels_csv.append(channel_csv)
 
-        template = template_handler.TemplateHandler(self.effect.template_file_path)
-        template.compile(
+        self.template.compile(
             parameter_names=effect.parameter_names,
             parameter_channels=channels_csv,
             ksmps=settings.HOP_SIZE,
@@ -103,7 +103,7 @@ class CrossAdapter(object):
             experiment.Experiment.folder_name,
             output_filename + '.csd'
         )
-        template.write_result(csd_path)
+        self.template.write_result(csd_path)
         csound = csound_handler.CsoundHandler(csd_path)
         output_file_path = os.path.join(
             settings.OUTPUT_DIRECTORY,
