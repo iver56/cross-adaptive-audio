@@ -85,13 +85,8 @@ def create_live_csd():
     if len(features) != 2 or 'csound_rms' not in features or 'csound_spectral_centroid' not in features:
         raise Exception('Parameters must be 2 parameters analyzed by csound analyzer (this is a proof of concept for now)')
 
-    template = template_handler.TemplateHandler(
-        that_effect.template_file_path,
-        transform_template_string=lambda template_string: template_string.replace(
-            'base_template.csd.jinja2',
-            'base_template_live.csd.jinja2'
-        )
-    )
+    template = that_effect.get_template_handler(live=True)
+
     template.compile(
         parameter_names=that_effect.parameter_names,
         ksmps=settings.HOP_SIZE,

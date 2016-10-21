@@ -38,19 +38,22 @@ class Effect(object):
         self.parameter_names = [p['name'] for p in self.parameters]
         self.name = name
 
-    def get_template_handler(self):
+    def get_template_handler(self, live=False):
         return template_handler.TemplateHandler(
             template_file_path=self.template_file_path,
-            template_string=self.generate_template_string()
+            template_string=self.generate_template_string(live)
         )
 
-    def generate_template_string(self):
+    def generate_template_string(self, live=False):
         return '''
-        {{% extends "base_template.csd.jinja2" %}}
+        {{% extends "{0}" %}}
         {{% block globals %}}
-          {{% include "{0}.globals.jinja2" ignore missing %}}
+          {{% include "{1}.globals.jinja2" ignore missing %}}
         {{% endblock %}}
         {{% block effect %}}
-          {{% include "{0}.effect.jinja2" %}}
+          {{% include "{1}.effect.jinja2" %}}
         {{% endblock %}}
-        '''.format(self.name)
+        '''.format(
+            'base_template_live.csd.jinja2' if live else 'base_template.csd.jinja2',
+            self.name
+        )
