@@ -1,20 +1,19 @@
 import settings
 import os
 import json
+import template_handler
 
 
 class Effect(object):
-    def __init__(self, template_file_path, parameters, name):
-        self.template_file_path = template_file_path
-        self.parameters = parameters
-        self.num_parameters = len(parameters)
-        self.parameter_names = [p['name'] for p in parameters]
-        self.name = name
-
-    @staticmethod
-    def get_effect_by_name(name):
-        template_file_path = os.path.join(settings.EFFECT_DIRECTORY, '{}.csd.jinja2'.format(name))
-        metadata_file_path = os.path.join(settings.EFFECT_DIRECTORY, '{}.json'.format(name))
+    def __init__(self, name):
+        self.template_file_path = os.path.join(
+            settings.EFFECT_DIRECTORY,
+            '{}.csd.jinja2'.format(name)
+        )
+        metadata_file_path = os.path.join(
+            settings.EFFECT_DIRECTORY,
+            '{}.json'.format(name)
+        )
 
         try:
             with open(metadata_file_path) as data_file:
@@ -27,11 +26,31 @@ class Effect(object):
                             metadata_file_path
                         )
                     )
-                parameters = metadata['parameters']
-                return Effect(template_file_path, parameters, name)
+                self.parameters = metadata['parameters']
         except IOError:
             raise Exception(
                 'Could not load {}. It doesn\'t exist. See effects/readme.txt for more info'.format(
                     metadata_file_path
                 )
             )
+
+        self.num_parameters = len(self.parameters)
+        self.parameter_names = [p['name'] for p in self.parameters]
+        self.name = name
+
+    def get_template_handler(self):
+        return template_handler.TemplateHandler(
+            template_file_path=self.template_file_path,
+            template_string=self.generate_template_string()
+        )
+
+    def generate_template_string(self):
+        return '''
+        {{% extends "base_template.csd.jinja2" %}}
+        {{% block globals %}}
+          {{% include "{0}.globals.jinja2" ignore missing %}}
+        {{% endblock %}}
+        {{% block effect %}}
+          {{% include "{0}.effect.jinja2" %}}
+        {{% endblock %}}
+        '''.format(self.name)

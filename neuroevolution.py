@@ -84,7 +84,7 @@ class Neuroevolution(object):
                 vector = [1.0]  # bias input
                 self.neural_input_vectors.append(vector)
 
-        self.effect = effect.Effect.get_effect_by_name(self.args.effect_name)
+        self.effect = effect.Effect(self.args.effect_name)
         self.cross_adapter = cross_adapt.CrossAdapter(
             input_sound=self.input_sound,
             neural_input_vectors=self.neural_input_vectors,

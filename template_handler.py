@@ -35,14 +35,3 @@ class TemplateHandler(object):
         with open(output_filename, "w") as output_file:
             output_file.write(self.result)
 
-    @staticmethod
-    def generate_effect_template_string(effect_name):
-        return '''
-        {{% extends "base_template.csd.jinja2" %}}
-        {{% block globals %}}
-          {{% include "{0}.globals.jinja2" ignore missing %}}
-        {{% endblock %}}
-        {{% block effect %}}
-          {{% include "{0}.effect.jinja2" %}}
-        {{% endblock %}}
-        '''.format(effect_name)

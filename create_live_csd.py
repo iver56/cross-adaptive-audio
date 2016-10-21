@@ -79,7 +79,7 @@ def create_live_csd():
     parameter_data_json = json.dumps(parameter_data)
     parameter_data_base64 = base64.b64encode(parameter_data_json)
 
-    that_effect = effect.Effect.get_effect_by_name(project_data['args']['effect_name'])
+    that_effect = effect.Effect(project_data['args']['effect_name'])
 
     features = project_data['experiment_settings']['neural_input_channels']
     if len(features) != 2 or 'csound_rms' not in features or 'csound_spectral_centroid' not in features:

@@ -1,6 +1,5 @@
 from __future__ import absolute_import
 from __future__ import print_function
-import template_handler
 import csound_handler
 import os
 import settings
@@ -17,10 +16,7 @@ class CrossAdapter(object):
         self.neural_input_vectors = neural_input_vectors
         self.effect = effect
         self.parameter_lpf_cutoff = parameter_lpf_cutoff
-        self.template = template_handler.TemplateHandler(
-            template_file_path=self.effect.template_file_path,
-            template_string=template_handler.TemplateHandler.generate_effect_template_string(self.effect.name)
-        )
+        self.template = self.effect.get_template_handler()
 
     def produce_output_sounds(self, individuals, keep_csd=False):
         processes = []

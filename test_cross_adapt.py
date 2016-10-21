@@ -26,7 +26,7 @@ class TestCrossAdapt(unittest.TestCase):
             os.remove(file_path)
 
     def test_sound_file(self):
-        that_effect = effect.Effect.get_effect_by_name('dist_lpf')
+        that_effect = effect.Effect('dist_lpf')
         target_sound = sound_file.SoundFile('drums.wav')
         input_sound = sound_file.SoundFile('noise.wav')
 

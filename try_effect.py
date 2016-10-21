@@ -56,7 +56,7 @@ if __name__ == '__main__':
     }
     experiment.Experiment.calculate_current_experiment_id(experiment_data)
 
-    that_effect = effect.Effect.get_effect_by_name(args.effect_name)
+    that_effect = effect.Effect(args.effect_name)
     cross_adapter = cross_adapt.CrossAdapter(
         input_sound=input_sound,
         neural_input_vectors=None,
