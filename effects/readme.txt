@@ -1,3 +1,5 @@
+Warning: this documentation is out of sync with implementation as of 2016-10-21
+
 Each effect has a name, for example "dist_lpf". For each effect there should be two files:
 one csound template file and one file that describes the parameters of the effect. They should be
 named like this, respectively:

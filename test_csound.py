@@ -16,6 +16,8 @@ class TestCsound(unittest.TestCase):
         self.drums = sound_file.SoundFile('drums.wav')
         self.files_to_delete = []
         self.template_file_path = os.path.join(settings.EFFECT_DIRECTORY, 'test_effect.csd.jinja2')
+        with open(self.template_file_path, 'r') as template_file:
+            self.template_string = template_file.read()
         experiment.Experiment.folder_name = 'test'
 
     def tearDown(self):
@@ -24,15 +26,13 @@ class TestCsound(unittest.TestCase):
 
     def test_serial_execution(self):
         self.start_time = time.time()
+        template = template_handler.TemplateHandler(settings.EFFECT_DIRECTORY, self.template_string)
+        template.compile(
+            ksmps=settings.HOP_SIZE,
+            duration=self.drums.get_duration()
+        )
 
         for i in range(self.num_sounds):
-            template = template_handler.TemplateHandler(self.template_file_path)
-            duration = self.drums.get_duration()
-            template.compile(
-                ksmps=settings.HOP_SIZE,
-                duration=duration
-            )
-
             csd_path = os.path.join(
                 settings.CSD_DIRECTORY,
                 experiment.Experiment.folder_name,
@@ -62,16 +62,15 @@ class TestCsound(unittest.TestCase):
     def test_parallel_execution(self):
         self.start_time = time.time()
 
+        template = template_handler.TemplateHandler(settings.EFFECT_DIRECTORY, self.template_string)
+        template.compile(
+            ksmps=settings.HOP_SIZE,
+            duration=self.drums.get_duration()
+        )
+
         processes = []
 
         for i in range(self.num_sounds):
-            template = template_handler.TemplateHandler(self.template_file_path)
-            duration = self.drums.get_duration()
-            template.compile(
-                ksmps=settings.HOP_SIZE,
-                duration=duration
-            )
-
             csd_path = os.path.join(
                 settings.CSD_DIRECTORY,
                 experiment.Experiment.folder_name,

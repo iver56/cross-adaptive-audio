@@ -18,11 +18,17 @@ class CsoundAnalyzer(object):
         for i in range(len(FEATURES_ORDERED))
     }
     AVAILABLE_FEATURES = set(FEATURES_ORDERED)
+    DIR = 'csound_analyzers'
 
     def __init__(self, features):
         self.features = features
+
+        template_file_path = os.path.join(self.DIR, 'csound_basic.csd.jinja2')
+        with open(template_file_path, 'r') as template_file:
+            template_string = template_file.read()
         self.template = template_handler.TemplateHandler(
-            os.path.join('csound_analyzers', 'csound_basic.csd.jinja2')
+            template_dir=self.DIR,
+            template_string=template_string
         )
 
     def analyze_multiple(self, sound_files):

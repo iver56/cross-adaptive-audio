@@ -6,10 +6,7 @@ import template_handler
 
 class Effect(object):
     def __init__(self, name):
-        self.template_file_path = os.path.join(
-            settings.EFFECT_DIRECTORY,
-            '{}.csd.jinja2'.format(name)
-        )
+        self.template_dir = settings.EFFECT_DIRECTORY
         metadata_file_path = os.path.join(
             settings.EFFECT_DIRECTORY,
             '{}.json'.format(name)
@@ -40,7 +37,7 @@ class Effect(object):
 
     def get_template_handler(self, live=False):
         return template_handler.TemplateHandler(
-            template_file_path=self.template_file_path,
+            template_dir=self.template_dir,
             template_string=self.generate_template_string(live)
         )
 
