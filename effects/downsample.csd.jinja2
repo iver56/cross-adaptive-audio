@@ -1,5 +1,0 @@
-{% extends "base_template.csd.jinja2" %}
-{% block effect %}
-  aSampleClock	mpulse	1, 1/k_sample_rate	; new sample clock
-  aOut samphold aIn, aSampleClock ; sample and hold (downsample)
-{% endblock %}

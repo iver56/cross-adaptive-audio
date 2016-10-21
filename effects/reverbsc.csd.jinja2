@@ -1,5 +1,0 @@
-{% extends "base_template.csd.jinja2" %}
-{% block effect %}
-  ar1,ar2 reverbsc aIn, aIn, k_feedback_level, k_cutoff_frequency
-  aOut	= (ar1*k_mix) + (aIn*(1-k_mix))
-{% endblock %}

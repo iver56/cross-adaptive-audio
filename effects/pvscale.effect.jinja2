@@ -1,0 +1,7 @@
+ifftsize 	= 1024
+ioverlap	= ifftsize/2
+iwinsize	= ifftsize
+iwintype 	= 0
+fsig1 		pvsanal aIn, ifftsize, ioverlap, iwinsize, iwintype
+fshift  	pvscale  fsig1, k_scale, int(k_keep_formant), 1
+aOut pvsynth fshift

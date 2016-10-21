@@ -4,11 +4,12 @@ import json
 
 
 class Effect(object):
-    def __init__(self, template_file_path, parameters):
+    def __init__(self, template_file_path, parameters, name):
         self.template_file_path = template_file_path
         self.parameters = parameters
         self.num_parameters = len(parameters)
         self.parameter_names = [p['name'] for p in parameters]
+        self.name = name
 
     @staticmethod
     def get_effect_by_name(name):
@@ -27,7 +28,7 @@ class Effect(object):
                         )
                     )
                 parameters = metadata['parameters']
-                return Effect(template_file_path, parameters)
+                return Effect(template_file_path, parameters, name)
         except IOError:
             raise Exception(
                 'Could not load {}. It doesn\'t exist. See effects/readme.txt for more info'.format(

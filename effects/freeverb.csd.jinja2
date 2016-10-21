@@ -1,6 +1,0 @@
-{% extends "base_template.csd.jinja2" %}
-{% block effect %}
-  ar1,ar2  freeverb aIn, aIn, k_room_size, k_hf_damp
-  ar1  dcblock2 ar1
-  aOut  = (ar1*k_mix) + (aIn*(1-k_mix))
-{% endblock %}

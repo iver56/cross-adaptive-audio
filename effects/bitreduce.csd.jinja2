@@ -1,5 +1,0 @@
-{% extends "base_template.csd.jinja2" %}
-{% block effect %}
-  kQuantize	= (powoftwo(int(k_bits)) / 2) + 1  ; find number of discrete steps for this bit depth
-  aOut = round(aIn * kQuantize) / kQuantize	  ; quantize audio signal (bit reduce)
-{% endblock %}

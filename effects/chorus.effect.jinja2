@@ -1,0 +1,8 @@
+kMix		= 0.5						; chorus wet/dry mix
+iChorWave	= giSine					; chorus waveform
+aDelayTime1	oscili	0.5, k_rate, iChorWave, 0		; delay time oscillator (LFO)
+aDelayTime1	= ((aDelayTime1+0.5) * k_depth) + k_offset		; scale and offset LFO
+iMaxDelay	= 1
+iWindowSize	= 4
+aChorus1 	vdelayx aIn, aDelayTime1*0.001, iMaxDelay, iWindowSize
+aOut = ((aIn*sqrt(1-kMix)) + (aChorus1*sqrt(kMix)))

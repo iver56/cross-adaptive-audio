@@ -1,5 +1,3 @@
-{% extends "base_template.csd.jinja2" %}
-
 {#
   Copyright 2015 Oeyvind Brandtsegg
 
@@ -18,11 +16,6 @@
   along with The Signal Interaction Toolkit.
   If not, see <http://www.gnu.org/licenses/>.
 #}
-
-{% block effect %}
-  kDist		= 0.001
-
-  afilt		lpf18 aIn, k_freq, k_resonance, kDist
-
-  aOut		= afilt * post_gain
-{% endblock %}
+kDist		= 0.001
+afilt		lpf18 aIn, k_freq, k_resonance, kDist
+aOut		= afilt * post_gain

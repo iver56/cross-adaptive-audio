@@ -6,7 +6,7 @@ import os
 
 
 class TemplateHandler(object):
-    def __init__(self, template_file_path, transform_template_string=None):
+    def __init__(self, template_file_path, template_string=None, transform_template_string=None):
         self.template = None
         self.result = None
         dir_name = os.path.dirname(template_file_path)
@@ -14,11 +14,15 @@ class TemplateHandler(object):
             loader=FileSystemLoader(searchpath=dir_name)
         )
         self.init_custom_filters()
-        with open(template_file_path, 'r') as template_file:
-            template_string = template_file.read()
-            if inspect.isfunction(transform_template_string):
-                template_string = transform_template_string(template_string)
-            self.template = self.env.from_string(template_string)
+
+        if template_string is None:
+            with open(template_file_path, 'r') as template_file:
+                template_string = template_file.read()
+
+        if inspect.isfunction(transform_template_string):
+            template_string = transform_template_string(template_string)
+
+        self.template = self.env.from_string(template_string)
 
     def init_custom_filters(self):
         self.env.filters['tojson'] = json.dumps
@@ -30,3 +34,15 @@ class TemplateHandler(object):
     def write_result(self, output_filename):
         with open(output_filename, "w") as output_file:
             output_file.write(self.result)
+
+    @staticmethod
+    def generate_effect_template_string(effect_name):
+        return '''
+        {{% extends "base_template.csd.jinja2" %}}
+        {{% block globals %}}
+          {{% include "{0}.globals.jinja2" ignore missing %}}
+        {{% endblock %}}
+        {{% block effect %}}
+          {{% include "{0}.effect.jinja2" %}}
+        {{% endblock %}}
+        '''.format(effect_name)

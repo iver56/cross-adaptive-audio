@@ -1,6 +1,0 @@
-{% extends "base_template.csd.jinja2" %}
-{% block effect %}
-  kMakeupGain	= 1/sqrt(k_clip)			; Make up for gain loss in clipping stage
-  aIn		limit	aIn, -k_clip, k_clip	; clip signal at threshold
-  aOut = aIn * kMakeupGain
-{% endblock %}

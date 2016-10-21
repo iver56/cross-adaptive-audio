@@ -17,7 +17,10 @@ class CrossAdapter(object):
         self.neural_input_vectors = neural_input_vectors
         self.effect = effect
         self.parameter_lpf_cutoff = parameter_lpf_cutoff
-        self.template = template_handler.TemplateHandler(self.effect.template_file_path)
+        self.template = template_handler.TemplateHandler(
+            template_file_path=self.effect.template_file_path,
+            template_string=template_handler.TemplateHandler.generate_effect_template_string(self.effect.name)
+        )
 
     def produce_output_sounds(self, individuals, keep_csd=False):
         processes = []
