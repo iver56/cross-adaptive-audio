@@ -1,0 +1,19 @@
+{{ '{%' }} extends "{{ base_template }}" {{ '%}' }}
+{{ '{% block globals %}' }}
+{% for effect in effects %}
+  {% include effect.name + ".globals.jinja2" ignore missing %}
+{% endfor %}
+{{ '{% endblock %}' }}
+{{ '{% block effect %}' }}
+
+aInDry = aIn
+
+{% for effect in effects %}
+  aIn = aInDry
+  {% include effect.name + ".effect.jinja2" %}
+  a_{{ effect.name }} = aOut
+{% endfor %}
+
+i_mix_per_effect = 1 / {{ effects|length }}
+aOut = i_mix_per_effect * ({% for effect in effects %}a_{{ effect.name }} * i_mix_per_effect{% if not loop.last %} + {% endif %}{% endfor %})
+{{ '{% endblock %}' }}

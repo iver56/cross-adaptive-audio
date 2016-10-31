@@ -85,6 +85,7 @@ class Neuroevolution(object):
                 self.neural_input_vectors.append(vector)
 
         self.effect = effect.Effect(self.args.effect_name)
+        # self.effect = effect.CompositeEffect(['am', 'bandpass', 'bitreduce', 'chorus', 'dist_lpf'])  # Uncomment to try composite effect
         self.cross_adapter = cross_adapt.CrossAdapter(
             input_sound=self.input_sound,
             neural_input_vectors=self.neural_input_vectors,
