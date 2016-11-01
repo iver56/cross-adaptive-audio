@@ -68,6 +68,18 @@ class CompositeEffect(object):
         self.parameters = []
         i = 0
         for effect in self.effects:
+            softmax_post_gain_parameter = {
+                "name": "softmax_post_gain_{}".format(effect.name),
+                "mapping": {
+                    "min_value": 0.0,
+                    "max_value": 1.0,
+                    "skew_factor": 1.0
+                }
+            }
+            effect.parameters.append(softmax_post_gain_parameter)
+            effect.parameter_names.append(softmax_post_gain_parameter['name'])
+            effect.num_parameters += 1
+
             self.parameters += effect.parameters
             self.parameter_names += effect.parameter_names
             effect.parameter_indexes = range(i, i + effect.num_parameters)
