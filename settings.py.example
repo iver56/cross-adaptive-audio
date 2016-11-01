@@ -40,5 +40,3 @@ AKA block size (sonic annotator)
 AKA gifftsize (csound)
 """
 FRAME_SIZE = HOP_SIZE * 2
-
-WHITELISTED_SOUND_FILE_EXTENSIONS = ['wav']
