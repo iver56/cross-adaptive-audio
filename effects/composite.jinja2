@@ -8,8 +8,13 @@
 
 aInDry = aIn
 
+{{ '{% block parameter_init %}{% endblock %}' }}
+
 {% for effect in effects %}
   aIn = aInDry
+  {% for parameter_index in effect.parameter_indexes %}
+    k_{{ parameter_names[parameter_index] }} tonek kChannel{{ parameter_index }}[kTime - 1], {{ '{{ parameter_lpf_cutoff }}' }}
+  {% endfor %}
   {% include effect.name + ".effect.jinja2" %}
   a_{{ effect.name }} = aOut
 {% endfor %}

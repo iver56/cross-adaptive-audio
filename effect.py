@@ -66,11 +66,14 @@ class CompositeEffect(object):
 
         self.parameter_names = []
         self.parameters = []
+        i = 0
         for effect in self.effects:
             self.parameters += effect.parameters
             self.parameter_names += effect.parameter_names
+            effect.parameter_indexes = range(i, i + effect.num_parameters)
+            i += effect.num_parameters
 
-        self.num_parameters = sum(effect.num_parameters for effect in self.effects)
+        self.num_parameters = i
 
         self.name = 'composite'
 
@@ -93,5 +96,6 @@ class CompositeEffect(object):
         base_template = 'base_template_live.csd.jinja2' if live else 'base_template.csd.jinja2'
         return that_template_handler.compile(
             base_template=base_template,
-            effects=self.effects
+            effects=self.effects,
+            parameter_names=self.parameter_names
         )

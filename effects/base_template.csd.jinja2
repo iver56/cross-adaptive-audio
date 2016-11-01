@@ -13,15 +13,19 @@
 
     kTime timek
 
-    {% for channel in parameter_channels %}
-      kChannel{{ loop.index0 }}[] fillarray {{ channel }}
-    {% endfor %}
+    {% block channels %}
+      {% for channel in parameter_channels %}
+        kChannel{{ loop.index0 }}[] fillarray {{ channel }}
+      {% endfor %}
+    {% endblock %}
 
-    {% for name in parameter_names %}
-      k_{{ name }} tonek kChannel{{ loop.index0 }}[kTime - 1], {{ parameter_lpf_cutoff }}
-    {% endfor %}
+    {% block parameter_init %}
+      {% for name in parameter_names %}
+        k_{{ name }} tonek kChannel{{ loop.index0 }}[kTime - 1], {{ parameter_lpf_cutoff }}
+      {% endfor %}
+    {% endblock %}
 
-    aIn		in
+    aIn in
 
     {% block effect %}{% endblock %}
 
