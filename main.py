@@ -200,11 +200,12 @@ if __name__ == '__main__':
     )
     arg_parser.add_argument(
         '--effect',
-        dest='effect_name',
+        dest='effect_names',
         type=str,
-        help='The name of the sound effect to use. See the effects folder for options.',
+        nargs='+',
+        help='The name(s) of the sound effect(s) to use. See the effects folder for options.',
         required=False,
-        default="dist_lpf"
+        default=["dist_lpf"]
     )
     arg_parser.add_argument(
         '--experiment-settings',
