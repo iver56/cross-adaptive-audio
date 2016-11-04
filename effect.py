@@ -71,8 +71,8 @@ class CompositeEffect(object):
             softmax_post_gain_parameter = {
                 "name": "softmax_post_gain_{}".format(effect.name),
                 "mapping": {
-                    "min_value": 0.0,
-                    "max_value": 1.0,
+                    "min_value": -10.0,
+                    "max_value": 10.0,
                     "skew_factor": 1.0
                 }
             }
