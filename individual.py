@@ -53,12 +53,8 @@ class Individual(object):
         return self.nn_representation
 
     def get_neural_output_representation(self):
-        series_standardized = {}
-        for i in range(self.effect.num_parameters):
-            parameter_key = self.effect.parameter_names[i]
-            series_standardized[parameter_key] = self.neural_output_channels[i]
         return {
-            'series_standardized': series_standardized,
+            'series_normalized': self.neural_output_channels,
             'ksmps': settings.HOP_SIZE,
             'order': self.effect.parameter_names
         }

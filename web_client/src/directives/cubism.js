@@ -33,7 +33,7 @@
       vm.showGraph = function() {
         vm.reset();
 
-        var numSteps = vm.series.series_standardized[vm.series.order[0]].length;
+        var numSteps = vm.series.series_normalized[0].length;
         var stepTimeInMs = vm.series.ksmps * 1000 / sampleRate;
 
         // create context and horizon
@@ -59,28 +59,27 @@
           ;
 
         // define metric accessor
-        function metricAccessor(name) {
+        function metricAccessor(idx_key) {
+          var idx = idx_key.split('_')[0];
           return cubismService.context.metric(function(start, stop, step, callback) {
             var values;
-            if (vm.subtract && vm.subtract.series_standardized) {
+            if (vm.subtract && vm.subtract.series_normalized) {
               values = [];
-              for (var i = 0; i < vm.series.series_standardized[name].length; i++) {
-                var value = vm.series.series_standardized[name][i] - vm.subtract.series_standardized[name][i];
+              for (var i = 0; i < vm.series.series_normalized[idx].length; i++) {
+                var value = vm.series.series_normalized[idx][i] - vm.subtract.series_normalized[idx][i];
                 values.push(value);
               }
             } else {
-              values = vm.series.series_standardized[name];
+              values = vm.series.series_normalized[idx];
             }
             callback(null, values);
-          }, name);
+          }, idx);
         }
 
         var series = [];
         for (var i = 0; i < vm.series.order.length; i++) {
           var key = vm.series.order[i];
-          if (vm.series.series_standardized.hasOwnProperty(key)) {
-            series.push(key);
-          }
+          series.push(i + '_' + key);
         }
 
         horizon.metric(metricAccessor);
@@ -104,7 +103,7 @@
           d3.selectAll(".value")
             .style("right", i == null ? null : cubismService.context.size() - i + 10 + "px");
           d3.selectAll(".title")
-            .style("opacity", i > 150 || i == null ? 1 : 0)
+            .style("opacity", i > 170 || i == null ? 1 : 0)
         }.throttle(16));
 
         // set axis
