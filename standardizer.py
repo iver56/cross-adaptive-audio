@@ -7,6 +7,7 @@ import statistics
 import numpy
 import analyze
 
+
 class Standardizer(object):
     DEVIATION_LIMIT = 4.0
 
