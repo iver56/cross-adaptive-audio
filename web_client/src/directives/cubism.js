@@ -60,7 +60,7 @@
 
         // define metric accessor
         function metricAccessor(idx_key) {
-          var idx = idx_key.split('_')[0];
+          var idx = parseInt(idx_key.split('_')[0]);
           return cubismService.context.metric(function(start, stop, step, callback) {
             var values;
             if (vm.subtract && vm.subtract.series_standardized) {
