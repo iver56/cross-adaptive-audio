@@ -87,8 +87,8 @@ class SoundFile(object):
         :return: list
         """
         feature_vector = []
-        for feature in experiment.Experiment.NEURAL_INPUT_CHANNELS:
-            feature_vector.append(self.analysis['series_standardized'][feature][k])
+        for i, feature in enumerate(experiment.Experiment.NEURAL_INPUT_CHANNELS):
+            feature_vector.append(self.analysis['series_standardized'][i][k])
         return feature_vector
 
     def get_serialized_representation(self):

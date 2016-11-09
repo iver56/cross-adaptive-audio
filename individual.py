@@ -54,7 +54,7 @@ class Individual(object):
 
     def get_neural_output_representation(self):
         return {
-            'series_normalized': self.neural_output_channels,
+            'series_standardized': self.neural_output_channels,
             'ksmps': settings.HOP_SIZE,
             'order': self.effect.parameter_names
         }

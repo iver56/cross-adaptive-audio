@@ -33,7 +33,7 @@
       vm.showGraph = function() {
         vm.reset();
 
-        var numSteps = vm.series.series_normalized[0].length;
+        var numSteps = vm.series.series_standardized[0].length;
         var stepTimeInMs = vm.series.ksmps * 1000 / sampleRate;
 
         // create context and horizon
@@ -63,14 +63,14 @@
           var idx = idx_key.split('_')[0];
           return cubismService.context.metric(function(start, stop, step, callback) {
             var values;
-            if (vm.subtract && vm.subtract.series_normalized) {
+            if (vm.subtract && vm.subtract.series_standardized) {
               values = [];
-              for (var i = 0; i < vm.series.series_normalized[idx].length; i++) {
-                var value = vm.series.series_normalized[idx][i] - vm.subtract.series_normalized[idx][i];
+              for (var i = 0; i < vm.series.series_standardized[idx].length; i++) {
+                var value = vm.series.series_standardized[idx][i] - vm.subtract.series_standardized[idx][i];
                 values.push(value);
               }
             } else {
-              values = vm.series.series_normalized[idx];
+              values = vm.series.series_standardized[idx];
             }
             callback(null, values);
           }, idx);

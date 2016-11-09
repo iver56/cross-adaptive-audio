@@ -52,20 +52,20 @@ class LocalSimilarityFitness(AbstractFitness):
         euclidean_distance_sum = 0
         for k in range(param_sound.get_num_frames()):
             sum_of_squared_differences = 0
-            for feature in experiment.Experiment.SIMILARITY_CHANNELS:
-                param_value = param_sound.analysis['series_standardized'][feature][k]
+            for i, feature in enumerate(experiment.Experiment.SIMILARITY_CHANNELS):
+                param_value = param_sound.analysis['series_standardized'][i][k]
                 try:
-                    output_value = output_sound.analysis['series_standardized'][feature][k]
+                    output_value = output_sound.analysis['series_standardized'][i][k]
                 except IndexError:
                     print('Tried to get feature {0} of output sound at k index {1}'.format(
                         feature,
                         k
                     ))
                     print('Feature series lengths:')
-                    for that_feature in output_sound.analysis['series_standardized']:
+                    for j, that_feature in enumerate(experiment.Experiment.SIMILARITY_CHANNELS):
                         print(
                             that_feature,
-                            len(output_sound.analysis['series_standardized'][that_feature])
+                            len(output_sound.analysis['series_standardized'][j])
                         )
                     raise
 
@@ -100,12 +100,11 @@ class MultiObjectiveFitness(AbstractFitness):
     @staticmethod
     def calculate_objectives(that_individual, target_sound):
         that_individual.objectives = {}
-        for feature in experiment.Experiment.SIMILARITY_CHANNELS:
+        for i, feature in enumerate(experiment.Experiment.SIMILARITY_CHANNELS):
             sum_of_squared_differences = 0
             for k in range(target_sound.get_num_frames()):
-                param_value = target_sound.analysis['series_standardized'][feature][k]
-                output_value = \
-                    that_individual.output_sound.analysis['series_standardized'][feature][k]
+                param_value = target_sound.analysis['series_standardized'][i][k]
+                output_value = that_individual.output_sound.analysis['series_standardized'][i][k]
                 sum_of_squared_differences += (param_value - output_value) ** 2
             euclidean_distance = math.sqrt(sum_of_squared_differences)
             that_individual.objectives[feature] = euclidean_distance
@@ -233,10 +232,7 @@ class NoveltyFitness(AbstractFitness):
     @staticmethod
     def get_analysis_vector(ind):
         return np.concatenate(
-            tuple(
-                ind.output_sound.analysis['series_standardized'][feature]
-                for feature in ind.output_sound.analysis['series_standardized']
-            ),
+            tuple(ind.output_sound.analysis['series_standardized']),
             axis=0
         )
 

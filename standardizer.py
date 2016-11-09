@@ -62,12 +62,15 @@ class Standardizer(object):
 
         for sf in self.sound_files:
             if 'series_standardized' not in sf.analysis:
-                sf.analysis['series_standardized'] = {}
-                for feature in self.feature_statistics:
-                    sf.analysis['series_standardized'][feature] = [
-                        self.get_standardized_value(feature, value)
-                        for value in sf.analysis['series'][feature]
-                        ]
+                series_standardized = []
+                for i, feature in enumerate(self.feature_statistics):
+                    series_standardized.append(
+                        [
+                            self.get_standardized_value(feature, value)
+                            for value in sf.analysis['series'][feature]
+                            ]
+                    )
+                sf.analysis['series_standardized'] = series_standardized
 
     def get_standardized_value(self, feature, value):
         """
