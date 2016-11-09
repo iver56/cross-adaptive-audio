@@ -25,8 +25,7 @@
     "bark_21",
     "bark_22",
     "bark_23",
-    "bark_24",
-    "bark_25"
+    "bark_24"
   ],
   "neural_input_channels": [
     "bark_0",
@@ -53,7 +52,6 @@
     "bark_21",
     "bark_22",
     "bark_23",
-    "bark_24",
-    "bark_25"
+    "bark_24"
   ]
 }

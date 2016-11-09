@@ -5,7 +5,7 @@ import settings
 import math
 import statistics
 import numpy
-
+import analyze
 
 class Standardizer(object):
     DEVIATION_LIMIT = 4.0
@@ -18,8 +18,8 @@ class Standardizer(object):
         self.sound_files = sound_files
         self.feature_statistics = {}
 
-    def calculate_feature_statistics(self, series_key='series'):
-        for key in self.sound_files[0].analysis[series_key]:
+    def calculate_feature_statistics(self):
+        for key in self.sound_files[0].analysis['series']:
             self.feature_statistics[key] = {
                 'min': None,
                 'max': None,
@@ -32,7 +32,7 @@ class Standardizer(object):
                 print('Analyzing {} feature statistics'.format(feature))
             series = []
             for sf in self.sound_files:
-                series += sf.analysis[series_key][feature]
+                series += sf.analysis['series'][feature]
 
             if len(series) == 0:
                 continue
@@ -63,7 +63,7 @@ class Standardizer(object):
         for sf in self.sound_files:
             if 'series_standardized' not in sf.analysis:
                 series_standardized = []
-                for i, feature in enumerate(self.feature_statistics):
+                for i, feature in enumerate(analyze.Analyzer.FEATURES_LIST):
                     series_standardized.append(
                         [
                             self.get_standardized_value(feature, value)
