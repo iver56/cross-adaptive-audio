@@ -3,8 +3,8 @@
     {
       "name": "gain",
       "mapping": {
-        "min_value": 1.0,
-        "max_value": 1.0,
+        "min_value": 0.0,
+        "max_value": 3.0,
         "skew_factor": 0.3
       }
     }
