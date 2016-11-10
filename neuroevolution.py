@@ -153,6 +153,8 @@ class Neuroevolution(object):
         params.MutateAddLinkProb = self.args.add_link_probability
         params.MutateRemLinkProb = self.args.remove_link_probability
         params.MutateRemSimpleNeuronProb = self.args.remove_simple_neuron_probability
+        params.MaxWeight = self.args.max_weight
+        params.WeightMutationMaxPower = self.args.weight_mutation_max_power
         params.Elitism = self.args.elitism
         params.SurvivalRate = self.args.survival_rate
         num_inputs = len(self.neural_input_vectors[0])

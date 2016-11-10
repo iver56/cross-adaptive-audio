@@ -140,6 +140,22 @@ if __name__ == '__main__':
         default=0.06
     )
     arg_parser.add_argument(
+        '--max-weight',
+        dest='max_weight',
+        type=float,
+        help='MaxWeight: Maximum absolute magnitude of a weight',
+        required=False,
+        default=8.0
+    )
+    arg_parser.add_argument(
+        '--weight-mutation-max-power',
+        dest='weight_mutation_max_power',
+        type=float,
+        help='WeightMutationMaxPower: Maximum perturbation for a weight mutation',
+        required=False,
+        default=1.0
+    )
+    arg_parser.add_argument(
         '--elitism',
         dest='elitism',
         type=float,
@@ -237,6 +253,9 @@ if __name__ == '__main__':
 
     if args.population_size < 3:
         raise Exception('population size should be at least 3')
+
+    if args.weight_mutation_max_power > args.max_weight / 4.0:
+        print('Warning: weight_mutation_max_power is relatively high')
 
     experiment.Experiment.load_experiment_settings(args.experiment_settings)
     analyze.Analyzer.init_features_list()
