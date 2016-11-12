@@ -124,10 +124,12 @@ The _most important_ parameters:
                         Novelty fitness ignores the objective and optimizes
                         for novelty. Mixed fitness chooses a random fitness
                         evaluator for each generation.
-  --neural-input-mode {a,ab,b,s}
-                        What to use as neural input. Mode a: target sound.
-                        Mode ab: target sound and input sound. Mode b: input
-                        sound. Mode s: static input, i.e. only bias.
+  --neural-mode {a,ab,b,s,targets}
+                        Mode a: target sound is neural input. Mode ab: target
+                        sound and input sound is neural input. Mode b: input
+                        sound is neural input. Mode s: static input, i.e. only
+                        bias. Mode targets: evolve targets separately for each
+                        timestep, with only static input
   --effect EFFECT_NAME  The name of the sound effect to use. See the effects
                         folder for options.
   --fs-neat [FS_NEAT]   Use FS-NEAT (automatic feature selection)
