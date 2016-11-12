@@ -160,6 +160,9 @@ class Neuroevolution(object):
         params.AllowClones = self.args.allow_clones
         params.MaxWeight = self.args.max_weight
         params.WeightMutationMaxPower = self.args.weight_mutation_max_power
+        params.MutateWeightsSevereProb = self.args.mutate_weights_severe_prob
+        params.RecurrentProb = 0.0
+        params.RecurrentLoopProb = 0.0
         params.Elitism = self.args.elitism
         params.SurvivalRate = self.args.survival_rate
         num_inputs = len(self.neural_input_vectors[0])

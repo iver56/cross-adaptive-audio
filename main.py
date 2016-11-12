@@ -156,6 +156,14 @@ if __name__ == '__main__':
         default=1.0
     )
     arg_parser.add_argument(
+        '--mutate-weights-severe-prob',
+        dest='mutate_weights_severe_prob',
+        type=float,
+        help='MutateWeightsSevereProb: Probability for a severe (shaking) weight mutation',
+        required=False,
+        default=0.25
+    )
+    arg_parser.add_argument(
         '--elitism',
         dest='elitism',
         type=float,
