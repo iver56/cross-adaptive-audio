@@ -164,6 +164,14 @@ if __name__ == '__main__':
         default=0.25
     )
     arg_parser.add_argument(
+        '--interspecies-crossover-rate',
+        dest='interspecies_crossover_rate',
+        type=float,
+        help='InterspeciesCrossoverRate: Probability for a baby to result from inter-species mating',
+        required=False,
+        default=0.0001
+    )
+    arg_parser.add_argument(
         '--elitism',
         dest='elitism',
         type=float,
