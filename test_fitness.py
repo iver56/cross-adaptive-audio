@@ -20,13 +20,13 @@ class TestFitness(unittest.TestCase):
 
         ind1 = individual.Individual(
             genotype=None,
-            neural_input_mode=None,
+            neural_mode=None,
             effect=None
         )
         ind1.set_output_sound(drums)
         ind2 = individual.Individual(
             genotype=None,
-            neural_input_mode=None,
+            neural_mode=None,
             effect=None
         )
         ind2.set_output_sound(synth)

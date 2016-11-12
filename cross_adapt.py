@@ -119,3 +119,39 @@ class CrossAdapter(object):
             is_input=False
         )
         return process, output_sound_file, csd_path
+
+
+class TargetCrossAdapter(CrossAdapter):
+    def __init__(self, *args, **kwargs):
+        super(TargetCrossAdapter, self).__init__(*args, **kwargs)
+
+    def produce_output_sound(self, that_individual):
+        output_filename = '{0}.cross_adapted.{1}.wav'.format(
+            self.input_sound.filename,
+            that_individual.get_id()
+        )
+
+        # this creates a neural network (phenotype) from the genome
+        net = NEAT.NeuralNetwork()
+        that_individual.genotype.BuildPhenotype(net)
+
+        net.Flush()
+        net.Input([1.0])
+        net.Activate()
+        output = net.Output()
+        output = [min(1.0, max(0.0, x)) for x in output]
+
+        output_vectors = []
+        for i in range(len(self.neural_input_vectors)):
+            idx_offset = i * self.effect.num_parameters
+            output_vectors.append(output[idx_offset:idx_offset+self.effect.num_parameters])
+
+        that_individual.set_neural_output(zip(*output_vectors))
+
+        process, resulting_sound, csd_path = self.cross_adapt(
+            parameter_vectors=output_vectors,
+            effect=self.effect,
+            output_filename=output_filename
+        )
+
+        return process, resulting_sound, csd_path

@@ -181,12 +181,15 @@ if __name__ == '__main__':
         default=False
     )
     arg_parser.add_argument(
-        '--neural-input-mode',
-        dest='neural_input_mode',
+        '--neural-mode',
+        dest='neural_mode',
         type=str,
-        choices=['a', 'ab', 'b', 's'],
-        help='What to use as neural input. Mode a: target sound. Mode ab: target sound and'
-             ' input sound. Mode b: input sound. Mode s: static input, i.e. only bias.',
+        choices=['a', 'ab', 'b', 's', 'targets'],
+        help='Mode a: target sound is neural input.'
+             ' Mode ab: target sound and input sound is neural input.'
+             ' Mode b: input sound is neural input.'
+             ' Mode s: static input, i.e. only bias.'
+             ' Mode targets: evolve targets separately for each timestep, with only static input',
         required=False,
         default="a"
     )

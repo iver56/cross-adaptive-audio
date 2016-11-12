@@ -8,11 +8,11 @@ import pickle  # TODO: try cPickle. it might be faster.
 
 
 class Individual(object):
-    def __init__(self, genotype, neural_input_mode, effect):
+    def __init__(self, genotype, neural_mode, effect):
         self.genotype = genotype
         self.output_sound = None
         self.neural_output_channels = None
-        self.neural_input_mode = neural_input_mode
+        self.neural_mode = neural_mode
         self.effect = effect
         self.nn_representation = None
         self.id = None
@@ -46,7 +46,7 @@ class Individual(object):
         if self.nn_representation is None:
             self.nn_representation = neural_network_representation.get_neural_network_representation(
                 nn=self.genotype,
-                neural_input_mode=self.neural_input_mode,
+                neural_mode=self.neural_mode,
                 effect=self.effect,
                 is_substrate=False
             )

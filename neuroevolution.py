@@ -62,34 +62,43 @@ class Neuroevolution(object):
         )
 
         self.neural_input_vectors = []
-        if self.args.neural_input_mode == 'a':
+
+        if self.args.neural_mode == 'a':
             for k in range(self.num_frames):
                 vector = self.target_sound.get_standardized_neural_input_vector(k)
                 vector.append(1.0)  # bias input
                 self.neural_input_vectors.append(vector)
-        elif self.args.neural_input_mode == 'ab':
+        elif self.args.neural_mode == 'ab':
             for k in range(self.num_frames):
                 vector = self.target_sound.get_standardized_neural_input_vector(k)
                 vector += self.input_sound.get_standardized_neural_input_vector(k)
                 vector.append(1.0)  # bias input
                 self.neural_input_vectors.append(vector)
-        elif self.args.neural_input_mode == 'b':
+        elif self.args.neural_mode == 'b':
             for k in range(self.num_frames):
                 vector = self.input_sound.get_standardized_neural_input_vector(k)
                 vector.append(1.0)  # bias input
                 self.neural_input_vectors.append(vector)
-        elif self.args.neural_input_mode == 's':
+        elif self.args.neural_mode == 's':
             self.args.add_neuron_probability = 0.0
             for k in range(self.num_frames):
                 vector = [1.0]  # bias input
                 self.neural_input_vectors.append(vector)
+        elif self.args.neural_mode == 'targets':
+            for k in range(self.num_frames):
+                self.neural_input_vectors.append([1.0])  # just bias
 
         if len(self.args.effect_names) == 1:
             self.effect = effect.Effect(self.args.effect_names[0])
         else:
             self.effect = effect.CompositeEffect(self.args.effect_names)
 
-        self.cross_adapter = cross_adapt.CrossAdapter(
+        self.cross_adapter_class = (
+            cross_adapt.TargetCrossAdapter if self.args.neural_mode == 'targets'
+            else cross_adapt.CrossAdapter
+        )
+
+        self.cross_adapter = self.cross_adapter_class(
             input_sound=self.input_sound,
             neural_input_vectors=self.neural_input_vectors,
             effect=self.effect,
@@ -149,10 +158,6 @@ class Neuroevolution(object):
         params = NEAT.Parameters()
         params.PopulationSize = self.args.population_size
         params.AllowClones = self.args.allow_clones
-        params.MutateAddNeuronProb = self.args.add_neuron_probability
-        params.MutateAddLinkProb = self.args.add_link_probability
-        params.MutateRemLinkProb = self.args.remove_link_probability
-        params.MutateRemSimpleNeuronProb = self.args.remove_simple_neuron_probability
         params.MaxWeight = self.args.max_weight
         params.WeightMutationMaxPower = self.args.weight_mutation_max_power
         params.Elitism = self.args.elitism
@@ -160,6 +165,18 @@ class Neuroevolution(object):
         num_inputs = len(self.neural_input_vectors[0])
         num_hidden_nodes = 0
         num_outputs = self.effect.num_parameters
+        if self.args.neural_mode == 'targets':
+            num_outputs *= self.num_frames
+            params.MutateAddNeuronProb = 0.0
+            params.MutateAddLinkProb = 0.0
+            params.MutateRemLinkProb = 0.0
+            params.MutateRemSimpleNeuronProb = 0.0
+        else:
+            params.MutateAddNeuronProb = self.args.add_neuron_probability
+            params.MutateAddLinkProb = self.args.add_link_probability
+            params.MutateRemLinkProb = self.args.remove_link_probability
+            params.MutateRemSimpleNeuronProb = self.args.remove_simple_neuron_probability
+
         output_activation_function = NEAT.ActivationFunction.UNSIGNED_SIGMOID
         if self.args.output_activation_function == 'linear':
             output_activation_function = NEAT.ActivationFunction.LINEAR
@@ -198,7 +215,7 @@ class Neuroevolution(object):
             for genotype in genotypes:
                 that_individual = individual.Individual(
                     genotype=genotype,
-                    neural_input_mode=self.args.neural_input_mode,
+                    neural_mode=self.args.neural_mode,
                     effect=self.effect
                 )
 

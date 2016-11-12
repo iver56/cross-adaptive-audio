@@ -14,7 +14,7 @@ def is_almost_equal(a, b, margin):
         return True
 
 
-def get_neural_network_representation(nn, neural_input_mode, effect, is_substrate=False):
+def get_neural_network_representation(nn, neural_mode, effect, is_substrate=False):
     # if this is a genome, make a NN from it
     if type(nn) == Genome:
         kk = NeuralNetwork()
@@ -88,16 +88,19 @@ def get_neural_network_representation(nn, neural_input_mode, effect, is_substrat
 
         label = neuron_type
         if neuron_type == 'input':
-            if neural_input_mode == 'ab':
+            if neural_mode == 'ab':
                 prefix = 't_' if counter['input'] / analyze.Analyzer.NUM_FEATURES < 1 else 'i_'
                 idx = counter['input'] % analyze.Analyzer.NUM_FEATURES
                 label = prefix + analyze.Analyzer.FEATURES_LIST[idx]
-            elif neural_input_mode == 'a':
+            elif neural_mode == 'a':
                 label = 't_' + analyze.Analyzer.FEATURES_LIST[counter['input']]
-            else:  # neural_input_mode == 'b'
+            else:  # neural_mode == 'b'
                 label = 'i_' + analyze.Analyzer.FEATURES_LIST[counter['input']]
         elif neuron_type == 'output':
-            label = effect.parameter_names[counter['output']]
+            if neural_mode == 'targets':
+                label = str(counter['output'])  # TODO: label could be more informative
+            else:
+                label = effect.parameter_names[counter['output']]
 
         counter[neuron_type] += 1
 
