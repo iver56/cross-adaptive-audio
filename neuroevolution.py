@@ -161,6 +161,7 @@ class Neuroevolution(object):
         params.MaxWeight = self.args.max_weight
         params.WeightMutationMaxPower = self.args.weight_mutation_max_power
         params.MutateWeightsSevereProb = self.args.mutate_weights_severe_prob
+        params.WeightMutationRate = self.args.weight_mutation_rate
         params.InterspeciesCrossoverRate = self.args.interspecies_crossover_rate
         params.RecurrentProb = 0.0
         params.RecurrentLoopProb = 0.0

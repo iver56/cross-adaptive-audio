@@ -164,6 +164,14 @@ if __name__ == '__main__':
         default=0.25
     )
     arg_parser.add_argument(
+        '--weight-mutation-rate',
+        dest='weight_mutation_rate',
+        type=float,
+        help='WeightMutationRate: Probability for a particular gene\'s weight to be mutated.',
+        required=False,
+        default=1.0
+    )
+    arg_parser.add_argument(
         '--interspecies-crossover-rate',
         dest='interspecies_crossover_rate',
         type=float,
