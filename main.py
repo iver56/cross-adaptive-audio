@@ -243,6 +243,7 @@ if __name__ == '__main__':
     )
     arg_parser.add_argument(
         '--effect',
+        '--effects',
         dest='effect_names',
         type=str,
         nargs='+',
