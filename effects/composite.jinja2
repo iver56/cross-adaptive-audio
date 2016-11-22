@@ -10,17 +10,28 @@ aInDry = aIn
 
 {{ '{% block parameter_init %}{% endblock %}' }}
 
-k_softmax_post_gain_denominator = {% for effect in effects %}exp(kChannel{{ effect.parameter_indexes[-1] }}[kTime - 1]){% if not loop.last %} + {% endif %}{% endfor %}
+k_softmax_post_gain_denominator = 0.0
 
 {% for effect in effects %}
-  aIn = aInDry
-  {% for parameter_index in effect.parameter_indexes %}
+  {% if effect.name == 'new_layer' %}
+    i_skip = 0
+    i_mode = 1 ; sets the initial output value to the first k-rate input instead of zero
+    a_softmax_post_gain_denominator interp k_softmax_post_gain_denominator, i_skip, i_mode
+    {% set outer_loop = loop %}
+    aInDry = ({% for effect_index in layer_indexes[outer_loop.index0] %}a_{{ effects[effect_index].name }} * exp(k_{{ parameter_names[effects[effect_index].parameter_indexes[-1]] }}){% if not loop.last %} + {% endif %}{% endfor %}) / a_softmax_post_gain_denominator
 
-    k_{{ parameter_names[parameter_index] }} tonek kChannel{{ parameter_index }}[kTime - 1], {{ '{{ parameter_lpf_cutoff }}' }}
-  {% endfor %}
-  {% include effect.name + ".effect.jinja2" %}
-  a_{{ effect.name }} = aOut
+    k_softmax_post_gain_denominator = 0.0
+  {% else %}
+    k_softmax_post_gain_denominator = k_softmax_post_gain_denominator + exp(kChannel{{ effect.parameter_indexes[-1] }}[kTime - 1])
+    aIn = aInDry
+    {% for parameter_index in effect.parameter_indexes %}
+      k_{{ parameter_names[parameter_index] }} tonek kChannel{{ parameter_index }}[kTime - 1], {{ '{{ parameter_lpf_cutoff }}' }}
+    {% endfor %}
+    {% include effect.name + ".effect.jinja2" %}
+    a_{{ effect.name }} = aOut
+  {% endif %}
 {% endfor %}
 
-aOut = ({% for effect in effects %}a_{{ effect.name }} * exp(k_{{ parameter_names[effect.parameter_indexes[-1]] }}){% if not loop.last %} + {% endif %}{% endfor %}) / k_softmax_post_gain_denominator
+
+aOut = aInDry
 {{ '{% endblock %}' }}

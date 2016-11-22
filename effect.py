@@ -7,31 +7,32 @@ import template_handler
 class Effect(object):
     def __init__(self, name):
         self.template_dir = settings.EFFECT_DIRECTORY
-        metadata_file_path = os.path.join(
-            settings.EFFECT_DIRECTORY,
-            '{}.json'.format(name)
-        )
-        try:
-            with open(metadata_file_path) as data_file:
-                try:
-                    metadata = json.load(data_file)
-                except ValueError:
-                    raise Exception(
-                        'Could not parse JSON file "{}".'
-                        ' Please check that the JSON format/syntax is correct.'.format(
-                            metadata_file_path
-                        )
-                    )
-                self.parameters = metadata['parameters']
-        except IOError:
-            raise Exception(
-                'Could not load {}. It doesn\'t exist. See effects/readme.txt for more info'.format(
-                    metadata_file_path
-                )
+        if name != 'new_layer':
+            metadata_file_path = os.path.join(
+                settings.EFFECT_DIRECTORY,
+                '{}.json'.format(name)
             )
+            try:
+                with open(metadata_file_path) as data_file:
+                    try:
+                        metadata = json.load(data_file)
+                    except ValueError:
+                        raise Exception(
+                            'Could not parse JSON file "{}".'
+                            ' Please check that the JSON format/syntax is correct.'.format(
+                                metadata_file_path
+                            )
+                        )
+                    self.parameters = metadata['parameters']
+            except IOError:
+                raise Exception(
+                    'Could not load {}. It doesn\'t exist. See effects/readme.txt for more info'.format(
+                        metadata_file_path
+                    )
+                )
 
-        self.num_parameters = len(self.parameters)
-        self.parameter_names = [p['name'] for p in self.parameters]
+            self.num_parameters = len(self.parameters)
+            self.parameter_names = [p['name'] for p in self.parameters]
         self.name = name
 
     def get_template_handler(self, live=False):
@@ -57,8 +58,19 @@ class Effect(object):
 
 class CompositeEffect(object):
     def __init__(self, effect_names):
-        if len(effect_names) == 0:
+        if effect_names[-1] != 'new_layer':
+            effect_names.append('new_layer')
+        if len(effect_names) <= 1:
             raise Exception('At least one effect must be specified')
+
+        self.layer_indexes = {}
+        effect_indexes = []
+        for i, effect_name in enumerate(effect_names):
+            if effect_name == 'new_layer':
+                self.layer_indexes[i] = effect_indexes
+                effect_indexes = []
+            else:
+                effect_indexes.append(i)
 
         self.template_dir = settings.EFFECT_DIRECTORY
         self.effect_names = effect_names
@@ -68,22 +80,23 @@ class CompositeEffect(object):
         self.parameters = []
         i = 0
         for effect in self.effects:
-            softmax_post_gain_parameter = {
-                "name": "softmax_post_gain_{}".format(effect.name),
-                "mapping": {
-                    "min_value": -10.0,
-                    "max_value": 10.0,
-                    "skew_factor": 1.0
+            if effect.name != 'new_layer':
+                softmax_post_gain_parameter = {
+                    "name": "softmax_post_gain_{}_{}".format(effect.name, i),
+                    "mapping": {
+                        "min_value": -10.0,
+                        "max_value": 10.0,
+                        "skew_factor": 1.0
+                    }
                 }
-            }
-            effect.parameters.append(softmax_post_gain_parameter)
-            effect.parameter_names.append(softmax_post_gain_parameter['name'])
-            effect.num_parameters += 1
+                effect.parameters.append(softmax_post_gain_parameter)
+                effect.parameter_names.append(softmax_post_gain_parameter['name'])
+                effect.num_parameters += 1
 
-            self.parameters += effect.parameters
-            self.parameter_names += effect.parameter_names
-            effect.parameter_indexes = range(i, i + effect.num_parameters)
-            i += effect.num_parameters
+                self.parameters += effect.parameters
+                self.parameter_names += effect.parameter_names
+                effect.parameter_indexes = range(i, i + effect.num_parameters)
+                i += effect.num_parameters
 
         self.num_parameters = i
 
@@ -109,5 +122,6 @@ class CompositeEffect(object):
         return that_template_handler.compile(
             base_template=base_template,
             effects=self.effects,
+            layer_indexes=self.layer_indexes,
             parameter_names=self.parameter_names
         )
