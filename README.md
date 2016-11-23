@@ -21,7 +21,7 @@ Assuming you have a clean Ubuntu 14.04, here's what needs to be installed:
   * Install boost c++ libraries: `sudo apt-get -y install libboost-all-dev`
   * `cd ~/ && git clone https://github.com/peter-ch/MultiNEAT.git`
   * `cd MultiNEAT`
-  * `sudo python setup.py install` (needs at least 2 GB RAM)
+  * `[sudo] python setup.py install` (needs at least 2 GB RAM)
 * Install NodeJS
   * `sudo apt-get -y install nodejs npm`
 * Install Sonic Annotator
