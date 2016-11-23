@@ -2,7 +2,7 @@
 Based on https://github.com/peter-ch/MultiNEAT/blob/master/MultiNEAT/viz.py
 """
 
-from _MultiNEAT import *
+from MultiNEAT import NeuralNetwork, Genome, NeuronType
 import numpy as np
 import analyze
 
