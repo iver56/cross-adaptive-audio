@@ -1,0 +1,13 @@
+{
+  "parameters": [
+    {
+      "name": "gain",
+      "mapping": {
+        "min_value": 0.0,
+        "max_value": 0.0,
+        "skew_factor": 0.3
+      }
+    }
+  ],
+  "is_generator": true
+}
