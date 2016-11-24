@@ -18,18 +18,21 @@
 #}
 kAutoLevel	= 0.9
 
-; stage 1, distortion
-kpregain	= k_drive				; dist amount
-ishape		= 0.8					; dist shaping
-kpostgain	= (0.5 / kpregain) * (kpregain * 0.5)	; auto set output gain corresponding to input drive
+{# ; stage 1, distortion #}
+kpregain	= k_drive{# 				; dist amount #}
+ishape		= 0.8{# 					; dist shaping #}
+kpostgain	= (0.5 / kpregain) * (kpregain * 0.5){# ; auto set output gain corresponding to input drive #}
 ishape1 	= ishape * 1.6
 ishape2		= ishape
 adist	 	distort1 aIn, kpregain, kpostgain, ishape1, ishape2
 
-; stage 2, lpf18 filter
+{# ; stage 2, lpf18 filter #}
 denorm adist
 afilt		lpf18 adist, k_freq, k_resonance, k_dist
-kleveladjust	= 1 / (sqrt(k_drive) + (k_dist * 2))				; attempt automatic level adjustment according to distortion drive
-afilt		= (afilt * (1 - kAutoLevel)) + (afilt * kleveladjust * kAutoLevel)	; and select balance between autogained and straight dist signal
+kleveladjust	= 1 / (sqrt(k_drive) + (k_dist * 2)){# 				; attempt automatic level adjustment according to distortion drive #}
+afilt		= (afilt * (1 - kAutoLevel)) + (afilt * kleveladjust * kAutoLevel){# ; and select balance between autogained and straight dist signal #}
 
-aOut		= ((afilt * k_mix) + (aIn * (1 - k_mix))) * k_post_gain
+i_skip = 0
+i_mode = 1{# ; sets the initial output value to the first k-rate input instead of zero #}
+a_post_gain_interp interp k_post_gain, i_skip, i_mode
+aOut		= ((afilt * k_mix) + (aIn * (1 - k_mix))) * a_post_gain_interp
