@@ -163,6 +163,8 @@ class Neuroevolution(object):
         params.MutateWeightsSevereProb = self.args.mutate_weights_severe_prob
         params.WeightMutationRate = self.args.weight_mutation_rate
         params.InterspeciesCrossoverRate = self.args.interspecies_crossover_rate
+        params.CrossoverRate = self.args.crossover_rate
+        params.OverallMutationRate = self.args.mutation_rate
         params.RecurrentProb = 0.0
         params.RecurrentLoopProb = 0.0
         params.Elitism = self.args.elitism

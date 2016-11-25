@@ -104,6 +104,25 @@ if __name__ == '__main__':
         default=False
     )
     arg_parser.add_argument(
+        '--crossover-rate',
+        dest='crossover_rate',
+        type=float,
+        help='CrossoverRate: Probability for a baby to result from sexual reproduction'
+             ' (crossover/mating). 1.0 = 100%',
+        required=False,
+        default=0.7
+    )
+    arg_parser.add_argument(
+        '--mutation-rate',
+        dest='mutation_rate',
+        type=float,
+        help='OverallMutationRate: If a baby results from sexual reproduction, this probability'
+             ' determines if mutation will be performed after crossover.'
+             ' 1.0 = 100% (always mutate after crossover)',
+        required=False,
+        default=0.25
+    )
+    arg_parser.add_argument(
         '--add-neuron-prob',
         dest='add_neuron_probability',
         type=float,
