@@ -120,7 +120,7 @@ if __name__ == '__main__':
              ' determines if mutation will be performed after crossover.'
              ' 1.0 = 100% (always mutate after crossover)',
         required=False,
-        default=0.25
+        default=0.55
     )
     arg_parser.add_argument(
         '--add-neuron-prob',
