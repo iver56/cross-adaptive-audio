@@ -8,9 +8,7 @@ import numpy as np
 
 
 class DataAugmenter(object):
-    def __init__(self, factor):
-        assert factor >= 2
-        self.factor = factor
+    def __init__(self):
         self.template_dir = settings.EFFECT_DIRECTORY
         template_file_path = os.path.join(settings.EFFECT_DIRECTORY, 'data_augmentation.csd.jinja2')
         with open(template_file_path, 'r') as template_file:
@@ -21,22 +19,26 @@ class DataAugmenter(object):
             template_string=self.template_string
         )
 
-    def augment(self, sound, pause_between, keep_csd=False):
+    def augment(self, sound, factor, pause_between, seed, keep_csd=False):
+        assert factor >= 2
+        if seed >= 0:
+            np.random.seed(seed)
+
         start_time = 0.001
         playback_speed_values = np.clip(
-            np.exp(np.random.normal(0, 0.3, self.factor)),
+            np.exp(np.random.normal(0, 0.3, factor)),
             0.66,
             1.5
         )
         gain_values = np.clip(
-            np.exp(np.random.normal(0, 0.5, self.factor)),
+            np.exp(np.random.normal(0, 0.5, factor)),
             0.05,
             3
         )
         playback_speed_values[0] = 1.0
         gain_values[0] = 1.0
         events = []
-        for i in range(self.factor):
+        for i in range(factor):
             playback_speed = playback_speed_values[i]
             gain = gain_values[i]
             duration = sound.get_duration() / playback_speed
@@ -51,7 +53,7 @@ class DataAugmenter(object):
         self.template_handler.compile(
             input_sound=sound,
             ksmps=settings.HOP_SIZE,
-            factor=self.factor,
+            factor=factor,
             events=events
         )
         csd_path = os.path.join(
@@ -95,7 +97,7 @@ if __name__ == '__main__':
         required=False,
         default=4
     )
-    arg_parser.add_argument(  # TODO: actually use this
+    arg_parser.add_argument(
         '--pause-between',
         dest='pause_between',
         type=float,
@@ -111,12 +113,21 @@ if __name__ == '__main__':
         required=False,
         default=False
     )
+    arg_parser.add_argument(
+        '--seed',
+        dest='seed',
+        type=int,
+        required=False,
+        default=-1
+    )
     args = arg_parser.parse_args()
 
     that_sound = sound_file.SoundFile(args.input, verify_file=True)
-    that_output_file_path = DataAugmenter(args.factor).augment(
+    that_output_file_path = DataAugmenter().augment(
         that_sound,
+        factor=args.factor,
         pause_between=args.pause_between,
+        seed=args.seed,
         keep_csd=args.keep_csd
     )
     print('Successfully created augmented sound: {}'.format(that_output_file_path))
