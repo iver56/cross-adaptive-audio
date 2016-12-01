@@ -20,19 +20,26 @@
 #}
 
 {% block globals %}
-  gifftsize = {{ frame_size }}
+  {% if 'csound_spectral_centroid' in features %}
+    gifftsize = {{ frame_size }}
+  {% endif %}
 {% endblock %}
 {% block analysis %}
-  kRms rms a1
+  {% if 'csound_rms' in features %}
+    k_csound_rms rms a1
+  {% endif %}
 
-  iwtype = 1  ; window type
-  fsin pvsanal a1, gifftsize, gifftsize/2, gifftsize, iwtype
-  kCentroid pvscent fsin
-  ;kCps EpochCps a1
+  {% if 'csound_spectral_centroid' in features %}
+    iwtype = 1  ; window type
+    fsin pvsanal a1, gifftsize, gifftsize/2, gifftsize, iwtype
+    k_csound_spectral_centroid pvscent fsin
+  {% endif %}
 
-  ;kTrig = 1
-  ;kCentroid centroid a1, kTrig, gifftsize
+  {% if 'csound_pitch' in features %}
+    aPitch, aLock plltrack a1, 0.1
+    k_csound_pitch downsamp aPitch
+  {% endif %}
 {% endblock %}
 {% block dump %}
-dumpk2  kRms, kCentroid, {{ output_analysis_file_path | tojson }}, 6, 0
+  dumpk{{ num_features if num_features > 1 }} {% for feature in features_order %}k_{{ feature }}, {% endfor %}{{ output_analysis_file_path | tojson }}, 6, 0
 {% endblock %}

@@ -6,23 +6,22 @@ import struct
 import template_handler
 
 
-FEATURES_ORDERED = [
-    'csound_rms',
-    'csound_spectral_centroid'
-]
-
-
 class CsoundAnalyzer(object):
-    FEATURE_INDEXES = {
-        FEATURES_ORDERED[i]: i
-        for i in range(len(FEATURES_ORDERED))
+    AVAILABLE_FEATURES = {
+        'csound_rms',
+        'csound_spectral_centroid',
+        'csound_pitch'
     }
-    AVAILABLE_FEATURES = set(FEATURES_ORDERED)
     DIR = 'csound_analyzers'
 
     def __init__(self, features):
+        assert 1 <= len(features) <= 4, 'Current implementation supports up to 4 Csound features'
         self.features = features
-
+        self.features_order = list(features)
+        self.feature_indexes = {
+            self.features_order[i]: i
+            for i in range(len(self.features_order))
+            }
         template_file_path = os.path.join(self.DIR, 'csound_basic.csd.jinja2')
         with open(template_file_path, 'r') as template_file:
             template_string = template_file.read()
@@ -60,7 +59,10 @@ class CsoundAnalyzer(object):
             ksmps=settings.HOP_SIZE,
             frame_size=settings.FRAME_SIZE,
             duration=sound_file.get_duration(),
-            output_analysis_file_path=output_analysis_file_path
+            output_analysis_file_path=output_analysis_file_path,
+            features=self.features,
+            features_order=self.features_order,
+            num_features=len(self.features)
         )
 
         csd_path = self.get_csd_path(sound_file)
@@ -111,10 +113,10 @@ class CsoundAnalyzer(object):
         analysis_file_path = self.get_output_analysis_file_path(that_sound_file)
 
         floats = CsoundAnalyzer.read_32_bit_floats(analysis_file_path)
-        unpacked_series = self.unpack_numbers(floats, len(self.AVAILABLE_FEATURES))
+        unpacked_series = self.unpack_numbers(floats, len(self.features))
 
         for feature in self.features:
-            feature_index = self.FEATURE_INDEXES[feature]
+            feature_index = self.feature_indexes[feature]
             that_sound_file.analysis['series'][feature] = unpacked_series[feature_index]
 
     def clean_up(self, that_sound_file):
