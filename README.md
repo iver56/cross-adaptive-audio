@@ -166,6 +166,12 @@ To see all the available audio features you can add in experiment_settings.json,
 
 When you are done with your experiment(s), run `python clean.py`. This will delete all files written during the experiment(s).
 
+## Data augmentation
+
+If you have a short sound and you'd like to create variations of it, in terms of gain and playback speed, you can use `data_augmentation.py`. If you train neural networks on the augmented sound, they will likely generalize better. Example command, assuming you have drums_short.wav in the input folder:
+
+`python data_augmentation.py -i drums_short.wav --factor 5`
+
 ## Use RAM disk
 
 Experiments can run ~10% faster if you use a RAM disk to reduce I/O overhead. When you have a

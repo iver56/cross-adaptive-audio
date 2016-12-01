@@ -1,0 +1,44 @@
+<CsoundSynthesizer>
+  <CsOptions>
+  </CsOptions>
+  <CsInstruments>
+    sr = 44100
+    ksmps = 512
+    nchnls = 1
+    0dbfs  = 1
+
+    instr 1
+
+    iLen = p3
+    iGain = p4
+    iPlaybackSpeed = p5
+    iTableNumber = 1
+    iBaseFrequency = 1 / iLen
+
+    aIn loscil iGain, iBaseFrequency * iPlaybackSpeed, iTableNumber, iBaseFrequency
+
+    ; limiter
+    kthresh = 0
+    kloknee = 88
+    khiknee = 89
+    kratio  = 100
+    katt    = 0.0001
+    krel    = 0.5
+    ilook   = 0.02
+    aOut  compress aIn, aIn, kthresh, kloknee, khiknee, kratio, katt, krel, ilook
+
+    out aOut
+
+    endin
+  </CsInstruments>
+  <CsScore>
+    f1 0 0 1 {{ input_sound.file_path | tojson }} 0 0 0 ; sound
+
+    ; instrument start length gain playback_speed
+    {% for event in events %}
+      i1 {{ event['start'] }} {{ event['duration'] }} {{ event['gain'] }} {{ event['playback_speed'] }}
+    {% endfor %}
+
+    e
+  </CsScore>
+</CsoundSynthesizer>

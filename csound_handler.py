@@ -15,7 +15,8 @@ class CsoundHandler(object):
         ]
         if output_file_path is not None:
             command.append('-o' + output_file_path)
-        command.append('-i' + input_file_path)
+        if input_file_path is not None:
+            command.append('-i' + input_file_path)
 
         if settings.VERBOSE:
             p = subprocess.Popen(command)
