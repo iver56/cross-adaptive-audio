@@ -13,8 +13,7 @@ class TestAnalyzer(unittest.TestCase):
         self.sounds = [
             sound_file.SoundFile('drums.wav'),
             sound_file.SoundFile('noise.wav'),
-            sound_file.SoundFile('synth.wav'),
-            sound_file.SoundFile('vocal.wav')
+            sound_file.SoundFile('synth.wav')
         ]
         experiment.Experiment.load_experiment_settings('mfcc_basic.json')
         analyze.Analyzer.init_features_list()

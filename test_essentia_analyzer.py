@@ -12,7 +12,7 @@ class TestEssentiaAnalyzer(unittest.TestCase):
         settings.INPUT_DIRECTORY = 'test_audio'
         self.sounds = [
             sound_file.SoundFile('drums.wav'),
-            sound_file.SoundFile('vocal.wav')
+            sound_file.SoundFile('noise.wav')
         ]
         self.essentia_analyzer = essentia_analyzer.EssentiaAnalyzer(['spectral_centroid'])
         experiment.Experiment.folder_name = 'test'

@@ -11,7 +11,7 @@ class TestSonicAnnotatorAnalyzer(unittest.TestCase):
         settings.INPUT_DIRECTORY = 'test_audio'
         self.sounds = [
             sound_file.SoundFile('drums.wav'),
-            sound_file.SoundFile('vocal.wav')
+            sound_file.SoundFile('noise.wav')
         ]
         self.vamp_analyzer = sonic_annotator_analyzer.SonicAnnotatorAnalyzer(['spectral_centroid'])
 

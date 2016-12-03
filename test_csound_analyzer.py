@@ -12,7 +12,7 @@ class TestCsoundAnalyzer(unittest.TestCase):
         settings.INPUT_DIRECTORY = 'test_audio'
         self.sounds = [
             sound_file.SoundFile('drums.wav'),
-            sound_file.SoundFile('vocal.wav')
+            sound_file.SoundFile('noise.wav')
         ]
         self.csound_analyzer = csound_analyzer.CsoundAnalyzer(['csound_rms'])
         experiment.Experiment.folder_name = 'test'
