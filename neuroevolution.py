@@ -141,6 +141,7 @@ class Neuroevolution(object):
         run_start_time = time.time()
         self.run()
         print("Run execution time: {0:.2f} seconds".format(time.time() - run_start_time))
+        self.final_clean_up()
 
     def has_patience_ended(self, max_similarity, generation):
         """
@@ -367,3 +368,6 @@ class Neuroevolution(object):
             similarity_values = self.similarity_evaluator.evaluate_multiple(non_silent_individuals)
             for i, ind in enumerate(non_silent_individuals):
                 ind.similarity = similarity_values[i]
+
+    def final_clean_up(self):
+        self.analyzer.final_clean_up()

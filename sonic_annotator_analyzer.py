@@ -173,3 +173,6 @@ class SonicAnnotatorAnalyzer(object):
                     self.POST_PROCESSING[feature],
                     that_sound_file.analysis['series'][feature]
                 )
+
+    def final_clean_up(self):
+        pass

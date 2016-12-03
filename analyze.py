@@ -121,3 +121,7 @@ class Analyzer(object):
                     sound.analysis['series'][feature].append(
                         sound.analysis['series'][feature][-1]
                     )
+
+    def final_clean_up(self):
+        for analyzer in self.analyzers:
+            analyzer.final_clean_up()

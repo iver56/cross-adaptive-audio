@@ -30,6 +30,21 @@ class CsoundAnalyzer(object):
             template_string=template_string
         )
 
+        self.template.compile(
+            ksmps=settings.HOP_SIZE,
+            frame_size=settings.FRAME_SIZE,
+            features=self.features,
+            features_order=self.features_order,
+            num_features=len(self.features)
+        )
+
+        self.csd_path = os.path.join(
+            settings.CSD_DIRECTORY,
+            'csound_analyzer.csd'
+        )
+        self.template.write_result(self.csd_path)
+        self.csound_handler = csound_handler.CsoundHandler(self.csd_path)
+
     def analyze_multiple(self, sound_files):
         if len(sound_files) == 0:
             return
@@ -39,10 +54,19 @@ class CsoundAnalyzer(object):
 
             # run commands batch in parallel
             processes = [
-                self.get_csound_handler(sound_file).run(
+                self.csound_handler.run(
                     input_file_path=sound_file.file_path,
                     output_file_path=None,
-                    async=True
+                    async=True,
+                    score_macros={
+                        'DURATION': sound_file.get_duration()
+                    },
+                    orchestra_macros={
+                        'OUTPUT_ANALYSIS_FILE_PATH': self.get_output_analysis_file_path(
+                            sound_file,
+                            use_forward_slashes=True
+                        )
+                    }
                 )
                 for sound_file in sound_files_batch
                 ]
@@ -53,39 +77,22 @@ class CsoundAnalyzer(object):
                 self.parse_output(sound_files[i + j])
                 self.clean_up(sound_files[i + j])
 
-    def get_csound_handler(self, sound_file):
-        output_analysis_file_path = self.get_output_analysis_file_path(sound_file)
-        self.template.compile(
-            ksmps=settings.HOP_SIZE,
-            frame_size=settings.FRAME_SIZE,
-            duration=sound_file.get_duration(),
-            output_analysis_file_path=output_analysis_file_path,
-            features=self.features,
-            features_order=self.features_order,
-            num_features=len(self.features)
-        )
-
-        csd_path = self.get_csd_path(sound_file)
-        self.template.write_result(csd_path)
-
-        that_csound_handler = csound_handler.CsoundHandler(csd_path)
-        return that_csound_handler
-
     @staticmethod
-    def get_csd_path(sound_file):
-        return os.path.join(
-            settings.CSD_DIRECTORY,
-            experiment.Experiment.folder_name,
-            sound_file.filename + '.analyzer.csd'
-        )
+    def get_output_analysis_file_path(that_sound_file, use_forward_slashes=False):
+        # use_forward_slashes is used for Csound macros, even on Windows
+        parts = []
+        if use_forward_slashes:
+            parts.append(settings.TEMP_DIRECTORY.replace('\\', '/'))
+        else:
+            parts.append(settings.TEMP_DIRECTORY)
+        if len(experiment.Experiment.folder_name) > 2:
+            parts.append(experiment.Experiment.folder_name)
+        parts.append(that_sound_file.filename + '.csound.bin')
 
-    @staticmethod
-    def get_output_analysis_file_path(that_sound_file):
-        return os.path.join(
-            settings.TEMP_DIRECTORY,
-            experiment.Experiment.folder_name,
-            that_sound_file.filename + '.csound.bin'
-        )
+        if use_forward_slashes:
+            return '/'.join(parts)
+        else:
+            return os.path.join(*parts)
 
     @staticmethod
     def unpack_numbers(numbers, num_series):
@@ -122,5 +129,6 @@ class CsoundAnalyzer(object):
     def clean_up(self, that_sound_file):
         analysis_file_path = self.get_output_analysis_file_path(that_sound_file)
         os.remove(analysis_file_path)
-        csd_file_path = self.get_csd_path(that_sound_file)
-        os.remove(csd_file_path)
+
+    def final_clean_up(self):
+        os.remove(self.csd_path)

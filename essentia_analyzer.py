@@ -146,3 +146,6 @@ class EssentiaAnalyzer(object):
         analysis_file_path = self.get_output_analysis_file_path(that_sound_file)
         os.remove(analysis_file_path)
         os.remove(analysis_file_path + '_frames')
+
+    def final_clean_up(self):
+        pass

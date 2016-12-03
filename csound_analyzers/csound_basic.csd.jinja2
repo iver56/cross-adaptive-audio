@@ -41,5 +41,5 @@
   {% endif %}
 {% endblock %}
 {% block dump %}
-  dumpk{{ num_features if num_features > 1 }} {% for feature in features_order %}k_{{ feature }}, {% endfor %}{{ output_analysis_file_path | tojson }}, 6, 0
+  dumpk{{ num_features if num_features > 1 }} {% for feature in features_order %}k_{{ feature }}, {% endfor %}"$OUTPUT_ANALYSIS_FILE_PATH", 6, 0
 {% endblock %}
