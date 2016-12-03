@@ -19,19 +19,19 @@ class DataAugmenter(object):
             template_string=self.template_string
         )
 
-    def augment(self, sound, factor, pause_between, seed, keep_csd=False):
+    def augment(self, sound, factor, pause_between, seed, keep_csd, playback_speed_std_dev, gain_std_dev):
         assert factor >= 2
         if seed >= 0:
             np.random.seed(seed)
 
         start_time = 0.001
         playback_speed_values = np.clip(
-            np.exp(np.random.normal(0, 0.3, factor)),
+            np.exp(np.random.normal(0, playback_speed_std_dev, factor)),
             0.66,
             1.5
         )
         gain_values = np.clip(
-            np.exp(np.random.normal(0, 0.5, factor)),
+            np.exp(np.random.normal(0, gain_std_dev, factor)),
             0.05,
             3
         )
@@ -105,6 +105,20 @@ if __name__ == '__main__':
         default=0.05
     )
     arg_parser.add_argument(
+        '--playback-speed-std-dev',
+        dest='playback_speed_std_dev',
+        type=float,
+        required=False,
+        default=0.3
+    )
+    arg_parser.add_argument(
+        '--gain-std-dev',
+        dest='gain_std_dev',
+        type=float,
+        required=False,
+        default=0.5
+    )
+    arg_parser.add_argument(
         '--keep-csd',
         nargs='?',
         dest='keep_csd',
@@ -128,6 +142,8 @@ if __name__ == '__main__':
         factor=args.factor,
         pause_between=args.pause_between,
         seed=args.seed,
-        keep_csd=args.keep_csd
+        keep_csd=args.keep_csd,
+        playback_speed_std_dev=args.playback_speed_std_dev,
+        gain_std_dev=args.gain_std_dev
     )
     print('Successfully created augmented sound: {}'.format(that_output_file_path))
