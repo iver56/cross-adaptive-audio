@@ -82,6 +82,7 @@ If you're on Windows, you might want to run the following commands in Git Bash
 * Make sure that all dependencies are installed: `[sudo] pip install -r requirements.txt` (run without sudo on Windows)
 * Install Node.js dependencies: `cd node_server && npm install && cd -`
     * If npm fails to properly install the websocket package, go to https://www.npmjs.com/package/websocket#installation for more information
+* If you plan to run experiments with the example sounds in the test_audio folder, you need to copy them to the input folder: `cp test_audio/*.wav input`
 
 ## Usage
 
