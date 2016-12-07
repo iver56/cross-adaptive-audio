@@ -24,7 +24,7 @@
             key: statsService.individualEvaluationMeasure + "_max",
             label: "Max similarity",
             color: "#FF8F54",
-            type: ['line', 'dot'],
+            type: ['line'],
             id: 'series_max'
           },
           {
@@ -33,7 +33,7 @@
             key: statsService.individualEvaluationMeasure + "_avg",
             label: "Average similarity",
             color: "#1f77b4",
-            type: ['line', 'dot'],
+            type: ['line'],
             id: 'series_avg'
           },
           {
@@ -42,8 +42,9 @@
             key: statsService.individualEvaluationMeasure + "_min",
             label: "Min similarity",
             color: "#FF4F86",
-            type: ['line', 'dot'],
-            id: 'series_min'
+            type: ['line'],
+            id: 'series_min',
+            visible: false
           },
           {
             axis: "y",
@@ -51,7 +52,7 @@
             key: statsService.individualEvaluationMeasure + "_std_dev",
             label: "Standard deviation",
             color: "#60E246",
-            type: ['line', 'dot'],
+            type: ['line'],
             id: 'series_std_dev',
             visible: false
           }
