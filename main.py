@@ -108,7 +108,7 @@ if __name__ == '__main__':
         dest='crossover_rate',
         type=float,
         help='CrossoverRate: Probability for a baby to result from sexual reproduction'
-             ' (crossover/mating). 1.0 = 100%',
+             ' (crossover/mating). 1.0 = 100 %%',
         required=False,
         default=0.7
     )
@@ -118,7 +118,7 @@ if __name__ == '__main__':
         type=float,
         help='OverallMutationRate: If a baby results from sexual reproduction, this probability'
              ' determines if mutation will be performed after crossover.'
-             ' 1.0 = 100% (always mutate after crossover)',
+             ' 1.0 = 100 %% (always mutate after crossover)',
         required=False,
         default=0.55
     )
@@ -194,7 +194,8 @@ if __name__ == '__main__':
         '--interspecies-crossover-rate',
         dest='interspecies_crossover_rate',
         type=float,
-        help='InterspeciesCrossoverRate: Probability for a baby to result from inter-species mating',
+        help='InterspeciesCrossoverRate: Probability for a baby to result from'
+             ' inter-species mating',
         required=False,
         default=0.0001
     )
@@ -232,7 +233,7 @@ if __name__ == '__main__':
              ' Mode ab: target sound and input sound is neural input.'
              ' Mode b: input sound is neural input.'
              ' Mode s: static input, i.e. only bias.'
-             ' Mode targets: evolve targets separately for each timestep, with only static input',
+             ' Mode targets: evolve targets separately for each time step, with only static input',
         required=False,
         default="a"
     )
