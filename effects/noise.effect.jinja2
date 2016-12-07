@@ -1,1 +1,4 @@
-aOut rand k_amp
+i_skip = 0
+i_mode = 1{# ; sets the initial output value to the first k-rate input instead of zero #}
+a_amp interp k_amp, i_skip, i_mode
+aOut rand a_amp
