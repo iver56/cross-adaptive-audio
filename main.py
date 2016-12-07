@@ -5,6 +5,13 @@ import analyze
 import settings
 
 
+def positive_int(value):
+    int_value = int(value)
+    if int_value <= 0:
+        raise argparse.ArgumentTypeError("%s is an invalid positive int value" % value)
+    return int_value
+
+
 if __name__ == '__main__':
     arg_parser = argparse.ArgumentParser()
     arg_parser.add_argument(
@@ -22,7 +29,7 @@ if __name__ == '__main__':
         '-g',
         '--num-generations',
         dest='num_generations',
-        type=int,
+        type=positive_int,
         required=False,
         default=20
     )
@@ -30,7 +37,7 @@ if __name__ == '__main__':
         '-p',
         '--population_size',
         dest='population_size',
-        type=int,
+        type=positive_int,
         required=False,
         default=20
     )
@@ -38,7 +45,7 @@ if __name__ == '__main__':
         '--patience',
         dest='patience',
         help='Number of generations with no improvement in similarity before stopping',
-        type=int,
+        type=positive_int,
         required=False,
         default=100
     )
@@ -284,7 +291,16 @@ if __name__ == '__main__':
         '--num-runs',
         dest='num_runs',
         help='Number of times to run the experiment (makes sense if seed is not specified)',
-        type=int,
+        type=positive_int,
+        required=False,
+        default=1
+    )
+    arg_parser.add_argument(
+        '--write-stats-every',
+        dest='write_stats_every',
+        help='Write stats.json every nth generation. Set it to 10 or something larger if you'
+             ' plan to run the experiment for hundreds of generations',
+        type=positive_int,
         required=False,
         default=1
     )

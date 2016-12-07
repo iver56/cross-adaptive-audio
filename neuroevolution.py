@@ -307,7 +307,8 @@ class Neuroevolution(object):
                 'individuals': [i.get_short_serialized_representation() for i in all_individuals]
             }
             self.stats_logger.data['generations'].append(stats_item)
-            self.stats_logger.write()
+            if generation % self.args.write_stats_every == 1 or generation == self.args.num_generations:
+                self.stats_logger.write()
 
             patience_has_ended = self.has_patience_ended(max_similarity, generation)
             is_last_generation = patience_has_ended or generation == self.args.num_generations
