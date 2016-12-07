@@ -82,3 +82,6 @@ class MfccAnalyzer(object):
                 if feature_key in self.features:
                     mfcc_coefficient = float(values[i + 1])
                     sound_files.analysis['series'][feature_key].append(mfcc_coefficient)
+
+    def final_clean_up(self):
+        pass
