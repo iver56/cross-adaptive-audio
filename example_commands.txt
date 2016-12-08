@@ -50,4 +50,4 @@ python main.py -i drums.wav noise.wav --neural-mode ab --seed 659495
 python main.py -i drums.wav silence.wav -p 20 -g 1300 --experiment-settings csound_bark.json --patience 2500 --keep-k-best 1 --keep-all-last --effects sine sine new_layer gain
 
 # XOR-like experiment
-python main.py -i xor_target.wav xor_input.wav --neural-mode b --experiment-settings csound_basic_rms.json -g 2500 --keep-k-best 1 --keep-all-last --effect noise --patience 2500 --num-runs 5 --add-link-prob 0.2 --rem-link-prob 0.2 --add-neuron-prob 0.2 --rem-simple-neuron-prob 0.1 -p 50 --max-weight 32.0 --write-stats-every 100
+python main.py -i xor_target.wav xor_input.wav --neural-mode b --experiment-settings csound_basic_rms.json -g 1000 --keep-k-best 1 --keep-all-last --effect noise --patience 1000 --num-runs 5 -p 500 --max-weight 22.0 --write-stats-every 10 --weight-mutation-max-power 4.0 --interspecies-crossover-rate 0.1

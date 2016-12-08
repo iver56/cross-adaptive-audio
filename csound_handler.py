@@ -2,11 +2,18 @@ from __future__ import absolute_import
 from __future__ import print_function
 import subprocess
 import settings
+import os
 
 
 class CsoundHandler(object):
     def __init__(self, csd_filename):
         self.csd_filename = csd_filename
+
+        try:
+            from subprocess import DEVNULL  # python 3
+            self.devnull = DEVNULL
+        except ImportError:
+            self.devnull = open(os.devnull, 'wb')
 
     def run(self, input_file_path=None, output_file_path=None, async=False, score_macros=None, orchestra_macros=None):
         command = [
@@ -27,7 +34,7 @@ class CsoundHandler(object):
         if settings.VERBOSE:
             p = subprocess.Popen(command)
         else:
-            p = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+            p = subprocess.Popen(command, stdout=self.devnull, stderr=subprocess.STDOUT)
         if not async:
             p.wait()
         return p
