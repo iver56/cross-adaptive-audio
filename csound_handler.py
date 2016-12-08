@@ -6,6 +6,8 @@ import os
 
 
 class CsoundHandler(object):
+    CLOSE_FDS = os.name != 'nt'
+
     def __init__(self, csd_filename):
         self.csd_filename = csd_filename
 
@@ -32,9 +34,14 @@ class CsoundHandler(object):
                 command.append('--omacro:{0}={1}'.format(key, value))
 
         if settings.VERBOSE:
-            p = subprocess.Popen(command)
+            p = subprocess.Popen(command, close_fds=self.CLOSE_FDS)
         else:
-            p = subprocess.Popen(command, stdout=self.devnull, stderr=subprocess.STDOUT)
+            p = subprocess.Popen(
+                command,
+                stdout=self.devnull,
+                stderr=subprocess.STDOUT,
+                close_fds=self.CLOSE_FDS
+            )
         if not async:
             p.wait()
         return p

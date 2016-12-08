@@ -207,6 +207,7 @@ Use at your own risk
 ## Known issues
 * libXtract may produce [wrong results on Windows](https://github.com/jamiebullock/LibXtract/issues/65). Use a different analyzer or use Linux.
 * If you stop main.py while it's running, csound may fail to terminate correctly. If that happens, kill the csound process(es) manually. On Ubuntu, this can be done by running `pkill -f csound`
+* The visualization interface may become slow for large experiments with thousands of generations
 
 ## Contributions
 Contributions are welcome
