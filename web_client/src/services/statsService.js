@@ -86,6 +86,47 @@
         }
         return bins;
       };
+
+      that.getSpeciesSeries = function() {
+        var speciesIds = {};
+        var speciesId, i, species;
+        for (i = 0; i < that.data.generations.length; i++) {
+          species = that.data.generations[i].species;
+          for (speciesId in species) {
+            if (species.hasOwnProperty(speciesId)) {
+              speciesIds[speciesId] = true;
+            }
+          }
+        }
+        var speciesSeriesMap = {};
+        for (speciesId in speciesIds) {
+          if (speciesIds.hasOwnProperty(speciesId)) {
+            var thisSpeciesSeries = [];
+            for (var generation = 1; generation < that.data.generations.length + 1; generation++) {
+              thisSpeciesSeries.push([generation, 0]);
+            }
+            speciesSeriesMap[speciesId] = thisSpeciesSeries;
+          }
+        }
+        for (i = 0; i < that.data.generations.length; i++) {
+          species = that.data.generations[i].species;
+          for (speciesId in species) {
+            if (species.hasOwnProperty(speciesId)) {
+              speciesSeriesMap[speciesId][i][1] = species[speciesId];
+            }
+          }
+        }
+        var speciesSeries = [];
+        for (speciesId in speciesSeriesMap) {
+          if (speciesSeriesMap.hasOwnProperty(speciesId)) {
+            speciesSeries.push({
+              key: speciesId,
+              values: speciesSeriesMap[speciesId]
+            });
+          }
+        }
+        return speciesSeries;
+      };
       
       that.setExperimentFolder = function(experimentFolder) {
         that.selectedExperimentFolder = experimentFolder;

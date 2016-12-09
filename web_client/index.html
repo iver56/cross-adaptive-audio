@@ -21,6 +21,8 @@
   <script src="lib/limit/limit.js"></script>
   <script src="lib/cubism/cubism.v1.min.js"></script>
   <script src="lib/colorbrewer/colorbrewer.js"></script>
+  <script src="lib/nvd3/nv.d3.min.js"></script>
+  <link rel="stylesheet" href="lib/nvd3/nv.d3.min.css">
 
   <!-- App-specific files -->
   <script src="src/app.js"></script>
@@ -39,6 +41,9 @@
 
   <script src="src/directives/statsChart.js"></script>
   <link rel="stylesheet" href="css/stats-chart.css">
+
+  <script src="src/directives/speciesChart.js"></script>
+  <link rel="stylesheet" href="css/species-chart.css">
 
   <script src="src/directives/histogramChart.js"></script>
   <link rel="stylesheet" href="css/histogram-chart.css">
@@ -78,44 +83,63 @@
 <md-content ng-if="statsService.selectedExperimentFolder && !statsService.data.generations">
   <md-progress-linear md-mode="indeterminate"></md-progress-linear>
   <h1>Waiting for data</h1>
-  <p>Things will start showing up here when the first generation is done.</p>
 </md-content>
 
 <md-content ng-if="statsService.data.generations">
   <div layout="column" layout-gt-sm="row">
-    <md-card flex>
-      <md-card-title>
-        <md-card-title-text>
-          <div layout="row">
+
+    <md-tabs flex md-dynamic-height md-border-bottom>
+      <md-tab label="{{ statsService.individualEvaluationMeasure | capitalize }}">
+        <md-card>
+          <md-card-title>
+            <md-card-title-text>
+              <div layout="row">
             <span class="md-headline">
               {{ statsService.individualEvaluationMeasure | capitalize }} plot
             </span>
-            <span flex></span>
-            <md-radio-group
-                ng-if="statsService.data.args.fitness !== 'similarity'"
-                ng-model="statsService.individualEvaluationMeasure"
-                layout="row"
-                layout-align="start center"
-            >
-              <md-radio-button value="fitness">
-                fitness
-              </md-radio-button>
-              <md-radio-button value="similarity">
-                similarity
-              </md-radio-button>
-            </md-radio-group>
-          </div>
+                <span flex></span>
+                <md-radio-group
+                    ng-if="statsService.data.args.fitness !== 'similarity'"
+                    ng-model="statsService.individualEvaluationMeasure"
+                    layout="row"
+                    layout-align="start center"
+                >
+                  <md-radio-button value="fitness">
+                    fitness
+                  </md-radio-button>
+                  <md-radio-button value="similarity">
+                    similarity
+                  </md-radio-button>
+                </md-radio-group>
+              </div>
 
-          <span class="md-subhead">
+              <span class="md-subhead">
             Interaction: Drag with the mouse to pan. Hold alt and drag to zoom. Double-click to
             reset zoom/pan. Click series in the legend to toggle visibility.
           </span>
-        </md-card-title-text>
-      </md-card-title>
-      <md-card-content>
-        <stats-chart></stats-chart>
-      </md-card-content>
-    </md-card>
+            </md-card-title-text>
+          </md-card-title>
+          <md-card-content>
+            <stats-chart></stats-chart>
+          </md-card-content>
+        </md-card>
+      </md-tab>
+      <md-tab label="Species">
+        <md-card>
+          <md-card-title>
+            <md-card-title-text>
+              <span class="md-headline">
+                Species plot
+              </span>
+            </md-card-title-text>
+          </md-card-title>
+          <md-card-content>
+            <species-chart></species-chart>
+          </md-card-content>
+        </md-card>
+      </md-tab>
+    </md-tabs>
+
     <md-card flex>
       <md-card-title>
         <md-card-title-text>

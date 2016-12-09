@@ -218,6 +218,10 @@ class Neuroevolution(object):
             # Retrieve a list of all genomes in the population
             genotypes = NEAT.GetGenomeList(self.population)
 
+            species_population_count = {}
+            for s in self.population.Species:
+                species_population_count[s.ID()] = s.NumIndividuals()
+
             individuals = []
             all_individuals = []
             for genotype in genotypes:
@@ -304,7 +308,8 @@ class Neuroevolution(object):
                 'similarity_max': max_similarity,
                 'similarity_avg': avg_similarity,
                 'similarity_std_dev': similarity_std_dev,
-                'individuals': [i.get_short_serialized_representation() for i in all_individuals]
+                'individuals': [i.get_short_serialized_representation() for i in all_individuals],
+                'species': species_population_count
             }
             self.stats_logger.data['generations'].append(stats_item)
             if generation % self.args.write_stats_every == 1 or generation == self.args.num_generations:
