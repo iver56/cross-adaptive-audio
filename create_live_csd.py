@@ -104,4 +104,5 @@ def create_live_csd():
 
 
 if __name__ == '__main__':
+    print('Warning: This is experimental, and not supported in the 0.5 release')
     create_live_csd()
