@@ -19,6 +19,14 @@ class Plot(object):
             required=True
         )
         arg_parser.add_argument(
+            '--aggregation-method',
+            dest='aggregation_method',
+            type=str,
+            choices=['average', 'median', 'max'],
+            default='average',
+            required=False
+        )
+        arg_parser.add_argument(
             '--output',
             dest='output',
             help='Output image file (PNG). If specified, interactive window will not appear.',
@@ -68,9 +76,13 @@ class Plot(object):
 
             # take the average of the last generation in the experiment series
             last_generation = len(experiment_series[0]) - 1
-            avg_similarity = sum(series[last_generation] for series in experiment_series) / len(
-                experiment_series)
-            values.append(avg_similarity)
+            if args.aggregation_method == 'median':
+                value = np.median([series[last_generation] for series in experiment_series])
+            elif args.aggregation_method == 'max':
+                value = np.max([series[last_generation] for series in experiment_series])
+            else:
+                value = np.average([series[last_generation] for series in experiment_series])
+            values.append(value)
 
             key = (
                 stats_data_objects[0]['args'][args.dimensions[0]],
@@ -121,7 +133,7 @@ class Plot(object):
             interpolation='nearest',
             origin='lower'
         )
-        #ax.set_title('Heat map')
+        ax.set_title('{} fitness in last generation'.format(args.aggregation_method.capitalize()))
 
         # Move left and bottom spines outward by 10 points
         ax.spines['left'].set_position(('outward', 10))
