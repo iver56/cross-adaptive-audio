@@ -88,10 +88,7 @@ class Neuroevolution(object):
             for k in range(self.num_frames):
                 self.neural_input_vectors.append([1.0])  # just bias
 
-        if len(self.args.effect_names) == 1:
-            self.effect = effect.Effect(self.args.effect_names[0])
-        else:
-            self.effect = effect.CompositeEffect(self.args.effect_names)
+        self.effect = effect.get_effect_instance(self.args.effect_names)
 
         self.cross_adapter_class = (
             cross_adapt.TargetCrossAdapter if self.args.neural_mode == 'targets'

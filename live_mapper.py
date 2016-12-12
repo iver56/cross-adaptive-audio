@@ -15,7 +15,7 @@ class LiveMapper(object):
         self.standardizer = standardizer.Standardizer([])
         self.standardizer.feature_statistics = self.parameter_data['feature_statistics']
 
-        self.effect = effect.Effect(self.parameter_data['args']['effect_name'])
+        self.effect = effect.get_effect_instance(self.parameter_data['args']['effect_names'])
 
         self.effect_parameters = None
 

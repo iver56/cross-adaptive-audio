@@ -73,13 +73,13 @@ def create_live_csd():
         },
         'genotype_pickled': individual_data['genotype_pickled'],
         'args': {
-            'effect_name': project_data['args']['effect_name']
+            'effect_names': project_data['args']['effect_names']
         }
     }
     parameter_data_json = json.dumps(parameter_data)
     parameter_data_base64 = base64.b64encode(parameter_data_json)
 
-    that_effect = effect.Effect(project_data['args']['effect_name'])
+    that_effect = effect.get_effect_instance(project_data['args']['effect_names'])
 
     features = project_data['experiment_settings']['neural_input_channels']
     if len(features) != 2 or 'csound_rms' not in features or 'csound_spectral_centroid' not in features:
@@ -104,5 +104,4 @@ def create_live_csd():
 
 
 if __name__ == '__main__':
-    print('Warning: This is experimental, and not supported in the 0.5 release')
     create_live_csd()

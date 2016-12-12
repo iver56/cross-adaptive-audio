@@ -4,6 +4,13 @@ import json
 import template_handler
 
 
+def get_effect_instance(effect_names):
+    if len(effect_names) == 1:
+        return Effect(effect_names[0])
+    else:
+        return CompositeEffect(effect_names)
+
+
 class Effect(object):
     def __init__(self, name):
         self.template_dir = settings.EFFECT_DIRECTORY
