@@ -309,7 +309,7 @@ class Neuroevolution(object):
                 'species': species_population_count
             }
             self.stats_logger.data['generations'].append(stats_item)
-            if generation % self.args.write_stats_every == 1 or generation == self.args.num_generations:
+            if (generation - 1) % self.args.write_stats_every == 0 or generation == self.args.num_generations:
                 self.stats_logger.write()
 
             patience_has_ended = self.has_patience_ended(max_similarity, generation)
