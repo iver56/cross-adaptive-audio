@@ -45,6 +45,7 @@ python plot.py --output plot_survival_rate_elitism.png --avg
 
 # Good noise to drums example
 python main.py -i drums.wav noise.wav --neural-mode ab --seed 659495
+python main.py -i drums_short.wav noise_short.wav --experiment-settings mfcc_bark.json --seed 618513
 
 # Make a couple of sine generators with distortion sound like drums
 python main.py -i drums.wav silence.wav -p 20 -g 1300 --experiment-settings csound_bark.json --patience 2500 --keep-k-best 1 --keep-all-last --effects sine sine new_layer gain
