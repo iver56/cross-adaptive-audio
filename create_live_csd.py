@@ -79,6 +79,9 @@ def create_live_csd():
     parameter_data_json = json.dumps(parameter_data)
     parameter_data_base64 = base64.b64encode(parameter_data_json)
 
+    if len(project_data['args']['effect_names']) > 1:
+        raise Exception('CompositeEffect is not compatible with live mode as of v0.5')
+
     that_effect = effect.get_effect_instance(project_data['args']['effect_names'])
 
     features = project_data['experiment_settings']['neural_input_channels']
