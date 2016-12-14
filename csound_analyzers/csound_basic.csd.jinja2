@@ -26,7 +26,7 @@
 {% endblock %}
 {% block analysis %}
   {% if 'csound_rms' in features %}
-    k_csound_rms rms a1
+    k_csound_rms rms a1, 20
   {% endif %}
 
   {% if 'csound_spectral_centroid' in features %}
