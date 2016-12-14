@@ -189,7 +189,7 @@ Assuming you have no RAM disk set up already, and you want one with 3 GB of spac
 * `sudo mkdir -p /mnt/ramdisk`
 * `sudo mount -t tmpfs -o size=3072m tmpfs /mnt/ramdisk`
 
-`sudo nano /etc/fstab` and add the following line:
+If you want to have this ramdisk also after reboot, run `sudo nano /etc/fstab` and add the following line:
 
 `tmpfs       /mnt/ramdisk tmpfs   nodev,nosuid,noexec,nodiratime,size=3072M   0 0`
 
