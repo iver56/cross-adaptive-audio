@@ -50,5 +50,68 @@ python main.py -i drums_short.wav noise_short.wav --experiment-settings mfcc_bar
 # Make a couple of sine generators with distortion sound like drums
 python main.py -i drums.wav silence.wav -p 20 -g 1300 --experiment-settings csound_bark.json --patience 2500 --keep-k-best 1 --keep-all-last --effects sine sine new_layer gain
 
-# XOR-like experiment
+# XOR-like experiment. Typically doesn't find an optimal solution.
 python main.py -i xor_target.wav xor_input.wav --neural-mode b --experiment-settings csound_basic_rms.json -g 1000 --keep-k-best 1 --keep-all-last --effect noise --patience 1000 --num-runs 5 -p 500 --max-weight 22.0 --write-stats-every 10 --weight-mutation-max-power 4.0 --interspecies-crossover-rate 0.1
+
+# Grid search mutation rate and crossover rate
+python main.py -i drums_short.wav noise_short.wav --crossover-rate 0.2 --mutation-rate 0.2 --num-runs 250 --keep-k-best 0 --write-stats-every 25
+python main.py -i drums_short.wav noise_short.wav --crossover-rate 0.2 --mutation-rate 0.3 --num-runs 250 --keep-k-best 0 --write-stats-every 25
+python main.py -i drums_short.wav noise_short.wav --crossover-rate 0.2 --mutation-rate 0.4 --num-runs 250 --keep-k-best 0 --write-stats-every 25
+python main.py -i drums_short.wav noise_short.wav --crossover-rate 0.2 --mutation-rate 0.5 --num-runs 250 --keep-k-best 0 --write-stats-every 25
+python main.py -i drums_short.wav noise_short.wav --crossover-rate 0.2 --mutation-rate 0.6 --num-runs 250 --keep-k-best 0 --write-stats-every 25
+python main.py -i drums_short.wav noise_short.wav --crossover-rate 0.2 --mutation-rate 0.7 --num-runs 250 --keep-k-best 0 --write-stats-every 25
+python main.py -i drums_short.wav noise_short.wav --crossover-rate 0.2 --mutation-rate 0.8 --num-runs 250 --keep-k-best 0 --write-stats-every 25
+python main.py -i drums_short.wav noise_short.wav --crossover-rate 0.3 --mutation-rate 0.2 --num-runs 250 --keep-k-best 0 --write-stats-every 25
+python main.py -i drums_short.wav noise_short.wav --crossover-rate 0.3 --mutation-rate 0.3 --num-runs 250 --keep-k-best 0 --write-stats-every 25
+python main.py -i drums_short.wav noise_short.wav --crossover-rate 0.3 --mutation-rate 0.4 --num-runs 250 --keep-k-best 0 --write-stats-every 25
+python main.py -i drums_short.wav noise_short.wav --crossover-rate 0.3 --mutation-rate 0.5 --num-runs 250 --keep-k-best 0 --write-stats-every 25
+python main.py -i drums_short.wav noise_short.wav --crossover-rate 0.3 --mutation-rate 0.6 --num-runs 250 --keep-k-best 0 --write-stats-every 25
+python main.py -i drums_short.wav noise_short.wav --crossover-rate 0.3 --mutation-rate 0.7 --num-runs 250 --keep-k-best 0 --write-stats-every 25
+python main.py -i drums_short.wav noise_short.wav --crossover-rate 0.3 --mutation-rate 0.8 --num-runs 250 --keep-k-best 0 --write-stats-every 25
+python main.py -i drums_short.wav noise_short.wav --crossover-rate 0.4 --mutation-rate 0.2 --num-runs 250 --keep-k-best 0 --write-stats-every 25
+python main.py -i drums_short.wav noise_short.wav --crossover-rate 0.4 --mutation-rate 0.3 --num-runs 250 --keep-k-best 0 --write-stats-every 25
+python main.py -i drums_short.wav noise_short.wav --crossover-rate 0.4 --mutation-rate 0.4 --num-runs 250 --keep-k-best 0 --write-stats-every 25
+python main.py -i drums_short.wav noise_short.wav --crossover-rate 0.4 --mutation-rate 0.5 --num-runs 250 --keep-k-best 0 --write-stats-every 25
+python main.py -i drums_short.wav noise_short.wav --crossover-rate 0.4 --mutation-rate 0.6 --num-runs 250 --keep-k-best 0 --write-stats-every 25
+python main.py -i drums_short.wav noise_short.wav --crossover-rate 0.4 --mutation-rate 0.7 --num-runs 250 --keep-k-best 0 --write-stats-every 25
+python main.py -i drums_short.wav noise_short.wav --crossover-rate 0.4 --mutation-rate 0.8 --num-runs 250 --keep-k-best 0 --write-stats-every 25
+python main.py -i drums_short.wav noise_short.wav --crossover-rate 0.5 --mutation-rate 0.2 --num-runs 250 --keep-k-best 0 --write-stats-every 25
+python main.py -i drums_short.wav noise_short.wav --crossover-rate 0.5 --mutation-rate 0.3 --num-runs 250 --keep-k-best 0 --write-stats-every 25
+python main.py -i drums_short.wav noise_short.wav --crossover-rate 0.5 --mutation-rate 0.4 --num-runs 250 --keep-k-best 0 --write-stats-every 25
+python main.py -i drums_short.wav noise_short.wav --crossover-rate 0.5 --mutation-rate 0.5 --num-runs 250 --keep-k-best 0 --write-stats-every 25
+python main.py -i drums_short.wav noise_short.wav --crossover-rate 0.5 --mutation-rate 0.6 --num-runs 250 --keep-k-best 0 --write-stats-every 25
+python main.py -i drums_short.wav noise_short.wav --crossover-rate 0.5 --mutation-rate 0.7 --num-runs 250 --keep-k-best 0 --write-stats-every 25
+python main.py -i drums_short.wav noise_short.wav --crossover-rate 0.5 --mutation-rate 0.8 --num-runs 250 --keep-k-best 0 --write-stats-every 25
+python main.py -i drums_short.wav noise_short.wav --crossover-rate 0.6 --mutation-rate 0.2 --num-runs 250 --keep-k-best 0 --write-stats-every 25
+python main.py -i drums_short.wav noise_short.wav --crossover-rate 0.6 --mutation-rate 0.3 --num-runs 250 --keep-k-best 0 --write-stats-every 25
+python main.py -i drums_short.wav noise_short.wav --crossover-rate 0.6 --mutation-rate 0.4 --num-runs 250 --keep-k-best 0 --write-stats-every 25
+python main.py -i drums_short.wav noise_short.wav --crossover-rate 0.6 --mutation-rate 0.5 --num-runs 250 --keep-k-best 0 --write-stats-every 25
+python main.py -i drums_short.wav noise_short.wav --crossover-rate 0.6 --mutation-rate 0.6 --num-runs 250 --keep-k-best 0 --write-stats-every 25
+python main.py -i drums_short.wav noise_short.wav --crossover-rate 0.6 --mutation-rate 0.7 --num-runs 250 --keep-k-best 0 --write-stats-every 25
+python main.py -i drums_short.wav noise_short.wav --crossover-rate 0.6 --mutation-rate 0.8 --num-runs 250 --keep-k-best 0 --write-stats-every 25
+python main.py -i drums_short.wav noise_short.wav --crossover-rate 0.7 --mutation-rate 0.2 --num-runs 250 --keep-k-best 0 --write-stats-every 25
+python main.py -i drums_short.wav noise_short.wav --crossover-rate 0.7 --mutation-rate 0.3 --num-runs 250 --keep-k-best 0 --write-stats-every 25
+python main.py -i drums_short.wav noise_short.wav --crossover-rate 0.7 --mutation-rate 0.4 --num-runs 250 --keep-k-best 0 --write-stats-every 25
+python main.py -i drums_short.wav noise_short.wav --crossover-rate 0.7 --mutation-rate 0.5 --num-runs 250 --keep-k-best 0 --write-stats-every 25
+python main.py -i drums_short.wav noise_short.wav --crossover-rate 0.7 --mutation-rate 0.6 --num-runs 250 --keep-k-best 0 --write-stats-every 25
+python main.py -i drums_short.wav noise_short.wav --crossover-rate 0.7 --mutation-rate 0.7 --num-runs 250 --keep-k-best 0 --write-stats-every 25
+python main.py -i drums_short.wav noise_short.wav --crossover-rate 0.7 --mutation-rate 0.8 --num-runs 250 --keep-k-best 0 --write-stats-every 25
+python main.py -i drums_short.wav noise_short.wav --crossover-rate 0.8 --mutation-rate 0.2 --num-runs 250 --keep-k-best 0 --write-stats-every 25
+python main.py -i drums_short.wav noise_short.wav --crossover-rate 0.8 --mutation-rate 0.3 --num-runs 250 --keep-k-best 0 --write-stats-every 25
+python main.py -i drums_short.wav noise_short.wav --crossover-rate 0.8 --mutation-rate 0.4 --num-runs 250 --keep-k-best 0 --write-stats-every 25
+python main.py -i drums_short.wav noise_short.wav --crossover-rate 0.8 --mutation-rate 0.5 --num-runs 250 --keep-k-best 0 --write-stats-every 25
+python main.py -i drums_short.wav noise_short.wav --crossover-rate 0.8 --mutation-rate 0.6 --num-runs 250 --keep-k-best 0 --write-stats-every 25
+python main.py -i drums_short.wav noise_short.wav --crossover-rate 0.8 --mutation-rate 0.7 --num-runs 250 --keep-k-best 0 --write-stats-every 25
+python main.py -i drums_short.wav noise_short.wav --crossover-rate 0.8 --mutation-rate 0.8 --num-runs 250 --keep-k-best 0 --write-stats-every 25
+python plot_heatmap.py --output crossover_mutation_grid_search.png --dimensions crossover_rate mutation_rate
+
+# Compare add/remove link rates
+python main.py -i drums_short.wav noise_short.wav -g 50 --num-runs 200 --keep-k-best 0 --write-stats-every 55 --add-neuron-prob 0.03 --add-link-prob 0.03 --rem-link-prob 0.03 --rem-simple-neuron-prob 0.03
+python main.py -i drums_short.wav noise_short.wav -g 50 --num-runs 200 --keep-k-best 0 --write-stats-every 55 --add-neuron-prob 0.06 --add-link-prob 0.06 --rem-link-prob 0.06 --rem-simple-neuron-prob 0.06
+python main.py -i drums_short.wav noise_short.wav -g 50 --num-runs 200 --keep-k-best 0 --write-stats-every 55 --add-neuron-prob 0.09 --add-link-prob 0.09 --rem-link-prob 0.09 --rem-simple-neuron-prob 0.09
+python main.py -i drums_short.wav noise_short.wav -g 50 --num-runs 200 --keep-k-best 0 --write-stats-every 55 --add-neuron-prob 0.15 --add-link-prob 0.15 --rem-link-prob 0.15 --rem-simple-neuron-prob 0.15
+python main.py -i drums_short.wav noise_short.wav -g 50 --num-runs 200 --keep-k-best 0 --write-stats-every 55 --add-neuron-prob 0.3 --add-link-prob 0.3 --rem-link-prob 0.3 --rem-simple-neuron-prob 0.3
+python plot.py --label add_link_probability --output add_remove_link_rates.png --avg
+
+# Multiple effects in parallel, and then a gain
+python main.py -i drums_short.wav noise_short.wav --effects am bandpass bitreduce dist_lpf chorus new_layer gain --experiment-settings mfcc_bark.json -g 2500 -p 40 --write-stats-every 50 --patience 2500
