@@ -113,5 +113,8 @@ python main.py -i drums_short.wav noise_short.wav -g 50 --num-runs 200 --keep-k-
 python main.py -i drums_short.wav noise_short.wav -g 50 --num-runs 200 --keep-k-best 0 --write-stats-every 55 --add-neuron-prob 0.3 --add-link-prob 0.3 --rem-link-prob 0.3 --rem-simple-neuron-prob 0.3
 python plot.py --label add_link_probability --output add_remove_link_rates.png --avg
 
-# Multiple effects in parallel, and then a gain
+# Five effects in parallel, and then a gain (requires ~18 GB of storage)
 python main.py -i drums_short.wav noise_short.wav --effects am bandpass bitreduce dist_lpf chorus new_layer gain --experiment-settings mfcc_bark.json -g 2500 -p 40 --write-stats-every 50 --patience 2500
+
+# Five effects in parallel, then a gain, then five effects in parallel and finally a gain
+python main.py -i drums_short.wav noise_short.wav --effects am bandpass bitreduce dist_lpf chorus new_layer gain new_layer am bandpass bitreduce dist_lpf chorus new_layer gain --experiment-settings mfcc_bark.json -g 2500 -p 40 --write-stats-every 50 --patience 2500 --keep-k-best 2 --keep-all-last
