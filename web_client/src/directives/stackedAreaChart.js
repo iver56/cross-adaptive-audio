@@ -3,24 +3,22 @@
 
   angular
     .module('crossAdaptiveAudioApp')
-    .directive('speciesChart', SpeciesChart);
+    .directive('stackedAreaChart', StackedAreaChart);
 
-  function SpeciesChart() {
+  function StackedAreaChart() {
 
-    function SpeciesChartCtrl($scope, statsService, $element) {
+    function StackedAreaChartCtrl($scope, statsService, $element) {
       var vm = this;
       vm.statsService = statsService;
       vm.chart = null;
       vm.chartData = null;
-      vm.data = {
-        speciesSeries: null
-      };
+      vm.series = null;
       vm.isGraphAdded = false;
 
       $scope.$watch(function() {
         return statsService.data && statsService.data.generations;
       }, function() {
-        vm.data.speciesSeries = statsService.getSpeciesSeries();
+        vm.series = statsService.getSpeciesSeries();
         if (vm.isGraphAdded) {
           vm.updateGraph();
         } else {
@@ -49,8 +47,8 @@
           vm.chart.yAxis.tickFormat(d3.format("d"));
 
           vm.chartData = d3.select($element[0])
-            .select('.species-chart svg')
-            .datum(vm.data.speciesSeries)
+            .select('.stacked-area-chart svg')
+            .datum(vm.series)
           ;
           vm.chartData.call(vm.chart);
 
@@ -61,7 +59,7 @@
       };
 
       vm.updateGraph = function() {
-        vm.chartData.datum(vm.data.speciesSeries).transition().duration(500).call(vm.chart);
+        vm.chartData.datum(vm.series).transition().duration(500).call(vm.chart);
         nv.utils.windowResize(vm.chart.update);
       };
     }
@@ -69,9 +67,9 @@
     return {
       restrict: 'E',
       scope: {},
-      templateUrl: 'views/species-chart.html',
-      controller: SpeciesChartCtrl,
-      controllerAs: 'speciesChart'
+      templateUrl: 'views/stacked-area-chart.html',
+      controller: StackedAreaChartCtrl,
+      controllerAs: 'stackedAreaChart'
     };
   }
 })();
