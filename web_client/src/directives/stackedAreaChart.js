@@ -7,24 +7,26 @@
 
   function StackedAreaChart() {
 
-    function StackedAreaChartCtrl($scope, statsService, $element) {
+    function StackedAreaChartCtrl($scope, debounce, statsService, $element) {
       var vm = this;
       vm.statsService = statsService;
       vm.chart = null;
       vm.chartData = null;
-      vm.series = null;
       vm.isGraphAdded = false;
 
       $scope.$watch(function() {
-        return statsService.data && statsService.data.generations;
-      }, function() {
-        vm.series = statsService.getSpeciesSeries();
+        return vm.series;
+      }, debounce(100, function() {
+        vm.showGraph();
+      }));
+
+      vm.showGraph = function() {
         if (vm.isGraphAdded) {
           vm.updateGraph();
         } else {
           vm.addGraph();
         }
-      });
+      };
 
       vm.addGraph = function() {
         vm.isGraphAdded = true;
@@ -69,7 +71,10 @@
       scope: {},
       templateUrl: 'views/stacked-area-chart.html',
       controller: StackedAreaChartCtrl,
-      controllerAs: 'stackedAreaChart'
+      controllerAs: 'stackedAreaChart',
+      bindToController: {
+        series: '='
+      }
     };
   }
 })();

@@ -32,6 +32,7 @@
           if (null === that.selectedIndividualIndex) {
             that.selectedIndividualIndex = that.getPopulationSize() - 1;
           }
+          that.speciesSeries = that.getSpeciesSeries();
         }
       };
       
