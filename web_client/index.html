@@ -311,11 +311,28 @@
               subtract="statsService.data.input_sound.feature_data"
           ></cubism>
         </div>
+        <md-radio-group
+            ng-if="individual.individualDetails && statsService.data.args.effect_names.length > 1"
+            ng-model="individual.effectParameterMode"
+            layout="row"
+        >
+          <md-radio-button value="all_parameters">
+            All parameters
+          </md-radio-button>
+          <md-radio-button value="only_softmax">
+            Only effect mix values
+          </md-radio-button>
+        </md-radio-group>
 
         <div style="min-height: 100px;">
           <cubism
-              ng-if="individual.selectedSound === 'output_sound' && individual.individualDetails.neural_output"
+              ng-if="individual.effectParameterMode === 'all_parameters' && individual.selectedSound === 'output_sound' && individual.individualDetails.neural_output"
               series="individual.individualDetails.neural_output"
+              extent="[0, 1]"
+          ></cubism>
+          <cubism
+              ng-if="individual.effectParameterMode === 'only_softmax' && individual.selectedSound === 'output_sound' && individual.individualDetails.neural_output"
+              series="individual.individualDetails.softmax_values"
               extent="[0, 1]"
           ></cubism>
         </div>
