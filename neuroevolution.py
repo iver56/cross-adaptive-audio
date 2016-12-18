@@ -108,7 +108,8 @@ class Neuroevolution(object):
             'args': vars(self.args),
             'experiment_settings': experiment.Experiment.experiment_settings,
             'generations': [],
-            'feature_statistics': self.project.data['feature_statistics']
+            'feature_statistics': self.project.data['feature_statistics'],
+            'effect': self.effect.get_serialized_representation()
         }
         experiment.Experiment.calculate_current_experiment_id(experiment_data)
 

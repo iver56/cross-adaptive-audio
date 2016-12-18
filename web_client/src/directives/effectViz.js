@@ -7,27 +7,24 @@
 
   function EffectViz() {
 
-    function EffectVizCtrl(debounce, $rootScope, $element, statsService, $scope) {
+    function EffectVizCtrl($rootScope, $element, statsService) {
       var vm = this;
 
       vm.$container = $($element[0]).find('.effect-viz-container');
-      vm.canvas = vm.$container.find('canvas.effect-viz-canvas')[0];
+      vm.canvas = vm.$container.find('canvas.effect-frame-canvas')[0];
       vm.ctx = vm.canvas.getContext('2d');
+      vm.knobCanvas = vm.$container.find('canvas.effect-knob-canvas')[0];
+      vm.knobCtx = vm.knobCanvas.getContext('2d');
 
-      $scope.$watch(function() {
-        return vm.individual;
-      }, debounce(100, function() {
-        if (vm.individual) {
-          vm.init();
-          vm.draw();
-        }
-      }));
+      var rectHeight = 80;
+      var parameterWidth = 60;
+      var knobRadius = 10;
+      var knobStartAngle = Math.PI / 2;
+      var knobEndAngleRelative = 2 * Math.PI;
 
-      /*
-       $rootScope.$on('waveform.scroll', function(e, payload) {
-       //TODO
-       });
-       */
+      $rootScope.$on('waveform.audioprocess', function(e, payload) {
+        vm.drawKnobs(payload);
+      }.throttle(10));
 
       vm.init = function() {
         vm.groups = [{effects: []}];
@@ -47,8 +44,8 @@
         }
 
         var currentEffectIndex = 0;
-        for (i = 0; i < vm.individual.neural_output.order.length; i++) {
-          var parameterName = vm.individual.neural_output.order[i];
+        for (i = 0; i < statsService.data.effect.parameter_names.length; i++) {
+          var parameterName = statsService.data.effect.parameter_names[i];
 
           if (parameterName.indexOf('softmax_') === 0) {
             currentEffectIndex++;
@@ -61,11 +58,8 @@
         }
       };
 
-      var rectHeight = 80;
-      var parameterWidth = 60;
-      var knobRadius = 10;
-      vm.draw = function() {
-        vm.ctx.translate(10, 10);
+      vm.drawFrames = function() {
+        vm.ctx.translate(10, 10); // margin
         for (var i = 0; i < vm.groups.length; i++) {
           vm.ctx.save();
 
@@ -105,8 +99,44 @@
           vm.ctx.restore();
           vm.ctx.translate(0, rectHeight + 30);
         }
-
       };
+
+      vm.drawKnobs = function(currentTime) {
+        var currentFrameIndex = parseInt(currentTime * 44100 / vm.individual.neural_output.ksmps);
+        vm.knobCanvas.width = vm.knobCanvas.width; // reset canvas
+        vm.knobCtx.translate(10, 10);  // margin
+        for (var i = 0; i < vm.groups.length; i++) {
+          vm.knobCtx.save();
+
+          var group = vm.groups[i];
+          for (var j = 0; j < group.effects.length; j++) {
+            var effect = group.effects[j];
+            var rectWidth = parameterWidth * effect.parameters.length;
+            vm.knobCtx.save();
+            vm.knobCtx.translate(30, 40);
+
+            for (var k = 0; k < effect.parameters.length; k++) {
+              var parameter = effect.parameters[k];
+              var parameterValue = vm.individual.neural_output.series_standardized[parameter.index][currentFrameIndex];
+
+              vm.knobCtx.beginPath();
+              vm.knobCtx.arc(0, 0, knobRadius + 2, knobStartAngle, knobStartAngle + parameterValue * knobEndAngleRelative);
+              vm.knobCtx.stroke();
+
+              vm.knobCtx.translate(parameterWidth, 0);
+            }
+
+            vm.knobCtx.restore();
+            vm.knobCtx.translate(rectWidth + 20, 0);
+          }
+
+          vm.knobCtx.restore();
+          vm.knobCtx.translate(0, rectHeight + 30);
+        }
+      };
+
+      vm.init();
+      vm.drawFrames();
     }
 
     return {

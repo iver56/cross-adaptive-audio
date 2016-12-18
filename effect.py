@@ -62,6 +62,12 @@ class Effect(object):
             self.name
         )
 
+    def get_serialized_representation(self):
+        return {
+            'num_parameters': self.num_parameters,
+            'parameter_names': self.parameter_names
+        }
+
 
 class CompositeEffect(object):
     def __init__(self, effect_names):
@@ -132,3 +138,9 @@ class CompositeEffect(object):
             layer_indexes=self.layer_indexes,
             parameter_names=self.parameter_names
         )
+
+    def get_serialized_representation(self):
+        return {
+            'num_parameters': self.num_parameters,
+            'parameter_names': self.parameter_names
+        }

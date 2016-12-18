@@ -1,0 +1,14 @@
+.effect-viz-container {
+  position: relative;
+  width: 640px;
+  height: 480px;
+}
+
+.effect-viz-container canvas {
+  background: transparent;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}

@@ -56,6 +56,10 @@
         });
       });
 
+      vm.wavesurfer.on('audioprocess', function(e) {
+        $rootScope.$emit('waveform.audioprocess', e);
+      });
+
       $scope.$watch(function() {
         return vm.sound && vm.sound.filename;
       }, debounce(100, function() {
