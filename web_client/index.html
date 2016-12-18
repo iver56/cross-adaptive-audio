@@ -57,6 +57,9 @@
   <script src="src/directives/cubism.js"></script>
   <link rel="stylesheet" href="css/cubism.css">
 
+  <script src="src/directives/effectViz.js"></script>
+  <link rel="stylesheet" href="css/effect-viz.css">
+
   <link rel="stylesheet" href="css/main.css">
 </head>
 
@@ -335,6 +338,10 @@
               series="individual.individualDetails.softmax_values"
               extent="[0, 1]"
           ></cubism>
+        </div>
+
+        <div style="min-height: 100px">
+          <effect-viz individual="individual.individualDetails"></effect-viz>
         </div>
       </md-card-content>
     </md-card>
