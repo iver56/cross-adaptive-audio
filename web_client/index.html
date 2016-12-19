@@ -137,7 +137,13 @@
             </md-card-title-text>
           </md-card-title>
           <md-card-content>
-            <stacked-area-chart series="statsService.speciesSeries"></stacked-area-chart>
+            <stacked-area-chart
+                series="statsService.speciesSeries"
+                ng-if="statsService.numGenerations && statsService.numGenerations <= 100"
+            ></stacked-area-chart>
+            <p ng-if="statsService.numGenerations > 100">
+              Disabled because there is too much data
+            </p>
           </md-card-content>
         </md-card>
       </md-tab>
