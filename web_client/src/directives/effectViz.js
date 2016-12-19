@@ -15,8 +15,13 @@
       vm.ctx = vm.canvas.getContext('2d');
       vm.knobCanvas = vm.$container.find('canvas.effect-knob-canvas')[0];
       vm.knobCtx = vm.knobCanvas.getContext('2d');
+      vm.width = null;
+      vm.height = null;
 
+      var margin = 10;
       var rectHeight = 80;
+      var verticalSpaceBetweenGroups = 30;
+      var horizontalSpaceBetweenEffects = 20;
       var parameterWidth = 60;
       var knobRadius = 10;
       var knobStartAngle = Math.PI / 2;
@@ -26,40 +31,28 @@
         vm.drawKnobs(payload);
       }.throttle(10));
 
-      vm.init = function() {
-        vm.groups = [{effects: []}];
-        vm.effects = [];
-        var currentGroupIndex = 0;
-        var i, effectName;
-        for (i = 0; i < statsService.data.args.effect_names.length - 1; i++) {
-          effectName = statsService.data.args.effect_names[i];
-          if (effectName === 'new_layer') {
-            currentGroupIndex += 1;
-            vm.groups.push({effects: []});
-          } else {
-            var effect = {index: i, name: effectName, parameters: []};
-            vm.groups[currentGroupIndex].effects.push(effect);
-            vm.effects.push(effect);
+      vm.calculateDimensions = function() {
+        vm.height = margin + (rectHeight + verticalSpaceBetweenGroups) * vm.groups.length;
+
+        var maxGroupWidth = 0;
+        for (var i = 0; i < vm.groups.length; i++) {
+          var group = vm.groups[i];
+          var groupWidth = 0;
+          for (var j = 0; j < group.effects.length; j++) {
+            var effect = group.effects[j];
+            var rectWidth = parameterWidth * effect.parameters.length;
+            groupWidth += horizontalSpaceBetweenEffects + rectWidth;
+          }
+          if (groupWidth > maxGroupWidth) {
+            maxGroupWidth = groupWidth;
           }
         }
 
-        var currentEffectIndex = 0;
-        for (i = 0; i < statsService.data.effect.parameter_names.length; i++) {
-          var parameterName = statsService.data.effect.parameter_names[i];
-
-          if (parameterName.indexOf('softmax_') === 0) {
-            currentEffectIndex++;
-          } else if (effectName !== 'new_layer') {
-            vm.effects[currentEffectIndex].parameters.push({
-              name: parameterName,
-              index: i
-            })
-          }
-        }
+        vm.width = 2 * margin + maxGroupWidth;
       };
 
       vm.drawFrames = function() {
-        vm.ctx.translate(10, 10); // margin
+        vm.ctx.translate(margin, margin);
         for (var i = 0; i < vm.groups.length; i++) {
           vm.ctx.save();
 
@@ -93,11 +86,11 @@
             }
 
             vm.ctx.restore();
-            vm.ctx.translate(rectWidth + 20, 0);
+            vm.ctx.translate(rectWidth + horizontalSpaceBetweenEffects, 0);
           }
 
           vm.ctx.restore();
-          vm.ctx.translate(0, rectHeight + 30);
+          vm.ctx.translate(0, rectHeight + verticalSpaceBetweenGroups);
         }
       };
 
@@ -127,16 +120,53 @@
             }
 
             vm.knobCtx.restore();
-            vm.knobCtx.translate(rectWidth + 20, 0);
+            vm.knobCtx.translate(rectWidth + horizontalSpaceBetweenEffects, 0);
           }
 
           vm.knobCtx.restore();
-          vm.knobCtx.translate(0, rectHeight + 30);
+          vm.knobCtx.translate(0, rectHeight + verticalSpaceBetweenGroups);
         }
       };
 
+      vm.init = function() {
+        vm.groups = [{effects: []}];
+        vm.effects = [];
+        var currentGroupIndex = 0;
+        var i, effectName;
+        for (i = 0; i < statsService.data.args.effect_names.length - 1; i++) {
+          effectName = statsService.data.args.effect_names[i];
+          if (effectName === 'new_layer') {
+            currentGroupIndex += 1;
+            vm.groups.push({effects: []});
+          } else {
+            var effect = {index: i, name: effectName, parameters: []};
+            vm.groups[currentGroupIndex].effects.push(effect);
+            vm.effects.push(effect);
+          }
+        }
+
+        var currentEffectIndex = 0;
+        for (i = 0; i < statsService.data.effect.parameter_names.length; i++) {
+          var parameterName = statsService.data.effect.parameter_names[i];
+
+          if (parameterName.indexOf('softmax_') === 0) {
+            currentEffectIndex++;
+          } else if (effectName !== 'new_layer') {
+            vm.effects[currentEffectIndex].parameters.push({
+              name: parameterName,
+              index: i
+            })
+          }
+        }
+
+        vm.calculateDimensions();
+        vm.canvas.width = vm.knobCanvas.width = vm.width;
+        vm.canvas.height = vm.knobCanvas.height = vm.height;
+        vm.$container.height(vm.height);
+        vm.drawFrames();
+      };
+
       vm.init();
-      vm.drawFrames();
     }
 
     return {

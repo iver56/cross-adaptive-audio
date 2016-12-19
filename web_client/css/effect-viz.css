@@ -1,7 +1,7 @@
 .effect-viz-container {
   position: relative;
-  width: 640px;
-  height: 480px;
+  overflow-x: scroll;
+  overflow-y: hidden;
 }
 
 .effect-viz-container canvas {
