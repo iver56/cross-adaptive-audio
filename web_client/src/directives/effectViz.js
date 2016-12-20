@@ -31,6 +31,13 @@
         vm.drawKnobs(payload);
       }.throttle(10));
 
+      vm.getRectWidth = function(effect) {
+        return Math.max(
+          vm.ctx.measureText(effect.name).width + 10,
+          parameterWidth * effect.parameters.length
+        );
+      };
+
       vm.calculateDimensions = function() {
         vm.height = margin + (rectHeight + verticalSpaceBetweenGroups) * vm.groups.length;
 
@@ -40,7 +47,7 @@
           var groupWidth = 0;
           for (var j = 0; j < group.effects.length; j++) {
             var effect = group.effects[j];
-            var rectWidth = parameterWidth * effect.parameters.length;
+            var rectWidth = vm.getRectWidth(effect);
             groupWidth += horizontalSpaceBetweenEffects + rectWidth;
           }
           if (groupWidth > maxGroupWidth) {
@@ -59,7 +66,7 @@
           var group = vm.groups[i];
           for (var j = 0; j < group.effects.length; j++) {
             var effect = group.effects[j];
-            var rectWidth = parameterWidth * effect.parameters.length;
+            var rectWidth = vm.getRectWidth(effect);
             vm.ctx.strokeRect(0, 0, rectWidth, rectHeight);
             vm.ctx.fillText(effect.name, 5, 13);
             vm.ctx.fillRect(0, 20, rectWidth, 1);
