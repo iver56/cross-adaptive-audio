@@ -4,13 +4,46 @@ import settings
 import os
 import argparse
 import json
-import template_handler
 import effect
 import sys
 import base64
 
 
+def guess_paths():
+    roots = sorted(
+        [
+            root for root, dirs, filenames in os.walk(settings.INDIVIDUAL_DATA_DIRECTORY)
+            if len(root) > 20
+            ]
+    )
+    experiment_folder_name = os.path.basename(os.path.normpath(roots[-1]))
+
+    stats_file_path = os.path.join(
+        settings.STATS_DATA_DIRECTORY,
+        experiment_folder_name,
+        'stats.json'
+    )
+
+    with open(stats_file_path, 'r') as data_file:
+        project_data = json.load(data_file)
+
+    individuals_last_gen = project_data['generations'][-1]['individuals']
+    individuals_sorted_by_similarity = sorted(individuals_last_gen, key=lambda x: x['similarity'])
+    most_similar_individual = individuals_sorted_by_similarity[-1]
+
+    individual_data_file_path = os.path.join(
+        settings.INDIVIDUAL_DATA_DIRECTORY,
+        experiment_folder_name,
+        'individual_{}.json'.format(most_similar_individual['id'])
+    )
+
+    return experiment_folder_name, stats_file_path, individual_data_file_path
+
+
 def resolve_paths(individual_id):
+    if individual_id is None:
+        return guess_paths()
+
     experiment_folder_name = None
     individual_data_file_paths = []
     for root, dirs, filenames in os.walk(settings.INDIVIDUAL_DATA_DIRECTORY):
@@ -39,8 +72,10 @@ def create_live_csd():
         '--id',
         dest='individual_id',
         type=str,
-        help='Individual id (or a unique part of it)',
-        required=True
+        help='Individual id (or a unique part of it). If not specified, the best individual in the'
+             ' last generation in the most recent experiment is chosen',
+        required=False,
+        default=None
     )
     arg_parser.add_argument(
         '--duration',
@@ -101,7 +136,7 @@ def create_live_csd():
 
     csd_path = os.path.join(
         settings.LIVE_CSD_DIRECTORY,
-        args.individual_id + '.live.csd'
+        args.individual_id + '.live.csd' if args.individual_id else 'live.csd'
     )
     template.write_result(csd_path)
 
