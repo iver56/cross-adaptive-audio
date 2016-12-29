@@ -4,7 +4,8 @@
   <CsInstruments>
     sr = 44100
     ksmps = {{ ksmps }}
-    nchnls = 2
+    nchnls_i = 2
+    nchnls = 1
     0dbfs = 1
 
     pyinit
@@ -49,7 +50,7 @@ that_live_mapper = live_mapper.LiveMapper(parameter_data=json.loads(base64.b64de
 
     {% block effect %}{% endblock %}
 
-    outs aOut, aOut
+    out aOut
 
     endin
   </CsInstruments>
