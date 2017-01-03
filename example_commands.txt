@@ -113,8 +113,12 @@ python main.py -i drums_short.wav noise_short.wav -g 50 --num-runs 200 --keep-k-
 python main.py -i drums_short.wav noise_short.wav -g 50 --num-runs 200 --keep-k-best 0 --write-stats-every 55 --add-neuron-prob 0.3 --add-link-prob 0.3 --rem-link-prob 0.3 --rem-simple-neuron-prob 0.3
 python plot.py --label add_link_probability --output add_remove_link_rates.png --avg
 
-# Five effects in parallel, and then a gain (requires ~18 GB of storage)
-python main.py -i drums_short.wav noise_short.wav --effects am bandpass bitreduce dist_lpf chorus new_layer gain --experiment-settings mfcc_bark.json -g 2500 -p 40 --write-stats-every 50 --patience 2500
+# Five effects in parallel, and then a gain
+python main.py -i drums_short.wav noise_short.wav --effects am bandpass bitreduce dist_lpf chorus new_layer gain --experiment-settings mfcc_bark.json -g 500 -p 40 --write-stats-every 50 --patience 500 --keep-k-best 2 --keep-all-last
 
-# Five effects in parallel, then a gain, then five effects in parallel and finally a gain
-python main.py -i drums_short.wav noise_short.wav --effects am bandpass bitreduce dist_lpf chorus new_layer gain new_layer am bandpass bitreduce dist_lpf chorus new_layer gain --experiment-settings mfcc_bark.json -g 2500 -p 40 --write-stats-every 50 --patience 2500 --keep-k-best 2 --keep-all-last
+# Five effects in parallel, then a gain, then six effects in parallel and finally a gain
+python main.py -i drums_short.wav noise_short.wav --effects am bandpass bitreduce dist_lpf chorus new_layer gain new_layer am bandpass bitreduce dist_lpf chorus gain new_layer gain --experiment-settings mfcc_bark.json -g 500 -p 40 --write-stats-every 50 --patience 500 --keep-k-best 2 --keep-all-last
+
+# Compare similarity channel setup [rms, spectral centroid, pitch] vs [rms, spectral centroid, pitch, bark bands] with noise to sine experiments
+python main.py -i sine_440_short.wav noise_very_short.wav --effects bandpass new_layer gain_extreme -g 500 -p 40 --experiment-settings csound_basic_pitch.json --patience 500 --write-stats-every 50 --num-runs 10 --keep-k-best 1 --keep-all-last
+python main.py -i sine_440_short.wav noise_very_short.wav --effects bandpass new_layer gain_extreme -g 500 -p 40 --experiment-settings csound_pitch_bark.json --patience 500 --write-stats-every 50 --num-runs 10 --keep-k-best 1 --keep-all-last
