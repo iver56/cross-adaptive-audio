@@ -1,7 +1,7 @@
 import argparse
 import json
 import numpy as np
-import matplotlib.pyplot as plt
+import matplotlib
 from matplotlib.font_manager import FontProperties
 import os
 import settings
@@ -63,7 +63,22 @@ class Plot(object):
             required=False,
             default=None
         )
+        arg_parser.add_argument(
+            '--agg',
+            nargs='?',
+            dest='use_agg',
+            help='Use this argument if you encounter errors like "_tkinter.TclError: no display'
+                 ' name and no $DISPLAY environment variable" in a Linux environment',
+            const=True,
+            required=False,
+            default=False
+        )
         args = arg_parser.parse_args()
+
+        if args.use_agg:
+            matplotlib.use('Agg')
+
+        import matplotlib.pyplot as plt
 
         experiments = {}
 
