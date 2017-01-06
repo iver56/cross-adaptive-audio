@@ -1,6 +1,6 @@
 import argparse
 import json
-import matplotlib.pyplot as plt
+import matplotlib
 import os
 import settings
 
@@ -24,6 +24,16 @@ class Plot(object):
             default=None
         )
         arg_parser.add_argument(
+            '--agg',
+            nargs='?',
+            dest='use_agg',
+            help='Use this argument if you encounter errors like "_tkinter.TclError: no display'
+                 ' name and no $DISPLAY environment variable" in a Linux environment',
+            const=True,
+            required=False,
+            default=False
+        )
+        arg_parser.add_argument(
             '--output',
             dest='output',
             help='Output image file (PNG). If specified, interactive window will not appear.',
@@ -31,6 +41,11 @@ class Plot(object):
             default=None
         )
         args = arg_parser.parse_args()
+
+        if args.use_agg:
+            matplotlib.use('Agg')
+
+        import matplotlib.pyplot as plt
 
         experiments = {}
 
