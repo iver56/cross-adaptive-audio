@@ -140,9 +140,9 @@
         vm.effects = [];
         var currentGroupIndex = 0;
         var i, effectName;
-        for (i = 0; i < statsService.data.args.effect_names.length; i++) {
+        for (i = 0; i < Math.max(statsService.data.args.effect_names.length - 1, 1); i++) {
           effectName = statsService.data.args.effect_names[i];
-          if (effectName === 'new_layer' && i !== statsService.data.args.effect_names.length - 1) {
+          if (effectName === 'new_layer') {
             currentGroupIndex += 1;
             vm.groups.push({effects: []});
           } else {
