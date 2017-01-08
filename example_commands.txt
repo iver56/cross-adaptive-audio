@@ -106,12 +106,12 @@ python main.py -i drums_short.wav noise_short.wav --crossover-rate 0.8 --mutatio
 python plot_heatmap.py --output crossover_mutation_grid_search.png --dimensions crossover_rate mutation_rate
 
 # Compare add/remove link rates
-python main.py -i drums_short.wav noise_short.wav -g 50 --num-runs 200 --keep-k-best 0 --write-stats-every 55 --add-neuron-prob 0.03 --add-link-prob 0.03 --rem-link-prob 0.03 --rem-simple-neuron-prob 0.03
-python main.py -i drums_short.wav noise_short.wav -g 50 --num-runs 200 --keep-k-best 0 --write-stats-every 55 --add-neuron-prob 0.06 --add-link-prob 0.06 --rem-link-prob 0.06 --rem-simple-neuron-prob 0.06
-python main.py -i drums_short.wav noise_short.wav -g 50 --num-runs 200 --keep-k-best 0 --write-stats-every 55 --add-neuron-prob 0.09 --add-link-prob 0.09 --rem-link-prob 0.09 --rem-simple-neuron-prob 0.09
-python main.py -i drums_short.wav noise_short.wav -g 50 --num-runs 200 --keep-k-best 0 --write-stats-every 55 --add-neuron-prob 0.15 --add-link-prob 0.15 --rem-link-prob 0.15 --rem-simple-neuron-prob 0.15
-python main.py -i drums_short.wav noise_short.wav -g 50 --num-runs 200 --keep-k-best 0 --write-stats-every 55 --add-neuron-prob 0.3 --add-link-prob 0.3 --rem-link-prob 0.3 --rem-simple-neuron-prob 0.3
+python main.py -i drums_short.wav noise_short.wav -g 50 --num-runs 100 --keep-k-best 0 --keep-all-last --write-stats-every 55 --add-neuron-prob 0.01 --add-link-prob 0.01 --rem-link-prob 0.01 --rem-simple-neuron-prob 0.01
+python main.py -i drums_short.wav noise_short.wav -g 50 --num-runs 100 --keep-k-best 0 --keep-all-last --write-stats-every 55 --add-neuron-prob 0.03 --add-link-prob 0.03 --rem-link-prob 0.03 --rem-simple-neuron-prob 0.03
+python main.py -i drums_short.wav noise_short.wav -g 50 --num-runs 100 --keep-k-best 0 --keep-all-last --write-stats-every 55 --add-neuron-prob 0.09 --add-link-prob 0.09 --rem-link-prob 0.09 --rem-simple-neuron-prob 0.09
+python main.py -i drums_short.wav noise_short.wav -g 50 --num-runs 100 --keep-k-best 0 --keep-all-last --write-stats-every 55 --add-neuron-prob 0.27 --add-link-prob 0.27 --rem-link-prob 0.27 --rem-simple-neuron-prob 0.27
 python plot.py --label add_link_probability --output add_remove_link_rates.png --avg
+python plot_box.py --label add_link_probability --output add_remove_link_rates_boxplot.png
 
 # Five effects in parallel, and then a gain
 python main.py -i drums_short.wav noise_short.wav --effects am bandpass bitreduce dist_lpf chorus new_layer gain --experiment-settings mfcc_bark.json -g 500 -p 40 --write-stats-every 50 --patience 500 --keep-k-best 2 --keep-all-last
