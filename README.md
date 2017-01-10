@@ -131,8 +131,10 @@ The _most important_ parameters:
                         sound is neural input. Mode s: static input, i.e. only
                         bias. Mode targets: evolve targets separately for each
                         timestep, with only static input
-  --effect EFFECT_NAME  The name of the sound effect to use. See the effects
-                        folder for options.
+  --effect EFFECT_NAMES [EFFECT_NAMES ...], --effects EFFECT_NAMES [EFFECT_NAMES ...]
+                        The name(s) of the sound effect(s) to use. See the
+                        effects folder for options. In composite effects, use
+                        "new_layer" to separate layers of parallel effects.
   --fs-neat [FS_NEAT]   Use FS-NEAT (automatic feature selection)
   --experiment-settings EXPERIMENT_SETTINGS
                         Filename of json file in the experiment_settings

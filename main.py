@@ -274,7 +274,8 @@ if __name__ == '__main__':
         dest='effect_names',
         type=str,
         nargs='+',
-        help='The name(s) of the sound effect(s) to use. See the effects folder for options.',
+        help='The name(s) of the sound effect(s) to use. See the effects folder for options. In'
+             ' composite effects, use "new_layer" to separate layers of parallel effects.',
         required=False,
         default=["dist_lpf"]
     )
