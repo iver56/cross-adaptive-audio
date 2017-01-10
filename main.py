@@ -136,7 +136,7 @@ if __name__ == '__main__':
         help='MutateAddNeuronProb: Probability for a baby to be mutated with the'
              ' Add-Neuron mutation',
         required=False,
-        default=0.06
+        default=0.01
     )
     arg_parser.add_argument(
         '--add-link-prob',
@@ -145,7 +145,7 @@ if __name__ == '__main__':
         help='MutateAddLinkProb: Probability for a baby to be mutated with the'
              ' Add-Link mutation',
         required=False,
-        default=0.06
+        default=0.01
     )
     arg_parser.add_argument(
         '--rem-link-prob',
@@ -154,7 +154,7 @@ if __name__ == '__main__':
         help='MutateRemLinkProb: Probability for a baby to be mutated with the'
              ' Remove-Link mutation',
         required=False,
-        default=0.06
+        default=0.01
     )
     arg_parser.add_argument(
         '--rem-simple-neuron-prob',
@@ -163,7 +163,7 @@ if __name__ == '__main__':
         help='MutateRemSimpleNeuronProb: Probability for a baby that a simple neuron'
              ' will be replaced with a link',
         required=False,
-        default=0.06
+        default=0.01
     )
     arg_parser.add_argument(
         '--max-weight',
