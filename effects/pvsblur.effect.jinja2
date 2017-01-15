@@ -1,9 +1,0 @@
-ifftsize 	= 1024
-ioverlap	= ifftsize/2
-iwinsize	= ifftsize
-iwintype 	= 0
-fsig1 		pvsanal aIn, ifftsize, ioverlap, iwinsize, iwintype
-iMax		= 4.1
-fblur		pvsblur fsig1, k_blur_time, iMax
-aIn	  	pvsynth   fblur
-aOut = aIn * (1+(k_blur_time*0.1)) ; amp compensate

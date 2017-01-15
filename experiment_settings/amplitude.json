@@ -1,9 +1,0 @@
-{
-  "parameter_lpf_cutoff": 50,
-  "similarity_channels": [
-    "mfcc_0"
-  ],
-  "neural_input_channels": [
-    "mfcc_0"
-  ]
-}
