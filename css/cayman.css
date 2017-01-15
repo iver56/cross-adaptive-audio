@@ -239,3 +239,8 @@ a {
 
 .site-footer-credits {
   color: #819198; }
+
+video {
+  width: 100%;
+  height: auto;
+}
