@@ -99,9 +99,9 @@ There are some example files in the test_audio folder. For example, copy drums.w
 
 Our goal in the following example experiment is to make noise.wav sound like drums.wav by running noise.wav through the "dist_lpf" audio effect. The audio effect has a set of parameters that are controlled by the output of a neural network. The experiment is all about evolving one or more neural networks that behave such that the processed version of noise.wav sounds like drums.wav
 
-Run the command `python main.py -i drums.wav noise.wav -g 10 -p 20`
+Run the command `python main.py -i drums.wav noise.wav -g 30 -p 20`
 
-This will run the evolutionary algorithm for 10 generations with a population of 20. While this is running, you might want to open another command line instance and run `python serve.py`. This will start a server for a web client that interactively visualizes the results of the experiment as they become available. Websockets are used to keep the web client synchronized with whatever main.py has finished doing. Just visit http://localhost:8080 in your favorite browser. The web client looks somewhat like this:
+This will run the evolutionary algorithm for 30 generations with a population of 20. While this is running, you might want to open another command line instance and run `python serve.py`. This will start a server for a web client that interactively visualizes the results of the experiment as they become available. Websockets are used to keep the web client synchronized with whatever main.py has finished doing. Just visit http://localhost:8080 in your favorite browser. The web client looks somewhat like this:
 
 ![Screenshot of visualization](visualization-screenshot.png)
 
@@ -171,9 +171,35 @@ When you are done with your experiment(s), run `python clean.py`. This will dele
 
 ## Data augmentation
 
-If you have a short sound and you'd like to create variations of it, in terms of gain and playback speed, you can use `data_augmentation.py`. If you train neural networks on the augmented sound, they will likely generalize better. Example command, assuming you have drums_short.wav in the input folder:
+If you have a short sound and you'd like to create variations of it, in terms of gain and playback speed, you can use `data_augmentation.py`. If you train neural networks on the augmented sound, they will typically generalize better to unseen sounds. Example command, assuming you have drums_short.wav in the input folder:
 
-`python data_augmentation.py -i drums_short.wav --factor 5`
+`python data_augmentation.py -i drums_short.wav --factor 8`
+
+This will write the augmented sound `drums_short.wav.augmented.wav` to the input folder.
+
+## Live mode
+
+If the only neural input is from features computed by Csound analyzer, then you can apply the evolved cross-adaptive audio effect (to unseen data/sound) in live performances. You can still use other features, such as bark bands, in the similarity measure. For example, you can use the experiment settings in [csound_bark.json](experiment_settings/csound_bark.json).
+
+Example command for evolving the effect:
+
+`python main.py -i drums.wav noise.wav -g 50 -p 20 --experiment-settings csound_bark.json`
+
+Assuming you want to use the best individual in the last generation of the most recent experiment, run the following command:
+
+`python create_live_csd.py`
+
+This will write a file `live.csd` to the live_csd folder. This is a Csound code file with some inline python code with a base64 data blob containing data about the evolved neural network, amongst other things. Note that this file is built to run only in the python environment where it was created. The Csound file can be used in live mode like this:
+
+`csound live_csd/live.csd -iadc -odac`
+
+This assumes that you have a working sound card with stereo audio input. The target audio should be in the left channel and the input audio should be in the right channel.
+
+You can also use the csd file offline, to speed up computation and write the output audio to disk:
+
+`csound live_csd/live.csd -iinput/drums_synth.wav -ooutput/synth_cross_adapted.wav`
+
+This assumes that you have a stereo audio file `drums_synth.wav` with drums in the left channel and synth in the right channel.
 
 ## Use RAM disk
 
