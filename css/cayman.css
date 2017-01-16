@@ -244,3 +244,8 @@ video {
   width: 100%;
   height: auto;
 }
+
+audio {
+  display: block;
+  margin-bottom: 10px;
+}
